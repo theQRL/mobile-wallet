@@ -1,0 +1,245 @@
+
+
+//  transaction.publicKey = [@"Q68e456a20871d366331d7eefa4eaf8886831cd23a2d55f099d2870160313280480bc4057" dataUsingEncoding:NSUTF8StringEncoding]; // wallet address //
+//  transaction.signature = [@"Q68e456a20871d366331d7eefa4eaf8886831cd23a2d55f099d2870160313280480bc4057" dataUsingEncoding:NSUTF8StringEncoding]; // wallet address;
+//  transaction.nonce = 0;
+//  transaction.transactionHash = [@"Q68e456a20871d366331d7eefa4eaf8886831cd23a2d55f099d2870160313280480bc4057" dataUsingEncoding:NSUTF8StringEncoding]; // wallet address;
+//  transaction.xmssOtsIndex= 0;
+//  transaction.latticePk = transaction_lattice_pk;
+
+
+//  PushTransactionReq *request = [PushTransactionReq message];
+//  request.transactionSigned = transaction;
+//  request.transactionSigned = Dilithium().sign_open(10, transaction, dilithiumPK);
+
+
+
+//  GetAddressStateReq *adrequest = [GetAddressStateReq message];
+//  adrequest.address = [@"Q68e456a20871d366331d7eefa4eaf8886831cd23a2d55f099d2870160313280480bc4057" dataUsingEncoding:NSUTF8StringEncoding]; // wallet address
+//  [client getAddressStateWithRequest:adrequest handler:^(GetAddressStateResp *response, NSError *error) {
+//    NSLog(@"\n--------------------------------------\n%@\n--------------------------------------\n%@\n", response.state.latticePkListArray[0], error);
+//  }];
+
+
+
+  // creacting the EphemeralChannelPayload
+//  EphemeralChannelPayload *eph_channel;
+//  eph_channel.addrFrom = [@"Q68e456a20871d366331d7eefa4eaf8886831cd23a2d55f099d2870160313280480bc4057" dataUsingEncoding:NSUTF8StringEncoding];
+//  eph_channel.prf512Seed = [@"1" dataUsingEncoding:NSUTF8StringEncoding];
+//  eph_channel.data_p = [@"Hello World" dataUsingEncoding:NSUTF8StringEncoding];
+//  eph_channel.dilithiumSignature = sender_dilithium.sign()
+
+
+//  [GRPCCall useInsecureConnectionsForHost:kHostAddress];
+//  [GRPCCall setUserAgentPrefix:@"HelloWorld/1.0" forHost:kHostAddress];
+//
+//  PublicAPI *client = [[PublicAPI alloc] initWithHost:kHostAddress];
+//
+
+  // this works
+//  GetStatsReq *request = [GetStatsReq message];
+//  [client getStatsWithRequest:request handler:^(GetStatsResp *response, NSError *error) {
+//    NSLog(@"------------------%@--------------:", response);
+//  }];
+
+
+
+
+
+//  EncryptedEphemeralMessage_Channel *channel = [EncryptedEphemeralMessage_Channel message];
+//  channel.encAes256Symkey = sender_kyber.getCypherText();
+//
+//
+//  EncryptedEphemeralMessage *request = [EncryptedEphemeralMessage message];
+//  request.ttl = 987234987234;
+//  request.ttr = 0;
+//  request.channel = channel;
+//  request.msgId = nil;
+//  request.hasChannel = NO;
+//  request.nonce = 200;
+//  request.payload = nil;
+//
+//  PushEphemeralMessageReq *ephreq = [PushEphemeralMessageReq message];
+//  ephreq.ephemeralMessage = request;
+//
+////  PushEphemeralMessageReq *request = [PushEphemeralMessageReq message];
+//  [client pushEphemeralMessageWithRequest:ephreq handler:^(PushTransactionResp *response, NSError *error) {
+//    NSLog(@"------------------\n%@\n----------------", response);
+//  }];
+
+
+//  Dilithium test;
+//  std::vector<unsigned char> message2 {0, 1, 2, 4, 6, 9, 1};
+//  auto message_signed = test.sign(message2);
+
+//  Kyber alice;
+//  Kyber bob;
+//  auto alicePublicKey = alice.getPK();
+//  // Bob receives the public key, derives a secret and a response
+//  bob.kem_encode(alicePublicKey);
+//  auto cypherText = bob.getCypherText();
+//  auto valid = alice.kem_decode(cypherText);
+//  NSLog(@"IS Valid : %d", valid);
+//  // Now Alice and Bob share the same key
+//  auto aliceKey = alice.getMyKey();
+//  auto bobKey = bob.getMyKey();
+
+
+
+
+
+
+
+
+//    NSString *output = [[NSString alloc] initWithData:response.transactionUnsigned.transactionHash encoding:NSNumber] ;
+//    NSString *myString = [[NSString alloc] initWithData:response.transactionUnsigned.transactionHash encoding:NSU];
+//    NSString *myString = [NSString stringWithUTF8String:[response.transactionUnsigned.transactionHash bytes]];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Transaction_LatticePublicKey *transaction_lattice_pk;
+  transaction_lattice_pk.kyberPk = [@"188, 198, 234, 105, 143, 47, 52, 158, 40, 161, 230, 39, 32, 204, 77, 73, 36, 23, 109, 15, 190, 171, 13, 47, 237, 166, 109, 9, 64, 172, 65, 19, 99, 58, 3, 172, 91, 50, 96, 29, 215, 103, 208, 68, 48, 74, 236, 187, 24, 87, 130, 234, 137, 247, 252, 238, 22, 63, 90, 63, 254, 255, 211, 144, 48, 124, 188, 31, 42, 59, 129, 178, 170, 123, 230, 119, 21, 154, 129, 35, 26, 195, 96, 233, 230, 181, 115, 84, 181, 88, 117, 7, 141, 201, 129, 226, 160, 194, 73, 176, 100, 191, 178, 144, 182, 128, 55, 54, 113, 86, 48, 228, 87, 76, 133, 192, 203, 165, 233, 240, 127, 137, 191, 119, 32, 130, 41, 152, 6, 227, 74, 122, 211, 81, 172, 125, 217, 123, 62, 120, 218, 21, 78, 64, 129, 150, 231, 102, 101, 62, 168, 143, 15, 70, 194, 66, 56, 187, 231, 196, 92, 135, 56, 128, 247, 215, 138, 134, 250, 130, 175, 101, 20, 212, 34, 35, 232, 83, 189, 69, 83, 241, 30, 162, 23, 99, 59, 110, 232, 120, 65, 114, 43, 42, 222, 144, 236, 26, 18, 216, 65, 8, 9, 155, 160, 196, 149, 130, 43, 53, 7, 150, 251, 59, 229, 145, 2, 190, 121, 65, 22, 109, 251, 252, 22, 152, 173, 60, 132, 229, 213, 234, 37, 128, 200, 222, 90, 199, 94, 144, 136, 134, 192, 69, 167, 128, 106, 75, 229, 243, 145, 212, 69, 11, 23, 39, 137, 191, 8, 69, 2, 96, 216, 90, 231, 155, 148, 2, 8, 221, 238, 129, 229, 148, 123, 95, 166, 68, 254, 87, 154, 4, 148, 138, 92, 105, 234, 213, 16, 161, 75, 26, 224, 86, 39, 15, 147, 190, 106, 65, 220, 67, 99, 60, 106, 173, 32, 203, 12, 178, 69, 153, 149, 15, 230, 235, 184, 216, 128, 186, 204, 2, 195, 150, 25, 210, 35, 240, 163, 21, 19, 12, 241, 86, 182, 76, 171, 64, 193, 20, 204, 172, 201, 142, 120, 73, 121, 27, 28, 216, 150, 195, 20, 16, 167, 118, 23, 212, 174, 171, 117, 137, 252, 194, 252, 101, 225, 97, 131, 211, 132, 147, 112, 73, 163, 242, 101, 70, 93, 153, 54, 226, 189, 14, 233, 185, 126, 249, 198, 94, 73, 112, 242, 69, 172, 50, 23, 120, 8, 151, 204, 128, 119, 11, 198, 232, 228, 154, 144, 161, 213, 44, 213, 96, 0, 176, 190, 169, 137, 173, 223, 24, 98, 92, 44, 227, 252, 98, 121, 219, 122, 145, 33, 46, 159, 96, 110, 47, 140, 126, 135, 83, 217, 64, 45, 104, 244, 22, 41, 74, 89, 222, 185, 212, 137, 254, 158, 105, 112, 234, 49, 246, 189, 112, 108, 153, 58, 120, 16, 69, 69, 110, 246, 25, 56, 148, 91, 149, 138, 241, 208, 183, 77, 161, 122, 122, 197, 80, 55, 94, 178, 126, 6, 98, 223, 82, 203, 213, 173, 55, 95, 83, 46, 203, 6, 231, 246, 149, 186, 34, 223, 117, 62, 158, 207, 220, 211, 110, 131, 216, 72, 126, 66, 5, 222, 10, 232, 198, 31, 165, 188, 149, 225, 178, 88, 4, 4, 179, 226, 170, 176, 164, 72, 239, 133, 82, 241, 234, 164, 204, 149, 209, 46, 244, 108, 45, 194, 154, 82, 238, 63, 47, 3, 225, 237, 248, 33, 117, 46, 179, 3, 57, 29, 232, 156, 87, 207, 87, 221, 8, 168, 227, 32, 199, 181, 27, 188, 105, 78, 226, 144, 176, 4, 217, 213, 207, 192, 128, 195, 208, 183, 13, 235, 113, 228, 152, 226, 77, 212, 107, 165, 169, 141, 61, 220, 239, 224, 150, 140, 36, 150, 151, 254, 15, 208, 105, 33, 237, 223, 112, 67, 138, 234, 9, 113, 221, 1, 198, 221, 155, 11, 95, 30, 218, 141, 142, 141, 247, 175, 150, 136, 96, 217, 70, 190, 83, 47, 19, 110, 211, 26, 198, 71, 161, 172, 119, 164, 15, 146, 24, 223, 218, 153, 157, 96, 134, 224, 124, 245, 146, 130, 175, 37, 179, 212, 23, 198, 220, 197, 30, 142, 76, 232, 22, 243, 143, 205, 247, 130, 207, 245, 183, 128, 71, 108, 148, 78, 101, 15, 182, 78, 122, 222, 69, 123, 183, 196, 139, 7, 86, 48, 17, 70, 144, 156, 13, 32, 3, 7, 216, 243, 29, 196, 235, 217, 85, 69, 96, 159, 9, 193, 160, 145, 216, 28, 120, 57, 135, 69, 137, 159, 237, 53, 159, 150, 253, 172, 198, 88, 240, 197, 127, 244, 166, 240, 30, 207, 208, 8, 84, 56, 147, 187, 68, 194, 97, 221, 30, 126, 250, 6, 108, 232, 30, 80, 2, 205, 217, 50, 108, 42, 188, 130, 233, 228, 51, 91, 18, 185, 169, 27, 116, 121, 69, 81, 159, 124, 228, 196, 245, 13, 76, 170, 195, 166, 152, 119, 171, 235, 109, 49, 221, 22, 23, 58, 123, 237, 70, 192, 183, 93, 226, 35, 71, 247, 140, 89, 207, 218, 105, 203, 122, 75, 167, 96, 196, 246, 53, 139, 164, 66, 46, 34, 106, 255, 117, 219, 214, 22, 85, 118, 83, 168, 195, 75, 112, 218, 246, 224, 65, 218, 149, 238, 56, 51, 162, 163, 62, 93, 116, 234, 202, 67, 5, 218, 44, 16, 175, 31, 143, 113, 115, 162, 221, 251, 42, 139, 237, 105, 106, 116, 202, 189, 141, 128, 2, 204, 204, 55, 215, 132, 58, 228, 2, 83, 44, 95, 15, 79, 248, 103, 61, 45, 69, 65, 205, 128, 214, 137, 196, 236, 125, 219, 242, 136, 103, 104, 207, 191, 182, 90, 215, 74, 95, 56, 64, 135, 132, 180, 135, 158, 243, 37, 56, 130, 219, 85, 57, 12, 194, 220, 22, 106, 65, 133, 68, 102, 11, 249, 175, 145, 132, 34, 140, 220, 34, 219, 90, 240, 238, 239, 197, 250, 200, 14, 50, 159, 112, 137, 137, 68, 5, 136, 150, 35, 128, 187, 193, 167, 171, 94, 200, 173, 251, 250, 46, 217, 97, 213, 59, 78, 223, 109, 95, 18, 179, 73, 103, 41, 241, 76, 71, 122, 12, 153, 54, 51, 252, 130, 149, 158, 149, 134, 97, 222, 110, 226, 140, 197, 30, 138, 217, 37, 122, 37, 40, 114, 224, 7, 197, 202, 216, 170, 67, 163, 183, 161, 203, 60, 118, 158, 165, 104, 61, 68, 138, 102, 51, 218, 159, 241, 93, 181, 172, 56, 138, 200, 7, 97, 123, 177, 205, 125, 72, 87, 246, 38, 241" dataUsingEncoding:NSUTF8StringEncoding];
+  transaction_lattice_pk.dilithiumPk = [@"37, 206, 72, 196, 130, 145, 139, 167, 177, 234, 232, 135, 62, 251, 209, 142, 120, 64, 166, 181, 49, 43, 154, 158, 194, 30, 219, 112, 186, 210, 125, 190, 138, 9, 44, 203, 43, 46, 232, 176, 58, 141, 93, 86, 55, 5, 162, 71, 78, 127, 194, 62, 248, 32, 11, 207, 17, 200, 149, 211, 249, 156, 146, 101, 100, 182, 245, 178, 211, 211, 28, 86, 138, 247, 18, 243, 232, 147, 202, 165, 226, 88, 43, 45, 23, 233, 118, 246, 82, 201, 74, 199, 98, 14, 242, 42, 128, 104, 127, 75, 234, 36, 153, 58, 148, 20, 75, 35, 238, 62, 136, 80, 44, 114, 26, 201, 47, 70, 223, 133, 71, 166, 181, 96, 106, 79, 200, 207, 139, 103, 69, 103, 189, 234, 213, 228, 249, 103, 225, 224, 180, 190, 214, 199, 192, 195, 92, 143, 234, 252, 132, 119, 101, 207, 162, 140, 48, 220, 90, 118, 152, 210, 113, 84, 227, 176, 29, 26, 23, 60, 2, 190, 205, 206, 187, 163, 214, 184, 208, 219, 244, 205, 93, 100, 136, 255, 240, 203, 236, 227, 171, 141, 216, 171, 246, 108, 183, 135, 146, 93, 163, 123, 94, 184, 44, 40, 202, 182, 30, 124, 144, 111, 183, 128, 210, 125, 146, 118, 221, 95, 150, 84, 41, 165, 211, 205, 199, 217, 177, 155, 193, 131, 144, 9, 253, 191, 205, 92, 124, 204, 0, 46, 85, 114, 248, 13, 73, 94, 59, 105, 57, 208, 31, 27, 84, 136, 27, 201, 85, 51, 197, 107, 87, 37, 68, 175, 193, 222, 144, 17, 170, 137, 61, 58, 71, 90, 14, 209, 184, 20, 190, 96, 151, 141, 244, 119, 162, 94, 237, 49, 209, 183, 253, 181, 116, 139, 232, 206, 224, 186, 210, 5, 104, 146, 16, 222, 182, 206, 1, 176, 187, 161, 102, 89, 148, 63, 1, 47, 181, 239, 186, 181, 117, 112, 203, 253, 250, 174, 85, 15, 20, 152, 116, 232, 230, 42, 23, 66, 155, 237, 161, 75, 176, 206, 189, 55, 92, 232, 14, 75, 76, 145, 8, 231, 103, 10, 83, 150, 200, 162, 79, 203, 185, 4, 38, 206, 145, 205, 177, 12, 125, 113, 100, 41, 210, 110, 17, 36, 143, 207, 77, 110, 21, 2, 242, 168, 12, 172, 205, 26, 188, 72, 19, 145, 0, 19, 176, 185, 189, 55, 111, 135, 125, 188, 140, 190, 183, 255, 244, 113, 181, 165, 33, 186, 120, 188, 224, 12, 247, 182, 113, 70, 55, 234, 22, 198, 229, 62, 115, 218, 116, 94, 98, 7, 185, 149, 226, 145, 49, 10, 167, 232, 198, 59, 63, 231, 161, 182, 32, 186, 66, 124, 249, 232, 68, 254, 178, 200, 115, 160, 138, 18, 107, 173, 79, 218, 14, 123, 53, 25, 4, 53, 98, 229, 119, 48, 228, 159, 91, 69, 189, 114, 217, 201, 103, 88, 225, 80, 132, 45, 48, 230, 228, 121, 185, 208, 250, 17, 12, 228, 138, 219, 27, 240, 18, 154, 139, 41, 143, 132, 82, 249, 230, 66, 81, 91, 120, 231, 105, 162, 33, 177, 123, 35, 15, 192, 191, 46, 250, 8, 70, 149, 38, 186, 83, 225, 125, 119, 140, 2, 216, 51, 100, 38, 150, 249, 210, 214, 88, 221, 106, 129, 155, 187, 190, 154, 21, 155, 139, 58, 243, 249, 209, 168, 226, 21, 220, 188, 78, 154, 26, 244, 135, 86, 127, 133, 139, 208, 50, 22, 32, 37, 40, 76, 56, 109, 134, 67, 40, 208, 7, 140, 46, 36, 152, 40, 132, 230, 0, 193, 133, 9, 158, 94, 117, 120, 83, 90, 165, 220, 241, 237, 181, 0, 98, 96, 35, 23, 215, 208, 105, 182, 157, 85, 138, 198, 181, 74, 253, 58, 156, 208, 122, 1, 216, 143, 225, 201, 127, 5, 218, 56, 233, 80, 55, 40, 8, 109, 60, 165, 107, 175, 246, 166, 102, 211, 159, 75, 192, 138, 49, 202, 94, 8, 147, 99, 211, 32, 128, 60, 41, 226, 125, 225, 85, 218, 168, 180, 145, 106, 130, 39, 18, 71, 144, 71, 88, 103, 194, 171, 104, 185, 245, 7, 255, 238, 69, 7, 12, 104, 130, 111, 138, 14, 204, 125, 145, 243, 171, 79, 95, 221, 185, 28, 220, 66, 28, 179, 160, 28, 110, 102, 181, 239, 175, 133, 163, 104, 127, 104, 185, 189, 220, 37, 98, 99, 184, 133, 119, 5, 218, 164, 136, 143, 198, 157, 92, 158, 100, 116, 57, 182, 68, 252, 112, 20, 44, 40, 223, 110, 190, 143, 133, 195, 19, 86, 231, 146, 141, 170, 122, 239, 64, 111, 18, 179, 175, 45, 138, 118, 190, 116, 180, 44, 207, 99, 112, 62, 169, 16, 122, 86, 203, 12, 156, 25, 157, 211, 21, 8, 86, 23, 37, 198, 242, 7, 203, 5, 127, 243, 161, 250, 5, 185, 84, 217, 209, 34, 251, 65, 197, 167, 28, 111, 98, 159, 25, 211, 74, 7, 81, 206, 82, 168, 186, 209, 17, 164, 23, 3, 210, 185, 117, 14, 241, 238, 29, 23, 152, 80, 118, 200, 44, 65, 206, 243, 245, 63, 98, 96, 119, 254, 127, 169, 63, 160, 220, 213, 91, 75, 13, 225, 179, 152, 14, 85, 235, 160, 138, 171, 37, 95, 2, 237, 242, 57, 50, 83, 65, 242, 238, 4, 115, 52, 149, 81, 143, 219, 213, 135, 49, 148, 147, 132, 33, 217, 132, 45, 213, 222, 61, 42, 242, 228, 134, 216, 109, 1, 149, 93, 62, 117, 10, 239, 254, 81, 243, 128, 94, 20, 217, 130, 159, 26, 151, 226, 190, 137, 111, 89, 155, 186, 234, 67, 43, 144, 140, 173, 63, 180, 201, 70, 188, 65, 187, 93, 72, 161, 28, 225, 5, 34, 198, 4, 155, 127, 116, 54, 78, 140, 132, 123, 107, 87, 83, 158, 71, 17, 132, 57, 122, 102, 70, 162, 136, 97, 161, 176, 229, 29, 108, 194, 99, 245, 79, 90, 134, 90, 139, 118, 157, 250, 195, 196, 137, 195, 98, 114, 254, 58, 180, 118, 193, 202, 234, 44, 184, 186, 42, 83, 10, 18, 230, 188, 16, 156, 53, 84, 39, 248, 2, 77, 96, 8, 2, 192, 157, 252, 181, 145, 178, 97, 33, 234, 40, 131, 57, 99, 69, 151, 87, 248, 242, 171, 130, 16, 4, 128, 101, 90, 159, 15, 174, 250, 189, 39, 69, 186, 199, 220, 195, 31, 214, 137, 165, 178, 238, 177, 43, 49, 12, 165, 30, 172, 25, 16, 63, 141, 18, 228, 161, 221, 136, 99, 191, 16, 240, 38, 34, 117, 97, 234, 44, 57, 238, 85, 247, 127, 43, 71, 154, 7, 79, 101, 44, 198, 113, 241, 12, 226, 185, 186, 13, 116, 241, 30, 231, 146, 49, 147, 129, 54, 171, 213, 211, 216, 51, 172, 38, 126, 52, 78, 0, 230, 70, 155, 243, 149, 29, 178, 161, 245, 193, 168, 220, 212, 32, 97, 199, 233, 74, 195, 75, 203, 81, 77, 216, 50, 73, 163, 40, 192, 49, 11, 14, 229, 83, 210, 220, 25, 129, 92, 118, 90, 253, 132, 4, 169, 27, 35, 123, 77, 235, 204, 59, 249, 25, 207, 38, 49, 78, 36, 101, 16, 120, 58, 168, 203, 244, 247, 155, 48, 64, 241, 34, 145, 195, 212, 20, 158, 245, 38, 106, 120, 182, 41, 50, 91, 154, 134, 98, 10, 186, 33, 216, 9, 168, 28, 135, 86, 28, 255, 250, 22, 121, 124, 18, 130, 185, 155, 26, 35, 125, 101, 140, 24, 105, 149, 132, 191, 12, 26, 244, 102, 76, 24, 168, 183, 83, 23, 120, 32, 51, 182, 24, 18, 194, 1, 251, 50, 57, 61, 106, 75, 186, 110, 149, 227, 48, 38, 137, 60, 108, 221, 218, 105, 239, 223, 206, 125, 152, 126, 252, 125, 113, 108, 74, 81, 33, 206, 109, 125, 175, 153, 225, 128, 21, 138, 238, 238, 171, 75, 37, 12, 25, 234, 58, 6, 91, 153, 200, 43, 209, 131, 53, 87, 56, 103, 71, 29, 64, 126, 206, 137, 214, 239, 168, 91, 105, 237, 251, 104, 67, 68, 151, 8, 209, 49, 32, 12, 161, 108, 182, 78, 138, 25, 18, 182, 97, 39, 138, 154, 18, 41, 28, 42, 81, 161, 111, 180, 36, 23, 51, 198, 198, 143, 92, 100, 218, 229, 159, 182, 31, 14, 141, 227, 16, 146, 110, 198, 199, 80, 29, 128, 48, 2, 2, 202, 184, 248, 22, 214, 103, 233, 251, 117, 187, 60, 5, 24, 100, 62, 33, 201, 242, 146, 169, 148, 218, 85, 16, 141, 213, 162, 22, 140, 139, 227, 151, 156, 142, 16, 207, 135, 133, 43, 70, 214, 19, 94, 71, 47, 208, 26, 88, 51, 47, 252, 191, 100, 134, 149, 59, 202, 169, 56, 137, 227, 29, 146, 174, 250" dataUsingEncoding:NSUTF8StringEncoding];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Prepare data for ephemeral messaging
+//  Kyber alice; // sender
+//  Kyber bob; // receiver
+//  auto alicePublicKey = alice.getPK();
+//  auto aliceSecretKey = alice.getSK();
+//  auto sender_kyber = Kyber(alicePublicKey, aliceSecretKey);
+//  sender_kyber.kem_encode(bob.getPK());
+//  auto enc_aes256_symkey = sender_kyber.getCypherText();
+//  auto aes_symkey = sender_kyber.getMyKey();
+//  Dilithium aliced;
+//  Dilithium bobd;
+//  auto alicePublicKeyD = aliced.getPK();
+//  auto sender_dilithium = Dilithium(aliced.getPK(), aliced.getSK());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//  NSString *alicePublicKey_string = [NSString stringWithCString:(char const *)alicePublicKey[0] encoding:NSUTF8StringEncoding];
+//  NSData* datatt = [alicePublicKey_string dataUsingEncoding:NSUTF8StringEncoding];
+//  uint8_t value = (uint8_t)[apkdataD[0] unsignedCharValue];
+
+    ////////////////////
+    // 2 - Creating Transaction message
+    ////////////////////
+    Transaction *trans = [Transaction message];
+    NSString *myString = [response.transactionUnsigned.transactionHash base64EncodedStringWithOptions:0];
+//    NSString *myString=[[NSString alloc] initWithBytes:response.transactionUnsigned.transactionHash.bytes length:response.transactionUnsigned.transactionHash.length encoding:NSUTF8StringEncoding];
+    NSLog(@"%@", myString);
+//
+////    NSString *myString = @"Test string.";
+////    const char *utfString = [myString UTF8String];
+////    NSData *hashToSign = [NSData dataWithBytes:response.transactionUnsigned.transactionHash.bytes length:response.transactionUnsigned.transactionHash.length];
+////    unsigned char aBuffer[response.transactionUnsigned.transactionHash.length];
+////    [hashToSign getBytes:aBuffer length:response.transactionUnsigned.transactionHash.length];
+//
+//    auto txHash = response.transactionUnsigned.transactionHash;
+//
+////    // transactionHash is NSData
+//////    NSString *myString = (NSString*) response.transactionUnsigned.transactionHash;
+//    NSString *myString = [[NSString alloc] initWithData:txHash encoding:NSISOLatin1StringEncoding];
+
+    std::string message = std::string([myString UTF8String]);
+//    std::vector<unsigned char> hashToSign = str2bin(message);
+    std::vector<unsigned char> hashToSign(message.begin(), message.end());
+//
+    XmssFast test_xmss(SEED, 12);
+    auto signature = test_xmss.sign(hashToSign);
+    bool isVerified = test_xmss.verify(hashToSign, signature, test_xmss.getPK());
+
+    // converting signature to NSData
+//    NSMutableArray *signArray = [[NSMutableArray alloc] init];
+//    for (int i=0; i < signature.size(); i++) {
+//      NSLog(@"%i", signature[i] );
+//
+//      [signArray addObject:[NSString stringWithFormat: @"%d", signature[i]] ];
+//    }
+//    NSData *signData = [NSKeyedArchiver archivedDataWithRootObject:signArray];
+
+    trans.addrFrom = response.transactionUnsigned.addrFrom;
+    trans.publicKey = response.transactionUnsigned.publicKey;
+    trans.transactionHash = response.transactionUnsigned.transactionHash;
+    trans.fee = 0;
+    trans.nonce = 0;
+    trans.latticePk = response.transactionUnsigned.latticePk;
+
+
+
+    
