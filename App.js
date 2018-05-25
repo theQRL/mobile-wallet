@@ -14,6 +14,7 @@ import {
   ActionSheetIOS,
   TextInput,
   Button,
+  ActivityIndicator,
   Picker,
   TouchableOpacity
 } from 'react-native';
@@ -38,8 +39,10 @@ export default class App extends Component<{}> {
     state={
         address: '',
         passphrase : '',
-        treeHeight: "",
-        hashFunction: ''
+        treeHeight: "0",
+        signatureCounts : 0,
+        hashFunction: '',
+        processing: false
     }
 
 
@@ -56,27 +59,48 @@ export default class App extends Component<{}> {
     // IOS
     createWallet = () => {
 
+        this.setState({processing:true})
         const randomBytes = crypto.randomBytes(48)
-        console.log(randomBytes)
+        // console.log(randomBytes)
 
         // CreateWallet.createWallet("YEAHHHH")
-        CreateWallet.createWallet(randomBytes, this.state.hashFunction,(error, pk)=> {
+        CreateWallet.createWallet(this.state.treeHeight, this.state.hashFunction,(error, pk)=> {
+            this.setState({processing:false, address:pk})
             console.log("REACTNATIVE :wallet address is :",pk)
-            this.setState({address:pk})
         })
     }
 
 
 
 
-    showActionSheet(){
+    showActionSheet = () => {
 
         ActionSheetIOS.showActionSheetWithOptions({
             options: ['Cancel','Height:8, Signatures:256', 'Height:10, Signatures:1.024','Height:12, Signatures:4,096','Height:14, Signatures:16,384','Height:16, Signatures:65,536','Height:18, Signatures:262,144'],
             cancelButtonIndex: 0,
         },
         (buttonIndex) => {
-            if (buttonIndex === 1) { /* destructive action */ }
+            // if (buttonIndex === 1) { /* destructive action */ }
+            if (buttonIndex === 1) { this.setState({treeHeight: "8", signatureCounts: 256}) }
+            if (buttonIndex === 2) { this.setState({treeHeight: "10", signatureCounts: 1024}) }
+            if (buttonIndex === 3) { this.setState({treeHeight: "12", signatureCounts: 4096}) }
+            if (buttonIndex === 4) { this.setState({treeHeight: "14", signatureCounts: 16384}) }
+            if (buttonIndex === 5) { this.setState({treeHeight: "16", signatureCounts: 262144}) }
+        });
+    }
+
+
+    showHashSheet = () => {
+
+        ActionSheetIOS.showActionSheetWithOptions({
+            options: ['Cancel','Hash Function: SHAKE_128','Hash Function: SHAKE_256','Hash Function: SHA2_256'],
+            cancelButtonIndex: 0,
+        },
+        (buttonIndex) => {
+            // if (buttonIndex === 1) { /* destructive action */ }
+            if (buttonIndex === 1) { this.setState({hashFunction: "SHAKE_128"}) }
+            if (buttonIndex === 2) { this.setState({hashFunction: "SHAKE_256"}) }
+            if (buttonIndex === 3) { this.setState({hashFunction: "SHA2_256"}) }
         });
     }
 
@@ -87,27 +111,39 @@ export default class App extends Component<{}> {
           <View style={styles.container}>
 
            <Image source={require('./resources/images/qrl.logo.circle.500x500.png')} resizeMode={Image.resizeMode.contain} style={{height:250, width:250}} />
-            <Text style={styles.welcome}>
+            <Text style={styles.welcomeBig}>
               Welcome to the QRL
             </Text>
 
 
-            <Text style={styles.welcome} onPress={this.showActionSheet}>
-                Three height
+            <Text style={styles.welcome}>
+                Three height : {this.state.treeHeight ===  "0" ? <Text style={styles.welcomeRed} onPress={this.showActionSheet}> Please choose</Text> : <Text style={styles.welcome} onPress={this.showActionSheet}> {this.state.treeHeight}</Text> }
+            </Text>
+            <Text style={styles.welcome}>
+                Signatures : {this.state.signatureCounts === 0 ? <Text>Undefined</Text> : <Text>{this.state.signatureCounts}</Text> }
             </Text>
 
+
+
+            <Text style={styles.welcome}>
+                Hash function : {this.state.hashFunction ===  "" ? <Text style={styles.welcomeRed} onPress={this.showHashSheet}> Please choose</Text> : <Text style={styles.welcome} onPress={this.showHashSheet}> {this.state.hashFunction}</Text> }
+            </Text>
+
+            {/*
             <TextInput style={{height: 40, width:200}} placeholder="Passphrase" onChangeText={(text) => this.setState({passphrase:text})}/>
 
-        <View style={{ flex:1}} >
-            <Picker selectedValue={this.state.treeHeight} style={{ height: 30, width: 300 }} onValueChange={(itemValue, itemIndex) => this.setState({treeHeight: itemValue})}>
-                <Picker.Item label="Tree Height:8, Signatures:256" value="8" />
-                <Picker.Item label="Tree Height:10, Signatures:1,024" value="10" />
-                <Picker.Item label="Tree Height:12, Signatures:4,096" value="12" />
-                <Picker.Item label="Tree Height:14, Signatures:16,384" value="14" />
-                <Picker.Item label="Tree Height:16, Signatures:65,536" value="16" />
-                <Picker.Item label="Tree Height:18, Signatures:262,144" value="18" />
-            </Picker>
-        </View>
+
+            <View style={{ flex:1}} >
+                <Picker selectedValue={this.state.treeHeight} style={{ height: 30, width: 300 }} onValueChange={(itemValue, itemIndex) => this.setState({treeHeight: itemValue})}>
+                    <Picker.Item label="Tree Height:8, Signatures:256" value="8" />
+                    <Picker.Item label="Tree Height:10, Signatures:1,024" value="10" />
+                    <Picker.Item label="Tree Height:12, Signatures:4,096" value="12" />
+                    <Picker.Item label="Tree Height:14, Signatures:16,384" value="14" />
+                    <Picker.Item label="Tree Height:16, Signatures:65,536" value="16" />
+                    <Picker.Item label="Tree Height:18, Signatures:262,144" value="18" />
+                </Picker>
+            </View>
+
 
             <View style={{ flex:1}} >
             <Picker selectedValue={this.state.hashFunction} style={{ height: 30, width: 300 }} onValueChange={(itemValue, itemIndex) => this.setState({hashFunction: itemValue})}>
@@ -115,19 +151,21 @@ export default class App extends Component<{}> {
                 <Picker.Item label="Hash Function: SHAKE_256" value="shake256" />
                 <Picker.Item label="Hash Function: SHA2_256" value="sha2_256" />
             </Picker>
-        </View>
-
-
 
         <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ this.helloWorld }>
             <Text style={styles.TextStyle}> Create wallet Android </Text>
         </TouchableOpacity>
+        */}
+
+
+        {this.state.processing ? <View><ActivityIndicator size={'large'}></ActivityIndicator></View>:<View>
 
             <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ this.createWallet }>
                 <Text style={styles.TextStyle}> Create wallet </Text>
             </TouchableOpacity>
+        </View>}
 
-            <Text>{this.state.address}</Text>
+            {this.state.address === "" ? <Text></Text> : <Text style={styles.welcome}> QRL wallet address: Q{this.state.address}</Text>}
           </View>
         );
     }
@@ -140,9 +178,20 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   welcome: {
-    fontSize: 20,
+    fontSize: 15,
     textAlign: 'center',
     margin: 10,
+  },
+  welcomeBig: {
+    fontSize: 30,
+    textAlign: 'center',
+    margin: 10,
+  },
+  welcomeRed: {
+    fontSize: 15,
+    textAlign: 'center',
+    margin: 10,
+    color: "red"
   },
   instructions: {
     textAlign: 'center',
