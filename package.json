@@ -30,6 +30,8 @@
     "react-native-randombytes": "^3.2.0",
     "react-native-tcp": "^3.3.0",
     "react-native-udp": "^2.3.1",
+    "react-native-ui-kitten": "^3.0.1",
+    "react-navigation": "^2.0.4",
     "readable-stream": "^1.0.33",
     "stream-browserify": "^1.0.0",
     "string_decoder": "^0.10.31",
