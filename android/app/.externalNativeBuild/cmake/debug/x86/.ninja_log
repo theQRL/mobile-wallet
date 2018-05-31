@@ -63,3 +63,5 @@
 1957	2218	0	/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/debug/obj/x86/libqrllib.so	d5229881f825a6ec
 0	365	0	CMakeFiles/hello_world_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/hello_world.cpp.o	eab4a98a2ab0f370
 365	436	0	/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/debug/obj/x86/libhello_world_jni.so	a9f41c32ef0c1e36
+0	733	0	CMakeFiles/hello_world_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/hello_world.cpp.o	eab4a98a2ab0f370
+733	870	0	/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/debug/obj/x86/libhello_world_jni.so	a9f41c32ef0c1e36

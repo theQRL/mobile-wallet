@@ -183,6 +183,12 @@ export default class CreateWallet extends React.Component {
               <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ this._signInAsync }>
                   <Text style={styles.TextStyle}> Create wallet </Text>
               </TouchableOpacity>
+
+              <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ this.helloWorld }>
+                  <Text style={styles.TextStyle}> Create wallet Android</Text>
+              </TouchableOpacity>
+
+
           </View>}
 
               {this.state.address === "" ? <Text></Text> : <Text style={styles.welcome}> QRL wallet address: Q{this.state.address}</Text>}

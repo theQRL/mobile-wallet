@@ -36,6 +36,9 @@ public class HelloWorldModule extends ReactContextBaseJavaModule {
 //        //promise.resolve("Hello World!");
 //    }
 
+    // Declaration of native method
+    public native String helloWorldJNI();
+
     @ReactMethod
     public void helloWorld(Promise promise) {
         try {
@@ -47,7 +50,7 @@ public class HelloWorldModule extends ReactContextBaseJavaModule {
             promise.reject("ERR", e);
         }
     }
-    public native String helloWorldJNI();
+
 
 //    public void helloWorld(Promise promise) { //this method will be called from JS by React Native
 //        promise.resolve("Hello World!");

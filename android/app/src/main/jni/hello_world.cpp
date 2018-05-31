@@ -1,5 +1,5 @@
 
-#include <jni.h>
+#include "com_theqrl_HelloWorldModule.h"
 #include "helloworld.h"
 
 JNIEXPORT jstring JNICALL Java_com_theqrl_HelloWorldModule_helloWorldJNI(JNIEnv* pEnv, jobject pThis)
