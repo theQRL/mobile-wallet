@@ -27,7 +27,7 @@ import {NativeModules} from 'react-native';
 // ios
 var CreateWalletQRLlib = NativeModules.CreateWallet;
 // android
-var HelloWorld = NativeModules.HelloWorld;
+var AndroidWallet = NativeModules.AndroidWallet;
 
 
 export default class CreateWallet extends React.Component {
@@ -62,10 +62,10 @@ export default class CreateWallet extends React.Component {
 
 
   // ANDROID
-  async helloWorld() {
+  async androidWallet() {
       try {
-          let helloWorldStr = await HelloWorld.helloWorld();
-          console.log(helloWorldStr);
+          let androidWalletStr = await AndroidWallet.createWallet();
+          console.log(androidWalletStr);
       } catch (e) {
           console.error(e);
       }
@@ -184,7 +184,7 @@ export default class CreateWallet extends React.Component {
                   <Text style={styles.TextStyle}> Create wallet </Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ this.helloWorld }>
+              <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ this.androidWallet }>
                   <Text style={styles.TextStyle}> Create wallet Android</Text>
               </TouchableOpacity>
 

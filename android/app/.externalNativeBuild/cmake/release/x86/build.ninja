@@ -31,6 +31,15 @@ include rules.ninja
 
 
 #############################################
+# Utility command for edit_cache
+
+build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/.externalNativeBuild/cmake/release/x86 && /Users/abilican/Library/Android/sdk/cmake/3.6.4111459/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+build edit_cache: phony CMakeFiles/edit_cache.util
+
+#############################################
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
@@ -39,463 +48,49 @@ build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
   pool = console
   restat = 1
 build rebuild_cache: phony CMakeFiles/rebuild_cache.util
-
-#############################################
-# Utility command for edit_cache
-
-build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/.externalNativeBuild/cmake/release/x86 && /Users/abilican/Library/Android/sdk/cmake/3.6.4111459/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-  DESC = No interactive CMake dialog available...
-  restat = 1
-build edit_cache: phony CMakeFiles/edit_cache.util
 # =============================================================================
-# Object build statements for SHARED_LIBRARY target kyber
+# Object build statements for SHARED_LIBRARY target android_wallet_jni
 
-build CMakeFiles/kyber.dir/src/kyber/kyber.cpp.o: CXX_COMPILER__kyber /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/kyber/kyber.cpp
-  DEFINES = -Dkyber_EXPORTS
-  DEP_FILE = CMakeFiles/kyber.dir/src/kyber/kyber.cpp.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/kyber -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/kyber/kyber.cpp
-  OBJECT_DIR = CMakeFiles/kyber.dir
-  OBJECT_FILE_DIR = CMakeFiles/kyber.dir/src/kyber
-build CMakeFiles/kyber.dir/deps/kyber/ref/randombytes.c.o: CXX_COMPILER__kyber /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/randombytes.c
-  DEFINES = -Dkyber_EXPORTS
-  DEP_FILE = CMakeFiles/kyber.dir/deps/kyber/ref/randombytes.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/kyber -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/randombytes.c
-  OBJECT_DIR = CMakeFiles/kyber.dir
-  OBJECT_FILE_DIR = CMakeFiles/kyber.dir/deps/kyber/ref
-build CMakeFiles/kyber.dir/deps/kyber/ref/kem.c.o: CXX_COMPILER__kyber /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/kem.c
-  DEFINES = -Dkyber_EXPORTS
-  DEP_FILE = CMakeFiles/kyber.dir/deps/kyber/ref/kem.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/kyber -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/kem.c
-  OBJECT_DIR = CMakeFiles/kyber.dir
-  OBJECT_FILE_DIR = CMakeFiles/kyber.dir/deps/kyber/ref
-build CMakeFiles/kyber.dir/deps/kyber/ref/poly.c.o: CXX_COMPILER__kyber /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/poly.c
-  DEFINES = -Dkyber_EXPORTS
-  DEP_FILE = CMakeFiles/kyber.dir/deps/kyber/ref/poly.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/kyber -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/poly.c
-  OBJECT_DIR = CMakeFiles/kyber.dir
-  OBJECT_FILE_DIR = CMakeFiles/kyber.dir/deps/kyber/ref
-build CMakeFiles/kyber.dir/deps/kyber/ref/polyvec.c.o: CXX_COMPILER__kyber /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/polyvec.c
-  DEFINES = -Dkyber_EXPORTS
-  DEP_FILE = CMakeFiles/kyber.dir/deps/kyber/ref/polyvec.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/kyber -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/polyvec.c
-  OBJECT_DIR = CMakeFiles/kyber.dir
-  OBJECT_FILE_DIR = CMakeFiles/kyber.dir/deps/kyber/ref
-build CMakeFiles/kyber.dir/deps/kyber/ref/reduce.c.o: CXX_COMPILER__kyber /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/reduce.c
-  DEFINES = -Dkyber_EXPORTS
-  DEP_FILE = CMakeFiles/kyber.dir/deps/kyber/ref/reduce.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/kyber -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/reduce.c
-  OBJECT_DIR = CMakeFiles/kyber.dir
-  OBJECT_FILE_DIR = CMakeFiles/kyber.dir/deps/kyber/ref
-build CMakeFiles/kyber.dir/deps/kyber/ref/cbd.c.o: CXX_COMPILER__kyber /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/cbd.c
-  DEFINES = -Dkyber_EXPORTS
-  DEP_FILE = CMakeFiles/kyber.dir/deps/kyber/ref/cbd.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/kyber -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/cbd.c
-  OBJECT_DIR = CMakeFiles/kyber.dir
-  OBJECT_FILE_DIR = CMakeFiles/kyber.dir/deps/kyber/ref
-build CMakeFiles/kyber.dir/deps/kyber/ref/precomp.c.o: CXX_COMPILER__kyber /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/precomp.c
-  DEFINES = -Dkyber_EXPORTS
-  DEP_FILE = CMakeFiles/kyber.dir/deps/kyber/ref/precomp.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/kyber -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/precomp.c
-  OBJECT_DIR = CMakeFiles/kyber.dir
-  OBJECT_FILE_DIR = CMakeFiles/kyber.dir/deps/kyber/ref
-build CMakeFiles/kyber.dir/deps/kyber/ref/ntt.c.o: CXX_COMPILER__kyber /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/ntt.c
-  DEFINES = -Dkyber_EXPORTS
-  DEP_FILE = CMakeFiles/kyber.dir/deps/kyber/ref/ntt.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/kyber -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/ntt.c
-  OBJECT_DIR = CMakeFiles/kyber.dir
-  OBJECT_FILE_DIR = CMakeFiles/kyber.dir/deps/kyber/ref
-build CMakeFiles/kyber.dir/deps/kyber/ref/verify.c.o: CXX_COMPILER__kyber /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/verify.c
-  DEFINES = -Dkyber_EXPORTS
-  DEP_FILE = CMakeFiles/kyber.dir/deps/kyber/ref/verify.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/kyber -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/verify.c
-  OBJECT_DIR = CMakeFiles/kyber.dir
-  OBJECT_FILE_DIR = CMakeFiles/kyber.dir/deps/kyber/ref
-build CMakeFiles/kyber.dir/deps/kyber/ref/indcpa.c.o: CXX_COMPILER__kyber /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/indcpa.c
-  DEFINES = -Dkyber_EXPORTS
-  DEP_FILE = CMakeFiles/kyber.dir/deps/kyber/ref/indcpa.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/kyber -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/indcpa.c
-  OBJECT_DIR = CMakeFiles/kyber.dir
-  OBJECT_FILE_DIR = CMakeFiles/kyber.dir/deps/kyber/ref
-build CMakeFiles/kyber.dir/deps/kyber/ref/kex.c.o: CXX_COMPILER__kyber /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/kex.c
-  DEFINES = -Dkyber_EXPORTS
-  DEP_FILE = CMakeFiles/kyber.dir/deps/kyber/ref/kex.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/kyber -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/kex.c
-  OBJECT_DIR = CMakeFiles/kyber.dir
-  OBJECT_FILE_DIR = CMakeFiles/kyber.dir/deps/kyber/ref
-build CMakeFiles/kyber.dir/deps/kyber/ref/fips202.c.o: CXX_COMPILER__kyber /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/fips202.c
-  DEFINES = -Dkyber_EXPORTS
-  DEP_FILE = CMakeFiles/kyber.dir/deps/kyber/ref/fips202.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/kyber -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/kyber/ref/fips202.c
-  OBJECT_DIR = CMakeFiles/kyber.dir
-  OBJECT_FILE_DIR = CMakeFiles/kyber.dir/deps/kyber/ref
-
-# =============================================================================
-# Link build statements for SHARED_LIBRARY target kyber
-
-
-#############################################
-# Link the shared library /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libkyber.so
-
-build /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libkyber.so: CXX_SHARED_LIBRARY_LINKER__kyber CMakeFiles/kyber.dir/src/kyber/kyber.cpp.o CMakeFiles/kyber.dir/deps/kyber/ref/randombytes.c.o CMakeFiles/kyber.dir/deps/kyber/ref/kem.c.o CMakeFiles/kyber.dir/deps/kyber/ref/poly.c.o CMakeFiles/kyber.dir/deps/kyber/ref/polyvec.c.o CMakeFiles/kyber.dir/deps/kyber/ref/reduce.c.o CMakeFiles/kyber.dir/deps/kyber/ref/cbd.c.o CMakeFiles/kyber.dir/deps/kyber/ref/precomp.c.o CMakeFiles/kyber.dir/deps/kyber/ref/ntt.c.o CMakeFiles/kyber.dir/deps/kyber/ref/verify.c.o CMakeFiles/kyber.dir/deps/kyber/ref/indcpa.c.o CMakeFiles/kyber.dir/deps/kyber/ref/kex.c.o CMakeFiles/kyber.dir/deps/kyber/ref/fips202.c.o
-  LANGUAGE_COMPILE_FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated
-  LINK_FLAGS = -Wl,--exclude-libs,libgcc.a -Wl,--exclude-libs,libatomic.a --sysroot /Users/abilican/Library/Android/sdk/ndk-bundle/platforms/android-16/arch-x86 -Wl,--build-id -Wl,--warn-shared-textrel -Wl,--fatal-warnings -L/Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86 -Wl,--no-undefined -Wl,-z,noexecstack -Qunused-arguments -Wl,-z,relro -Wl,-z,now
-  LINK_LIBRARIES = -latomic -lm "/Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86/libc++.a"
-  OBJECT_DIR = CMakeFiles/kyber.dir
-  POST_BUILD = :
-  PRE_LINK = :
-  SONAME = libkyber.so
-  SONAME_FLAG = -Wl,-soname,
-  TARGET_FILE = /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libkyber.so
-  TARGET_PDB = kyber.so.dbg
-# =============================================================================
-# Object build statements for SHARED_LIBRARY target qrllib
-
-
-#############################################
-# Order-only phony target for qrllib
-
-build cmake_order_depends_target_qrllib: phony || /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libshasha.so
-build CMakeFiles/qrllib.dir/src/qrl/hashing.cpp.o: CXX_COMPILER__qrllib /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl/hashing.cpp || cmake_order_depends_target_qrllib
-  DEFINES = -Dqrllib_EXPORTS
-  DEP_FILE = CMakeFiles/qrllib.dir/src/qrl/hashing.cpp.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/shasha -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl/hashing.cpp
-  OBJECT_DIR = CMakeFiles/qrllib.dir
-  OBJECT_FILE_DIR = CMakeFiles/qrllib.dir/src/qrl
-build CMakeFiles/qrllib.dir/src/qrl/misc.cpp.o: CXX_COMPILER__qrllib /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl/misc.cpp || cmake_order_depends_target_qrllib
-  DEFINES = -Dqrllib_EXPORTS
-  DEP_FILE = CMakeFiles/qrllib.dir/src/qrl/misc.cpp.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/shasha -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl/misc.cpp
-  OBJECT_DIR = CMakeFiles/qrllib.dir
-  OBJECT_FILE_DIR = CMakeFiles/qrllib.dir/src/qrl
-build CMakeFiles/qrllib.dir/src/qrl/wordlist.cpp.o: CXX_COMPILER__qrllib /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl/wordlist.cpp || cmake_order_depends_target_qrllib
-  DEFINES = -Dqrllib_EXPORTS
-  DEP_FILE = CMakeFiles/qrllib.dir/src/qrl/wordlist.cpp.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/shasha -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl/wordlist.cpp
-  OBJECT_DIR = CMakeFiles/qrllib.dir
-  OBJECT_FILE_DIR = CMakeFiles/qrllib.dir/src/qrl
-build CMakeFiles/qrllib.dir/src/qrl/xmssBase.cpp.o: CXX_COMPILER__qrllib /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl/xmssBase.cpp || cmake_order_depends_target_qrllib
-  DEFINES = -Dqrllib_EXPORTS
-  DEP_FILE = CMakeFiles/qrllib.dir/src/qrl/xmssBase.cpp.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/shasha -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl/xmssBase.cpp
-  OBJECT_DIR = CMakeFiles/qrllib.dir
-  OBJECT_FILE_DIR = CMakeFiles/qrllib.dir/src/qrl
-build CMakeFiles/qrllib.dir/src/qrl/xmssBasic.cpp.o: CXX_COMPILER__qrllib /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl/xmssBasic.cpp || cmake_order_depends_target_qrllib
-  DEFINES = -Dqrllib_EXPORTS
-  DEP_FILE = CMakeFiles/qrllib.dir/src/qrl/xmssBasic.cpp.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/shasha -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl/xmssBasic.cpp
-  OBJECT_DIR = CMakeFiles/qrllib.dir
-  OBJECT_FILE_DIR = CMakeFiles/qrllib.dir/src/qrl
-build CMakeFiles/qrllib.dir/src/qrl/xmssFast.cpp.o: CXX_COMPILER__qrllib /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl/xmssFast.cpp || cmake_order_depends_target_qrllib
-  DEFINES = -Dqrllib_EXPORTS
-  DEP_FILE = CMakeFiles/qrllib.dir/src/qrl/xmssFast.cpp.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/shasha -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl/xmssFast.cpp
-  OBJECT_DIR = CMakeFiles/qrllib.dir
-  OBJECT_FILE_DIR = CMakeFiles/qrllib.dir/src/qrl
-build CMakeFiles/qrllib.dir/src/qrl/xmssPool.cpp.o: CXX_COMPILER__qrllib /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl/xmssPool.cpp || cmake_order_depends_target_qrllib
-  DEFINES = -Dqrllib_EXPORTS
-  DEP_FILE = CMakeFiles/qrllib.dir/src/qrl/xmssPool.cpp.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/shasha -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl/xmssPool.cpp
-  OBJECT_DIR = CMakeFiles/qrllib.dir
-  OBJECT_FILE_DIR = CMakeFiles/qrllib.dir/src/qrl
-build CMakeFiles/qrllib.dir/src/xmss-alt/algsxmss_fast.c.o: CXX_COMPILER__qrllib /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt/algsxmss_fast.c || cmake_order_depends_target_qrllib
-  DEFINES = -Dqrllib_EXPORTS
-  DEP_FILE = CMakeFiles/qrllib.dir/src/xmss-alt/algsxmss_fast.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/shasha -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt/algsxmss_fast.c
-  OBJECT_DIR = CMakeFiles/qrllib.dir
-  OBJECT_FILE_DIR = CMakeFiles/qrllib.dir/src/xmss-alt
-build CMakeFiles/qrllib.dir/src/xmss-alt/algsxmss.c.o: CXX_COMPILER__qrllib /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt/algsxmss.c || cmake_order_depends_target_qrllib
-  DEFINES = -Dqrllib_EXPORTS
-  DEP_FILE = CMakeFiles/qrllib.dir/src/xmss-alt/algsxmss.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/shasha -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt/algsxmss.c
-  OBJECT_DIR = CMakeFiles/qrllib.dir
-  OBJECT_FILE_DIR = CMakeFiles/qrllib.dir/src/xmss-alt
-build CMakeFiles/qrllib.dir/src/xmss-alt/hash.c.o: CXX_COMPILER__qrllib /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt/hash.c || cmake_order_depends_target_qrllib
-  DEFINES = -Dqrllib_EXPORTS
-  DEP_FILE = CMakeFiles/qrllib.dir/src/xmss-alt/hash.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/shasha -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt/hash.c
-  OBJECT_DIR = CMakeFiles/qrllib.dir
-  OBJECT_FILE_DIR = CMakeFiles/qrllib.dir/src/xmss-alt
-build CMakeFiles/qrllib.dir/src/xmss-alt/hash_address.c.o: CXX_COMPILER__qrllib /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt/hash_address.c || cmake_order_depends_target_qrllib
-  DEFINES = -Dqrllib_EXPORTS
-  DEP_FILE = CMakeFiles/qrllib.dir/src/xmss-alt/hash_address.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/shasha -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt/hash_address.c
-  OBJECT_DIR = CMakeFiles/qrllib.dir
-  OBJECT_FILE_DIR = CMakeFiles/qrllib.dir/src/xmss-alt
-build CMakeFiles/qrllib.dir/src/xmss-alt/xmss_common.c.o: CXX_COMPILER__qrllib /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt/xmss_common.c || cmake_order_depends_target_qrllib
-  DEFINES = -Dqrllib_EXPORTS
-  DEP_FILE = CMakeFiles/qrllib.dir/src/xmss-alt/xmss_common.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/shasha -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt/xmss_common.c
-  OBJECT_DIR = CMakeFiles/qrllib.dir
-  OBJECT_FILE_DIR = CMakeFiles/qrllib.dir/src/xmss-alt
-build CMakeFiles/qrllib.dir/src/xmss-alt/wots.c.o: CXX_COMPILER__qrllib /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt/wots.c || cmake_order_depends_target_qrllib
-  DEFINES = -Dqrllib_EXPORTS
-  DEP_FILE = CMakeFiles/qrllib.dir/src/xmss-alt/wots.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/shasha -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt/wots.c
-  OBJECT_DIR = CMakeFiles/qrllib.dir
-  OBJECT_FILE_DIR = CMakeFiles/qrllib.dir/src/xmss-alt
-build CMakeFiles/qrllib.dir/src/xmss-alt/fips202.c.o: CXX_COMPILER__qrllib /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt/fips202.c || cmake_order_depends_target_qrllib
-  DEFINES = -Dqrllib_EXPORTS
-  DEP_FILE = CMakeFiles/qrllib.dir/src/xmss-alt/fips202.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/qrl -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/shasha -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/xmss-alt/fips202.c
-  OBJECT_DIR = CMakeFiles/qrllib.dir
-  OBJECT_FILE_DIR = CMakeFiles/qrllib.dir/src/xmss-alt
-
-# =============================================================================
-# Link build statements for SHARED_LIBRARY target qrllib
-
-
-#############################################
-# Link the shared library /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libqrllib.so
-
-build /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libqrllib.so: CXX_SHARED_LIBRARY_LINKER__qrllib CMakeFiles/qrllib.dir/src/qrl/hashing.cpp.o CMakeFiles/qrllib.dir/src/qrl/misc.cpp.o CMakeFiles/qrllib.dir/src/qrl/wordlist.cpp.o CMakeFiles/qrllib.dir/src/qrl/xmssBase.cpp.o CMakeFiles/qrllib.dir/src/qrl/xmssBasic.cpp.o CMakeFiles/qrllib.dir/src/qrl/xmssFast.cpp.o CMakeFiles/qrllib.dir/src/qrl/xmssPool.cpp.o CMakeFiles/qrllib.dir/src/xmss-alt/algsxmss_fast.c.o CMakeFiles/qrllib.dir/src/xmss-alt/algsxmss.c.o CMakeFiles/qrllib.dir/src/xmss-alt/hash.c.o CMakeFiles/qrllib.dir/src/xmss-alt/hash_address.c.o CMakeFiles/qrllib.dir/src/xmss-alt/xmss_common.c.o CMakeFiles/qrllib.dir/src/xmss-alt/wots.c.o CMakeFiles/qrllib.dir/src/xmss-alt/fips202.c.o | /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libshasha.so || /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libshasha.so
-  LANGUAGE_COMPILE_FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated
-  LINK_FLAGS = -Wl,--exclude-libs,libgcc.a -Wl,--exclude-libs,libatomic.a --sysroot /Users/abilican/Library/Android/sdk/ndk-bundle/platforms/android-16/arch-x86 -Wl,--build-id -Wl,--warn-shared-textrel -Wl,--fatal-warnings -L/Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86 -Wl,--no-undefined -Wl,-z,noexecstack -Qunused-arguments -Wl,-z,relro -Wl,-z,now
-  LINK_LIBRARIES = /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libshasha.so -latomic -lm "/Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86/libc++.a"
-  OBJECT_DIR = CMakeFiles/qrllib.dir
-  POST_BUILD = :
-  PRE_LINK = :
-  SONAME = libqrllib.so
-  SONAME_FLAG = -Wl,-soname,
-  TARGET_FILE = /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libqrllib.so
-  TARGET_PDB = qrllib.so.dbg
-# =============================================================================
-# Object build statements for SHARED_LIBRARY target shasha
-
-build CMakeFiles/shasha.dir/src/shasha/shasha.cpp.o: CXX_COMPILER__shasha /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/shasha/shasha.cpp
-  DEFINES = -Dshasha_EXPORTS
-  DEP_FILE = CMakeFiles/shasha.dir/src/shasha/shasha.cpp.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/shasha -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/shasha/shasha.cpp
-  OBJECT_DIR = CMakeFiles/shasha.dir
-  OBJECT_FILE_DIR = CMakeFiles/shasha.dir/src/shasha
-
-# =============================================================================
-# Link build statements for SHARED_LIBRARY target shasha
-
-
-#############################################
-# Link the shared library /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libshasha.so
-
-build /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libshasha.so: CXX_SHARED_LIBRARY_LINKER__shasha CMakeFiles/shasha.dir/src/shasha/shasha.cpp.o
-  LANGUAGE_COMPILE_FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated
-  LINK_FLAGS = -Wl,--exclude-libs,libgcc.a -Wl,--exclude-libs,libatomic.a --sysroot /Users/abilican/Library/Android/sdk/ndk-bundle/platforms/android-16/arch-x86 -Wl,--build-id -Wl,--warn-shared-textrel -Wl,--fatal-warnings -L/Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86 -Wl,--no-undefined -Wl,-z,noexecstack -Qunused-arguments -Wl,-z,relro -Wl,-z,now
-  LINK_LIBRARIES = -latomic -lm "/Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86/libc++.a"
-  OBJECT_DIR = CMakeFiles/shasha.dir
-  POST_BUILD = :
-  PRE_LINK = :
-  SONAME = libshasha.so
-  SONAME_FLAG = -Wl,-soname,
-  TARGET_FILE = /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libshasha.so
-  TARGET_PDB = shasha.so.dbg
-# =============================================================================
-# Object build statements for SHARED_LIBRARY target dilithium
-
-build CMakeFiles/dilithium.dir/src/dilithium/dilithium.cpp.o: CXX_COMPILER__dilithium /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/dilithium/dilithium.cpp
-  DEFINES = -Ddilithium_EXPORTS
-  DEP_FILE = CMakeFiles/dilithium.dir/src/dilithium/dilithium.cpp.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/dilithium -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/src/dilithium/dilithium.cpp
-  OBJECT_DIR = CMakeFiles/dilithium.dir
-  OBJECT_FILE_DIR = CMakeFiles/dilithium.dir/src/dilithium
-build CMakeFiles/dilithium.dir/deps/dilithium/ref/randombytes.c.o: CXX_COMPILER__dilithium /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium/ref/randombytes.c
-  DEFINES = -Ddilithium_EXPORTS
-  DEP_FILE = CMakeFiles/dilithium.dir/deps/dilithium/ref/randombytes.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/dilithium -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium/ref/randombytes.c
-  OBJECT_DIR = CMakeFiles/dilithium.dir
-  OBJECT_FILE_DIR = CMakeFiles/dilithium.dir/deps/dilithium/ref
-build CMakeFiles/dilithium.dir/deps/dilithium/ref/sign.c.o: CXX_COMPILER__dilithium /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium/ref/sign.c
-  DEFINES = -Ddilithium_EXPORTS
-  DEP_FILE = CMakeFiles/dilithium.dir/deps/dilithium/ref/sign.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/dilithium -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium/ref/sign.c
-  OBJECT_DIR = CMakeFiles/dilithium.dir
-  OBJECT_FILE_DIR = CMakeFiles/dilithium.dir/deps/dilithium/ref
-build CMakeFiles/dilithium.dir/deps/dilithium/ref/polyvec.c.o: CXX_COMPILER__dilithium /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium/ref/polyvec.c
-  DEFINES = -Ddilithium_EXPORTS
-  DEP_FILE = CMakeFiles/dilithium.dir/deps/dilithium/ref/polyvec.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/dilithium -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium/ref/polyvec.c
-  OBJECT_DIR = CMakeFiles/dilithium.dir
-  OBJECT_FILE_DIR = CMakeFiles/dilithium.dir/deps/dilithium/ref
-build CMakeFiles/dilithium.dir/deps/dilithium/ref/packing.c.o: CXX_COMPILER__dilithium /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium/ref/packing.c
-  DEFINES = -Ddilithium_EXPORTS
-  DEP_FILE = CMakeFiles/dilithium.dir/deps/dilithium/ref/packing.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/dilithium -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium/ref/packing.c
-  OBJECT_DIR = CMakeFiles/dilithium.dir
-  OBJECT_FILE_DIR = CMakeFiles/dilithium.dir/deps/dilithium/ref
-build CMakeFiles/dilithium.dir/deps/dilithium/ref/poly.c.o: CXX_COMPILER__dilithium /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium/ref/poly.c
-  DEFINES = -Ddilithium_EXPORTS
-  DEP_FILE = CMakeFiles/dilithium.dir/deps/dilithium/ref/poly.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/dilithium -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium/ref/poly.c
-  OBJECT_DIR = CMakeFiles/dilithium.dir
-  OBJECT_FILE_DIR = CMakeFiles/dilithium.dir/deps/dilithium/ref
-build CMakeFiles/dilithium.dir/deps/dilithium/ref/reduce.c.o: CXX_COMPILER__dilithium /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium/ref/reduce.c
-  DEFINES = -Ddilithium_EXPORTS
-  DEP_FILE = CMakeFiles/dilithium.dir/deps/dilithium/ref/reduce.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/dilithium -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium/ref/reduce.c
-  OBJECT_DIR = CMakeFiles/dilithium.dir
-  OBJECT_FILE_DIR = CMakeFiles/dilithium.dir/deps/dilithium/ref
-build CMakeFiles/dilithium.dir/deps/dilithium/ref/ntt.c.o: CXX_COMPILER__dilithium /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium/ref/ntt.c
-  DEFINES = -Ddilithium_EXPORTS
-  DEP_FILE = CMakeFiles/dilithium.dir/deps/dilithium/ref/ntt.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/dilithium -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium/ref/ntt.c
-  OBJECT_DIR = CMakeFiles/dilithium.dir
-  OBJECT_FILE_DIR = CMakeFiles/dilithium.dir/deps/dilithium/ref
-build CMakeFiles/dilithium.dir/deps/dilithium/ref/rounding.c.o: CXX_COMPILER__dilithium /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium/ref/rounding.c
-  DEFINES = -Ddilithium_EXPORTS
-  DEP_FILE = CMakeFiles/dilithium.dir/deps/dilithium/ref/rounding.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/dilithium -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium/ref/rounding.c
-  OBJECT_DIR = CMakeFiles/dilithium.dir
-  OBJECT_FILE_DIR = CMakeFiles/dilithium.dir/deps/dilithium/ref
-build CMakeFiles/dilithium.dir/deps/dilithium/ref/fips202.c.o: CXX_COMPILER__dilithium /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium/ref/fips202.c
-  DEFINES = -Ddilithium_EXPORTS
-  DEP_FILE = CMakeFiles/dilithium.dir/deps/dilithium/ref/fips202.c.o.d
-  FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
-  INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/dilithium -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/qrllib/deps/dilithium/ref/fips202.c
-  OBJECT_DIR = CMakeFiles/dilithium.dir
-  OBJECT_FILE_DIR = CMakeFiles/dilithium.dir/deps/dilithium/ref
-
-# =============================================================================
-# Link build statements for SHARED_LIBRARY target dilithium
-
-
-#############################################
-# Link the shared library /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libdilithium.so
-
-build /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libdilithium.so: CXX_SHARED_LIBRARY_LINKER__dilithium CMakeFiles/dilithium.dir/src/dilithium/dilithium.cpp.o CMakeFiles/dilithium.dir/deps/dilithium/ref/randombytes.c.o CMakeFiles/dilithium.dir/deps/dilithium/ref/sign.c.o CMakeFiles/dilithium.dir/deps/dilithium/ref/polyvec.c.o CMakeFiles/dilithium.dir/deps/dilithium/ref/packing.c.o CMakeFiles/dilithium.dir/deps/dilithium/ref/poly.c.o CMakeFiles/dilithium.dir/deps/dilithium/ref/reduce.c.o CMakeFiles/dilithium.dir/deps/dilithium/ref/ntt.c.o CMakeFiles/dilithium.dir/deps/dilithium/ref/rounding.c.o CMakeFiles/dilithium.dir/deps/dilithium/ref/fips202.c.o
-  LANGUAGE_COMPILE_FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated
-  LINK_FLAGS = -Wl,--exclude-libs,libgcc.a -Wl,--exclude-libs,libatomic.a --sysroot /Users/abilican/Library/Android/sdk/ndk-bundle/platforms/android-16/arch-x86 -Wl,--build-id -Wl,--warn-shared-textrel -Wl,--fatal-warnings -L/Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86 -Wl,--no-undefined -Wl,-z,noexecstack -Qunused-arguments -Wl,-z,relro -Wl,-z,now
-  LINK_LIBRARIES = -latomic -lm "/Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86/libc++.a"
-  OBJECT_DIR = CMakeFiles/dilithium.dir
-  POST_BUILD = :
-  PRE_LINK = :
-  SONAME = libdilithium.so
-  SONAME_FLAG = -Wl,-soname,
-  TARGET_FILE = /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libdilithium.so
-  TARGET_PDB = dilithium.so.dbg
-# =============================================================================
-# Object build statements for SHARED_LIBRARY target hello_world_jni
-
-build CMakeFiles/hello_world_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/hello_world.cpp.o: CXX_COMPILER__hello_world_jni /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/hello_world.cpp
-  DEFINES = -Dhello_world_jni_EXPORTS
-  DEP_FILE = CMakeFiles/hello_world_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/hello_world.cpp.o.d
+build CMakeFiles/android_wallet_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/android_wallet.cpp.o: CXX_COMPILER__android_wallet_jni /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/android_wallet.cpp
+  DEFINES = -Dandroid_wallet_jni_EXPORTS
+  DEP_FILE = CMakeFiles/android_wallet_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/android_wallet.cpp.o.d
   FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
   INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/../RNapp/theQRL/android/app/src/main/jni -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/hello_world.cpp
-  OBJECT_DIR = CMakeFiles/hello_world_jni.dir
-  OBJECT_FILE_DIR = CMakeFiles/hello_world_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni
-build CMakeFiles/hello_world_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/helloworld.cpp.o: CXX_COMPILER__hello_world_jni /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/helloworld.cpp
-  DEFINES = -Dhello_world_jni_EXPORTS
-  DEP_FILE = CMakeFiles/hello_world_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/helloworld.cpp.o.d
+  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/android_wallet.cpp
+  OBJECT_DIR = CMakeFiles/android_wallet_jni.dir
+  OBJECT_FILE_DIR = CMakeFiles/android_wallet_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni
+build CMakeFiles/android_wallet_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/android_wallet_interface.cpp.o: CXX_COMPILER__android_wallet_jni /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/android_wallet_interface.cpp
+  DEFINES = -Dandroid_wallet_jni_EXPORTS
+  DEP_FILE = CMakeFiles/android_wallet_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/android_wallet_interface.cpp.o.d
   FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated -fPIC   -std=gnu++14
   INCLUDES = -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src/api -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/src -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/deps -I/Users/abilican/Documents/projects/perso/theqrl/qrllib/../RNapp/theQRL/android/app/src/main/jni -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/android/support/include -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++abi/include
-  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/helloworld.cpp
-  OBJECT_DIR = CMakeFiles/hello_world_jni.dir
-  OBJECT_FILE_DIR = CMakeFiles/hello_world_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni
+  IN_ABS = /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/android_wallet_interface.cpp
+  OBJECT_DIR = CMakeFiles/android_wallet_jni.dir
+  OBJECT_FILE_DIR = CMakeFiles/android_wallet_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni
 
 # =============================================================================
-# Link build statements for SHARED_LIBRARY target hello_world_jni
+# Link build statements for SHARED_LIBRARY target android_wallet_jni
 
 
 #############################################
-# Link the shared library /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libhello_world_jni.so
+# Link the shared library /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libandroid_wallet_jni.so
 
-build /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libhello_world_jni.so: CXX_SHARED_LIBRARY_LINKER__hello_world_jni CMakeFiles/hello_world_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/hello_world.cpp.o CMakeFiles/hello_world_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/helloworld.cpp.o
+build /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libandroid_wallet_jni.so: CXX_SHARED_LIBRARY_LINKER__android_wallet_jni CMakeFiles/android_wallet_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/android_wallet.cpp.o CMakeFiles/android_wallet_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/android_wallet_interface.cpp.o
   LANGUAGE_COMPILE_FLAGS = -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -isystem /Users/abilican/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=16 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11  -fPIC -Wno-deprecated-declarations -std=c++14 -O3 -Wno-deprecated
   LINK_FLAGS = -Wl,--exclude-libs,libgcc.a -Wl,--exclude-libs,libatomic.a --sysroot /Users/abilican/Library/Android/sdk/ndk-bundle/platforms/android-16/arch-x86 -Wl,--build-id -Wl,--warn-shared-textrel -Wl,--fatal-warnings -L/Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86 -Wl,--no-undefined -Wl,-z,noexecstack -Qunused-arguments -Wl,-z,relro -Wl,-z,now
   LINK_LIBRARIES = -latomic -lm "/Users/abilican/Library/Android/sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86/libc++.a"
-  OBJECT_DIR = CMakeFiles/hello_world_jni.dir
+  OBJECT_DIR = CMakeFiles/android_wallet_jni.dir
   POST_BUILD = :
   PRE_LINK = :
-  SONAME = libhello_world_jni.so
+  SONAME = libandroid_wallet_jni.so
   SONAME_FLAG = -Wl,-soname,
-  TARGET_FILE = /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libhello_world_jni.so
-  TARGET_PDB = hello_world_jni.so.dbg
+  TARGET_FILE = /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libandroid_wallet_jni.so
+  TARGET_PDB = android_wallet_jni.so.dbg
 # =============================================================================
 # Target aliases.
 
-build dilithium: phony /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libdilithium.so
-build hello_world_jni: phony /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libhello_world_jni.so
-build kyber: phony /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libkyber.so
-build libdilithium.so: phony /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libdilithium.so
-build libhello_world_jni.so: phony /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libhello_world_jni.so
-build libkyber.so: phony /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libkyber.so
-build libqrllib.so: phony /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libqrllib.so
-build libshasha.so: phony /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libshasha.so
-build qrllib: phony /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libqrllib.so
-build shasha: phony /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libshasha.so
+build android_wallet_jni: phony /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libandroid_wallet_jni.so
+build libandroid_wallet_jni.so: phony /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libandroid_wallet_jni.so
 # =============================================================================
 # Folder targets.
 
@@ -507,7 +102,7 @@ build shasha: phony /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL
 #############################################
 # The main all target.
 
-build all: phony /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libkyber.so /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libqrllib.so /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libshasha.so /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libdilithium.so /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libhello_world_jni.so
+build all: phony /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/release/obj/x86/libandroid_wallet_jni.so
 
 #############################################
 # Make the all target the default.

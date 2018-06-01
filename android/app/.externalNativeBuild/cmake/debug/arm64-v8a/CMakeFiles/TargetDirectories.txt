@@ -1,7 +1,3 @@
-/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/.externalNativeBuild/cmake/debug/arm64-v8a/CMakeFiles/rebuild_cache.dir
 /Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/.externalNativeBuild/cmake/debug/arm64-v8a/CMakeFiles/edit_cache.dir
-/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/.externalNativeBuild/cmake/debug/arm64-v8a/CMakeFiles/kyber.dir
-/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/.externalNativeBuild/cmake/debug/arm64-v8a/CMakeFiles/qrllib.dir
-/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/.externalNativeBuild/cmake/debug/arm64-v8a/CMakeFiles/shasha.dir
-/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/.externalNativeBuild/cmake/debug/arm64-v8a/CMakeFiles/dilithium.dir
-/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/.externalNativeBuild/cmake/debug/arm64-v8a/CMakeFiles/hello_world_jni.dir
+/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/.externalNativeBuild/cmake/debug/arm64-v8a/CMakeFiles/rebuild_cache.dir
+/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/.externalNativeBuild/cmake/debug/arm64-v8a/CMakeFiles/android_wallet_jni.dir

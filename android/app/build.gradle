@@ -117,6 +117,16 @@ android {
         }
     }
     buildTypes {
+        debug {
+            debuggable true
+            initWith debug
+            jniDebuggable true
+            externalNativeBuild {
+                ndkBuild {
+                    cFlags "-DDEBUG=1"
+                }
+            }
+        }
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
@@ -140,6 +150,7 @@ android {
             path '../../../../qrllib/CMakeLists.txt'
         }
     }
+
 }
 
 dependencies {

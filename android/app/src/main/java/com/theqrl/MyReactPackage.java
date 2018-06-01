@@ -28,7 +28,7 @@ public class MyReactPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new HelloWorldModule(reactContext)); //this is where we register our module, and any others we may later add
+        modules.add(new AndroidWalletModule(reactContext)); //this is where we register our module, and any others we may later add
         return modules;
     }
 }

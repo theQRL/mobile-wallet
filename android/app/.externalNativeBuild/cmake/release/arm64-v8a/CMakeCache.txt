@@ -205,25 +205,13 @@ CMAKE_TOOLCHAIN_FILE:FILEPATH=/Users/abilican/Library/Android/sdk/ndk-bundle/bui
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
 //Dependencies for target
-dilithium_LIB_DEPENDS:STATIC=
-
-//Dependencies for target
-hello_world_jni_LIB_DEPENDS:STATIC=
-
-//Dependencies for target
-kyber_LIB_DEPENDS:STATIC=
+android_wallet_jni_LIB_DEPENDS:STATIC=
 
 //Value Computed by CMake
 qrllib_BINARY_DIR:STATIC=/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/.externalNativeBuild/cmake/release/arm64-v8a
 
-//Dependencies for the target
-qrllib_LIB_DEPENDS:STATIC=general;shasha;
-
 //Value Computed by CMake
 qrllib_SOURCE_DIR:STATIC=/Users/abilican/Documents/projects/perso/theqrl/qrllib
-
-//Dependencies for target
-shasha_LIB_DEPENDS:STATIC=
 
 
 ########################
