@@ -22,7 +22,8 @@ class AuthLoadingScreen extends React.Component {
   // Fetch the token from storage then navigate to our appropriate place
   _bootstrapAsync = async () => {
       // check if a wallet was already created
-    const userToken = await AsyncStorage.getItem('userToken');
+    // const userToken = await AsyncStorage.getItem('userToken');
+    const userToken = await AsyncStorage.getItem('rrr');
 
     // This will switch to the App screen or Auth screen and this loading
     // screen will be unmounted and thrown away.
@@ -46,13 +47,15 @@ const CustomDrawerContentComponent = (props) => (
 
     <View style={{flex:1, backgroundColor:'#2d294b', paddingTop:50}}>
         <Image style={{height:80, width:80, alignSelf:'center'}} resizeMode={Image.resizeMode.contain}  source={require('./resources/images/qrl_logo_wallet.png')} />
-        <DrawerItems {...props}/>
+        <View style={{paddingTop:50}}>
+            <DrawerItems {...props}/>
+        </View>
         <ImageBackground source={require('./resources/images/lower_drawer_bg.png')} style={{flex:1, height:null, width:null}}>
             <View style={{paddingLeft: 40, paddingTop:50}}>
-                <Text style={{color:'white'}} onPress={() => Linking.openURL('https://theqrl.org/')}>QRL WEBSITE</Text>
-                <Text style={{color:'white'}}>REDDIT</Text>
-                <Text style={{color:'white'}}>DISCORD</Text>
-                <Text style={{color:'white'}}>SUPPORT</Text>
+                <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://theqrl.org/')}>QRL WEBSITE</Text>
+                <Text style={{color:'white',paddingTop:20}}>REDDIT</Text>
+                <Text style={{color:'white',paddingTop:20}}>DISCORD</Text>
+                <Text style={{color:'white',paddingTop:20}}>SUPPORT</Text>
             </View>
     </ImageBackground>
     </View>

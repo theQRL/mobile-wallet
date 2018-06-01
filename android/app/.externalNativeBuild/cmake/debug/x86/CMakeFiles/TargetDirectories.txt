@@ -1,7 +1,0 @@
-/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/.externalNativeBuild/cmake/debug/x86/CMakeFiles/rebuild_cache.dir
-/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/.externalNativeBuild/cmake/debug/x86/CMakeFiles/edit_cache.dir
-/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/.externalNativeBuild/cmake/debug/x86/CMakeFiles/kyber.dir
-/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/.externalNativeBuild/cmake/debug/x86/CMakeFiles/qrllib.dir
-/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/.externalNativeBuild/cmake/debug/x86/CMakeFiles/shasha.dir
-/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/.externalNativeBuild/cmake/debug/x86/CMakeFiles/dilithium.dir
-/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/.externalNativeBuild/cmake/debug/x86/CMakeFiles/hello_world_jni.dir
