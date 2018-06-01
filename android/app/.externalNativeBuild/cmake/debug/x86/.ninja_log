@@ -1,7 +1,0 @@
-# ninja log v5
-0	400	0	CMakeFiles/android_wallet_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/android_wallet_interface.cpp.o	5b66d7632f358aed
-0	432	0	CMakeFiles/android_wallet_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/android_wallet.cpp.o	e3718a8e8799f8fa
-432	491	0	/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/debug/obj/x86/libandroid_wallet_jni.so	6257a2d888e1b31f
-1	425	0	CMakeFiles/android_wallet_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/android_wallet_interface.cpp.o	5b66d7632f358aed
-1	472	0	CMakeFiles/android_wallet_jni.dir/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/src/main/jni/android_wallet.cpp.o	e3718a8e8799f8fa
-472	600	0	/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/android/app/build/intermediates/cmake/debug/obj/x86/libandroid_wallet_jni.so	6257a2d888e1b31f
