@@ -1,0 +1,3 @@
+[submodule "qrllib"]
+	path = qrllib
+	url = https://github.com/theQRL/qrllib

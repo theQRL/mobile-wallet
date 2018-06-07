@@ -31,20 +31,10 @@ var AndroidWallet = NativeModules.AndroidWallet;
 
 
 export default class CreateWallet extends React.Component {
-  static navigationOptions = {
-    drawerLabel: 'Explorer',
-    drawerIcon: ({ tintColor }) => (
-      <Image
-        source={require('../resources/images/qrl.logo.circle.500x500.png')} style={{width:20, height:20}}
-      />
-    ),
-  };
-
 
   static navigationOptions = {
-    title: 'Create Wallet',
+      headerMode: 'none'
   };
-
 
   _signInAsync = async () => {
     await AsyncStorage.setItem('userToken', 'abc');
@@ -63,6 +53,7 @@ export default class CreateWallet extends React.Component {
 
   // ANDROID
   async androidWallet() {
+      console.log("ANDROID WALLLET CREATE...")
       try {
           let androidWalletStr = await AndroidWallet.createWallet();
           console.log(androidWalletStr);
@@ -185,7 +176,7 @@ export default class CreateWallet extends React.Component {
               </TouchableOpacity>
 
               <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ this.androidWallet }>
-                  <Text style={styles.TextStyle}> Create wallet Android</Text>
+                  <Text style={styles.TextStyle}> Create wallet Ansssdroid</Text>
               </TouchableOpacity>
 
 
