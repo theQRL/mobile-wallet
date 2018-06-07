@@ -6,7 +6,8 @@
 #define ANDROID_WALLET_H
 
 #include <string>
-
+#include <qrl/xmssBasic.h>
+#include <android/log.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

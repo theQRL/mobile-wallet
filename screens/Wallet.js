@@ -26,7 +26,7 @@ import {NativeModules} from 'react-native';
 // ios
 var CreateWallet = NativeModules.CreateWallet;
 // android
-var HelloWorld = NativeModules.HelloWorld;
+var AndroidWallet = NativeModules.AndroidWallet;
 
 
 export default class Wallet extends React.Component{
@@ -52,14 +52,26 @@ export default class Wallet extends React.Component{
 
 
     // ANDROID
-    async helloWorld() {
+    // async helloWorld() {
+    //     try {
+    //         let helloWorldStr = await HelloWorld.helloWorld();
+    //         console.log(helloWorldStr);
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    // }
+
+    // ANDROID
+    async androidWallet() {
         try {
-            let helloWorldStr = await HelloWorld.helloWorld();
-            console.log(helloWorldStr);
+            let androidWalletStr = await AndroidWallet.createWallet();
+            console.log(androidWalletStr);
         } catch (e) {
             console.error(e);
         }
     }
+
+
 
     // IOS
     createWallet = () => {
@@ -116,16 +128,43 @@ export default class Wallet extends React.Component{
             <ImageBackground source={require('../resources/images/main_background.png')} style={styles.backgroundImage}>
           <View style={{flex:1}}>
 
-          <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:60, paddingLeft:30}}>
+          <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:60, paddingLeft:30,flex:0.2}}>
               <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='white'>
             <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
             </TouchableHighlight>
           </View>
 
-          <View style={{ alignItems:'center',paddingTop:20}}>
-              <Image source={require('../resources/images/qrl_logo_wallet.png')} resizeMode={Image.resizeMode.contain} style={{height:50, width:50}} />
+          <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ this.androidWallet }>
+              <Text style={styles.TextStyle}> Create wallet Android </Text>
+          </TouchableOpacity>
+
+          <View style={{ alignItems:'center',paddingTop:20, flex:0.5}}>
+              <Image source={require('../resources/images/qrl_logo_wallet.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:100}} />
            </View>
 
+           <View style={{ alignItems:'center',paddingTop:10 ,flex:1}}>
+               <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:280, width:300, justifyContent:'center',alignItems:'center'}} >
+                   <Text style={{color:'white'}}>QRL BALANCE</Text>
+                   <Text style={{color:'white',fontSize:30}}>34511.7</Text>
+               </ImageBackground>
+            </View>
+
+            <View style={{ alignItems:'center',paddingTop:20, padding:20,margin:10, flex:0.2}}>
+                <Text style={{color:'white'}}>YOUR PUBLIC ADDRESS</Text>
+                <Text style={{color:'white', textAlign:'center'}}>Q01070056562525c06b16d05683f509ac20090458f4ec8617369e3701d5c3d728323576f9788e20</Text>
+             </View>
+
+             <View style={{ alignItems:'center',paddingTop:20, flex:0.2}}>
+                 <Image source={require('../resources/images/qr_code.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:100}} />
+              </View>
+
+              <View style={{ alignItems:'center',paddingTop:20, flex:0.7}}>
+                  <Image source={require('../resources/images/wallet_bottom.png')} resizeMode={Image.resizeMode.contain} style={{height:200, width:400}} />
+               </View>
+
+
+
+            {/*
           <View style={styles.container}>
 
                 <Text style={styles.welcomeBig}>
@@ -145,7 +184,7 @@ export default class Wallet extends React.Component{
                     Hash function : {this.state.hashFunction ===  "" ? <Text style={styles.welcomeRed} onPress={this.showHashSheet}> Please choose</Text> : <Text style={styles.welcome} onPress={this.showHashSheet}> {this.state.hashFunction}</Text> }
                 </Text>
 
-                {/*
+
                 <TextInput style={{height: 40, width:200}} placeholder="Passphrase" onChangeText={(text) => this.setState({passphrase:text})}/>
 
 
@@ -171,7 +210,7 @@ export default class Wallet extends React.Component{
             <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ this.helloWorld }>
                 <Text style={styles.TextStyle}> Create wallet Android </Text>
             </TouchableOpacity>
-            */}
+
 
 
             {this.state.processing ? <View><ActivityIndicator size={'large'}></ActivityIndicator></View>:<View>
@@ -183,8 +222,11 @@ export default class Wallet extends React.Component{
 
                 {this.state.address === "" ? <Text></Text> : <Text style={styles.welcome}> QRL wallet address: Q{this.state.address}</Text>}
           </View>
+          */}
+
       </View>
-  </ImageBackground>
+    </ImageBackground>
+
         );
     }
 }

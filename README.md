@@ -10,9 +10,15 @@ The mobile-wallet apps are still under heavy development. Please be aware that f
 
 ## Requirements
 
-- Cocoapods (https://cocoapods.org/)
-- CMake (https://cmake.org/)
+### Common to iOS and Android
 - React-Native (https://facebook.github.io/react-native/)
+- CMake (https://cmake.org/)
+### iOS specific
+- XCode
+- Cocoapods (https://cocoapods.org/)
+### Android specific
+- Android Studio (https://developer.android.com/studio/install)
+- Gradle (https://gradle.org/): can be handled within Android Studio
 
 ## How to generate the iOS libraries
 
@@ -28,6 +34,12 @@ cmake -G Xcode ..
 ```
 These commands will generate a new Xcode project called qrllib.xcodeproj.
 Open the Xcode project and build the 4 different libraries (dilithium, kyber, qrllib and shasha) for the iOS simulator and "iOS generic device". You will see all the generated libraries under build/Debug-iphoneos and build/Debug-iphonesimulator directories.
+
+## How to generate the Android libraries
+
+To generate the Android libraries you need to load the /android project folder in Android Studio and open the build-gradle file.
+Open the "Gradle menu" and double click on "android:app [externalNativeBuildDebug]" under the "Run Configurations" category to start building the libraries.
+The generated *.so libraries are located under android/app/build/intermediates/cmake/debug/obj/.
 
 ## How to update proto files
 

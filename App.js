@@ -9,6 +9,10 @@ import TransactionsHistory from './screens/TransactionsHistory'
 import CreateWallet from './screens/CreateWallet'
 import Scan from './screens/Scan'
 
+import SignIn from './screens/SignIn'
+import CreateWalletTreeHeight from './screens/CreateWalletTreeHeight'
+import CreateWalletHashFunction from './screens/CreateWalletHashFunction'
+
 
 // AuthLoadingScreen checks if a wallet already exists
 // - if yes -> redirects to the app main view
@@ -21,9 +25,9 @@ class AuthLoadingScreen extends React.Component {
 
   // Fetch the token from storage then navigate to our appropriate place
   _bootstrapAsync = async () => {
-      // check if a wallet was already created
+    // check if a wallet was already created
     // const userToken = await AsyncStorage.getItem('userToken');
-    const userToken = await AsyncStorage.getItem('rrr');
+    const userToken = await AsyncStorage.getItem('userToken');
 
     // This will switch to the App screen or Auth screen and this loading
     // screen will be unmounted and thrown away.
@@ -44,7 +48,6 @@ class AuthLoadingScreen extends React.Component {
 
 
 const CustomDrawerContentComponent = (props) => (
-
     <View style={{flex:1, backgroundColor:'#2d294b', paddingTop:50}}>
         <Image style={{height:80, width:80, alignSelf:'center'}} resizeMode={Image.resizeMode.contain}  source={require('./resources/images/qrl_logo_wallet.png')} />
         <View style={{paddingTop:50}}>
@@ -95,7 +98,27 @@ const MainDrawerMenu = DrawerNavigator(
 );
 
 
-const AuthStack = StackNavigator({ SignIn: CreateWallet });
+
+const AuthStack = StackNavigator(
+  {
+    SignIn: {
+      screen: SignIn,
+    },
+    CreateWalletTreeHeight: {
+      screen: CreateWalletTreeHeight,
+    },
+    CreateWalletHashFunction: {
+      screen: CreateWalletHashFunction,
+    },
+  },
+  {
+    initialRouteName: 'SignIn',
+    headerMode: 'none'
+  }
+);
+
+
+// const AuthStack = StackNavigator({ SignIn: CreateWallet });
 
 export default SwitchNavigator(
   {
