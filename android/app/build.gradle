@@ -147,7 +147,7 @@ android {
     }
     externalNativeBuild {
         cmake {
-            path '../../../../qrllib/CMakeLists.txt'
+            path '../../CMakeLists.txt'
         }
     }
 
