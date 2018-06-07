@@ -10,13 +10,13 @@ The mobile-wallet apps are still under heavy development. Please be aware that f
 
 ## Requirements
 
-# Common to iOS and Android
+### Common to iOS and Android
 - React-Native (https://facebook.github.io/react-native/)
 - CMake (https://cmake.org/)
-# iOS specific
+### iOS specific
 - XCode
 - Cocoapods (https://cocoapods.org/)
-# Android specific
+### Android specific
 - Android Studio (https://developer.android.com/studio/install)
 - Gradle (https://gradle.org/): can be handled within Android Studio
 
