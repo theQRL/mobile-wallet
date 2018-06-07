@@ -9,9 +9,7 @@
 extern "C" {
 #endif
 
-JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_androidWalletJNI
-        (JNIEnv *, jobject);
-
+JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_androidWalletJNI(JNIEnv *, jobject);
 
 #ifdef __cplusplus
 }

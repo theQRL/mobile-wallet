@@ -10,9 +10,9 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
 
     static {
         // load the C-library
-        //System.loadLibrary("shasha");
-        //System.loadLibrary("qrllib");
 
+        System.loadLibrary("qrllib");
+        System.loadLibrary("shasha");
         System.loadLibrary("android_wallet_jni");
     }
 

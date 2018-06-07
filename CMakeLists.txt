@@ -62,5 +62,9 @@ target_include_directories(qrllib PRIVATE ${LIB_QRL_INCLUDES} ${LIB_SHASHA_INCLU
 add_library(android_wallet_jni SHARED ${REF_ANDROID_SRC})
 target_include_directories(android_wallet_jni PRIVATE android/app/src/main/jni/)
 
+# Allow cpp logging
+find_library(ANDROID_LOG_LIB log)
 
-target_link_libraries(qrllib shasha android_wallet_jni)
+target_link_libraries( qrllib shasha)
+target_link_libraries(android_wallet_jni qrllib shasha)
+target_link_libraries(android_wallet_jni ${ANDROID_LOG_LIB} )
