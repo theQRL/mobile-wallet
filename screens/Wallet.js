@@ -12,6 +12,7 @@ import {
   ActivityIndicator,
   Picker,
   TouchableOpacity,
+  ScrollView,
   TouchableHighlight
 } from 'react-native';
 
@@ -29,6 +30,7 @@ var CreateWallet = NativeModules.CreateWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
 
 
+// var proto = require('../../grpc-web/compiled.js');
 export default class Wallet extends React.Component{
 // export default class App extends Component<{}> {
 
@@ -46,7 +48,7 @@ export default class Wallet extends React.Component{
         passphrase : '',
         treeHeight: "0",
         signatureCounts : 0,
-        hashFunction: '',
+        hashFunction: 'SHAKE_128',
         processing: false
     }
 
@@ -63,14 +65,21 @@ export default class Wallet extends React.Component{
 
     // ANDROID
     async androidWallet() {
-        try {
-            let androidWalletStr = await AndroidWallet.createWallet();
-            console.log(androidWalletStr);
-        } catch (e) {
-            console.error(e);
-        }
-    }
 
+        // This is the example with Promise
+        // try {
+        //     let androidWalletStr = await AndroidWallet.createWallet();
+        //     console.log(androidWalletStr);
+        // } catch (e) {
+        //     console.error(e);
+        // }
+
+        // This is the example with callback
+        AndroidWallet.createWallet(8, 3, (msg) => {console.log(msg)}, (wallet) => {console.log("Android wallet is " + wallet)} );
+
+        // UIManager.measureLayout(100,100,(msg) => {console.log(msg);},(x, y, width, height) => {console.log(x + ':' + y + ':' + width + ':' + height);});
+
+    }
 
 
     // IOS
@@ -79,11 +88,13 @@ export default class Wallet extends React.Component{
         this.setState({processing:true})
         const randomBytes = crypto.randomBytes(48)
         // console.log(randomBytes)
+        this.setState({hashFunction: "SHAKE_128"})
 
         // CreateWallet.createWallet("YEAHHHH")
-        CreateWallet.createWallet(this.state.treeHeight, this.state.hashFunction,(error, pk)=> {
+        CreateWallet.createWallet("8", 3, (error, pk)=> {
             this.setState({processing:false, address:pk})
             console.log("REACTNATIVE :wallet address is :",pk)
+
         })
     }
 
@@ -134,13 +145,33 @@ export default class Wallet extends React.Component{
             </TouchableHighlight>
           </View>
 
+
+
+          {/*
+
+              The following code is functional and creates the android and ios wallets
+
+
+*/}
           <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ this.androidWallet }>
               <Text style={styles.TextStyle}> Create wallet Android </Text>
           </TouchableOpacity>
 
+          <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ this.createWallet }>
+              <Text style={styles.TextStyle}> Create wallet iOS </Text>
+          </TouchableOpacity>
+
+
+
+
+
+          <ScrollView style={{flex:2}}>
+
           <View style={{ alignItems:'center',paddingTop:20, flex:0.5}}>
               <Image source={require('../resources/images/qrl_logo_wallet.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:100}} />
            </View>
+
+
 
            <View style={{ alignItems:'center',paddingTop:10 ,flex:1}}>
                <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:280, width:300, justifyContent:'center',alignItems:'center'}} >
@@ -149,14 +180,9 @@ export default class Wallet extends React.Component{
                </ImageBackground>
             </View>
 
-            <View style={{ alignItems:'center',paddingTop:20, padding:20,margin:10, flex:0.2}}>
-                <Text style={{color:'white'}}>YOUR PUBLIC ADDRESS</Text>
-                <Text style={{color:'white', textAlign:'center'}}>Q01070056562525c06b16d05683f509ac20090458f4ec8617369e3701d5c3d728323576f9788e20</Text>
-             </View>
 
-             <View style={{ alignItems:'center',paddingTop:20, flex:0.2}}>
-                 <Image source={require('../resources/images/qr_code.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:100}} />
-              </View>
+        </ScrollView>
+
 
               <View style={{ alignItems:'center',paddingTop:20, flex:0.7}}>
                   <Image source={require('../resources/images/wallet_bottom.png')} resizeMode={Image.resizeMode.contain} style={{height:200, width:400}} />

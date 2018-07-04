@@ -33,6 +33,31 @@ file(GLOB LIB_SHASHA_INCLUDES
 file(GLOB_RECURSE LIB_QRL_SRC
         "${CMAKE_CURRENT_SOURCE_DIR}/qrllib/src/qrl/*.cpp")
 
+
+# KYBER
+file(GLOB LIB_KYBER_INCLUDES
+        ${CMAKE_CURRENT_SOURCE_DIR}/qrllib/deps/kyber
+        ${CMAKE_CURRENT_SOURCE_DIR}/qrllib/src/kyber
+        )
+file(GLOB_RECURSE LIB_KYBER_SRC
+        "${CMAKE_CURRENT_SOURCE_DIR}/qrllib/src/kyber/*.cpp")
+set(REF_KYBER_SRC
+        ${CMAKE_CURRENT_SOURCE_DIR}/qrllib/deps/kyber/ref/randombytes.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/qrllib/deps/kyber/ref/kem.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/qrllib/deps/kyber/ref/poly.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/qrllib/deps/kyber/ref/polyvec.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/qrllib/deps/kyber/ref/reduce.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/qrllib/deps/kyber/ref/cbd.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/qrllib/deps/kyber/ref/precomp.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/qrllib/deps/kyber/ref/ntt.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/qrllib/deps/kyber/ref/verify.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/qrllib/deps/kyber/ref/indcpa.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/qrllib/deps/kyber/ref/kex.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/qrllib/deps/kyber/ref/fips202.c
+        )
+
+
+
 set(LIBXMSSALT_SRC
         qrllib/src/xmss-alt/algsxmss_fast.c
         qrllib/src/xmss-alt/algsxmss.c
@@ -51,7 +76,7 @@ file(GLOB_RECURSE LIB_SHASHA_SRC
 SET_SOURCE_FILES_PROPERTIES(${LIB_QRL_SRC} PROPERTIES LANGUAGE CXX)
 SET_SOURCE_FILES_PROPERTIES(${LIBXMSSALT_SRC} PROPERTIES LANGUAGE CXX)
 SET_SOURCE_FILES_PROPERTIES(${LIB_SHASHA_SRC} PROPERTIES LANGUAGE CXX)
-
+SET_SOURCE_FILES_PROPERTIES(${REF_KYBER_SRC} PROPERTIES LANGUAGE CXX)
 
 add_library(shasha SHARED ${LIB_SHASHA_SRC})
 target_include_directories(shasha PRIVATE ${LIB_SHASHA_INCLUDES} )
@@ -62,9 +87,13 @@ target_include_directories(qrllib PRIVATE ${LIB_QRL_INCLUDES} ${LIB_SHASHA_INCLU
 add_library(android_wallet_jni SHARED ${REF_ANDROID_SRC})
 target_include_directories(android_wallet_jni PRIVATE android/app/src/main/jni/)
 
+add_library(kyber SHARED ${LIB_KYBER_SRC} ${REF_KYBER_SRC})
+target_include_directories(kyber PRIVATE ${LIB_KYBER_INCLUDES} )
+
+
 # Allow cpp logging
 find_library(ANDROID_LOG_LIB log)
 
-target_link_libraries( qrllib shasha)
-target_link_libraries(android_wallet_jni qrllib shasha)
+target_link_libraries(qrllib shasha)
+target_link_libraries(android_wallet_jni qrllib shasha kyber)
 target_link_libraries(android_wallet_jni ${ANDROID_LOG_LIB} )

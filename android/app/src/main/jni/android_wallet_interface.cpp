@@ -18,12 +18,15 @@ extern "C" {
 
 // JNI entries implementation
 
-JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_androidWalletJNI(JNIEnv* pEnv, jobject pThis)
+JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_androidWalletJNI(JNIEnv* pEnv, jobject pThis, jint treeHeight, jint hashFunction)
 {
     AndroidWallet androidWallet;
+    return pEnv-> NewStringUTF(androidWallet.androidWalletJNI(treeHeight, hashFunction).c_str());
+
     //printf("Hello World from C function!\n");
     //return pEnv-> NewStringUTF("Ho Ho Hoooo");
-    return pEnv-> NewStringUTF(androidWallet.androidWalletJNI().c_str());
+
+    //return pEnv-> NewStringUTF((const char *) treeHeight);
     //return (*pEnv) -> NewStringUTF(pEnv, "sdfsdf");
     //return pEnv->NewStringUTF(hello.helloWorldJNI().c_str());
 }

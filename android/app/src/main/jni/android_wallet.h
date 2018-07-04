@@ -8,6 +8,8 @@
 #include <string>
 #include <qrl/xmssBasic.h>
 #include <android/log.h>
+#include <jni.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -18,7 +20,7 @@ class AndroidWallet
 {
 public:
     AndroidWallet();
-    string androidWalletJNI();
+    string androidWalletJNI(jint treeHeight, jint hashFunction);
 };
 
 
