@@ -28,16 +28,18 @@ CF_EXTERN_C_BEGIN
 @class AddressState;
 @class Block;
 @class BlockDataPoint;
+@class BlockExtended;
 @class BlockHeader;
 @class BlockHeaderExtended;
 @class BlockMetaData;
-@class EncryptedEphemeralMessage;
 @class EncryptedEphemeralMessage_Channel;
-@class EphemeralMetadata;
 @class GenesisBalance;
 @class LatticePK;
+@class NodeChainState;
 @class NodeInfo;
 @class Peer;
+@class PeerInfo;
+@class PeerStat;
 @class Transaction;
 @class TransactionCount;
 @class TransactionExtended;
@@ -48,7 +50,6 @@ CF_EXTERN_C_BEGIN
 @class Transaction_Token;
 @class Transaction_Transfer;
 @class Transaction_TransferToken;
-@class Wallet;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -169,7 +170,6 @@ typedef GPB_ENUM(GetNodeStateResp_FieldNumber) {
  **/
 @interface GetNodeStateResp : GPBMessage
 
-/** NodeInfo object containing node state information */
 @property(nonatomic, readwrite, strong, null_resettable) NodeInfo *info;
 /** Test to see if @c info has been set. */
 @property(nonatomic, readwrite) BOOL hasInfo;
@@ -208,6 +208,35 @@ typedef GPB_ENUM(GetKnownPeersResp_FieldNumber) {
 @property(nonatomic, readwrite, strong, null_resettable) NSMutableArray<Peer*> *knownPeersArray;
 /** The number of items in @c knownPeersArray without causing the array to be created. */
 @property(nonatomic, readonly) NSUInteger knownPeersArray_Count;
+
+@end
+
+#pragma mark - GetPeersStatReq
+
+/**
+ * *
+ * Represents a query to get connected peers stat
+ **/
+@interface GetPeersStatReq : GPBMessage
+
+@end
+
+#pragma mark - GetPeersStatResp
+
+typedef GPB_ENUM(GetPeersStatResp_FieldNumber) {
+  GetPeersStatResp_FieldNumber_PeersStatArray = 1,
+};
+
+/**
+ * *
+ * Represents the reply message to peers stat query
+ **/
+@interface GetPeersStatResp : GPBMessage
+
+/** PeerState object contains peer_ip, port and peer state information */
+@property(nonatomic, readwrite, strong, null_resettable) NSMutableArray<PeerStat*> *peersStatArray;
+/** The number of items in @c peersStatArray without causing the array to be created. */
+@property(nonatomic, readonly) NSUInteger peersStatArray_Count;
 
 @end
 
@@ -280,7 +309,7 @@ typedef GPB_ENUM(GetStatsReq_FieldNumber) {
  **/
 @interface GetStatsReq : GPBMessage
 
-/** Boolean to define if timeseries should be included in reply or not */
+/** Boolean to define if block timeseries should be included in reply or not */
 @property(nonatomic, readwrite) BOOL includeTimeseries;
 
 @end
@@ -337,6 +366,30 @@ typedef GPB_ENUM(GetStatsResp_FieldNumber) {
 
 @end
 
+#pragma mark - GetAddressFromPKReq
+
+typedef GPB_ENUM(GetAddressFromPKReq_FieldNumber) {
+  GetAddressFromPKReq_FieldNumber_Pk = 1,
+};
+
+@interface GetAddressFromPKReq : GPBMessage
+
+@property(nonatomic, readwrite, copy, null_resettable) NSData *pk;
+
+@end
+
+#pragma mark - GetAddressFromPKResp
+
+typedef GPB_ENUM(GetAddressFromPKResp_FieldNumber) {
+  GetAddressFromPKResp_FieldNumber_Address = 1,
+};
+
+@interface GetAddressFromPKResp : GPBMessage
+
+@property(nonatomic, readwrite, copy, null_resettable) NSData *address;
+
+@end
+
 #pragma mark - BlockDataPoint
 
 typedef GPB_ENUM(BlockDataPoint_FieldNumber) {
@@ -365,7 +418,6 @@ typedef GPB_ENUM(BlockDataPoint_FieldNumber) {
 /** Block timestamp */
 @property(nonatomic, readwrite) uint64_t timestamp;
 
-/** Block */
 @property(nonatomic, readwrite) uint64_t timeLast;
 
 @property(nonatomic, readwrite) uint64_t timeMovavg;
@@ -373,10 +425,10 @@ typedef GPB_ENUM(BlockDataPoint_FieldNumber) {
 /** Hash power */
 @property(nonatomic, readwrite) float hashPower;
 
-/** Block hash */
+/** Block header hash */
 @property(nonatomic, readwrite, copy, null_resettable) NSData *headerHash;
 
-/** Previous hash */
+/** Previous block's header hash */
 @property(nonatomic, readwrite, copy, null_resettable) NSData *headerHashPrev;
 
 @end
@@ -425,14 +477,14 @@ typedef GPB_ENUM(GetObjectResp_FieldNumber) {
   GetObjectResp_FieldNumber_Found = 1,
   GetObjectResp_FieldNumber_AddressState = 2,
   GetObjectResp_FieldNumber_Transaction = 3,
-  GetObjectResp_FieldNumber_Block = 4,
+  GetObjectResp_FieldNumber_BlockExtended = 4,
 };
 
 typedef GPB_ENUM(GetObjectResp_Result_OneOfCase) {
   GetObjectResp_Result_OneOfCase_GPBUnsetOneOfCase = 0,
   GetObjectResp_Result_OneOfCase_AddressState = 2,
   GetObjectResp_Result_OneOfCase_Transaction = 3,
-  GetObjectResp_Result_OneOfCase_Block = 4,
+  GetObjectResp_Result_OneOfCase_BlockExtended = 4,
 };
 
 @interface GetObjectResp : GPBMessage
@@ -445,7 +497,7 @@ typedef GPB_ENUM(GetObjectResp_Result_OneOfCase) {
 
 @property(nonatomic, readwrite, strong, null_resettable) TransactionExtended *transaction;
 
-@property(nonatomic, readwrite, strong, null_resettable) Block *block;
+@property(nonatomic, readwrite, strong, null_resettable) BlockExtended *blockExtended;
 
 @end
 
@@ -513,9 +565,9 @@ typedef GPB_ENUM(GetLatestDataResp_FieldNumber) {
 #pragma mark - TransferCoinsReq
 
 typedef GPB_ENUM(TransferCoinsReq_FieldNumber) {
-  TransferCoinsReq_FieldNumber_AddressFrom = 1,
-  TransferCoinsReq_FieldNumber_AddressTo = 2,
-  TransferCoinsReq_FieldNumber_Amount = 3,
+  TransferCoinsReq_FieldNumber_MasterAddr = 1,
+  TransferCoinsReq_FieldNumber_AddressesToArray = 2,
+  TransferCoinsReq_FieldNumber_AmountsArray = 3,
   TransferCoinsReq_FieldNumber_Fee = 4,
   TransferCoinsReq_FieldNumber_XmssPk = 5,
 };
@@ -523,13 +575,17 @@ typedef GPB_ENUM(TransferCoinsReq_FieldNumber) {
 @interface TransferCoinsReq : GPBMessage
 
 /** Transaction source address */
-@property(nonatomic, readwrite, copy, null_resettable) NSData *addressFrom;
+@property(nonatomic, readwrite, copy, null_resettable) NSData *masterAddr;
 
 /** Transaction destination address */
-@property(nonatomic, readwrite, copy, null_resettable) NSData *addressTo;
+@property(nonatomic, readwrite, strong, null_resettable) NSMutableArray<NSData*> *addressesToArray;
+/** The number of items in @c addressesToArray without causing the array to be created. */
+@property(nonatomic, readonly) NSUInteger addressesToArray_Count;
 
 /** Amount. It should be expressed in Shor */
-@property(nonatomic, readwrite) uint64_t amount;
+@property(nonatomic, readwrite, strong, null_resettable) GPBUInt64Array *amountsArray;
+/** The number of items in @c amountsArray without causing the array to be created. */
+@property(nonatomic, readonly) NSUInteger amountsArray_Count;
 
 /** Fee. It should be expressed in Shor */
 @property(nonatomic, readwrite) uint64_t fee;
@@ -542,14 +598,14 @@ typedef GPB_ENUM(TransferCoinsReq_FieldNumber) {
 #pragma mark - TransferCoinsResp
 
 typedef GPB_ENUM(TransferCoinsResp_FieldNumber) {
-  TransferCoinsResp_FieldNumber_TransactionUnsigned = 1,
+  TransferCoinsResp_FieldNumber_ExtendedTransactionUnsigned = 1,
 };
 
 @interface TransferCoinsResp : GPBMessage
 
-@property(nonatomic, readwrite, strong, null_resettable) Transaction *transactionUnsigned;
-/** Test to see if @c transactionUnsigned has been set. */
-@property(nonatomic, readwrite) BOOL hasTransactionUnsigned;
+@property(nonatomic, readwrite, strong, null_resettable) TransactionExtended *extendedTransactionUnsigned;
+/** Test to see if @c extendedTransactionUnsigned has been set. */
+@property(nonatomic, readwrite) BOOL hasExtendedTransactionUnsigned;
 
 @end
 
@@ -597,10 +653,31 @@ int32_t PushTransactionResp_ErrorCode_RawValue(PushTransactionResp *message);
  **/
 void SetPushTransactionResp_ErrorCode_RawValue(PushTransactionResp *message, int32_t value);
 
+#pragma mark - MessageTxnReq
+
+typedef GPB_ENUM(MessageTxnReq_FieldNumber) {
+  MessageTxnReq_FieldNumber_MasterAddr = 1,
+  MessageTxnReq_FieldNumber_Message = 2,
+  MessageTxnReq_FieldNumber_Fee = 3,
+  MessageTxnReq_FieldNumber_XmssPk = 4,
+};
+
+@interface MessageTxnReq : GPBMessage
+
+@property(nonatomic, readwrite, copy, null_resettable) NSData *masterAddr;
+
+@property(nonatomic, readwrite, copy, null_resettable) NSData *message;
+
+@property(nonatomic, readwrite) uint64_t fee;
+
+@property(nonatomic, readwrite, copy, null_resettable) NSData *xmssPk;
+
+@end
+
 #pragma mark - TokenTxnReq
 
 typedef GPB_ENUM(TokenTxnReq_FieldNumber) {
-  TokenTxnReq_FieldNumber_AddressFrom = 1,
+  TokenTxnReq_FieldNumber_MasterAddr = 1,
   TokenTxnReq_FieldNumber_Symbol = 2,
   TokenTxnReq_FieldNumber_Name = 3,
   TokenTxnReq_FieldNumber_Owner = 4,
@@ -612,22 +689,16 @@ typedef GPB_ENUM(TokenTxnReq_FieldNumber) {
 
 @interface TokenTxnReq : GPBMessage
 
-/** sender address */
-@property(nonatomic, readwrite, copy, null_resettable) NSData *addressFrom;
+@property(nonatomic, readwrite, copy, null_resettable) NSData *masterAddr;
 
-/** Token symbol */
 @property(nonatomic, readwrite, copy, null_resettable) NSData *symbol;
 
-/** Token name */
 @property(nonatomic, readwrite, copy, null_resettable) NSData *name;
 
-/** Token owner */
 @property(nonatomic, readwrite, copy, null_resettable) NSData *owner;
 
-/** Token decimals */
 @property(nonatomic, readwrite) uint64_t decimals;
 
-/** token wallet initial balance */
 @property(nonatomic, readwrite, strong, null_resettable) NSMutableArray<AddressAmount*> *initialBalancesArray;
 /** The number of items in @c initialBalancesArray without causing the array to be created. */
 @property(nonatomic, readonly) NSUInteger initialBalancesArray_Count;
@@ -641,23 +712,27 @@ typedef GPB_ENUM(TokenTxnReq_FieldNumber) {
 #pragma mark - TransferTokenTxnReq
 
 typedef GPB_ENUM(TransferTokenTxnReq_FieldNumber) {
-  TransferTokenTxnReq_FieldNumber_AddressFrom = 1,
-  TransferTokenTxnReq_FieldNumber_AddressTo = 2,
+  TransferTokenTxnReq_FieldNumber_MasterAddr = 1,
+  TransferTokenTxnReq_FieldNumber_AddressesToArray = 2,
   TransferTokenTxnReq_FieldNumber_TokenTxhash = 3,
-  TransferTokenTxnReq_FieldNumber_Amount = 4,
+  TransferTokenTxnReq_FieldNumber_AmountsArray = 4,
   TransferTokenTxnReq_FieldNumber_Fee = 5,
   TransferTokenTxnReq_FieldNumber_XmssPk = 6,
 };
 
 @interface TransferTokenTxnReq : GPBMessage
 
-@property(nonatomic, readwrite, copy, null_resettable) NSData *addressFrom;
+@property(nonatomic, readwrite, copy, null_resettable) NSData *masterAddr;
 
-@property(nonatomic, readwrite, copy, null_resettable) NSData *addressTo;
+@property(nonatomic, readwrite, strong, null_resettable) NSMutableArray<NSData*> *addressesToArray;
+/** The number of items in @c addressesToArray without causing the array to be created. */
+@property(nonatomic, readonly) NSUInteger addressesToArray_Count;
 
 @property(nonatomic, readwrite, copy, null_resettable) NSData *tokenTxhash;
 
-@property(nonatomic, readwrite) uint64_t amount;
+@property(nonatomic, readwrite, strong, null_resettable) GPBUInt64Array *amountsArray;
+/** The number of items in @c amountsArray without causing the array to be created. */
+@property(nonatomic, readonly) NSUInteger amountsArray_Count;
 
 @property(nonatomic, readwrite) uint64_t fee;
 
@@ -668,7 +743,7 @@ typedef GPB_ENUM(TransferTokenTxnReq_FieldNumber) {
 #pragma mark - SlaveTxnReq
 
 typedef GPB_ENUM(SlaveTxnReq_FieldNumber) {
-  SlaveTxnReq_FieldNumber_AddressFrom = 1,
+  SlaveTxnReq_FieldNumber_MasterAddr = 1,
   SlaveTxnReq_FieldNumber_SlavePksArray = 2,
   SlaveTxnReq_FieldNumber_AccessTypesArray = 3,
   SlaveTxnReq_FieldNumber_Fee = 4,
@@ -677,7 +752,7 @@ typedef GPB_ENUM(SlaveTxnReq_FieldNumber) {
 
 @interface SlaveTxnReq : GPBMessage
 
-@property(nonatomic, readwrite, copy, null_resettable) NSData *addressFrom;
+@property(nonatomic, readwrite, copy, null_resettable) NSData *masterAddr;
 
 @property(nonatomic, readwrite, strong, null_resettable) NSMutableArray<NSData*> *slavePksArray;
 /** The number of items in @c slavePksArray without causing the array to be created. */
@@ -689,35 +764,6 @@ typedef GPB_ENUM(SlaveTxnReq_FieldNumber) {
 
 @property(nonatomic, readwrite) uint64_t fee;
 
-@property(nonatomic, readwrite, copy, null_resettable) NSData *xmssPk;
-
-@end
-
-#pragma mark - LatticePublicKeyTxnReq
-
-typedef GPB_ENUM(LatticePublicKeyTxnReq_FieldNumber) {
-  LatticePublicKeyTxnReq_FieldNumber_AddressFrom = 1,
-  LatticePublicKeyTxnReq_FieldNumber_KyberPk = 2,
-  LatticePublicKeyTxnReq_FieldNumber_DilithiumPk = 3,
-  LatticePublicKeyTxnReq_FieldNumber_Fee = 4,
-  LatticePublicKeyTxnReq_FieldNumber_XmssPk = 5,
-};
-
-@interface LatticePublicKeyTxnReq : GPBMessage
-
-/** wallet address */
-@property(nonatomic, readwrite, copy, null_resettable) NSData *addressFrom;
-
-/** pk generated from kyber */
-@property(nonatomic, readwrite, copy, null_resettable) NSData *kyberPk;
-
-/** pk generated from dilithium */
-@property(nonatomic, readwrite, copy, null_resettable) NSData *dilithiumPk;
-
-/** fee */
-@property(nonatomic, readwrite) uint64_t fee;
-
-/** XMSS pk */
 @property(nonatomic, readwrite, copy, null_resettable) NSData *xmssPk;
 
 @end
@@ -739,33 +785,6 @@ typedef GPB_ENUM(GetLocalAddressesResp_FieldNumber) {
 @property(nonatomic, readwrite, strong, null_resettable) NSMutableArray<NSData*> *addressesArray;
 /** The number of items in @c addressesArray without causing the array to be created. */
 @property(nonatomic, readonly) NSUInteger addressesArray_Count;
-
-@end
-
-#pragma mark - GetWalletReq
-
-typedef GPB_ENUM(GetWalletReq_FieldNumber) {
-  GetWalletReq_FieldNumber_Address = 1,
-};
-
-@interface GetWalletReq : GPBMessage
-
-@property(nonatomic, readwrite, copy, null_resettable) NSData *address;
-
-@end
-
-#pragma mark - GetWalletResp
-
-typedef GPB_ENUM(GetWalletResp_FieldNumber) {
-  GetWalletResp_FieldNumber_Wallet = 1,
-};
-
-@interface GetWalletResp : GPBMessage
-
-/** FIXME: Encrypt */
-@property(nonatomic, readwrite, strong, null_resettable) Wallet *wallet;
-/** Test to see if @c wallet has been set. */
-@property(nonatomic, readwrite) BOOL hasWallet;
 
 @end
 
@@ -814,39 +833,6 @@ int32_t NodeInfo_State_RawValue(NodeInfo *message);
  * was generated.
  **/
 void SetNodeInfo_State_RawValue(NodeInfo *message, int32_t value);
-
-#pragma mark - WalletStore
-
-typedef GPB_ENUM(WalletStore_FieldNumber) {
-  WalletStore_FieldNumber_WalletsArray = 1,
-};
-
-@interface WalletStore : GPBMessage
-
-@property(nonatomic, readwrite, strong, null_resettable) NSMutableArray<Wallet*> *walletsArray;
-/** The number of items in @c walletsArray without causing the array to be created. */
-@property(nonatomic, readonly) NSUInteger walletsArray_Count;
-
-@end
-
-#pragma mark - Wallet
-
-typedef GPB_ENUM(Wallet_FieldNumber) {
-  Wallet_FieldNumber_Address = 1,
-  Wallet_FieldNumber_Mnemonic = 2,
-  Wallet_FieldNumber_XmssIndex = 3,
-};
-
-@interface Wallet : GPBMessage
-
-/** FIXME move to bytes */
-@property(nonatomic, readwrite, copy, null_resettable) NSData *address;
-
-@property(nonatomic, readwrite, copy, null_resettable) NSString *mnemonic;
-
-@property(nonatomic, readwrite) int32_t xmssIndex;
-
-@end
 
 #pragma mark - StoredPeers
 
@@ -931,13 +917,10 @@ typedef GPB_ENUM(LatticePK_FieldNumber) {
 
 @interface LatticePK : GPBMessage
 
-/** unconfirmed tc hash */
 @property(nonatomic, readwrite, copy, null_resettable) NSData *txhash;
 
-/** pk generated from dilithium */
 @property(nonatomic, readwrite, copy, null_resettable) NSData *dilithiumPk;
 
-/** pk geenrated from kyber */
 @property(nonatomic, readwrite, copy, null_resettable) NSData *kyberPk;
 
 @end
@@ -951,10 +934,8 @@ typedef GPB_ENUM(AddressAmount_FieldNumber) {
 
 @interface AddressAmount : GPBMessage
 
-/** wallet address */
 @property(nonatomic, readwrite, copy, null_resettable) NSData *address;
 
-/** wallet amount */
 @property(nonatomic, readwrite) uint64_t amount;
 
 @end
@@ -969,8 +950,8 @@ typedef GPB_ENUM(BlockHeader_FieldNumber) {
   BlockHeader_FieldNumber_RewardBlock = 5,
   BlockHeader_FieldNumber_RewardFee = 6,
   BlockHeader_FieldNumber_MerkleRoot = 7,
-  BlockHeader_FieldNumber_Pk = 8,
-  BlockHeader_FieldNumber_MiningNonce = 9,
+  BlockHeader_FieldNumber_MiningNonce = 8,
+  BlockHeader_FieldNumber_ExtraNonce = 9,
 };
 
 @interface BlockHeader : GPBMessage
@@ -990,9 +971,9 @@ typedef GPB_ENUM(BlockHeader_FieldNumber) {
 
 @property(nonatomic, readwrite, copy, null_resettable) NSData *merkleRoot;
 
-@property(nonatomic, readwrite, copy, null_resettable) NSData *pk;
+@property(nonatomic, readwrite) uint32_t miningNonce;
 
-@property(nonatomic, readwrite) uint64_t miningNonce;
+@property(nonatomic, readwrite) uint64_t extraNonce;
 
 @end
 
@@ -1034,6 +1015,9 @@ typedef GPB_ENUM(TransactionCount_FieldNumber) {
 typedef GPB_ENUM(TransactionExtended_FieldNumber) {
   TransactionExtended_FieldNumber_Header = 1,
   TransactionExtended_FieldNumber_Tx = 2,
+  TransactionExtended_FieldNumber_AddrFrom = 3,
+  TransactionExtended_FieldNumber_Size = 4,
+  TransactionExtended_FieldNumber_TimestampSeconds = 5,
 };
 
 @interface TransactionExtended : GPBMessage
@@ -1045,6 +1029,40 @@ typedef GPB_ENUM(TransactionExtended_FieldNumber) {
 @property(nonatomic, readwrite, strong, null_resettable) Transaction *tx;
 /** Test to see if @c tx has been set. */
 @property(nonatomic, readwrite) BOOL hasTx;
+
+@property(nonatomic, readwrite, copy, null_resettable) NSData *addrFrom;
+
+@property(nonatomic, readwrite) uint64_t size;
+
+@property(nonatomic, readwrite) uint64_t timestampSeconds;
+
+@end
+
+#pragma mark - BlockExtended
+
+typedef GPB_ENUM(BlockExtended_FieldNumber) {
+  BlockExtended_FieldNumber_Header = 1,
+  BlockExtended_FieldNumber_ExtendedTransactionsArray = 2,
+  BlockExtended_FieldNumber_GenesisBalanceArray = 3,
+  BlockExtended_FieldNumber_Size = 4,
+};
+
+@interface BlockExtended : GPBMessage
+
+@property(nonatomic, readwrite, strong, null_resettable) BlockHeader *header;
+/** Test to see if @c header has been set. */
+@property(nonatomic, readwrite) BOOL hasHeader;
+
+@property(nonatomic, readwrite, strong, null_resettable) NSMutableArray<TransactionExtended*> *extendedTransactionsArray;
+/** The number of items in @c extendedTransactionsArray without causing the array to be created. */
+@property(nonatomic, readonly) NSUInteger extendedTransactionsArray_Count;
+
+/** This is only applicable to genesis blocks */
+@property(nonatomic, readwrite, strong, null_resettable) NSMutableArray<GenesisBalance*> *genesisBalanceArray;
+/** The number of items in @c genesisBalanceArray without causing the array to be created. */
+@property(nonatomic, readonly) NSUInteger genesisBalanceArray_Count;
+
+@property(nonatomic, readwrite) uint64_t size;
 
 @end
 
@@ -1106,7 +1124,7 @@ typedef GPB_ENUM(BlockMetaDataList_FieldNumber) {
 #pragma mark - Transaction
 
 typedef GPB_ENUM(Transaction_FieldNumber) {
-  Transaction_FieldNumber_AddrFrom = 1,
+  Transaction_FieldNumber_MasterAddr = 1,
   Transaction_FieldNumber_Fee = 2,
   Transaction_FieldNumber_PublicKey = 3,
   Transaction_FieldNumber_Signature = 4,
@@ -1134,8 +1152,7 @@ typedef GPB_ENUM(Transaction_TransactionType_OneOfCase) {
 
 @interface Transaction : GPBMessage
 
-/** FIXME: we probably do not need this */
-@property(nonatomic, readwrite, copy, null_resettable) NSData *addrFrom;
+@property(nonatomic, readwrite, copy, null_resettable) NSData *masterAddr;
 
 @property(nonatomic, readwrite) uint64_t fee;
 
@@ -1173,8 +1190,8 @@ void Transaction_ClearTransactionTypeOneOfCase(Transaction *message);
 #pragma mark - Transaction_Transfer
 
 typedef GPB_ENUM(Transaction_Transfer_FieldNumber) {
-  Transaction_Transfer_FieldNumber_AddrTo = 1,
-  Transaction_Transfer_FieldNumber_Amount = 2,
+  Transaction_Transfer_FieldNumber_AddrsToArray = 1,
+  Transaction_Transfer_FieldNumber_AmountsArray = 2,
 };
 
 /**
@@ -1182,9 +1199,13 @@ typedef GPB_ENUM(Transaction_Transfer_FieldNumber) {
  **/
 @interface Transaction_Transfer : GPBMessage
 
-@property(nonatomic, readwrite, copy, null_resettable) NSData *addrTo;
+@property(nonatomic, readwrite, strong, null_resettable) NSMutableArray<NSData*> *addrsToArray;
+/** The number of items in @c addrsToArray without causing the array to be created. */
+@property(nonatomic, readonly) NSUInteger addrsToArray_Count;
 
-@property(nonatomic, readwrite) uint64_t amount;
+@property(nonatomic, readwrite, strong, null_resettable) GPBUInt64Array *amountsArray;
+/** The number of items in @c amountsArray without causing the array to be created. */
+@property(nonatomic, readonly) NSUInteger amountsArray_Count;
 
 @end
 
@@ -1193,8 +1214,6 @@ typedef GPB_ENUM(Transaction_Transfer_FieldNumber) {
 typedef GPB_ENUM(Transaction_CoinBase_FieldNumber) {
   Transaction_CoinBase_FieldNumber_AddrTo = 1,
   Transaction_CoinBase_FieldNumber_Amount = 2,
-  Transaction_CoinBase_FieldNumber_BlockNumber = 3,
-  Transaction_CoinBase_FieldNumber_Headerhash = 4,
 };
 
 @interface Transaction_CoinBase : GPBMessage
@@ -1202,10 +1221,6 @@ typedef GPB_ENUM(Transaction_CoinBase_FieldNumber) {
 @property(nonatomic, readwrite, copy, null_resettable) NSData *addrTo;
 
 @property(nonatomic, readwrite) uint64_t amount;
-
-@property(nonatomic, readwrite) uint64_t blockNumber;
-
-@property(nonatomic, readwrite, copy, null_resettable) NSData *headerhash;
 
 @end
 
@@ -1266,17 +1281,21 @@ typedef GPB_ENUM(Transaction_Token_FieldNumber) {
 
 typedef GPB_ENUM(Transaction_TransferToken_FieldNumber) {
   Transaction_TransferToken_FieldNumber_TokenTxhash = 1,
-  Transaction_TransferToken_FieldNumber_AddrTo = 2,
-  Transaction_TransferToken_FieldNumber_Amount = 3,
+  Transaction_TransferToken_FieldNumber_AddrsToArray = 2,
+  Transaction_TransferToken_FieldNumber_AmountsArray = 3,
 };
 
 @interface Transaction_TransferToken : GPBMessage
 
 @property(nonatomic, readwrite, copy, null_resettable) NSData *tokenTxhash;
 
-@property(nonatomic, readwrite, copy, null_resettable) NSData *addrTo;
+@property(nonatomic, readwrite, strong, null_resettable) NSMutableArray<NSData*> *addrsToArray;
+/** The number of items in @c addrsToArray without causing the array to be created. */
+@property(nonatomic, readonly) NSUInteger addrsToArray_Count;
 
-@property(nonatomic, readwrite) uint64_t amount;
+@property(nonatomic, readwrite, strong, null_resettable) GPBUInt64Array *amountsArray;
+/** The number of items in @c amountsArray without causing the array to be created. */
+@property(nonatomic, readonly) NSUInteger amountsArray_Count;
 
 @end
 
@@ -1313,20 +1332,6 @@ typedef GPB_ENUM(TokenList_FieldNumber) {
 
 @end
 
-#pragma mark - TokenDetailedList
-
-typedef GPB_ENUM(TokenDetailedList_FieldNumber) {
-  TokenDetailedList_FieldNumber_TokensArray = 1,
-};
-
-@interface TokenDetailedList : GPBMessage
-
-@property(nonatomic, readwrite, strong, null_resettable) NSMutableArray<Transaction*> *tokensArray;
-/** The number of items in @c tokensArray without causing the array to be created. */
-@property(nonatomic, readonly) NSUInteger tokensArray_Count;
-
-@end
-
 #pragma mark - TokenMetadata
 
 typedef GPB_ENUM(TokenMetadata_FieldNumber) {
@@ -1341,46 +1346,6 @@ typedef GPB_ENUM(TokenMetadata_FieldNumber) {
 @property(nonatomic, readwrite, strong, null_resettable) NSMutableArray<NSData*> *transferTokenTxHashesArray;
 /** The number of items in @c transferTokenTxHashesArray without causing the array to be created. */
 @property(nonatomic, readonly) NSUInteger transferTokenTxHashesArray_Count;
-
-@end
-
-#pragma mark - CollectEphemeralMessageReq
-
-typedef GPB_ENUM(CollectEphemeralMessageReq_FieldNumber) {
-  CollectEphemeralMessageReq_FieldNumber_MsgId = 1,
-};
-
-@interface CollectEphemeralMessageReq : GPBMessage
-
-@property(nonatomic, readwrite, copy, null_resettable) NSData *msgId;
-
-@end
-
-#pragma mark - CollectEphemeralMessageResp
-
-typedef GPB_ENUM(CollectEphemeralMessageResp_FieldNumber) {
-  CollectEphemeralMessageResp_FieldNumber_EphemeralMetadata = 1,
-};
-
-@interface CollectEphemeralMessageResp : GPBMessage
-
-@property(nonatomic, readwrite, strong, null_resettable) EphemeralMetadata *ephemeralMetadata;
-/** Test to see if @c ephemeralMetadata has been set. */
-@property(nonatomic, readwrite) BOOL hasEphemeralMetadata;
-
-@end
-
-#pragma mark - PushEphemeralMessageReq
-
-typedef GPB_ENUM(PushEphemeralMessageReq_FieldNumber) {
-  PushEphemeralMessageReq_FieldNumber_EphemeralMessage = 1,
-};
-
-@interface PushEphemeralMessageReq : GPBMessage
-
-@property(nonatomic, readwrite, strong, null_resettable) EncryptedEphemeralMessage *ephemeralMessage;
-/** Test to see if @c ephemeralMessage has been set. */
-@property(nonatomic, readwrite) BOOL hasEphemeralMessage;
 
 @end
 
@@ -1431,76 +1396,6 @@ typedef GPB_ENUM(EncryptedEphemeralMessage_Channel_FieldNumber) {
 
 @end
 
-#pragma mark - EphemeralChannelPayload
-
-typedef GPB_ENUM(EphemeralChannelPayload_FieldNumber) {
-  EphemeralChannelPayload_FieldNumber_Prf512Seed = 1,
-  EphemeralChannelPayload_FieldNumber_DilithiumSignature = 2,
-  EphemeralChannelPayload_FieldNumber_AddrFrom = 3,
-  EphemeralChannelPayload_FieldNumber_Data_p = 4,
-};
-
-@interface EphemeralChannelPayload : GPBMessage
-
-/** PRF512 seed used for further communication after channel established */
-@property(nonatomic, readwrite, copy, null_resettable) NSData *prf512Seed;
-
-/** Sign hash of (msg_id, ttl, enc_aes256_symkey, prf512_seed, addr_from, */
-@property(nonatomic, readwrite, copy, null_resettable) NSData *dilithiumSignature;
-
-/** data) */
-@property(nonatomic, readwrite, copy, null_resettable) NSData *addrFrom;
-
-/** Could be anything, plain-text, binary, JSON etc. */
-@property(nonatomic, readwrite, copy, null_resettable) NSData *data_p;
-
-@end
-
-#pragma mark - EphemeralMessagePayload
-
-typedef GPB_ENUM(EphemeralMessagePayload_FieldNumber) {
-  EphemeralMessagePayload_FieldNumber_AddrFrom = 1,
-  EphemeralMessagePayload_FieldNumber_Data_p = 2,
-};
-
-@interface EphemeralMessagePayload : GPBMessage
-
-/** Sender address */
-@property(nonatomic, readwrite, copy, null_resettable) NSData *addrFrom;
-
-/** Could be anything, plain-text, binary, JSON etc. */
-@property(nonatomic, readwrite, copy, null_resettable) NSData *data_p;
-
-@end
-
-#pragma mark - LatticePublicKeys
-
-typedef GPB_ENUM(LatticePublicKeys_FieldNumber) {
-  LatticePublicKeys_FieldNumber_LatticeKeysArray = 1,
-};
-
-@interface LatticePublicKeys : GPBMessage
-
-@property(nonatomic, readwrite, strong, null_resettable) NSMutableArray<Transaction*> *latticeKeysArray;
-/** The number of items in @c latticeKeysArray without causing the array to be created. */
-@property(nonatomic, readonly) NSUInteger latticeKeysArray_Count;
-
-@end
-
-#pragma mark - EphemeralMetadata
-
-typedef GPB_ENUM(EphemeralMetadata_FieldNumber) {
-  EphemeralMetadata_FieldNumber_EncryptedEphemeralMessageListArray = 2,
-};
-
-@interface EphemeralMetadata : GPBMessage
-
-@property(nonatomic, readwrite, strong, null_resettable) NSMutableArray<EncryptedEphemeralMessage*> *encryptedEphemeralMessageListArray;
-/** The number of items in @c encryptedEphemeralMessageListArray without causing the array to be created. */
-@property(nonatomic, readonly) NSUInteger encryptedEphemeralMessageListArray_Count;
-
-@end
-
 #pragma mark - AddressList
 
 typedef GPB_ENUM(AddressList_FieldNumber) {
@@ -1536,16 +1431,13 @@ typedef GPB_ENUM(BlockHeightData_FieldNumber) {
 #pragma mark - BlockMetaData
 
 typedef GPB_ENUM(BlockMetaData_FieldNumber) {
-  BlockMetaData_FieldNumber_IsOrphan = 1,
-  BlockMetaData_FieldNumber_BlockDifficulty = 2,
-  BlockMetaData_FieldNumber_CumulativeDifficulty = 3,
-  BlockMetaData_FieldNumber_ChildHeaderhashesArray = 4,
-  BlockMetaData_FieldNumber_LastNHeaderhashesArray = 5,
+  BlockMetaData_FieldNumber_BlockDifficulty = 1,
+  BlockMetaData_FieldNumber_CumulativeDifficulty = 2,
+  BlockMetaData_FieldNumber_ChildHeaderhashesArray = 3,
+  BlockMetaData_FieldNumber_LastNHeaderhashesArray = 4,
 };
 
 @interface BlockMetaData : GPBMessage
-
-@property(nonatomic, readwrite) BOOL isOrphan;
 
 @property(nonatomic, readwrite, copy, null_resettable) NSData *blockDifficulty;
 
@@ -1624,13 +1516,34 @@ typedef GPB_ENUM(StateObjects_FieldNumber) {
 
 @end
 
+#pragma mark - PeerStat
+
+typedef GPB_ENUM(PeerStat_FieldNumber) {
+  PeerStat_FieldNumber_PeerIp = 1,
+  PeerStat_FieldNumber_Port = 2,
+  PeerStat_FieldNumber_NodeChainState = 3,
+};
+
+@interface PeerStat : GPBMessage
+
+@property(nonatomic, readwrite, copy, null_resettable) NSData *peerIp;
+
+@property(nonatomic, readwrite) uint32_t port;
+
+@property(nonatomic, readwrite, strong, null_resettable) NodeChainState *nodeChainState;
+/** Test to see if @c nodeChainState has been set. */
+@property(nonatomic, readwrite) BOOL hasNodeChainState;
+
+@end
+
 #pragma mark - NodeChainState
 
 typedef GPB_ENUM(NodeChainState_FieldNumber) {
   NodeChainState_FieldNumber_BlockNumber = 1,
   NodeChainState_FieldNumber_HeaderHash = 2,
   NodeChainState_FieldNumber_CumulativeDifficulty = 3,
-  NodeChainState_FieldNumber_Timestamp = 4,
+  NodeChainState_FieldNumber_Version = 4,
+  NodeChainState_FieldNumber_Timestamp = 5,
 };
 
 @interface NodeChainState : GPBMessage
@@ -1640,6 +1553,8 @@ typedef GPB_ENUM(NodeChainState_FieldNumber) {
 @property(nonatomic, readwrite, copy, null_resettable) NSData *headerHash;
 
 @property(nonatomic, readwrite, copy, null_resettable) NSData *cumulativeDifficulty;
+
+@property(nonatomic, readwrite, copy, null_resettable) NSString *version;
 
 @property(nonatomic, readwrite) uint64_t timestamp;
 
@@ -1671,6 +1586,46 @@ typedef GPB_ENUM(P2PAcknowledgement_FieldNumber) {
 @interface P2PAcknowledgement : GPBMessage
 
 @property(nonatomic, readwrite) uint32_t bytesProcessed;
+
+@end
+
+#pragma mark - PeerInfo
+
+typedef GPB_ENUM(PeerInfo_FieldNumber) {
+  PeerInfo_FieldNumber_PeerIp = 1,
+  PeerInfo_FieldNumber_Port = 2,
+  PeerInfo_FieldNumber_BannedTimestamp = 3,
+  PeerInfo_FieldNumber_Credibility = 4,
+  PeerInfo_FieldNumber_LastConnectionsTimestampArray = 5,
+};
+
+@interface PeerInfo : GPBMessage
+
+@property(nonatomic, readwrite, copy, null_resettable) NSData *peerIp;
+
+@property(nonatomic, readwrite) uint32_t port;
+
+@property(nonatomic, readwrite) uint32_t bannedTimestamp;
+
+@property(nonatomic, readwrite) uint32_t credibility;
+
+@property(nonatomic, readwrite, strong, null_resettable) GPBUInt32Array *lastConnectionsTimestampArray;
+/** The number of items in @c lastConnectionsTimestampArray without causing the array to be created. */
+@property(nonatomic, readonly) NSUInteger lastConnectionsTimestampArray_Count;
+
+@end
+
+#pragma mark - Peers
+
+typedef GPB_ENUM(Peers_FieldNumber) {
+  Peers_FieldNumber_PeerInfoListArray = 1,
+};
+
+@interface Peers : GPBMessage
+
+@property(nonatomic, readwrite, strong, null_resettable) NSMutableArray<PeerInfo*> *peerInfoListArray;
+/** The number of items in @c peerInfoListArray without causing the array to be created. */
+@property(nonatomic, readonly) NSUInteger peerInfoListArray_Count;
 
 @end
 

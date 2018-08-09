@@ -46,6 +46,18 @@
              responseClass:[GetKnownPeersResp class]
         responsesWriteable:[GRXWriteable writeableWithSingleHandler:handler]];
 }
+#pragma mark GetPeersStat(GetPeersStatReq) returns (GetPeersStatResp)
+
+- (void)getPeersStatWithRequest:(GetPeersStatReq *)request handler:(void(^)(GetPeersStatResp *_Nullable response, NSError *_Nullable error))handler{
+  [[self RPCToGetPeersStatWithRequest:request handler:handler] start];
+}
+// Returns a not-yet-started RPC object.
+- (GRPCProtoCall *)RPCToGetPeersStatWithRequest:(GetPeersStatReq *)request handler:(void(^)(GetPeersStatResp *_Nullable response, NSError *_Nullable error))handler{
+  return [self RPCToMethod:@"GetPeersStat"
+            requestsWriter:[GRXWriter writerWithValue:request]
+             responseClass:[GetPeersStatResp class]
+        responsesWriteable:[GRXWriteable writeableWithSingleHandler:handler]];
+}
 #pragma mark GetStats(GetStatsReq) returns (GetStatsResp)
 
 - (void)getStatsWithRequest:(GetStatsReq *)request handler:(void(^)(GetStatsResp *_Nullable response, NSError *_Nullable error))handler{
@@ -94,6 +106,18 @@
              responseClass:[GetLatestDataResp class]
         responsesWriteable:[GRXWriteable writeableWithSingleHandler:handler]];
 }
+#pragma mark PushTransaction(PushTransactionReq) returns (PushTransactionResp)
+
+- (void)pushTransactionWithRequest:(PushTransactionReq *)request handler:(void(^)(PushTransactionResp *_Nullable response, NSError *_Nullable error))handler{
+  [[self RPCToPushTransactionWithRequest:request handler:handler] start];
+}
+// Returns a not-yet-started RPC object.
+- (GRPCProtoCall *)RPCToPushTransactionWithRequest:(PushTransactionReq *)request handler:(void(^)(PushTransactionResp *_Nullable response, NSError *_Nullable error))handler{
+  return [self RPCToMethod:@"PushTransaction"
+            requestsWriter:[GRXWriter writerWithValue:request]
+             responseClass:[PushTransactionResp class]
+        responsesWriteable:[GRXWriteable writeableWithSingleHandler:handler]];
+}
 #pragma mark TransferCoins(TransferCoinsReq) returns (TransferCoinsResp)
 
 - (void)transferCoinsWithRequest:(TransferCoinsReq *)request handler:(void(^)(TransferCoinsResp *_Nullable response, NSError *_Nullable error))handler{
@@ -106,16 +130,28 @@
              responseClass:[TransferCoinsResp class]
         responsesWriteable:[GRXWriteable writeableWithSingleHandler:handler]];
 }
-#pragma mark PushTransaction(PushTransactionReq) returns (PushTransactionResp)
+#pragma mark GetAddressFromPK(GetAddressFromPKReq) returns (GetAddressFromPKResp)
 
-- (void)pushTransactionWithRequest:(PushTransactionReq *)request handler:(void(^)(PushTransactionResp *_Nullable response, NSError *_Nullable error))handler{
-  [[self RPCToPushTransactionWithRequest:request handler:handler] start];
+- (void)getAddressFromPKWithRequest:(GetAddressFromPKReq *)request handler:(void(^)(GetAddressFromPKResp *_Nullable response, NSError *_Nullable error))handler{
+  [[self RPCToGetAddressFromPKWithRequest:request handler:handler] start];
 }
 // Returns a not-yet-started RPC object.
-- (GRPCProtoCall *)RPCToPushTransactionWithRequest:(PushTransactionReq *)request handler:(void(^)(PushTransactionResp *_Nullable response, NSError *_Nullable error))handler{
-  return [self RPCToMethod:@"PushTransaction"
+- (GRPCProtoCall *)RPCToGetAddressFromPKWithRequest:(GetAddressFromPKReq *)request handler:(void(^)(GetAddressFromPKResp *_Nullable response, NSError *_Nullable error))handler{
+  return [self RPCToMethod:@"GetAddressFromPK"
             requestsWriter:[GRXWriter writerWithValue:request]
-             responseClass:[PushTransactionResp class]
+             responseClass:[GetAddressFromPKResp class]
+        responsesWriteable:[GRXWriteable writeableWithSingleHandler:handler]];
+}
+#pragma mark GetMessageTxn(MessageTxnReq) returns (TransferCoinsResp)
+
+- (void)getMessageTxnWithRequest:(MessageTxnReq *)request handler:(void(^)(TransferCoinsResp *_Nullable response, NSError *_Nullable error))handler{
+  [[self RPCToGetMessageTxnWithRequest:request handler:handler] start];
+}
+// Returns a not-yet-started RPC object.
+- (GRPCProtoCall *)RPCToGetMessageTxnWithRequest:(MessageTxnReq *)request handler:(void(^)(TransferCoinsResp *_Nullable response, NSError *_Nullable error))handler{
+  return [self RPCToMethod:@"GetMessageTxn"
+            requestsWriter:[GRXWriter writerWithValue:request]
+             responseClass:[TransferCoinsResp class]
         responsesWriteable:[GRXWriteable writeableWithSingleHandler:handler]];
 }
 #pragma mark GetTokenTxn(TokenTxnReq) returns (TransferCoinsResp)
@@ -152,66 +188,6 @@
   return [self RPCToMethod:@"GetSlaveTxn"
             requestsWriter:[GRXWriter writerWithValue:request]
              responseClass:[TransferCoinsResp class]
-        responsesWriteable:[GRXWriteable writeableWithSingleHandler:handler]];
-}
-#pragma mark GetLatticePublicKeyTxn(LatticePublicKeyTxnReq) returns (TransferCoinsResp)
-
-- (void)getLatticePublicKeyTxnWithRequest:(LatticePublicKeyTxnReq *)request handler:(void(^)(TransferCoinsResp *_Nullable response, NSError *_Nullable error))handler{
-  [[self RPCToGetLatticePublicKeyTxnWithRequest:request handler:handler] start];
-}
-// Returns a not-yet-started RPC object.
-- (GRPCProtoCall *)RPCToGetLatticePublicKeyTxnWithRequest:(LatticePublicKeyTxnReq *)request handler:(void(^)(TransferCoinsResp *_Nullable response, NSError *_Nullable error))handler{
-  return [self RPCToMethod:@"GetLatticePublicKeyTxn"
-            requestsWriter:[GRXWriter writerWithValue:request]
-             responseClass:[TransferCoinsResp class]
-        responsesWriteable:[GRXWriteable writeableWithSingleHandler:handler]];
-}
-#pragma mark PushEphemeralMessage(PushEphemeralMessageReq) returns (PushTransactionResp)
-
-/**
- * ------- Ephemeral API -------
- */
-- (void)pushEphemeralMessageWithRequest:(PushEphemeralMessageReq *)request handler:(void(^)(PushTransactionResp *_Nullable response, NSError *_Nullable error))handler{
-  [[self RPCToPushEphemeralMessageWithRequest:request handler:handler] start];
-}
-// Returns a not-yet-started RPC object.
-/**
- * ------- Ephemeral API -------
- */
-- (GRPCProtoCall *)RPCToPushEphemeralMessageWithRequest:(PushEphemeralMessageReq *)request handler:(void(^)(PushTransactionResp *_Nullable response, NSError *_Nullable error))handler{
-  return [self RPCToMethod:@"PushEphemeralMessage"
-            requestsWriter:[GRXWriter writerWithValue:request]
-             responseClass:[PushTransactionResp class]
-        responsesWriteable:[GRXWriteable writeableWithSingleHandler:handler]];
-}
-#pragma mark CollectEphemeralMessage(CollectEphemeralMessageReq) returns (CollectEphemeralMessageResp)
-
-/**
- * ------------------------------
- */
-- (void)collectEphemeralMessageWithRequest:(CollectEphemeralMessageReq *)request handler:(void(^)(CollectEphemeralMessageResp *_Nullable response, NSError *_Nullable error))handler{
-  [[self RPCToCollectEphemeralMessageWithRequest:request handler:handler] start];
-}
-// Returns a not-yet-started RPC object.
-/**
- * ------------------------------
- */
-- (GRPCProtoCall *)RPCToCollectEphemeralMessageWithRequest:(CollectEphemeralMessageReq *)request handler:(void(^)(CollectEphemeralMessageResp *_Nullable response, NSError *_Nullable error))handler{
-  return [self RPCToMethod:@"CollectEphemeralMessage"
-            requestsWriter:[GRXWriter writerWithValue:request]
-             responseClass:[CollectEphemeralMessageResp class]
-        responsesWriteable:[GRXWriteable writeableWithSingleHandler:handler]];
-}
-#pragma mark GetTokenDetailedList(Empty) returns (TokenDetailedList)
-
-- (void)getTokenDetailedListWithRequest:(Empty *)request handler:(void(^)(TokenDetailedList *_Nullable response, NSError *_Nullable error))handler{
-  [[self RPCToGetTokenDetailedListWithRequest:request handler:handler] start];
-}
-// Returns a not-yet-started RPC object.
-- (GRPCProtoCall *)RPCToGetTokenDetailedListWithRequest:(Empty *)request handler:(void(^)(TokenDetailedList *_Nullable response, NSError *_Nullable error))handler{
-  return [self RPCToMethod:@"GetTokenDetailedList"
-            requestsWriter:[GRXWriter writerWithValue:request]
-             responseClass:[TokenDetailedList class]
         responsesWriteable:[GRXWriteable writeableWithSingleHandler:handler]];
 }
 @end

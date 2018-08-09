@@ -87,6 +87,7 @@ const MainDrawerMenu = DrawerNavigator(
     },
     {
         initialRouteName: 'Wallet',
+        //initialRouteName: 'TransactionsHistory',
         drawerPosition: 'left',
         contentComponent: CustomDrawerContentComponent,
         contentOptions: {
