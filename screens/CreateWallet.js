@@ -67,7 +67,7 @@ export default class CreateWallet extends React.Component {
 
       this.setState({processing:true})
       const randomBytes = crypto.randomBytes(48)
-      // console.log(randomBytes)
+      console.log(randomBytes)
 
       // CreateWallet.createWallet("YEAHHHH")
       CreateWalletQRLlib.createWallet(this.state.treeHeight, this.state.hashFunction,(error, pk)=> {

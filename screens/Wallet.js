@@ -12,7 +12,9 @@ import {
   ActivityIndicator,
   Picker,
   TouchableOpacity,
-  TouchableHighlight
+  ScrollView,
+  TouchableHighlight,
+  ListView
 } from 'react-native';
 
 
@@ -25,10 +27,18 @@ import crypto from 'crypto'
 import {NativeModules} from 'react-native';
 // ios
 var CreateWallet = NativeModules.CreateWallet;
+//var RefreshWallet = NativeModules.refreshWallet;
+
+var IosWallet = NativeModules.IosWallet;
 // android
 var AndroidWallet = NativeModules.AndroidWallet;
 
 
+
+var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+var testjson =[{}]
+
+// var proto = require('../../grpc-web/compiled.js');
 export default class Wallet extends React.Component{
 // export default class App extends Component<{}> {
 
@@ -40,15 +50,34 @@ export default class Wallet extends React.Component{
       ),
     };
 
-
-    state={
-        address: '',
+    constructor(props) {
+      super(props);
+      this.state = {
+        isLoading: true,
         passphrase : '',
         treeHeight: "0",
         signatureCounts : 0,
-        hashFunction: '',
-        processing: false
+        hashFunction: 'SHAKE_128',
+        processing: false,
+        balance : 0,
+        // walletAddress : "010500c0183a30c9170c8daf0a25d91f2102c49994a04e81a18286c1e345121f33037301c70c38"
+        walletAddress : "0105006d232eb403a0248f9d4c0476c06a7d7a1d0425420df2dd915b7fb46cf7da132699c27b93"
+      }
     }
+
+    componentDidMount() {
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.setState({
+            isLoading: false,
+            dataSource: ds.cloneWithRows([])
+        });
+    }
+
+
+
+    state={
+    }
+
 
 
     // ANDROID
@@ -63,14 +92,20 @@ export default class Wallet extends React.Component{
 
     // ANDROID
     async androidWallet() {
-        try {
-            let androidWalletStr = await AndroidWallet.createWallet();
-            console.log(androidWalletStr);
-        } catch (e) {
-            console.error(e);
-        }
-    }
 
+        // This is the example with Promise
+        // try {
+        //     let androidWalletStr = await AndroidWallet.createWallet();
+        //     console.log(androidWalletStr);
+        // } catch (e) {
+        //     console.error(e);
+        // }
+
+        // This is the example with callback
+        AndroidWallet.createWallet(8, 3, (msg) => {console.log(msg)}, (wallet) => {console.log("Android wallet is " + wallet)} );
+
+        // UIManager.measureLayout(100,100,(msg) => {console.log(msg);},(x, y, width, height) => {console.log(x + ':' + y + ':' + width + ':' + height);});
+    }
 
 
     // IOS
@@ -79,15 +114,36 @@ export default class Wallet extends React.Component{
         this.setState({processing:true})
         const randomBytes = crypto.randomBytes(48)
         // console.log(randomBytes)
+        this.setState({hashFunction: "SHAKE_128"})
 
         // CreateWallet.createWallet("YEAHHHH")
-        CreateWallet.createWallet(this.state.treeHeight, this.state.hashFunction,(error, pk)=> {
+        CreateWallet.createWallet("8", 3, (error, pk)=> {
             this.setState({processing:false, address:pk})
             console.log("REACTNATIVE :wallet address is :",pk)
+
         })
     }
 
 
+    // Refresh wallet balance
+    refreshWallet = () => {
+        // Ios
+        if (Platform.OS === 'ios'){
+            this.setState({isLoading:true})
+            IosWallet.refreshWallet(this.state.walletAddress, (error, balance, keys)=> {
+                console.log("KEEEYS ARE : ", keys)
+
+                this.setState({isLoading:false, balance: balance, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
+            });
+        }
+        // Android
+        else {
+            AndroidWallet.refreshWallet(this.state.walletAddress, (err) => {console.log(err)}, (balance) => {
+                this.setState({isLoading:false, balance: balance})
+            });
+        }
+
+    }
 
 
     showActionSheet = () => {
@@ -122,49 +178,113 @@ export default class Wallet extends React.Component{
     }
 
 
+    renderRow(rowData, sectionID, rowID) {
+        return (
+            <View style={{flex: 1, flexDirection:'row',  height:80, paddingTop:20}}>
+                <View>
+                    <Image source={require('../resources/images/received.png')} resizeMode={Image.resizeMode.contain} style={{height:40, width:40,marginLeft:10, marginRight:10}} />
+                </View>
+
+                <View>
+                    <Text>{rowData.title}</Text>
+                    <Text>{rowData.date}</Text>
+                    <Text>{rowData.desc}</Text>
+
+
+                </View>
+          </View>
+          );
+    }
+
+
+    ListViewItemSeparator = () => {
+      return (
+        <View
+          style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}
+        />
+      );
+    }
+
+
     render() {
+
+
+        if (this.state.isLoading) {
+            return (
+              <View style={{flex: 1, paddingTop: 20}}>
+                <ActivityIndicator />
+              </View>
+            );
+          }
+
+
         // this.helloWorld();
         return (
             <ImageBackground source={require('../resources/images/main_background.png')} style={styles.backgroundImage}>
           <View style={{flex:1}}>
 
-          <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:60, paddingLeft:30,flex:0.2}}>
+          <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:60, paddingLeft:30,flex:0.1}}>
               <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='white'>
             <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
             </TouchableHighlight>
           </View>
 
+
+
+          {/*
+
+              The following code is functional and creates the android and ios wallets
+
+
           <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ this.androidWallet }>
               <Text style={styles.TextStyle}> Create wallet Android </Text>
           </TouchableOpacity>
 
+          <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ this.createWallet }>
+              <Text style={styles.TextStyle}> Create wallet iOS </Text>
+          </TouchableOpacity>
+
+          */}
+
+
+
+
+          <ScrollView style={{flex:2}}>
+
           <View style={{ alignItems:'center',paddingTop:20, flex:0.5}}>
               <Image source={require('../resources/images/qrl_logo_wallet.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:100}} />
+              <Text style={{color:'white'}}>LAST UPDATE: MAY 28TH</Text>
            </View>
+
+
 
            <View style={{ alignItems:'center',paddingTop:10 ,flex:1}}>
                <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:280, width:300, justifyContent:'center',alignItems:'center'}} >
                    <Text style={{color:'white'}}>QRL BALANCE</Text>
-                   <Text style={{color:'white',fontSize:30}}>34511.7</Text>
+                   <Text style={{color:'white',fontSize:30}}>{this.state.balance / 1000000000 }</Text>
+
+               <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ this.refreshWallet }>
+                   <Text style={styles.TextStyle}> Refresh </Text>
+               </TouchableOpacity>
                </ImageBackground>
             </View>
 
-            <View style={{ alignItems:'center',paddingTop:20, padding:20,margin:10, flex:0.2}}>
-                <Text style={{color:'white'}}>YOUR PUBLIC ADDRESS</Text>
-                <Text style={{color:'white', textAlign:'center'}}>Q01070056562525c06b16d05683f509ac20090458f4ec8617369e3701d5c3d728323576f9788e20</Text>
-             </View>
 
-             <View style={{ alignItems:'center',paddingTop:20, flex:0.2}}>
-                 <Image source={require('../resources/images/qr_code.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:100}} />
-              </View>
+            <View style={{backgroundColor:'white', flex:2, width:330, alignSelf:'center'}}>
+                <Text style={{alignItems:'center', alignSelf:'center', paddingTop:20, marginBottom:20}}>TRANSACTION HISTORY</Text>
+                <ListView automaticallyAdjustContentInsets={false} dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)} renderSeparator= {this.ListViewItemSeparator} enableEmptySections={true} />
+            </View>
 
-              <View style={{ alignItems:'center',paddingTop:20, flex:0.7}}>
+        </ScrollView>
+
+{/*
+              <View style={{ alignItems:'center',paddingTop:20, flex:0.7,position: 'absolute', left: 0, right: 0, bottom: -20}}>
                   <Image source={require('../resources/images/wallet_bottom.png')} resizeMode={Image.resizeMode.contain} style={{height:200, width:400}} />
                </View>
 
 
 
-            {/*
+
           <View style={styles.container}>
 
                 <Text style={styles.welcomeBig}>

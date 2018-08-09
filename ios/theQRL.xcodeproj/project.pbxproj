@@ -37,6 +37,7 @@
 		4DB46B66E94145B28EE8E8E5 /* libRNRandomBytes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F90CC962F89479998AF0188 /* libRNRandomBytes.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		690615E12045E68A00150DE0 /* testingEphemeral.mm in Sources */ = {isa = PBXBuildFile; fileRef = 690615E02045E68A00150DE0 /* testingEphemeral.mm */; };
+		69090ABD20EE481000DF14FA /* refreshWallet.mm in Sources */ = {isa = PBXBuildFile; fileRef = 69090ABC20EE481000DF14FA /* refreshWallet.mm */; };
 		694C54B320ADB6F300AC2B3F /* CreateWallet.mm in Sources */ = {isa = PBXBuildFile; fileRef = 694C54B220ADB6F300AC2B3F /* CreateWallet.mm */; };
 		6964026B20ADAF1F0020E054 /* libshasha.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6964026720ADAF1F0020E054 /* libshasha.a */; };
 		6964026C20ADAF1F0020E054 /* libdilithium.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6964026820ADAF1F0020E054 /* libdilithium.a */; };
@@ -376,6 +377,8 @@
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		690615E02045E68A00150DE0 /* testingEphemeral.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = testingEphemeral.mm; sourceTree = "<group>"; };
 		690616072045E6D700150DE0 /* testingEphemeral.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = testingEphemeral.h; sourceTree = "<group>"; };
+		69090ABC20EE481000DF14FA /* refreshWallet.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = refreshWallet.mm; sourceTree = "<group>"; };
+		69090ABE20EE484100DF14FA /* refreshWallet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = refreshWallet.h; sourceTree = "<group>"; };
 		694C54B220ADB6F300AC2B3F /* CreateWallet.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CreateWallet.mm; sourceTree = "<group>"; };
 		694C54B420ADB70F00AC2B3F /* CreateWallet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateWallet.h; sourceTree = "<group>"; };
 		6959D0472028C8E8009EDBA9 /* libgRPC-Core.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libgRPC-Core.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -572,8 +575,8 @@
 				69FA3DC22023265300348496 /* KyberIos.mm */,
 				694C54B420ADB70F00AC2B3F /* CreateWallet.h */,
 				694C54B220ADB6F300AC2B3F /* CreateWallet.mm */,
-				690615E02045E68A00150DE0 /* testingEphemeral.mm */,
 				690616072045E6D700150DE0 /* testingEphemeral.h */,
+				690615E02045E68A00150DE0 /* testingEphemeral.mm */,
 				69871E28202C7E4D0097260E /* DilithiumIos.h */,
 				69871E26202C7E170097260E /* DilithiumIos.mm */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -585,6 +588,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				69090ABE20EE484100DF14FA /* refreshWallet.h */,
+				69090ABC20EE481000DF14FA /* refreshWallet.mm */,
 			);
 			name = theQRL;
 			sourceTree = "<group>";
@@ -1345,6 +1350,7 @@
 				694C54B320ADB6F300AC2B3F /* CreateWallet.mm in Sources */,
 				69FA3DC32023265300348496 /* KyberIos.mm in Sources */,
 				69871E27202C7E170097260E /* DilithiumIos.mm in Sources */,
+				69090ABD20EE481000DF14FA /* refreshWallet.mm in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				690615E12045E68A00150DE0 /* testingEphemeral.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,

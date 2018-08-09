@@ -21,37 +21,114 @@
 #import "xmssFast.h"
 #import "misc.h"
 #include <xmssBasic.h>
+#include <iostream>
 
 @implementation CreateWallet
 RCT_EXPORT_MODULE();
 
 // Create wallet function that returns the wallet address as a callback
 //RCT_EXPORT_METHOD(createWallet:(NSString*)hashFunction (RCTResponseSenderBlock)callback )
-RCT_EXPORT_METHOD(createWallet:(NSString*)treeHeight hashFunction:(NSString*)hashFunction callback:(RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(createWallet:(NSString* )treeHeight hashFunction:(NSNumber* _Nonnull)hashFunction callback:(RCTResponseSenderBlock)callback)
 {
-
   NSLog(@"Creating wallet....");
   NSLog(@"TREE HEIGHT : %@", treeHeight);
   NSLog(@"HASH FUNCTION : %@", hashFunction);
   
-  // fixed seed for testing purpose
-  // would need to generate the seed on the RN side to avoid code duplication (iOS/Android)
-  std::vector<unsigned char> seed(48, 0);
+  // GRPC call test
+  static NSString * const kHostAddress = @"testnet-2.automated.theqrl.org:19009";
+  [GRPCCall useInsecureConnectionsForHost:kHostAddress];
+  [GRPCCall setUserAgentPrefix:@"HelloWorld/1.0" forHost:kHostAddress];
+  PublicAPI *client = [[PublicAPI alloc] initWithHost:kHostAddress];
   
-//  NSData *dataData = [NSData dataWithBytes:seed length:sizeof(seed)];
-//  NSLog(@"data = %x", seed[0]);
+  GetStatsReq *getStatsReq = [GetStatsReq message];
+  NSLog(@"Getting tx information...");
+  [client getStatsWithRequest:getStatsReq handler:^(GetStatsResp *response, NSError *error) {
+    NSLog(@"RESPONSE __________________________GetStats__________________________: %@", response);
+  }];
+  
+  GetNodeStateReq *getNodeState = [GetNodeStateReq message];
+  NSLog(@"Getting tx information...");
+  [client getNodeStateWithRequest:getNodeState handler:^(GetNodeStateResp *response, NSError *error) {
+    NSLog(@"RESPONSE: __________________________GetNodeState__________________________: %@", response);
+  }];
+  
+  
+  NSString *command = @"010500b48fb25a343d59eb058e6726f5e8bf9c64ee4ccd26ea1299a1a88e1d64ac82d834d550e9";
+  
+  command = [command stringByReplacingOccurrencesOfString:@" " withString:@""];
+  NSMutableData *commandToSend= [[NSMutableData alloc] init];
+  unsigned char whole_byte;
+  char byte_chars[3] = {'\0','\0','\0'};
+  int i;
+  for (i=0; i < [command length]/2; i++) {
+    byte_chars[0] = [command characterAtIndex:i*2];
+    byte_chars[1] = [command characterAtIndex:i*2+1];
+    whole_byte = strtol(byte_chars, NULL, 16);
+    [commandToSend appendBytes:&whole_byte length:1];
+  }
+  NSLog(@"%@", commandToSend);
+  
 
-  // convert NSString to int
+
+  GetAddressStateReq *getAddressStateReq = [GetAddressStateReq message];
+  NSData *walletAddress = [@"010500b48fb25a343d59eb058e6726f5e8bf9c64ee4ccd26ea1299a1a88e1d64ac82d834d550e9" dataUsingEncoding:NSUTF8StringEncoding];
+  getAddressStateReq.address = commandToSend;
+  [client getAddressStateWithRequest:getAddressStateReq handler:^(GetAddressStateResp *response2, NSError *error2) {
+    NSLog(@"RESPONSE: __________________________GetAddressState__________________________: %@", response2);
+    NSLog(@"ERROR: %@", error2);
+  }];
+  
+
+  
+  // empty array of unsigned char
+  unsigned char seed_array[48];
+  // filling the array with randombytes
+  randombytes(seed_array, 48);
+  // converting array to vector
+  std::vector<unsigned char> seed(seed_array, seed_array + sizeof seed_array / sizeof seed_array[0]);
+  
+//  NSData *dataData = [NSData dataWithBytes:seed length:48];
+//  NSLog(@"data = %x", dataData[0]);
+
+//  std::cout << std::endl;
+//  std::cout << "seed:" << seed.size() << " bytes\n" << bin2hstr(seed, 16) << std::endl;
+//  std::cout << std::endl;
+  
+  int hashFunctionIndex = [hashFunction intValue];
+  // create wallet according to the hash function
+  
+  callback(@[[NSNull null], @"address"]);
   int treeHeightInt = [treeHeight intValue];
   
-  // create wallet
-  XmssBasic xmss(seed, treeHeightInt, eHashFunction::SHAKE_128, eAddrFormatType::SHA256_2X);
-  auto address = bin2hstr(xmss.getAddress());
-  NSString *wallet_address = [NSString stringWithCString:address.c_str() encoding:[NSString defaultCStringEncoding]];
-  NSLog(@"Wallet address %@", wallet_address);
+//  XmssBasic xmss;
   
-  // send callback to RN
-  callback(@[[NSNull null], wallet_address ]);
+//  XmssBasic xmss(seed, 8, eHashFunction::SHAKE_128, eAddrFormatType::SHA256_2X);
+  
+  
+  
+  
+  
+
+  
+  // instead of switch
+  callback(@[[NSNull null], @"BLABLAAAA" ]);
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
   
 }
 
