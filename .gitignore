@@ -22,6 +22,7 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 old.objc
+old.java
 # Android/IntelliJ
 #
 build/
@@ -30,6 +31,7 @@ build/
 local.properties
 *.iml
 android/app/.externalNativeBuild/
+android/app/my-release-key.keystore
 
 # node.js
 #

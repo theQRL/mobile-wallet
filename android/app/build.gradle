@@ -94,22 +94,48 @@ def enableSeparateBuildPerCPUArchitecture = false
  */
 def enableProguardInReleaseBuilds = false
 
+// get keystore password from Mac keychain access
+def getPassword(String currentUser, String keyChain) {
+    def stdout = new ByteArrayOutputStream()
+    def stderr = new ByteArrayOutputStream()
+    exec {
+        commandLine 'security', '-q', 'find-generic-password', '-s', keyChain, '-w'
+        standardOutput = stdout
+        errorOutput = stderr
+        ignoreExitValue true
+    }
+    //noinspection GroovyAssignabilityCheck
+    stdout.toString().trim()
+}
 
-
+def pass = getPassword("abilican","android_keystore")
 
 android {
-    compileSdkVersion 27
+//    compileSdkVersion 27
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
 
 //    lintOptions {
 //        abortOnError false
 //    }
 
     defaultConfig {
+        // Enabling multidex support.
+        multiDexEnabled true
         applicationId "com.theqrl"
-        minSdkVersion 16
-        targetSdkVersion 22
+        minSdkVersion 23
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
+
+        packagingOptions {
+            exclude "lib/arm64-v8a/libgnustl_shared.so"
+        }
+
 
         externalNativeBuild {
             cmake {
@@ -118,6 +144,21 @@ android {
             }
         }
     }
+
+    signingConfigs {
+        release {
+            if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
+                storeFile file(MYAPP_RELEASE_STORE_FILE)
+//                storePassword MYAPP_RELEASE_STORE_PASSWORD
+                storePassword pass
+                keyAlias MYAPP_RELEASE_KEY_ALIAS
+//                keyPassword MYAPP_RELEASE_KEY_PASSWORD
+                keyPassword pass
+            }
+        }
+    }
+
+
     splits {
         abi {
             reset()
@@ -140,6 +181,7 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
     }
     lintOptions {
@@ -172,11 +214,30 @@ android {
 buildscript {
     repositories {
         mavenCentral()
+//        google()
+
     }
     dependencies {
         // ASSUMES GRADLE 2.12 OR HIGHER. Use plugin version 0.7.5 with earlier
         // gradle versions
         classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.6'
+//        classpath 'com.android.tools.build:gradle:3.2.0'
+
+    }
+}
+
+
+
+subprojects {
+    project.configurations.all {
+        afterEvaluate {project ->
+            if (project.hasProperty("android")) {
+                android {
+                    compileSdkVersion 26
+                    buildToolsVersion '26.0.2'
+                }
+            }
+        }
     }
 }
 
@@ -221,9 +282,16 @@ protobuf {
 
 
 dependencies {
+    compile "com.android.support:appcompat-v7:26.0.2"
+    compile project(':react-native-camera')
+    compile project(':react-native-device-info')
+    compile project(':react-native-udp')
+    compile project(':react-native-tcp')
+    compile project(':react-native-os')
     compile project(':react-native-randombytes')
     compile fileTree(dir: "libs", include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:27.1.1"
+
+//    compile "com.android.support:appcompat-v7:27.1.1"
     compile "com.facebook.react:react-native:+"  // From node_modules    classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.3'
     implementation 'com.google.protobuf:protobuf-lite:3.0.0'
 

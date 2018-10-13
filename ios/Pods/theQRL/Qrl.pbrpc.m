@@ -1,13 +1,18 @@
+#if !defined(GPB_GRPC_PROTOCOL_ONLY) || !GPB_GRPC_PROTOCOL_ONLY
 #import "Qrl.pbrpc.h"
-
+#import "Qrl.pbobjc.h"
 #import <ProtoRPC/ProtoRPC.h>
 #import <RxLibrary/GRXWriter+Immediate.h>
+
 
 @implementation PublicAPI
 
 // Designated initializer
 - (instancetype)initWithHost:(NSString *)host {
-  return (self = [super initWithHost:host packageName:@"qrl" serviceName:@"PublicAPI"]);
+  self = [super initWithHost:host
+                 packageName:@"qrl"
+                 serviceName:@"PublicAPI"];
+  return self;
 }
 
 // Override superclass initializer to disallow different package and service names.
@@ -17,10 +22,13 @@
   return [self initWithHost:host];
 }
 
+#pragma mark - Class Methods
+
 + (instancetype)serviceWithHost:(NSString *)host {
   return [[self alloc] initWithHost:host];
 }
 
+#pragma mark - Method Implementations
 
 #pragma mark GetNodeState(GetNodeStateReq) returns (GetNodeStateResp)
 
@@ -195,7 +203,10 @@
 
 // Designated initializer
 - (instancetype)initWithHost:(NSString *)host {
-  return (self = [super initWithHost:host packageName:@"qrl" serviceName:@"AdminAPI"]);
+  self = [super initWithHost:host
+                 packageName:@"qrl"
+                 serviceName:@"AdminAPI"];
+  return self;
 }
 
 // Override superclass initializer to disallow different package and service names.
@@ -205,9 +216,13 @@
   return [self initWithHost:host];
 }
 
+#pragma mark - Class Methods
+
 + (instancetype)serviceWithHost:(NSString *)host {
   return [[self alloc] initWithHost:host];
 }
 
+#pragma mark - Method Implementations
 
 @end
+#endif

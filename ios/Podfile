@@ -6,16 +6,21 @@ target 'theQRL' do
   # use_frameworks!
   pod 'theQRL', :path => '.'
   # Pods for theQRL
-
+  # pod 'NSHash', '~> 1.2.0'
   # target 'theQRL-tvOSTests' do
   #   inherit! :search_paths
   #   # Pods for testing
   # end
-  #
+  #pod 'react-native-camera', :path => '../node_modules/react-native-camera'
+
+  #pod 'ReactNativePermissions', :path => '../node_modules/react-native-permissions'
+
   # target 'theQRLTests' do
   #   inherit! :search_paths
   #   # Pods for testing
   # end
+
+
 
 end
 

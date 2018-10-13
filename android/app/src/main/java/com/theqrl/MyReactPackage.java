@@ -1,9 +1,5 @@
 package com.theqrl;
 
-/**
- * Created by abilican on 22.03.18.
- */
-
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.NativeModule;

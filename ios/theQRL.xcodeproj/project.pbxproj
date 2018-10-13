@@ -22,6 +22,8 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		2A6F7FF7DA3845C1BE546C59 /* libRNOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 66929577FFE94964B7F6C102 /* libRNOS.a */; };
+		2C99035738944A57A77CB86B /* libUdpSockets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84D8C976817A406F9B179849 /* libUdpSockets.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -35,20 +37,27 @@
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* theQRLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* theQRLTests.m */; };
 		4DB46B66E94145B28EE8E8E5 /* libRNRandomBytes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F90CC962F89479998AF0188 /* libRNRandomBytes.a */; };
+		5104C23380AF41AD924CCA91 /* libTcpSockets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77C48A5C47B546A1A0345CE1 /* libTcpSockets.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
-		690615E12045E68A00150DE0 /* testingEphemeral.mm in Sources */ = {isa = PBXBuildFile; fileRef = 690615E02045E68A00150DE0 /* testingEphemeral.mm */; };
 		69090ABD20EE481000DF14FA /* refreshWallet.mm in Sources */ = {isa = PBXBuildFile; fileRef = 69090ABC20EE481000DF14FA /* refreshWallet.mm */; };
+		691A4E6521397E7B0089FB95 /* libdilithium.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6950013F2139638A00EB3513 /* libdilithium.a */; };
+		691A4E6621397E7B0089FB95 /* libkyber.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6950013E2139638A00EB3513 /* libkyber.a */; };
+		691A4E6721397E7B0089FB95 /* libqrllib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 695001412139638A00EB3513 /* libqrllib.a */; };
+		691A4E6821397E7B0089FB95 /* libshasha.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 695001402139638A00EB3513 /* libshasha.a */; };
+		691A4E6921397E7F0089FB95 /* libdilithium.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 695001462139639000EB3513 /* libdilithium.a */; };
+		691A4E6A21397E7F0089FB95 /* libkyber.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 695001472139639000EB3513 /* libkyber.a */; };
+		691A4E6B21397E7F0089FB95 /* libqrllib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 695001482139639000EB3513 /* libqrllib.a */; };
+		691A4E6C21397E7F0089FB95 /* libshasha.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 695001492139639000EB3513 /* libshasha.a */; };
+		69343006212ECD6F00085300 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 69342FDE212ECD6F00085300 /* main.jsbundle */; };
 		694C54B320ADB6F300AC2B3F /* CreateWallet.mm in Sources */ = {isa = PBXBuildFile; fileRef = 694C54B220ADB6F300AC2B3F /* CreateWallet.mm */; };
-		6964026B20ADAF1F0020E054 /* libshasha.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6964026720ADAF1F0020E054 /* libshasha.a */; };
-		6964026C20ADAF1F0020E054 /* libdilithium.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6964026820ADAF1F0020E054 /* libdilithium.a */; };
-		6964026D20ADAF1F0020E054 /* libqrllib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6964026920ADAF1F0020E054 /* libqrllib.a */; };
-		6964026E20ADAF1F0020E054 /* libkyber.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6964026A20ADAF1F0020E054 /* libkyber.a */; };
-		6964027320ADAF330020E054 /* libqrllib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6964026F20ADAF330020E054 /* libqrllib.a */; };
-		6964027420ADAF330020E054 /* libshasha.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6964027020ADAF330020E054 /* libshasha.a */; };
-		6964027520ADAF330020E054 /* libdilithium.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6964027120ADAF330020E054 /* libdilithium.a */; };
-		6964027620ADAF330020E054 /* libkyber.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6964027220ADAF330020E054 /* libkyber.a */; };
+		694FC019211D995E005CE984 /* transferCoins.mm in Sources */ = {isa = PBXBuildFile; fileRef = 694FC018211D995E005CE984 /* transferCoins.mm */; };
 		69871E27202C7E170097260E /* DilithiumIos.mm in Sources */ = {isa = PBXBuildFile; fileRef = 69871E26202C7E170097260E /* DilithiumIos.mm */; };
+		69A8E4C7215FDE0000823540 /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69A8E4BF215FDDF100823540 /* libRNCamera.a */; };
 		69BF73862028F41200EBD441 /* libgRPC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69BF73852028F41200EBD441 /* libgRPC.a */; };
+		69E3BCCA214B89F40056F1D5 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69E3BCC2214B89D80056F1D5 /* libRNDeviceInfo.a */; };
+		69E3BCCC2153A03C0056F1D5 /* WalletHelperFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 69E3BCCB2153A03C0056F1D5 /* WalletHelperFunctions.mm */; };
+		69E3BCF22154D7450056F1D5 /* libReactNativePermissions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69E3BCF12154D7400056F1D5 /* libReactNativePermissions.a */; };
+		69E3BCF421553E740056F1D5 /* QrlAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 69E3BCF321553E740056F1D5 /* QrlAssets.xcassets */; };
 		69E76B7D20C132EB000153D3 /* create_wallet_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 69E76B7C20C132EB000153D3 /* create_wallet_background.png */; };
 		69E76B7F20C13385000153D3 /* qrl_wallet_logo_splashscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 69E76B7E20C13385000153D3 /* qrl_wallet_logo_splashscreen.png */; };
 		69F62FD1202A0E8F00C43A93 /* libPods-theQRL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69F62FD2202A0E8F00C43A93 /* libPods-theQRL.a */; };
@@ -255,6 +264,55 @@
 			remoteGlobalIDString = 2D2A28201D9B03D100D4039D;
 			remoteInfo = "RCTAnimation-tvOS";
 		};
+		6934303E212EDA1000085300 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7700AAE5884141CC875F4334 /* UdpSockets.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = UdpSockets;
+		};
+		69343045212EDA1100085300 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2DBB450257C04C76A81BF8BE /* RNOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNOS;
+		};
+		69343048212EDA1100085300 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D821910C57ED49C18AFA6FF2 /* TcpSockets.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = TcpSockets;
+		};
+		69A8E4BE215FDDF100823540 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69A8E494215FDDF100823540 /* RNCamera.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
+			remoteInfo = RNCamera;
+		};
+		69E3BCC1214B89D80056F1D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69E3BC97214B89D70056F1D5 /* RNDeviceInfo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DA5891D81BA9A9FC002B4DB2;
+			remoteInfo = RNDeviceInfo;
+		};
+		69E3BCC3214B89D80056F1D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69E3BC97214B89D70056F1D5 /* RNDeviceInfo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E72EC1401F7ABB5A0001BC90;
+			remoteInfo = "RNDeviceInfo-tvOS";
+		};
+		69E3BCF02154D7400056F1D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69E3BCEC2154D7400056F1D5 /* ReactNativePermissions.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9D23B34F1C767B80008B4819;
+			remoteInfo = ReactNativePermissions;
+		};
 		69E76B7820B6E2D7000153D3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6F5044B899944BBFB21BC2D7 /* RNRandomBytes.xcodeproj */;
@@ -372,15 +430,36 @@
 		2D02E47B1E0B4A5D006451C7 /* theQRL-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "theQRL-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* theQRL-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "theQRL-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2DBB450257C04C76A81BF8BE /* RNOS.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNOS.xcodeproj; path = "../node_modules/react-native-os/ios/RNOS.xcodeproj"; sourceTree = "<group>"; };
 		48A70C585515DDA1AA9583E8 /* libPods-theQRL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-theQRL.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		50FB8EE46789B64003E4ED90 /* Pods-theQRL.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-theQRL.release.xcconfig"; path = "Pods/Target Support Files/Pods-theQRL/Pods-theQRL.release.xcconfig"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
+		66929577FFE94964B7F6C102 /* libRNOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNOS.a; sourceTree = "<group>"; };
 		690615E02045E68A00150DE0 /* testingEphemeral.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = testingEphemeral.mm; sourceTree = "<group>"; };
 		690616072045E6D700150DE0 /* testingEphemeral.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = testingEphemeral.h; sourceTree = "<group>"; };
 		69090ABC20EE481000DF14FA /* refreshWallet.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = refreshWallet.mm; sourceTree = "<group>"; };
 		69090ABE20EE484100DF14FA /* refreshWallet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = refreshWallet.h; sourceTree = "<group>"; };
+		691A4E5521397D5C0089FB95 /* libshasha.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libshasha.a; path = "../../../qrllib_t/build/Debug-iphoneos/libshasha.a"; sourceTree = "<group>"; };
+		691A4E5621397D5C0089FB95 /* libkyber.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkyber.a; path = "../../../qrllib_t/build/Debug-iphoneos/libkyber.a"; sourceTree = "<group>"; };
+		691A4E5721397D5C0089FB95 /* libdilithium.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libdilithium.a; path = "../../../qrllib_t/build/Debug-iphoneos/libdilithium.a"; sourceTree = "<group>"; };
+		691A4E5821397D5C0089FB95 /* libqrllib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libqrllib.a; path = "../../../qrllib_t/build/Debug-iphoneos/libqrllib.a"; sourceTree = "<group>"; };
+		691A4E5D21397D610089FB95 /* libdilithium.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libdilithium.a; path = "../../../qrllib_t/build/Debug-iphonesimulator/libdilithium.a"; sourceTree = "<group>"; };
+		691A4E5E21397D610089FB95 /* libshasha.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libshasha.a; path = "../../../qrllib_t/build/Debug-iphonesimulator/libshasha.a"; sourceTree = "<group>"; };
+		691A4E5F21397D610089FB95 /* libkyber.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkyber.a; path = "../../../qrllib_t/build/Debug-iphonesimulator/libkyber.a"; sourceTree = "<group>"; };
+		691A4E6021397D610089FB95 /* libqrllib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libqrllib.a; path = "../../../qrllib_t/build/Debug-iphonesimulator/libqrllib.a"; sourceTree = "<group>"; };
+		69342FDE212ECD6F00085300 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; name = main.jsbundle; path = theQRL/main.jsbundle; sourceTree = "<group>"; };
 		694C54B220ADB6F300AC2B3F /* CreateWallet.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CreateWallet.mm; sourceTree = "<group>"; };
 		694C54B420ADB70F00AC2B3F /* CreateWallet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateWallet.h; sourceTree = "<group>"; };
+		694FC018211D995E005CE984 /* transferCoins.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = transferCoins.mm; sourceTree = "<group>"; };
+		694FC01A211D99AE005CE984 /* transferCoins.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = transferCoins.h; sourceTree = "<group>"; };
+		6950013E2139638A00EB3513 /* libkyber.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkyber.a; path = "../qrllib/build/Debug-iphoneos/libkyber.a"; sourceTree = "<group>"; };
+		6950013F2139638A00EB3513 /* libdilithium.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libdilithium.a; path = "../qrllib/build/Debug-iphoneos/libdilithium.a"; sourceTree = "<group>"; };
+		695001402139638A00EB3513 /* libshasha.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libshasha.a; path = "../qrllib/build/Debug-iphoneos/libshasha.a"; sourceTree = "<group>"; };
+		695001412139638A00EB3513 /* libqrllib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libqrllib.a; path = "../qrllib/build/Debug-iphoneos/libqrllib.a"; sourceTree = "<group>"; };
+		695001462139639000EB3513 /* libdilithium.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libdilithium.a; path = "../qrllib/build/Debug-iphonesimulator/libdilithium.a"; sourceTree = "<group>"; };
+		695001472139639000EB3513 /* libkyber.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkyber.a; path = "../qrllib/build/Debug-iphonesimulator/libkyber.a"; sourceTree = "<group>"; };
+		695001482139639000EB3513 /* libqrllib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libqrllib.a; path = "../qrllib/build/Debug-iphonesimulator/libqrllib.a"; sourceTree = "<group>"; };
+		695001492139639000EB3513 /* libshasha.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libshasha.a; path = "../qrllib/build/Debug-iphonesimulator/libshasha.a"; sourceTree = "<group>"; };
 		6959D0472028C8E8009EDBA9 /* libgRPC-Core.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libgRPC-Core.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6959D0482028C8E8009EDBA9 /* libgRPC-ProtoRPC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libgRPC-ProtoRPC.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6959D0492028C8E8009EDBA9 /* libgRPC-RxLibrary.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libgRPC-RxLibrary.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -404,10 +483,16 @@
 		69871DFF202C78EA0097260E /* libdilithium.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libdilithium.a; path = "../../../qrllib/build/Debug-iphonesimulator/libdilithium.a"; sourceTree = "<group>"; };
 		69871E26202C7E170097260E /* DilithiumIos.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DilithiumIos.mm; sourceTree = "<group>"; };
 		69871E28202C7E4D0097260E /* DilithiumIos.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DilithiumIos.h; sourceTree = "<group>"; };
+		69A8E494215FDDF100823540 /* RNCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		69AE7629204745FA003EF6FF /* libqrllib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libqrllib.a; path = "../../../qrllib/build/Debug-iphonesimulator/libqrllib.a"; sourceTree = "<group>"; };
 		69AE762B20474886003EF6FF /* libshasha.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libshasha.a; path = "../../../qrllib/build/Debug-iphonesimulator/libshasha.a"; sourceTree = "<group>"; };
 		69BF73842028F1E800EBD441 /* libgRPC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libgRPC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		69BF73852028F41200EBD441 /* libgRPC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgRPC.a; path = "../../../../../../../Library/Developer/Xcode/DerivedData/theQRL-hfkrbuurrphymlgztgnrhxspyxcl/Build/Products/Debug-iphonesimulator/gRPC/libgRPC.a"; sourceTree = "<group>"; };
+		69E3BC97214B89D70056F1D5 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
+		69E3BCCB2153A03C0056F1D5 /* WalletHelperFunctions.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = WalletHelperFunctions.mm; sourceTree = "<group>"; };
+		69E3BCCD2153A0660056F1D5 /* WalletHelperFunctions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletHelperFunctions.h; sourceTree = "<group>"; };
+		69E3BCEC2154D7400056F1D5 /* ReactNativePermissions.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativePermissions.xcodeproj; path = "../node_modules/react-native-permissions/ios/ReactNativePermissions.xcodeproj"; sourceTree = "<group>"; };
+		69E3BCF321553E740056F1D5 /* QrlAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = QrlAssets.xcassets; path = ../../../../../../../Downloads/QrlAssets.xcassets; sourceTree = "<group>"; };
 		69E76B7C20C132EB000153D3 /* create_wallet_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = create_wallet_background.png; path = ../resources/images/create_wallet_background.png; sourceTree = "<group>"; };
 		69E76B7E20C13385000153D3 /* qrl_wallet_logo_splashscreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = qrl_wallet_logo_splashscreen.png; path = ../resources/images/qrl_wallet_logo_splashscreen.png; sourceTree = "<group>"; };
 		69F62FD2202A0E8F00C43A93 /* libPods-theQRL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-theQRL.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -415,12 +500,16 @@
 		69FA3DC22023265300348496 /* KyberIos.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = KyberIos.mm; sourceTree = "<group>"; };
 		69FA3DC52023266000348496 /* KyberIos.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KyberIos.h; sourceTree = "<group>"; };
 		6F5044B899944BBFB21BC2D7 /* RNRandomBytes.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNRandomBytes.xcodeproj; path = "../node_modules/react-native-randombytes/RNRandomBytes.xcodeproj"; sourceTree = "<group>"; };
+		7700AAE5884141CC875F4334 /* UdpSockets.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = UdpSockets.xcodeproj; path = "../node_modules/react-native-udp/ios/UdpSockets.xcodeproj"; sourceTree = "<group>"; };
+		77C48A5C47B546A1A0345CE1 /* libTcpSockets.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libTcpSockets.a; sourceTree = "<group>"; };
 		783B4CCE114D184EC6AED597 /* Pods-theQRL.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-theQRL.debug.xcconfig"; path = "Pods/Target Support Files/Pods-theQRL/Pods-theQRL.debug.xcconfig"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		84D8C976817A406F9B179849 /* libUdpSockets.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libUdpSockets.a; sourceTree = "<group>"; };
 		9FC5B17081FC41EC1E666112 /* libPods-theQRLTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-theQRLTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		AE1F12E445716F723A62063C /* libPods-theQRL-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-theQRL-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D821910C57ED49C18AFA6FF2 /* TcpSockets.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = TcpSockets.xcodeproj; path = "../node_modules/react-native-tcp/ios/TcpSockets.xcodeproj"; sourceTree = "<group>"; };
 		FE79D3DAC7BA4B57B300ED04 /* libRNRandomBytes-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNRandomBytes-tvOS.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -437,14 +526,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6964027320ADAF330020E054 /* libqrllib.a in Frameworks */,
-				6964027420ADAF330020E054 /* libshasha.a in Frameworks */,
-				6964027520ADAF330020E054 /* libdilithium.a in Frameworks */,
-				6964027620ADAF330020E054 /* libkyber.a in Frameworks */,
-				6964026B20ADAF1F0020E054 /* libshasha.a in Frameworks */,
-				6964026C20ADAF1F0020E054 /* libdilithium.a in Frameworks */,
-				6964026D20ADAF1F0020E054 /* libqrllib.a in Frameworks */,
-				6964026E20ADAF1F0020E054 /* libkyber.a in Frameworks */,
+				69E3BCF22154D7450056F1D5 /* libReactNativePermissions.a in Frameworks */,
+				69A8E4C7215FDE0000823540 /* libRNCamera.a in Frameworks */,
+				69E3BCCA214B89F40056F1D5 /* libRNDeviceInfo.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -461,6 +545,17 @@
 				69BF73862028F41200EBD441 /* libgRPC.a in Frameworks */,
 				69F62FD1202A0E8F00C43A93 /* libPods-theQRL.a in Frameworks */,
 				4DB46B66E94145B28EE8E8E5 /* libRNRandomBytes.a in Frameworks */,
+				2A6F7FF7DA3845C1BE546C59 /* libRNOS.a in Frameworks */,
+				5104C23380AF41AD924CCA91 /* libTcpSockets.a in Frameworks */,
+				2C99035738944A57A77CB86B /* libUdpSockets.a in Frameworks */,
+				691A4E6821397E7B0089FB95 /* libshasha.a in Frameworks */,
+				691A4E6C21397E7F0089FB95 /* libshasha.a in Frameworks */,
+				691A4E6521397E7B0089FB95 /* libdilithium.a in Frameworks */,
+				691A4E6921397E7F0089FB95 /* libdilithium.a in Frameworks */,
+				691A4E6621397E7B0089FB95 /* libkyber.a in Frameworks */,
+				691A4E6A21397E7F0089FB95 /* libkyber.a in Frameworks */,
+				691A4E6721397E7B0089FB95 /* libqrllib.a in Frameworks */,
+				691A4E6B21397E7F0089FB95 /* libqrllib.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -571,14 +666,20 @@
 		13B07FAE1A68108700A75B9A /* theQRL */ = {
 			isa = PBXGroup;
 			children = (
-				69FA3DC52023266000348496 /* KyberIos.h */,
-				69FA3DC22023265300348496 /* KyberIos.mm */,
+				69E3BCCD2153A0660056F1D5 /* WalletHelperFunctions.h */,
+				69E3BCCB2153A03C0056F1D5 /* WalletHelperFunctions.mm */,
 				694C54B420ADB70F00AC2B3F /* CreateWallet.h */,
 				694C54B220ADB6F300AC2B3F /* CreateWallet.mm */,
+				69090ABE20EE484100DF14FA /* refreshWallet.h */,
+				69090ABC20EE481000DF14FA /* refreshWallet.mm */,
+				694FC01A211D99AE005CE984 /* transferCoins.h */,
+				694FC018211D995E005CE984 /* transferCoins.mm */,
 				690616072045E6D700150DE0 /* testingEphemeral.h */,
 				690615E02045E68A00150DE0 /* testingEphemeral.mm */,
 				69871E28202C7E4D0097260E /* DilithiumIos.h */,
 				69871E26202C7E170097260E /* DilithiumIos.mm */,
+				69FA3DC52023266000348496 /* KyberIos.h */,
+				69FA3DC22023265300348496 /* KyberIos.mm */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -588,8 +689,6 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				69090ABE20EE484100DF14FA /* refreshWallet.h */,
-				69090ABC20EE481000DF14FA /* refreshWallet.mm */,
 			);
 			name = theQRL;
 			sourceTree = "<group>";
@@ -621,15 +720,31 @@
 			isa = PBXGroup;
 			children = (
 				6964026820ADAF1F0020E054 /* libdilithium.a */,
+				6950013F2139638A00EB3513 /* libdilithium.a */,
+				691A4E5721397D5C0089FB95 /* libdilithium.a */,
 				6964026A20ADAF1F0020E054 /* libkyber.a */,
 				6964027120ADAF330020E054 /* libdilithium.a */,
 				6964027220ADAF330020E054 /* libkyber.a */,
 				6964026920ADAF1F0020E054 /* libqrllib.a */,
+				695001412139638A00EB3513 /* libqrllib.a */,
+				691A4E5621397D5C0089FB95 /* libkyber.a */,
+				691A4E5821397D5C0089FB95 /* libqrllib.a */,
+				691A4E5F21397D610089FB95 /* libkyber.a */,
+				691A4E6021397D610089FB95 /* libqrllib.a */,
 				69AE762B20474886003EF6FF /* libshasha.a */,
 				69AE7629204745FA003EF6FF /* libqrllib.a */,
 				6964026720ADAF1F0020E054 /* libshasha.a */,
 				6964026F20ADAF330020E054 /* libqrllib.a */,
 				6964027020ADAF330020E054 /* libshasha.a */,
+				6950013E2139638A00EB3513 /* libkyber.a */,
+				695001402139638A00EB3513 /* libshasha.a */,
+				695001462139639000EB3513 /* libdilithium.a */,
+				695001472139639000EB3513 /* libkyber.a */,
+				695001482139639000EB3513 /* libqrllib.a */,
+				695001492139639000EB3513 /* libshasha.a */,
+				691A4E5521397D5C0089FB95 /* libshasha.a */,
+				691A4E5D21397D610089FB95 /* libdilithium.a */,
+				691A4E5E21397D610089FB95 /* libshasha.a */,
 				6963F24020346E3D00641B1A /* libqrllibd.a */,
 				69871DFF202C78EA0097260E /* libdilithium.a */,
 				69F62FD2202A0E8F00C43A93 /* libPods-theQRL.a */,
@@ -664,11 +779,63 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		69343014212EDA1000085300 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6934303F212EDA1000085300 /* libUdpSockets.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		69343040212EDA1000085300 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				69343046212EDA1100085300 /* libRNOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		69343042212EDA1000085300 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				69343049212EDA1100085300 /* libTcpSockets.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		69A8E495215FDDF100823540 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				69A8E4BF215FDDF100823540 /* libRNCamera.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		69E3BC98214B89D70056F1D5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				69E3BCC2214B89D80056F1D5 /* libRNDeviceInfo.a */,
+				69E3BCC4214B89D80056F1D5 /* libRNDeviceInfo-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		69E3BCED2154D7400056F1D5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				69E3BCF12154D7400056F1D5 /* libReactNativePermissions.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		69E76B4E20B6E2D6000153D3 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
 				0F90CC962F89479998AF0188 /* libRNRandomBytes.a */,
 				FE79D3DAC7BA4B57B300ED04 /* libRNRandomBytes-tvOS.a */,
+				66929577FFE94964B7F6C102 /* libRNOS.a */,
+				77C48A5C47B546A1A0345CE1 /* libTcpSockets.a */,
+				84D8C976817A406F9B179849 /* libUdpSockets.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -703,6 +870,9 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				69A8E494215FDDF100823540 /* RNCamera.xcodeproj */,
+				69E3BCEC2154D7400056F1D5 /* ReactNativePermissions.xcodeproj */,
+				69E3BC97214B89D70056F1D5 /* RNDeviceInfo.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -716,6 +886,9 @@
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				6F5044B899944BBFB21BC2D7 /* RNRandomBytes.xcodeproj */,
+				2DBB450257C04C76A81BF8BE /* RNOS.xcodeproj */,
+				D821910C57ED49C18AFA6FF2 /* TcpSockets.xcodeproj */,
+				7700AAE5884141CC875F4334 /* UdpSockets.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -732,6 +905,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				69E3BCF321553E740056F1D5 /* QrlAssets.xcassets */,
+				69342FDE212ECD6F00085300 /* main.jsbundle */,
 				13B07FAE1A68108700A75B9A /* theQRL */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* theQRLTests */,
@@ -795,7 +970,6 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				6494CAD6BE02A1BAA459DAC4 /* [CP] Embed Pods Frameworks */,
 				47EC7970A341856CE91FE783 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -859,6 +1033,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = YU3GP553RA;
+						ProvisioningStyle = Automatic;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -932,8 +1107,32 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
+					ProductGroup = 69E3BCED2154D7400056F1D5 /* Products */;
+					ProjectRef = 69E3BCEC2154D7400056F1D5 /* ReactNativePermissions.xcodeproj */;
+				},
+				{
+					ProductGroup = 69A8E495215FDDF100823540 /* Products */;
+					ProjectRef = 69A8E494215FDDF100823540 /* RNCamera.xcodeproj */;
+				},
+				{
+					ProductGroup = 69E3BC98214B89D70056F1D5 /* Products */;
+					ProjectRef = 69E3BC97214B89D70056F1D5 /* RNDeviceInfo.xcodeproj */;
+				},
+				{
+					ProductGroup = 69343040212EDA1000085300 /* Products */;
+					ProjectRef = 2DBB450257C04C76A81BF8BE /* RNOS.xcodeproj */;
+				},
+				{
 					ProductGroup = 69E76B7420B6E2D7000153D3 /* Products */;
 					ProjectRef = 6F5044B899944BBFB21BC2D7 /* RNRandomBytes.xcodeproj */;
+				},
+				{
+					ProductGroup = 69343042212EDA1000085300 /* Products */;
+					ProjectRef = D821910C57ED49C18AFA6FF2 /* TcpSockets.xcodeproj */;
+				},
+				{
+					ProductGroup = 69343014212EDA1000085300 /* Products */;
+					ProjectRef = 7700AAE5884141CC875F4334 /* UdpSockets.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1129,6 +1328,55 @@
 			remoteRef = 5E9157341DD0AC6500FF2AA8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		6934303F212EDA1000085300 /* libUdpSockets.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libUdpSockets.a;
+			remoteRef = 6934303E212EDA1000085300 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		69343046212EDA1100085300 /* libRNOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNOS.a;
+			remoteRef = 69343045212EDA1100085300 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		69343049212EDA1100085300 /* libTcpSockets.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libTcpSockets.a;
+			remoteRef = 69343048212EDA1100085300 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		69A8E4BF215FDDF100823540 /* libRNCamera.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNCamera.a;
+			remoteRef = 69A8E4BE215FDDF100823540 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		69E3BCC2214B89D80056F1D5 /* libRNDeviceInfo.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNDeviceInfo.a;
+			remoteRef = 69E3BCC1214B89D80056F1D5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		69E3BCC4214B89D80056F1D5 /* libRNDeviceInfo-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRNDeviceInfo-tvOS.a";
+			remoteRef = 69E3BCC3214B89D80056F1D5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		69E3BCF12154D7400056F1D5 /* libReactNativePermissions.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libReactNativePermissions.a;
+			remoteRef = 69E3BCF02154D7400056F1D5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		69E76B7920B6E2D7000153D3 /* libRNRandomBytes.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1234,6 +1482,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				69E3BCF421553E740056F1D5 /* QrlAssets.xcassets in Resources */,
+				69343006212ECD6F00085300 /* main.jsbundle in Resources */,
 				69E76B7F20C13385000153D3 /* qrl_wallet_logo_splashscreen.png in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
@@ -1293,28 +1543,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-theQRL/Pods-theQRL-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/gRPC/gRPCCertificates.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/gRPCCertificates.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-theQRL/Pods-theQRL-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6494CAD6BE02A1BAA459DAC4 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-theQRL/Pods-theQRL-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		81E7B9D4ECEA2DB7865018C5 /* [CP] Check Pods Manifest.lock */ = {
@@ -1323,13 +1561,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-theQRL-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1350,9 +1591,10 @@
 				694C54B320ADB6F300AC2B3F /* CreateWallet.mm in Sources */,
 				69FA3DC32023265300348496 /* KyberIos.mm in Sources */,
 				69871E27202C7E170097260E /* DilithiumIos.mm in Sources */,
+				694FC019211D995E005CE984 /* transferCoins.mm in Sources */,
+				69E3BCCC2153A03C0056F1D5 /* WalletHelperFunctions.mm in Sources */,
 				69090ABD20EE481000DF14FA /* refreshWallet.mm in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
-				690615E12045E68A00150DE0 /* testingEphemeral.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1416,15 +1658,14 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-randombytes",
+					"$(SRCROOT)/../node_modules/react-native-os/ios",
+					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 				);
 				INFOPLIST_FILE = theQRLTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1445,15 +1686,14 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-randombytes",
+					"$(SRCROOT)/../node_modules/react-native-os/ios",
+					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 				);
 				INFOPLIST_FILE = theQRLTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1469,6 +1709,8 @@
 			baseConfigurationReference = 783B4CCE114D184EC6AED597 /* Pods-theQRL.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = YU3GP553RA;
@@ -1476,14 +1718,20 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/abilican/Documents/projects/perso/theqrl,
-					"/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/build/Debug-iphoneos",
-					"/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/build/Debug-iphonesimulator",
-					/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/src/kyber,
-					/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/deps/kyber/ref,
-					/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/src/dilithium,
-					/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/deps/dilithium/ref,
-					/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/src/qrl,
-					"/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/deps/xmss-reference",
+					"/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/build/Debug-iphonesimulator",
+					"/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/build/Debug-iphoneos",
+					"/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/build/Debug-iphonesimulator",
+					/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/src/kyber,
+					/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/deps/kyber/ref,
+					/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/src/dilithium,
+					/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/deps/dilithium/ref,
+					/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/src/qrl,
+					"/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/deps/xmss-reference",
+					/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/ios/Pods,
+					/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/deps,
+					/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/src,
+					"/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/src/xmss-alt",
+					/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/src/shasha,
 					"\"${PODS_ROOT}/Headers/Public\"",
 					"\"${PODS_ROOT}/Headers/Public/!ProtoCompiler\"",
 					"\"${PODS_ROOT}/Headers/Public/!ProtoCompiler-gRPCPlugin\"",
@@ -1494,12 +1742,10 @@
 					"\"${PODS_ROOT}/Headers/Public/gRPC-Core\"",
 					"\"${PODS_ROOT}/Headers/Public/gRPC-ProtoRPC\"",
 					"\"${PODS_ROOT}/Headers/Public/gRPC-RxLibrary\"",
-					/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/ios/Pods,
-					/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/deps,
-					/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/src,
-					"/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/src/xmss-alt",
-					/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/src/shasha,
 					"$(SRCROOT)/../node_modules/react-native-randombytes",
+					"$(SRCROOT)/../node_modules/react-native-os/ios",
+					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 				);
 				INFOPLIST_FILE = theQRL/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1512,7 +1758,7 @@
 					"\"$PODS_CONFIGURATION_BUILD_DIR/gRPC-ProtoRPC\"",
 					"\"$PODS_CONFIGURATION_BUILD_DIR/gRPC-RxLibrary\"",
 					"\"$PODS_CONFIGURATION_BUILD_DIR/theQRL\"",
-					"/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/build/Debug-iphonesimulator",
+					"/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/build/Debug-iphonesimulator",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1526,7 +1772,10 @@
 					"-l\"z\"",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.theQRL.wallet;
 				PRODUCT_NAME = theQRL;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1536,20 +1785,28 @@
 			baseConfigurationReference = 50FB8EE46789B64003E4ED90 /* Pods-theQRL.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YU3GP553RA;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/abilican/Documents/projects/perso/theqrl,
-					"/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/build/Debug-iphoneos",
-					"/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/build/Debug-iphonesimulator",
-					/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/src/kyber,
-					/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/deps/kyber/ref,
-					/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/src/dilithium,
-					/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/deps/dilithium/ref,
-					/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/src/qrl,
-					"/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/deps/xmss-reference",
+					"/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/build/Debug-iphonesimulator",
+					"/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/build/Debug-iphoneos",
+					"/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/build/Debug-iphonesimulator",
+					/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/src/kyber,
+					/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/deps/kyber/ref,
+					/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/src/dilithium,
+					/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/deps/dilithium/ref,
+					/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/src/qrl,
+					"/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/deps/xmss-reference",
+					/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/ios/Pods,
+					/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/deps,
+					/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/src,
+					"/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/src/xmss-alt",
+					/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/src/shasha,
 					"\"${PODS_ROOT}/Headers/Public\"",
 					"\"${PODS_ROOT}/Headers/Public/!ProtoCompiler\"",
 					"\"${PODS_ROOT}/Headers/Public/!ProtoCompiler-gRPCPlugin\"",
@@ -1560,12 +1817,10 @@
 					"\"${PODS_ROOT}/Headers/Public/gRPC-Core\"",
 					"\"${PODS_ROOT}/Headers/Public/gRPC-ProtoRPC\"",
 					"\"${PODS_ROOT}/Headers/Public/gRPC-RxLibrary\"",
-					/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/ios/Pods,
-					/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/deps,
-					/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/src,
-					"/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/src/xmss-alt",
-					/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/src/shasha,
 					"$(SRCROOT)/../node_modules/react-native-randombytes",
+					"$(SRCROOT)/../node_modules/react-native-os/ios",
+					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 				);
 				INFOPLIST_FILE = theQRL/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1578,7 +1833,7 @@
 					"\"$PODS_CONFIGURATION_BUILD_DIR/gRPC-ProtoRPC\"",
 					"\"$PODS_CONFIGURATION_BUILD_DIR/gRPC-RxLibrary\"",
 					"\"$PODS_CONFIGURATION_BUILD_DIR/theQRL\"",
-					"/Users/abilican/Documents/projects/perso/theqrl/myforks/qrllib/build/Debug-iphonesimulator",
+					"/Users/abilican/Documents/projects/perso/theqrl/RNapp/theQRL/qrllib/build/Debug-iphoneos",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1592,7 +1847,10 @@
 					"-l\"z\"",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.theQRL.wallet;
 				PRODUCT_NAME = theQRL;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -1612,14 +1870,13 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-randombytes",
+					"$(SRCROOT)/../node_modules/react-native-os/ios",
+					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 				);
 				INFOPLIST_FILE = "theQRL-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1647,14 +1904,13 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-randombytes",
+					"$(SRCROOT)/../node_modules/react-native-os/ios",
+					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 				);
 				INFOPLIST_FILE = "theQRL-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1680,11 +1936,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "theQRL-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.theQRL-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
@@ -1706,11 +1958,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "theQRL-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.theQRL-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
@@ -1738,6 +1986,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = NO;
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1754,7 +2003,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "$(inherited)";
@@ -1781,6 +2030,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				DEAD_CODE_STRIPPING = NO;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1791,7 +2041,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "$(inherited)";

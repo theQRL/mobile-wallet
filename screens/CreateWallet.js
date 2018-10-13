@@ -19,8 +19,8 @@ import {
 
 
 // for crypto
-import '../shim.js'
-import crypto from 'crypto'
+// import '../shim.js'
+// import crypto from 'crypto'
 
 // Android and Ios native modules
 import {NativeModules} from 'react-native';
@@ -66,8 +66,8 @@ export default class CreateWallet extends React.Component {
   createWallet = () => {
 
       this.setState({processing:true})
-      const randomBytes = crypto.randomBytes(48)
-      console.log(randomBytes)
+      // const randomBytes = crypto.randomBytes(48)
+      // console.log(randomBytes)
 
       // CreateWallet.createWallet("YEAHHHH")
       CreateWalletQRLlib.createWallet(this.state.treeHeight, this.state.hashFunction,(error, pk)=> {
