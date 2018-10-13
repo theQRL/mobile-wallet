@@ -9,9 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <React/RCTBridgeModule.h>
 
-@interface IosWallet : NSObject <RCTBridgeModule>
-+ (NSString *) nsDataHex2string:(NSData *)nsDataHex ;
-+ (NSMutableData *) nsStringHex2nsData:(NSString *)nsStringHex ;
-+ (NSMutableString *) nsStringHex2ascii:(NSString *)nsStringHex ;
-+ (NSString *) formatDate:(NSTimeInterval)timestamp;
+@interface refreshWallet : NSObject <RCTBridgeModule>
+//+ (NSString *) nsDataHex2string:(NSData *)nsDataHex ;
 @end

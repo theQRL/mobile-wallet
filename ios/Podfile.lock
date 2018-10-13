@@ -1,61 +1,85 @@
 PODS:
-  - '!ProtoCompiler (3.0.2)':
+  - "!ProtoCompiler (3.6.0)":
     - Protobuf (~> 3.0)
-  - '!ProtoCompiler-gRPCPlugin (1.0.2)':
-    - '!ProtoCompiler (= 3.0.2)'
-    - gRPC-ProtoRPC (= 1.0.2)
-  - BoringSSL (7.0):
-    - BoringSSL/Implementation (= 7.0)
-    - BoringSSL/Interface (= 7.0)
-  - BoringSSL/Implementation (7.0):
-    - BoringSSL/Interface (= 7.0)
-  - BoringSSL/Interface (7.0)
-  - gRPC (1.0.2):
-    - gRPC-Core (= 1.0.2)
-    - gRPC-RxLibrary (= 1.0.2)
-  - gRPC-Core (1.0.2):
-    - gRPC-Core/Implementation (= 1.0.2)
-    - gRPC-Core/Interface (= 1.0.2)
-  - gRPC-Core/Implementation (1.0.2):
-    - BoringSSL (~> 7.0)
-    - gRPC-Core/Interface (= 1.0.2)
-  - gRPC-Core/Interface (1.0.2)
-  - gRPC-ProtoRPC (1.0.2):
-    - gRPC (= 1.0.2)
-    - gRPC-RxLibrary (= 1.0.2)
+  - "!ProtoCompiler-gRPCPlugin (1.15.1)":
+    - "!ProtoCompiler (= 3.6.0)"
+    - gRPC-ProtoRPC (= 1.15.1)
+  - BoringSSL-GRPC (0.0.2):
+    - BoringSSL-GRPC/Implementation (= 0.0.2)
+    - BoringSSL-GRPC/Interface (= 0.0.2)
+  - BoringSSL-GRPC/Implementation (0.0.2):
+    - BoringSSL-GRPC/Interface (= 0.0.2)
+  - BoringSSL-GRPC/Interface (0.0.2)
+  - gRPC (1.15.1):
+    - gRPC-RxLibrary (= 1.15.1)
+    - gRPC/Main (= 1.15.1)
+  - gRPC-Core (1.15.1):
+    - gRPC-Core/Implementation (= 1.15.1)
+    - gRPC-Core/Interface (= 1.15.1)
+  - gRPC-Core/Implementation (1.15.1):
+    - BoringSSL-GRPC (= 0.0.2)
+    - gRPC-Core/Interface (= 1.15.1)
+    - nanopb (~> 0.3)
+  - gRPC-Core/Interface (1.15.1)
+  - gRPC-ProtoRPC (1.15.1):
+    - gRPC-ProtoRPC/Main (= 1.15.1)
+  - gRPC-ProtoRPC/Main (1.15.1):
+    - gRPC (= 1.15.1)
+    - gRPC-RxLibrary (= 1.15.1)
     - Protobuf (~> 3.0)
-  - gRPC-RxLibrary (1.0.2)
-  - Protobuf (3.1.0)
+  - gRPC-RxLibrary (1.15.1)
+  - gRPC/Main (1.15.1):
+    - gRPC-Core (= 1.15.1)
+    - gRPC-RxLibrary (= 1.15.1)
+  - nanopb (0.3.8):
+    - nanopb/decode (= 0.3.8)
+    - nanopb/encode (= 0.3.8)
+  - nanopb/decode (0.3.8)
+  - nanopb/encode (0.3.8)
+  - Protobuf (3.6.1)
   - theQRL (0.0.1):
-    - '!ProtoCompiler-gRPCPlugin (~> 1.0)'
+    - "!ProtoCompiler-gRPCPlugin (~> 1.0)"
     - theQRL/Messages (= 0.0.1)
     - theQRL/Services (= 0.0.1)
   - theQRL/Messages (0.0.1):
-    - '!ProtoCompiler-gRPCPlugin (~> 1.0)'
+    - "!ProtoCompiler-gRPCPlugin (~> 1.0)"
     - Protobuf
   - theQRL/Services (0.0.1):
-    - '!ProtoCompiler-gRPCPlugin (~> 1.0)'
+    - "!ProtoCompiler-gRPCPlugin (~> 1.0)"
     - gRPC-ProtoRPC
     - theQRL/Messages
 
 DEPENDENCIES:
   - theQRL (from `.`)
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - "!ProtoCompiler"
+    - "!ProtoCompiler-gRPCPlugin"
+    - BoringSSL-GRPC
+    - gRPC
+    - gRPC-Core
+    - gRPC-ProtoRPC
+    - gRPC-RxLibrary
+    - nanopb
+    - Protobuf
+
 EXTERNAL SOURCES:
   theQRL:
-    :path: .
+    :path: "."
 
 SPEC CHECKSUMS:
-  '!ProtoCompiler': cfad9cbe5299a4923b1c3c8f150818c91efd0b6d
-  '!ProtoCompiler-gRPCPlugin': ee00d28bb35b26e2657f239833b8f2aa66724f96
-  BoringSSL: 50035b9d9eeff5529587311782fc57c00ebf13ae
-  gRPC: dd3a91e0fb770b9fc4f43d1292fb19f2a2e04158
-  gRPC-Core: cc4a7613190ff0bc60a0c1e702ef07cd3f868ae6
-  gRPC-ProtoRPC: 11533510522a5e9627883a597a796cfe6bef05f3
-  gRPC-RxLibrary: 02cc70b76bc0c5bc622ba27595cca2598d9fe528
-  Protobuf: 265e9977d04a83eba9cefb0bed3ad07e41033b4a
-  theQRL: 6245e125ce857488a8b00d2af29efc307a667eaa
+  "!ProtoCompiler": c9526df99fafd398a393def617ae18d3774b7232
+  "!ProtoCompiler-gRPCPlugin": 3f2457bb2a5867ae1ef17e6ca233343a7d54422a
+  BoringSSL-GRPC: 2a230d9cd93e7ce39916044f645cebb31f37dde6
+  gRPC: c1fa6fccfc3d31212f32aa7d4e40ab0452195ccb
+  gRPC-Core: 840d1068a0a57eeca00b52486897ad6265b8f0be
+  gRPC-ProtoRPC: 69552f09c9e8e6c253663668525b7c708814a9bd
+  gRPC-RxLibrary: 67a03bd22ef654e95fd7d6e4b9c5e62420a867b8
+  nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
+  theQRL: 1a7a05d7c1ea8eafe427ad1b55eb54eb938d3658
 
-PODFILE CHECKSUM: 5062ee6beb8d3cedbceb155a9b3e335a7557b2f2
+PODFILE CHECKSUM: d6189655a4630b5afd7a58bca9144ffa63adb83e
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.5.3

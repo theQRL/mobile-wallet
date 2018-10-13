@@ -6,6 +6,8 @@
 #include "android_wallet.h"
 #include <qrl/xmssBase.h>
 #include <qrl/xmssFast.h>
+#include <shasha/shasha.h>
+#include <qrl/hashing.h>
 
 //#include <qrl/hashing.h>
 #include <qrl/misc.h>
@@ -16,6 +18,7 @@
 #include <string>
 #include <syslog.h>
 #include <kyber/ref/randombytes.h>
+#include <sstream>
 
 
 #ifdef __cplusplus
@@ -26,12 +29,9 @@ AndroidWallet::AndroidWallet()
 {
 }
 
-string AndroidWallet::androidWalletJNI(jint treeHeight, jint hashFunction)
+// create QRL wallet with a given tree height and hash function
+string AndroidWallet::createWallet(jint treeHeight, jint hashFunction)
 {
-    // fixed seed for testing purpose
-    // would need to generate the seed on the RN side to avoid code duplication (iOS/Android)
-    //std::vector<unsigned char> seed(48, 0);
-
     // empty array of unsigned char
     unsigned char seed_array[48];
     // filling the array with randombytes
@@ -40,48 +40,164 @@ string AndroidWallet::androidWalletJNI(jint treeHeight, jint hashFunction)
     std::vector<unsigned char> seed(seed_array, seed_array + sizeof seed_array / sizeof seed_array[0]);
 
     __android_log_print(ANDROID_LOG_INFO, "Tag", "HASH FUNCTION IS : %i", (int)hashFunction);
+    eHashFunction walletHashFunction;
 
     switch( (int)hashFunction) {
         case 1: {
-            __android_log_print(ANDROID_LOG_INFO, "Tag", "HASH FUNCTION IS 1 = SHAKE_128");
-            XmssBasic xmss = XmssBasic(seed, treeHeight, eHashFunction::SHAKE_128, eAddrFormatType::SHA256_2X);
-            auto address = bin2hstr(xmss.getAddress());
-            return address.c_str();
+            walletHashFunction = eHashFunction::SHAKE_128;
+            break;
         }
         case 2: {
-            __android_log_print(ANDROID_LOG_INFO, "Tag", "HASH FUNCTION IS 1 = SHAKE_256");
-            XmssBasic xmss = XmssBasic(seed, treeHeight, eHashFunction::SHAKE_256, eAddrFormatType::SHA256_2X);
-            auto address = bin2hstr(xmss.getAddress());
-            return address.c_str();
+            walletHashFunction = eHashFunction::SHAKE_256;
+            break;
         }
         case 3: {
-            __android_log_print(ANDROID_LOG_INFO, "Tag", "HASH FUNCTION IS 1 = SHA2_256");
-            XmssBasic xmss = XmssBasic(seed, treeHeight, eHashFunction::SHA2_256, eAddrFormatType::SHA256_2X);
-            auto address = bin2hstr(xmss.getAddress());
-            auto hexseed = bin2hstr(xmss.getSeed());
-            __android_log_print(ANDROID_LOG_INFO, "Tag", "HEXSEED IS : %s", hexseed.c_str() );
-            return address.c_str();
+            walletHashFunction = eHashFunction::SHA2_256;
+            break;
         }
         default : {//Optional
-            __android_log_print(ANDROID_LOG_INFO, "Tag", "HASH FUNCTION IS DEFAULT");
-            XmssBasic xmss = XmssBasic(seed, treeHeight, eHashFunction::SHAKE_128, eAddrFormatType::SHA256_2X);
-            auto address = bin2hstr(xmss.getAddress());
-            return address.c_str();
+            walletHashFunction = eHashFunction::SHAKE_128;
+            break;
         }
     }
-
-
-
-//    // create wallet
-//    XmssBasic xmss(seed2, treeHeight, eHashFunction::SHAKE_128, eAddrFormatType::SHA256_2X);
-//    auto address = bin2hstr(xmss.getAddress());
-//    __android_log_print(ANDROID_LOG_INFO, "Tag", "TREE HEIGHT FROM RN IS %s", (string *) treeHeight );
-//    __android_log_print(ANDROID_LOG_INFO, "Tag", "TREE HEIGHT FROM RN IS %s", (string *) hashFunction );
-//    __android_log_print(ANDROID_LOG_INFO, "Tag", "WALLET ADDRESS %s", address.c_str() );
-//    // send callback to RN
-//    return address.c_str();
-//    //return "Hello World from cpp";
+    // creating new wallet
+    XmssFast xmss = XmssFast(seed, treeHeight, walletHashFunction, eAddrFormatType::SHA256_2X);
+    std::string hexSeed = bin2hstr(xmss.getExtendedSeed());
+    hexSeed.append(" ");
+    std::string address = bin2hstr(xmss.getAddress() );
+    hexSeed.append(address);
+    hexSeed.append(" ");
+    std::string xmsspk = bin2hstr(xmss.getPK() );
+    hexSeed.append(xmsspk);
+    return hexSeed.c_str();
 }
+
+
+
+
+
+// create QRL wallet from hexseed
+string AndroidWallet::openWalletWithHexseed(string hexseed)
+{
+    QRLDescriptor desc = QRLDescriptor::fromExtendedSeed(hstr2bin( hexseed ));
+    XmssFast xmss = XmssFast( hstr2bin(hexseed.substr(6)), desc.getHeight(), desc.getHashFunction(), eAddrFormatType::SHA256_2X);
+
+    std::string hexSeed = bin2hstr(xmss.getExtendedSeed());
+    hexSeed.append(" ");
+    std::string address = bin2hstr(xmss.getAddress() );
+    hexSeed.append(address);
+    hexSeed.append(" ");
+    std::string xmsspk = bin2hstr(xmss.getPK() );
+    hexSeed.append(xmsspk);
+    hexSeed.append(" ");
+    // convert height to string and append to hexSeed
+    hexSeed.append( std::to_string(desc.getHeight()) );
+    hexSeed.append(" ");
+
+    return hexSeed.c_str();
+}
+
+
+
+// return mnemonic to user
+string AndroidWallet::getMnemonic(string hexseed) {
+    QRLDescriptor desc = QRLDescriptor::fromExtendedSeed(hstr2bin( hexseed ));
+    XmssFast xmss = XmssFast( hstr2bin(hexseed.substr(6)), desc.getHeight());
+    std::string mnemonic = bin2mnemonic(xmss.getExtendedSeed());
+    return mnemonic.c_str();
+}
+
+
+// transgerCoins to send QRL
+string AndroidWallet::transferCoins(string recipient, int amount, int fee, string hexseed, int otsIndex){
+
+
+    std::vector<unsigned char> concatenatedVector(55);
+    // fee to byte array cpp
+    int64_t feeInt = fee;
+    for (int i = 0; i < 8; i++) {
+        concatenatedVector[7 - i] = (feeInt >> (i * 8));
+    }
+
+    // address_to to byte array
+    // https://stackoverflow.com/questions/3408706/hexadecimal-string-to-byte-array-in-c
+    // converting string to char array
+    int nrec = recipient.length();
+    char rechexBytes[nrec+1];
+    strcpy(rechexBytes, recipient.c_str());
+    char *recpos = rechexBytes;
+    // Alternatively
+    //    const char hexstring[] = "recipientwalletadddress", *pos = hexstring;
+    unsigned char val[39];
+    int vectorPos = 8;
+    for (int count = 0; count < (sizeof(rechexBytes)/2) ; count++) {
+        sscanf(recpos, "%2hhx", &val[count]);
+        concatenatedVector[vectorPos] = val[count];
+        recpos += 2;
+        vectorPos++;
+    }
+
+    // amount to byte array
+    int vectorPos2 = 54;
+    int64_t amountInt = (int64_t) amount * 1000000000;
+    for (int i = 0; i < 8; i++){
+        concatenatedVector[vectorPos2 - i] = (amountInt >> (i * 8) );
+    }
+
+    auto shaSum = sha2_256(concatenatedVector);
+    __android_log_print(ANDROID_LOG_INFO, "PARAM", "SHASUM IS : %s", bin2hstr(shaSum).c_str() );
+
+
+    int n = hexseed.substr(6).length();
+    char hexseedBytes[n+1];
+    strcpy(hexseedBytes, hexseed.substr(6).c_str());
+    char *hexpos = hexseedBytes;
+    // Alternatively
+//    const char hexseedBytes[] = "hexstringstringminus6charsfrombeginning", *hexpos = hexseedBytes;
+    std::vector<uint8_t> hexSeedVector(48);
+    unsigned char hexval[48];
+    //int hexPos = 0;
+    for (int count = 0; count < (sizeof(hexseedBytes)/2) ; count++) {
+        sscanf(hexpos, "%2hhx", &hexval[count]);
+        hexSeedVector[count] = (uint8_t) hexval[count];
+        hexpos += 2;
+        //hexPos++;
+    }
+
+    // opening wallet and signing shasum
+    QRLDescriptor desc = QRLDescriptor::fromExtendedSeed(hstr2bin( hexseed ));
+    XmssFast xmss_obj( hexSeedVector, desc.getHeight());
+    xmss_obj.setIndex(otsIndex);
+    // signing shasum
+    auto signature = xmss_obj.sign(shaSum);
+
+
+    std::vector<unsigned char> concatenatedVectorTx = {};
+    // append shaSum
+    for(int i=0; i< shaSum.size(); i++){
+        concatenatedVectorTx.push_back( (uint8_t) shaSum[i]);
+    }
+    // append signature
+    for(int i=0; i< signature.size(); i++){
+        concatenatedVectorTx.push_back( (uint8_t) signature[i]);
+    }
+    // append PK
+    for(int i=0; i< xmss_obj.getPK().size() ; i++){
+        concatenatedVectorTx.push_back( (uint8_t) xmss_obj.getPK()[i] );
+    }
+
+    auto shaSumTx = sha2_256(concatenatedVectorTx);
+    __android_log_print(ANDROID_LOG_INFO, "QRL", "PK IS IS : %s", bin2hstr(xmss_obj.getPK()).c_str() );
+
+//    std::string message = "a";
+//    std::vector<unsigned char> data2(message.begin(), message.end());
+//    auto signature2 = xmss_obj.sign(data2);
+
+    std::string data = bin2hstr(signature);
+    data += bin2hstr(shaSumTx);
+    return data;
+}
+
 
 #ifdef __cplusplus
 }

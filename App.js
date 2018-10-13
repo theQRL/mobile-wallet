@@ -3,16 +3,20 @@ import React, { Component } from 'react';
 import { Button, Text, ImageBackground, ActivityIndicator, AsyncStorage, StatusBar, StyleSheet, View, Image, Linking } from 'react-native';
 import { DrawerNavigator , StackNavigator, SwitchNavigator, DrawerItems } from 'react-navigation'; // Version can be specified in package.json
 // Import the different screens
-import Wallet from './screens/Wallet'
-import Explorer from './screens/Explorer'
+import BackupWallet from './screens/BackupWallet'
+import SendReceive from './screens/SendReceive'
 import TransactionsHistory from './screens/TransactionsHistory'
 import CreateWallet from './screens/CreateWallet'
-import Scan from './screens/Scan'
-
+import CreateNewWallet from './screens/CreateNewWallet'
+import CompleteSetup from './screens/CompleteSetup'
+import OpenExistingWallet from './screens/OpenExistingWallet'
 import SignIn from './screens/SignIn'
 import CreateWalletTreeHeight from './screens/CreateWalletTreeHeight'
 import CreateWalletHashFunction from './screens/CreateWalletHashFunction'
+import ScanQrModal from './screens/ScanQrModal'
+import ConfirmTxModal from './screens/ConfirmTxModal'
 
+// import { QRLLIB } from './node_modules/qrllib/build/web-libjsqrl.js'
 
 // AuthLoadingScreen checks if a wallet already exists
 // - if yes -> redirects to the app main view
@@ -26,12 +30,19 @@ class AuthLoadingScreen extends React.Component {
   // Fetch the token from storage then navigate to our appropriate place
   _bootstrapAsync = async () => {
     // check if a wallet was already created
-    const userToken = await AsyncStorage.getItem('userToken');
+
+    const walletCreated = await AsyncStorage.getItem('walletcreated');
     // const userToken = await AsyncStorage.getItem('blklk');
 
     // This will switch to the App screen or Auth screen and this loading
     // screen will be unmounted and thrown away.
-    this.props.navigation.navigate(userToken ? 'App' : 'Auth');
+
+
+    this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
+
+
+    // this.props.navigation.navigate('Auth');
+
   };
 
   // Render any loading content that you like here
@@ -46,9 +57,8 @@ class AuthLoadingScreen extends React.Component {
 }
 
 
-
 const CustomDrawerContentComponent = (props) => (
-    <View style={{flex:1, backgroundColor:'#2d294b', paddingTop:50}}>
+    <View style={{flex:1, backgroundColor:'#164278', paddingTop:50}}>
         <Image style={{height:80, width:80, alignSelf:'center'}} resizeMode={Image.resizeMode.contain}  source={require('./resources/images/qrl_logo_wallet.png')} />
         <View style={{paddingTop:50}}>
             <DrawerItems {...props}/>
@@ -56,6 +66,7 @@ const CustomDrawerContentComponent = (props) => (
         <ImageBackground source={require('./resources/images/lower_drawer_bg.png')} style={{flex:1, height:null, width:null}}>
             <View style={{paddingLeft: 40, paddingTop:50}}>
                 <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://theqrl.org/')}>QRL WEBSITE</Text>
+                <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://qrl.foundation/')}>QRL FOUNDATION</Text>
                 <Text style={{color:'white',paddingTop:20}}>REDDIT</Text>
                 <Text style={{color:'white',paddingTop:20}}>DISCORD</Text>
                 <Text style={{color:'white',paddingTop:20}}>SUPPORT</Text>
@@ -68,26 +79,26 @@ const CustomDrawerContentComponent = (props) => (
 // MainDrawerMenu
 const MainDrawerMenu = DrawerNavigator(
     {
-        Wallet :{
-            path: '/',
-            screen: Wallet,
-        },
-        Explorer : {
-            path: '/',
-            screen: Explorer
-        },
         TransactionsHistory : {
             path: '/',
             screen: TransactionsHistory
         },
-        Scan : {
+        SendReceive : {
             path: '/',
-            screen: Scan
+            screen: SendReceive
         },
+        BackupWallet :{
+            path: '/',
+            screen: BackupWallet,
+        },
+        // CreateNewWallet : {
+        //     path: '/',
+        //     screen: CreateNewWallet
+        // },
     },
     {
-        initialRouteName: 'Wallet',
-        //initialRouteName: 'TransactionsHistory',
+        // initialRouteName: 'Wallet',
+        initialRouteName: 'TransactionsHistory',
         drawerPosition: 'left',
         contentComponent: CustomDrawerContentComponent,
         contentOptions: {
@@ -95,6 +106,21 @@ const MainDrawerMenu = DrawerNavigator(
                 color: 'white',
             }
         }
+    }
+);
+
+// MainDrawerMenu
+const MainDrawerModal = DrawerNavigator(
+    {
+        Main : {
+            screen: MainDrawerMenu
+        },
+        ScanQrModal : {
+            screen: ScanQrModal
+        },
+        ConfirmTxModal : {
+            screen: ConfirmTxModal
+        },
     }
 );
 
@@ -111,6 +137,12 @@ const AuthStack = StackNavigator(
     CreateWalletHashFunction: {
       screen: CreateWalletHashFunction,
     },
+    CompleteSetup: {
+      screen: CompleteSetup,
+    },
+    OpenExistingWallet: {
+      screen: OpenExistingWallet,
+    },
   },
   {
     initialRouteName: 'SignIn',
@@ -124,7 +156,7 @@ const AuthStack = StackNavigator(
 export default SwitchNavigator(
   {
     AuthLoading: AuthLoadingScreen,
-    App: MainDrawerMenu,
+    App: MainDrawerModal,
     Auth: AuthStack,
   },
   {
