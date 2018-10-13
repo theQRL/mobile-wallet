@@ -22,7 +22,6 @@ export default class BackupWallet extends React.Component {
       loading: false
   }
 
-
   // Get wallet private info
   getInfo = () => {
       // Ios
@@ -40,7 +39,6 @@ export default class BackupWallet extends React.Component {
       }
   }
 
-  
   // render view
   render() {
       return (

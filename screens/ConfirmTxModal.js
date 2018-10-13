@@ -56,7 +56,6 @@ export default class ConfirmTxModal extends React.Component {
         }
     }
 
-
     render() {
       return(
           <ImageBackground source={require('../resources/images/confirmTxModal_bg.png')} style={styles.backgroundImage}>
@@ -77,7 +76,6 @@ export default class ConfirmTxModal extends React.Component {
                           <View>
                             <ActivityIndicator size={'large'}></ActivityIndicator>
                           </View>
-
                           :
                           <View>
                               <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ this.transferCoins } >

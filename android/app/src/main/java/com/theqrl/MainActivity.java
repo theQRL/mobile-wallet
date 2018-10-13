@@ -15,17 +15,12 @@ public class MainActivity extends ReactActivity {
     // required for SharedPreferences
     public static SharedPreferences preferences;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         preferences = getSharedPreferences("qrlpref", MODE_PRIVATE);
     }
 
-    /**
-     * Returns the name of the main component registered from JavaScript.
-     * This is used to schedule rendering of the component.
-     */
     @Override
     protected String getMainComponentName() {
         return "theQRL";

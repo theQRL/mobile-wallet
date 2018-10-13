@@ -72,16 +72,11 @@ string AndroidWallet::createWallet(jint treeHeight, jint hashFunction)
     return hexSeed.c_str();
 }
 
-
-
-
-
 // create QRL wallet from hexseed
 string AndroidWallet::openWalletWithHexseed(string hexseed)
 {
     QRLDescriptor desc = QRLDescriptor::fromExtendedSeed(hstr2bin( hexseed ));
     XmssFast xmss = XmssFast( hstr2bin(hexseed.substr(6)), desc.getHeight(), desc.getHashFunction(), eAddrFormatType::SHA256_2X);
-
     std::string hexSeed = bin2hstr(xmss.getExtendedSeed());
     hexSeed.append(" ");
     std::string address = bin2hstr(xmss.getAddress() );
@@ -93,11 +88,8 @@ string AndroidWallet::openWalletWithHexseed(string hexseed)
     // convert height to string and append to hexSeed
     hexSeed.append( std::to_string(desc.getHeight()) );
     hexSeed.append(" ");
-
     return hexSeed.c_str();
 }
-
-
 
 // return mnemonic to user
 string AndroidWallet::getMnemonic(string hexseed) {
@@ -106,7 +98,6 @@ string AndroidWallet::getMnemonic(string hexseed) {
     std::string mnemonic = bin2mnemonic(xmss.getExtendedSeed());
     return mnemonic.c_str();
 }
-
 
 // transgerCoins to send QRL
 string AndroidWallet::transferCoins(string recipient, int amount, int fee, string hexseed, int otsIndex){
@@ -119,9 +110,8 @@ string AndroidWallet::transferCoins(string recipient, int amount, int fee, strin
         concatenatedVector[7 - i] = (feeInt >> (i * 8));
     }
 
-    // address_to to byte array
+    // converting recipeint address string to char array
     // https://stackoverflow.com/questions/3408706/hexadecimal-string-to-byte-array-in-c
-    // converting string to char array
     int nrec = recipient.length();
     char rechexBytes[nrec+1];
     strcpy(rechexBytes, recipient.c_str());
@@ -143,10 +133,8 @@ string AndroidWallet::transferCoins(string recipient, int amount, int fee, strin
     for (int i = 0; i < 8; i++){
         concatenatedVector[vectorPos2 - i] = (amountInt >> (i * 8) );
     }
-
+    // shaSum
     auto shaSum = sha2_256(concatenatedVector);
-    __android_log_print(ANDROID_LOG_INFO, "PARAM", "SHASUM IS : %s", bin2hstr(shaSum).c_str() );
-
 
     int n = hexseed.substr(6).length();
     char hexseedBytes[n+1];
@@ -187,7 +175,6 @@ string AndroidWallet::transferCoins(string recipient, int amount, int fee, strin
     }
 
     auto shaSumTx = sha2_256(concatenatedVectorTx);
-    __android_log_print(ANDROID_LOG_INFO, "QRL", "PK IS IS : %s", bin2hstr(xmss_obj.getPK()).c_str() );
 
 //    std::string message = "a";
 //    std::vector<unsigned char> data2(message.begin(), message.end());

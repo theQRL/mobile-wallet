@@ -85,7 +85,6 @@ export default class Wallet extends React.Component{
             passphrase : '',
             processing: false,
             balance : 0,
-            // walletAddress : "0105006d232eb403a0248f9d4c0476c06a7d7a1d0425420df2dd915b7fb46cf7da132699c27b93"
         }
     }
 
@@ -122,23 +121,17 @@ export default class Wallet extends React.Component{
                     this.setState({isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
                 });
             }
-
         })
-
     }
 
-
     renderRow(rowData, sectionID, rowID) {
-
         // format the QUANTA amount
         if (rowData.desc % 1000000000 == 0){
             amount = rowData.desc / 1000000000
         }
         else {
             amount = rowData.desc / 1000000000
-            // amount = amountTmp.toFixed(9)
         }
-
 
         return (
             <View style={{flex: 1, flexDirection:'row',  height:80, paddingTop:20}}>
@@ -151,18 +144,14 @@ export default class Wallet extends React.Component{
                         <Image source={require('../resources/images/sent.png')} resizeMode={Image.resizeMode.contain} style={{height:40, width:40,marginLeft:10, marginRight:10}} />
                     </View>
                 }
-
                 <View>
                     <Text>{rowData.title}</Text>
                     <Text>{rowData.date}</Text>
                     <Text>{amount.toString()} QUANTA</Text>
-
-
                 </View>
           </View>
           );
     }
-
 
     ListViewItemSeparator = () => {
       return (
@@ -172,12 +161,8 @@ export default class Wallet extends React.Component{
       );
     }
 
-
     render() {
-
-
         if (this.state.isLoading) {
-
             return (
                 <ImageBackground source={require('../resources/images/main_bg_half.png')} style={styles.backgroundImage}>
                     <View style={{flex:1}}>
@@ -304,7 +289,6 @@ export default class Wallet extends React.Component{
                           :
                           <ListView automaticallyAdjustContentInsets={false} dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)} renderSeparator= {this.ListViewItemSeparator} enableEmptySections={true} />
                       }
-
                   </View>
 
               </ScrollView>

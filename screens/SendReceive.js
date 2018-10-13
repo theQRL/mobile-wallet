@@ -30,19 +30,16 @@ export default class SendReceive extends React.Component {
 
       const recipient = this.props.navigation.getParam('recipient', 'norecipient');
       if (recipient == "norecipient"){
-          // this.setState({recipient:""})
-          this.setState({recipient:"Q0105003e32fcbcdcaf09485272f1aa1c1e318daaa8cf7cd03bacf7cfceeddf936bb88efe1e4d21"})
+          this.setState({recipient:""})
       }
       else {
           this.setState({recipient:recipient})
       }
 
       // Update the wallet each time the user switch to this view
+      this.setState({isLoading:true})
       // Ios
       if (Platform.OS === 'ios'){
-
-          this.setState({isLoading:true})
-
           // iPhone Plus
           if (DeviceInfo.getModel().includes("Plus")){
               this.setState({paddingTopMain:40, paddingTopCentral: 10})
@@ -57,7 +54,6 @@ export default class SendReceive extends React.Component {
                   this.setState({paddingTopMain:15, paddingTopCentral:0})
               }
           }
-
           IosWallet.refreshWallet((error, walletAddress, otsIndex, balance, keys)=> {
               this.setState({walletAddress: walletAddress, balance: balance, otsIndex: otsIndex, isLoading:false})
           });
@@ -65,8 +61,6 @@ export default class SendReceive extends React.Component {
       // Android
       else {
           AndroidWallet.refreshWallet( (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
-              console.log("GOT INFORMATION...")
-              console.log(keys)
               this.setState({walletAddress: walletAddress, balance: balance, otsIndex: otsIndex, isLoading:false})
           });
       }
@@ -95,12 +89,9 @@ export default class SendReceive extends React.Component {
     }
 
 
-
     checkAddress = () => {
 
         if (this.state.recipient == "" || this.state.amount == ""){
-            console.log(this.state.recipient)
-            console.log(this.state.amount)
             Alert.alert( "MISSING INFORMATION"  , "Please provide a valid QRL address and an amount to transfer" , [{text: "OK", onPress: () => console.log('OK Pressed')} ] )
         }
         else {
@@ -109,7 +100,6 @@ export default class SendReceive extends React.Component {
                 if (Platform.OS === 'ios'){
                     // check that there are no pending tx
                     IosWallet.checkPendingTx((error, status)=> {
-                        console.log("CHECKING IF UNCONFIRMED TX")
                         if (status =="success"){
                             // check that amount is a Number
                             var isAmountNumber = /^\d*\.?\d+$/.test(this.state.amount)
@@ -130,7 +120,6 @@ export default class SendReceive extends React.Component {
                 else {
                     // check that there are no pending tx
                     AndroidWallet.checkPendingTx((error) => {console.log("ERROR")}, (status)=> {
-                        console.log("CHECKING IF UNCONFIRMED TX")
                         if (status =="success"){
                             // check that amount is a Number
                             var isAmountNumber = /^\d*\.?\d+$/.test(this.state.amount)
@@ -155,9 +144,7 @@ export default class SendReceive extends React.Component {
         }
     }
 
-
   render() {
-
       // <View style={{flex:1, paddingTop: 50, paddingBottom:100, width:330, alignSelf: 'center', borderRadius:10}} >
 
       // View for iOS

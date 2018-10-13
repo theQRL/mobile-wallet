@@ -35,7 +35,6 @@ JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_createWallet(JNIEn
 JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_openWalletWithHexseed(JNIEnv* pEnv, jobject pThis, jstring hexseed)
 {
     AndroidWallet androidWallet;
-
     // convert jstring to string
     const jclass stringClass = pEnv->GetObjectClass(hexseed);
     const jmethodID getBytes = pEnv->GetMethodID(stringClass, "getBytes", "(Ljava/lang/String;)[B");
@@ -56,7 +55,6 @@ JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_openWalletWithHexs
 
 JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_transferCoins(JNIEnv* pEnv, jobject pThis, jstring address, jint amount, jint fee, jstring hexseed, jint otsIndex)
 {
-
     // convert jstring to string
     const jclass stringClass = pEnv->GetObjectClass(hexseed);
     const jmethodID getBytes = pEnv->GetMethodID(stringClass, "getBytes", "(Ljava/lang/String;)[B");
@@ -79,7 +77,6 @@ JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_transferCoins(JNIE
     pEnv->DeleteLocalRef(stringJbytesAddr);
     pEnv->DeleteLocalRef(stringClassAddr);
 
-
     AndroidWallet androidWallet;
     return pEnv-> NewStringUTF( androidWallet.transferCoins(retAddr, amount, fee, ret, otsIndex).c_str() );
 }
@@ -87,8 +84,6 @@ JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_transferCoins(JNIE
 
 JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_getMnemonic(JNIEnv* pEnv, jobject pThis, jstring hexseed)
 {
-
-
     AndroidWallet androidWallet;
 
     // convert jstring to string

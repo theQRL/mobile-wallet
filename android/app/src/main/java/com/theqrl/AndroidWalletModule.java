@@ -138,7 +138,6 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
         }
     }
 
-
     // Create a QRL wallet from scratch
     @ReactMethod
     public void createWallet(int treeHeight, int hashFunction, Callback errorCallback, Callback successCallback) {
@@ -148,22 +147,15 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
             saveEncrypted("hexseed", hexSeed.split(" ")[0]);
             saveEncrypted("address", hexSeed.split(" ")[1]);
             saveEncrypted("xmsspk", hexSeed.split(" ")[2]);
-
-//            PreferenceHelper.putString("hexseed", hexSeed.split(" ")[0]);
-//            PreferenceHelper.putString("address", hexSeed.split(" ")[1]);
-//            PreferenceHelper.putString("xmsspk", hexSeed.split(" ")[2]);
-//            PreferenceHelper.putInt("treeheight", new Integer(treeHeight) );
             successCallback.invoke("success");
         } catch (IllegalViewOperationException e) {
             errorCallback.invoke(e.getMessage());
         }
     }
 
-
     // Open an  existingQRL wallet with hexseed
     @ReactMethod
     public void openWalletWithHexseed(String hexseed, Callback errorCallback, Callback successCallback) {
-
         try {
             String hexSeed = openWalletWithHexseed(hexseed);
             saveEncrypted("hexseed", hexSeed.split(" ")[0]);
@@ -174,7 +166,6 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
             errorCallback.invoke(e.getMessage());
         }
     }
-
 
     // Show hexseed and mnemonic to user
     @ReactMethod
@@ -187,7 +178,6 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
             errorCallback.invoke(e.getMessage());
         }
     }
-
 
     // Check if user has pending tx
     @ReactMethod
@@ -223,8 +213,6 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
             errorCallback.invoke(e.getMessage());
         }
     }
-
-
 
     // Send walet related information to RN
     @ReactMethod

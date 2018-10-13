@@ -16,10 +16,6 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
 
-/**
- * Created by abilican on 10.10.18.
- */
-
 // class to decrypt encrypted data from shared preferences
 class Decryptor {
 
@@ -36,7 +32,6 @@ class Decryptor {
 
     private void initKeyStore() throws KeyStoreException, CertificateException,
             NoSuchAlgorithmException, IOException {
-
         keyStore = KeyStore.getInstance(ANDROID_KEY_STORE);
         keyStore.load(null);
     }

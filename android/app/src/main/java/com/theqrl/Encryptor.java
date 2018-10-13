@@ -19,11 +19,6 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
-
-/**
- * Created by abilican on 10.10.18.
- */
-
 // class to encrypt data before saving to shared preferences
 class Encryptor {
 
@@ -42,34 +37,27 @@ class Encryptor {
             NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, IOException,
             InvalidAlgorithmParameterException, SignatureException, BadPaddingException,
             IllegalBlockSizeException {
-
         final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(alias));
-
+        // intialization vector and encrypted data
         iv = cipher.getIV();
         encryption = cipher.doFinal(textToEncrypt.getBytes("UTF-8"));
-
+        // save iv and encryption to shared preferences
         PreferenceHelper.putString(alias+"iv", Base64.encodeToString(iv, Base64.DEFAULT) );
         PreferenceHelper.putString(alias+"enc", Base64.encodeToString(encryption, Base64.DEFAULT));
-
         return encryption;
-
-
     }
 
     // creating the secret key for the keystore
     @NonNull
     private SecretKey getSecretKey(final String alias) throws NoSuchAlgorithmException,
             NoSuchProviderException, InvalidAlgorithmParameterException {
-
         final KeyGenerator keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, ANDROID_KEY_STORE);
-
         keyGenerator.init(new KeyGenParameterSpec.Builder(alias,
                 KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
                 .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
                 .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
                 .build());
-
         return keyGenerator.generateKey();
     }
 

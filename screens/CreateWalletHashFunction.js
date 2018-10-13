@@ -19,7 +19,6 @@ export default class CreateWalletHashFunction extends React.Component {
   }
 
   showModal = () => {
-
       if (Platform.OS === 'ios'){
           var y3 = this.state.y1 + this.state.y2 - 100
           this.setState({y3: y3, showModal: true})
@@ -28,8 +27,6 @@ export default class CreateWalletHashFunction extends React.Component {
           var y3 = this.state.y1_android - this.state.y2_android
           this.setState({y3: y3, showModal: true})
       }
-
-
   }
 
   updateHashFunction = (hashFunction) => {
@@ -79,7 +76,6 @@ export default class CreateWalletHashFunction extends React.Component {
                       </TouchableOpacity>
 
                   }
-
                   {this.state.selectText ?  <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={ () =>  this.props.navigation.navigate('CompleteSetup',{treeHeight: this.props.navigation.state.params.treeHeight, signatureCounts: this.props.navigation.state.params.signatureCounts,  hashFunctionName: this.state.hashFunctionName, hashFunctionId: this.state.hashFunction}) }><Text style={styles.TextStyleWhite}> CONTINUE </Text></TouchableOpacity>: undefined }
               </View>
           </ImageBackground>

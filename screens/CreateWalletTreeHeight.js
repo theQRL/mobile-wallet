@@ -86,9 +86,6 @@ export default class CreateWalletTreeHeight extends React.Component {
                       </TouchableOpacity>
 
                   }
-
-
-
                   {this.state.selectText ?  <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={() => this.props.navigation.navigate('CreateWalletHashFunction',{treeHeight: this.state.treeHeight, signatureCounts: this.state.signatureCounts}) } ><Text style={styles.TextStyleWhite}> CONTINUE </Text></TouchableOpacity>: undefined }
               </View>
           </ImageBackground>
