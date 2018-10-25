@@ -15,6 +15,7 @@ import CreateWalletTreeHeight from './screens/CreateWalletTreeHeight'
 import CreateWalletHashFunction from './screens/CreateWalletHashFunction'
 import ScanQrModal from './screens/ScanQrModal'
 import ConfirmTxModal from './screens/ConfirmTxModal'
+import CreateAdvancedWallet from './screens/CreateAdvancedWallet'
 
 // import { QRLLIB } from './node_modules/qrllib/build/web-libjsqrl.js'
 
@@ -136,6 +137,9 @@ const AuthStack = StackNavigator(
     },
     CreateWalletHashFunction: {
       screen: CreateWalletHashFunction,
+    },
+    CreateAdvancedWallet: {
+      screen: CreateAdvancedWallet,
     },
     CompleteSetup: {
       screen: CompleteSetup,
