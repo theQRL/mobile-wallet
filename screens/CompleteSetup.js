@@ -28,7 +28,7 @@ export default class CompleteSetup extends React.Component {
         this.setState({loading:true})
         // Ios
         if (Platform.OS === 'ios'){
-            IosWallet.createWallet(this.props.navigation.state.params.treeHeight, this.props.navigation.state.params.hashFunctionId, (err) => {console.log(err); }, (status)=> {
+            IosWallet.createWallet(this.props.navigation.state.params.treeHeight, this.props.navigation.state.params.hashFunctionId,  (err, status)=> {
                 this.setState({loading:false})
                 // if success -> open the main view of the app
                 if (status =="success"){
