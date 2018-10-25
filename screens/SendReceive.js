@@ -21,7 +21,7 @@ export default class SendReceive extends React.Component {
     drawerLabel: 'SEND & RECEIVE',
     drawerIcon: ({ tintColor }) => (
       <Image
-        source={require('../resources/images/send_receive_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain}  style={{width:30, height:30}}
+        source={require('../resources/images/send_receive_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain}  style={{width:25, height:25}}
       />
     ),
   };
@@ -30,7 +30,9 @@ export default class SendReceive extends React.Component {
 
       const recipient = this.props.navigation.getParam('recipient', 'norecipient');
       if (recipient == "norecipient"){
-          this.setState({recipient:""})
+          // this.setState({recipient:""})
+          // this.setState({recipient:"Q0105003e32fcbcdcaf09485272f1aa1c1e318daaa8cf7cd03bacf7cfceeddf936bb88efe1e4d21"})
+
       }
       else {
           this.setState({recipient:recipient})
@@ -42,16 +44,16 @@ export default class SendReceive extends React.Component {
       if (Platform.OS === 'ios'){
           // iPhone Plus
           if (DeviceInfo.getModel().includes("Plus")){
-              this.setState({paddingTopMain:40, paddingTopCentral: 10})
+              this.setState({paddingTopMain:40, paddingTopCentral: 10, menuHeight:80})
           }
           // iPhoneX
           else {
               if (DeviceInfo.getModel().includes("X")){
-                  this.setState({paddingTopMain:70, paddingTopCentral: 10})
+                  this.setState({paddingTopMain:70, paddingTopCentral: 10, menuHeight:80})
               }
               // other iPhones
               else {
-                  this.setState({paddingTopMain:15, paddingTopCentral:0})
+                  this.setState({paddingTopMain:15, paddingTopCentral:0, menuHeight:50})
               }
           }
           IosWallet.refreshWallet((error, walletAddress, otsIndex, balance, keys)=> {
@@ -68,7 +70,7 @@ export default class SendReceive extends React.Component {
 
 
   state={
-      amount: "10",
+      // amount: "10",
       view: 'send',
       fee: "0.001"
   }
@@ -145,8 +147,6 @@ export default class SendReceive extends React.Component {
     }
 
   render() {
-      // <View style={{flex:1, paddingTop: 50, paddingBottom:100, width:330, alignSelf: 'center', borderRadius:10}} >
-
       // View for iOS
       if (DeviceInfo.getDeviceId().includes("iPhone10")){
           return (
@@ -171,7 +171,7 @@ export default class SendReceive extends React.Component {
 
                         <KeyboardAvoidingView style={{flex:1, paddingTop: this.state.paddingTopCentral, paddingBottom:100, width:330, alignSelf: 'center', borderRadius:10}} behavior="padding">
                             <ScrollView style={{flex:1}}>
-                                <View style={{ height:80, backgroundColor:'white', flexDirection:'row'}}>
+                                <View style={{ height:this.state.menuHeight, backgroundColor:'white', flexDirection:'row'}}>
                                     <TouchableOpacity onPress={ this.switchSend } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'white'}}>
                                         <Text>SEND</Text>
                                     </TouchableOpacity>
@@ -204,7 +204,7 @@ export default class SendReceive extends React.Component {
                         </KeyboardAvoidingView>
                         :
                         <View style={{flex:1, paddingTop: this.state.paddingTopCentral, paddingBottom:100, width:330, alignSelf: 'center', borderRadius:10}}>
-                            <View style={{height:80, backgroundColor:'white', flexDirection:'row'}}>
+                            <View style={{height:this.state.menuHeight, backgroundColor:'white', flexDirection:'row'}}>
 
                                 <TouchableOpacity onPress={ this.switchSend } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fafafa'}}>
                                     <Text>SEND</Text>
@@ -262,7 +262,7 @@ export default class SendReceive extends React.Component {
                                 </TouchableOpacity>
                             </View>
                             <View style={{width:'50%',height:1, backgroundColor:'red'}}></View>
-                            <View style={{flex:2, backgroundColor:'white', width:330, padding:30}}>
+                            <View style={{height: 290, backgroundColor:'white', width:330, padding:30}}>
                                 <Text>RECIPIENT</Text>
                                 <TextInput onChangeText={ (text) => this._onRecipientChange(text) } underlineColorAndroid="transparent" value={this.state.recipient} style={{backgroundColor:'#ebe8e8', height:40}} />
                                 <Text>{'\n'}AMOUNT</Text>
@@ -275,12 +275,11 @@ export default class SendReceive extends React.Component {
                                 <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ this.checkAddress }>
                                     <Text style={styles.TextStyle}> REVIEW </Text>
                                 </TouchableOpacity>
-
                             </View>
 
                         <View style={{flex:0.1}}>
                             <TouchableOpacity style={styles.SubmitButtonStyle3} activeOpacity = { .5 } onPress={() => this.props.navigation.navigate('ScanQrModal')} >
-                                <Image source={require('../resources/images/scan.png')} resizeMode={Image.resizeMode.contain} style={{height:80, width:80}} />
+                                <Image source={require('../resources/images/scan.png')} resizeMode={Image.resizeMode.contain} style={{height:70, width:70}} />
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -302,7 +301,7 @@ export default class SendReceive extends React.Component {
                                 <Text>Q{this.state.walletAddress}</Text>
                             </View>
                             <View>
-                                <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ Clipboard.setString('Q'+this.state.walletAddress) } >
+                                <TouchableOpacity style={styles.SubmitButtonStyleCopy} activeOpacity = { .5 } onPress={ Clipboard.setString('Q'+this.state.walletAddress) } >
                                     <Text style={styles.TextStyle}> COPY </Text>
                                 </TouchableOpacity>
                             </View>
@@ -327,17 +326,28 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#fff'
     },
-    SubmitButtonStyle3: {
-        alignSelf:'center',
-        paddingTop:25,
+    SubmitButtonStyleCopy: {
+        alignSelf:'flex-end',
+        width: 150,
+        marginTop:10,
+        paddingTop:15,
         paddingBottom:15,
+        backgroundColor:'#f33160',
+        borderWidth: 1,
+        borderColor: '#fff'
+    },
+    SubmitButtonStyle3: {
+        flex:1,
+        alignSelf:'center',
+        paddingTop:15,
+        paddingBottom:85,
     },
     SubmitButtonStyle2: {
         alignItems:'center',
         justifyContent:'center',
         alignSelf:'center',
         top:-15,
-        left: -1
+        left: -1,
     },
     TextStyle:{
         color:'#fff',

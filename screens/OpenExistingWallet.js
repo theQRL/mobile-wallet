@@ -28,7 +28,8 @@ var AndroidWallet = NativeModules.AndroidWallet;
 export default class OpenExistingWallet extends React.Component {
 
     state={
-        hexseed: '',
+        hexseed: '01050025f6c0b547c4231721f71c90176b6ee20b2aeff81f81773e099f2d9625e8045cba8aa504bdade1b6e5e3e05d9264e8d3',
+        // hexseed: '',
         isLoading: false
     }
 

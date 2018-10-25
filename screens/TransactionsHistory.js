@@ -30,10 +30,11 @@ var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 export default class Wallet extends React.Component{
 
+
     static navigationOptions = {
       drawerLabel: 'TRANSACTION HISTORY',
       drawerIcon: ({ tintColor }) => (
-        <Image source={require('../resources/images/transaction_history_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain}  style={{width:30, height:30}}/>
+        <Image source={require('../resources/images/transaction_history_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain}  style={{width:25, height:25}}/>
       ),
     };
 
@@ -43,8 +44,7 @@ export default class Wallet extends React.Component{
     // 2. update list of 10 latest tx
     componentDidMount() {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        // update cmc data
-
+        // update QRL market data
         fetch('https://market-data.automated.theqrl.org/', {
             method: 'GET',
             headers: {
@@ -69,8 +69,6 @@ export default class Wallet extends React.Component{
             // Android
             else {
                 AndroidWallet.refreshWallet( (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
-                    console.log("GOT INFORMATION...")
-                    console.log(keys)
                     this.setState({isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
                 });
             }
@@ -91,7 +89,6 @@ export default class Wallet extends React.Component{
 
     // Refresh wallet balance
     refreshWallet = () => {
-
         fetch('https://market-data.automated.theqrl.org/', {
             method: 'GET',
             headers: {
@@ -116,8 +113,6 @@ export default class Wallet extends React.Component{
             // Android
             else {
                 AndroidWallet.refreshWallet( (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
-                    console.log("GOT INFORMATION...")
-                    console.log(keys)
                     this.setState({isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
                 });
             }
@@ -162,6 +157,7 @@ export default class Wallet extends React.Component{
     }
 
     render() {
+        console.log("LOADING TX HISTORY MAINVIEW...")
         if (this.state.isLoading) {
             return (
                 <ImageBackground source={require('../resources/images/main_bg_half.png')} style={styles.backgroundImage}>
@@ -240,18 +236,19 @@ export default class Wallet extends React.Component{
                  </View>
 
                  <View style={{ alignItems:'center',flex:1}}>
-                     <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:240, width:330, justifyContent:'center',alignItems:'center'}} >
+                     <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:240, width:330, justifyContent:'center',alignItems:'center', paddingTop: 30}} >
                          <Text style={{color:'white'}}>QRL BALANCE</Text>
                          <Text style={{color:'white',fontSize:30}}>{this.state.balance / 1000000000 }</Text>
+                         <Text style={{color:'white',fontSize:13}}>USD ${ ((this.state.balance / 1000000000 ) * this.state.price).toFixed(2) }</Text>
 
                          <View style={{width:"80%", borderRadius:10, flexDirection:'row', paddingTop:30,paddingBottom:5}}>
                              <View style={{flex:1}}><Text style={{fontSize:12, color:"white"}}>MARKET CAP</Text></View>
                              <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text style={{fontSize:12, color:"white"}}>PRICE</Text></View>
-                             <View style={{flex:1}}><Text style={{fontSize:12, color:"white"}}>24H CHANGE</Text></View>
+                             <View style={{flex:1}}><Text style={{fontSize:12, color:"white", right:-10}}>24H CHANGE</Text></View>
                          </View>
 
-                         <View style={{backgroundColor:"#d12835", height:40, flexDirection:'row', width:"90%", borderRadius:10}}>
-                             <View style={{flex:1, justifyContent:'center'}}><Text style={{fontSize:12, color:"white",fontWeight: "bold"}}>${this.state.marketcap} <Text style={{fontSize:8, color:"white"}}>USD</Text></Text></View>
+                         <View style={{backgroundColor:"#d12835", height:40, flexDirection:'row', width:"90%", borderRadius:10, paddingLeft:15}}>
+                             <View style={{flex:1, justifyContent:'center'}}><Text style={{fontSize:12, color:"white",fontWeight: "bold"}}>${ (this.state.marketcap / 1000000).toFixed(2) }M <Text style={{fontSize:8, color:"white"}}>USD</Text></Text></View>
                              <View style={{flex:1, alignItems:'center', justifyContent:'center'}}><Text style={{fontSize:12, color:"white",fontWeight: "bold"}}>${this.state.price}<Text style={{fontSize:8, color:"white"}}> USD</Text></Text></View>
 
                              { this.state.changeup ?
@@ -269,7 +266,10 @@ export default class Wallet extends React.Component{
                                      </View>
                                  </View>
                              }
+                         </View>
 
+                         <View style={{alignSelf:'flex-end', right:23}}>
+                             <Text style={{color:'white',fontSize:10}}>Powered by COINLIB</Text>
                          </View>
 
                          <TouchableOpacity style={styles.SubmitButtonStyle2} activeOpacity = { .5 } onPress={ this.refreshWallet }>
@@ -278,6 +278,8 @@ export default class Wallet extends React.Component{
                              <Text style={styles.TextStyle}> Refresh </Text>
                              */}
                          </TouchableOpacity>
+
+
 
                      </ImageBackground>
                   </View>
@@ -308,7 +310,8 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
         alignSelf:'center',
-        bottom:-28,
+        // bottom:-28,
+        right:2
     },
     SubmitButtonStyle: {
         width: 200,

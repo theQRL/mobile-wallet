@@ -20,7 +20,9 @@ export default class ScanQrModal extends React.Component {
                     </Text>
                 }
                 bottomContent={
-                    <Button onPress={() => this.props.navigation.navigate("SendReceive")} title="Dismiss"/>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("SendReceive")} >
+                        <Text style={styles.CancelTextStyle}>Dismiss</Text>
+                    </TouchableOpacity>
                 }
             />
           </View>
@@ -33,8 +35,7 @@ const styles = StyleSheet.create({
     centerText: {
         flex: 1,
         fontSize: 18,
-        padding: 32,
-        paddingTop: 100,
+        paddingTop: 80,
         color: '#777',
     },
     textBold: {
@@ -47,5 +48,12 @@ const styles = StyleSheet.create({
     },
     buttonTouchable: {
         padding: 16,
+  },
+  CancelTextStyle:{
+      alignSelf:'center',
+      color: 'red',
+      textAlign:'center',
+      fontSize:18,
+      paddingTop:5
   },
 });
