@@ -2,6 +2,7 @@ import React from 'react';
 import {Picker, Text, View, Button, Image, ScrollView, ImageBackground, StyleSheet, TouchableHighlight, TouchableOpacity,ActivityIndicator, TextInput, KeyboardAvoidingView, Platform, Alert} from 'react-native';
 var validate = require('@theqrl/validate-qrl-address');
 // Android and Ios native modules
+import DeviceInfo from 'react-native-device-info';
 import {NativeModules} from 'react-native';
 // ios
 var IosTransferCoins = NativeModules.transferCoins;
@@ -9,6 +10,31 @@ var IosWallet = NativeModules.refreshWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
 
 export default class ConfirmTxModal extends React.Component {
+
+
+    componentDidMount() {
+        // Ios
+        if (Platform.OS === 'ios'){
+            // iPhone Plus
+            if (DeviceInfo.getModel().includes("Plus")){
+                    this.setState({paddingTop:100, paddingTopBelow: 20})
+            }
+            // iPhoneX
+            else {
+                if (DeviceInfo.getModel().includes("X")){
+                    this.setState({paddingTop:160, paddingTopBelow: 40})
+                }
+                // other iPhones
+                else {
+                    this.setState({paddingTop:100, paddingTopBelow: 20})
+                }
+            }
+        }
+        // Android
+        else {
+            this.setState({paddingTop:100, paddingTopBelow: 10})
+        }
+    }
 
 
     state={
@@ -59,9 +85,9 @@ export default class ConfirmTxModal extends React.Component {
     render() {
       return(
           <ImageBackground source={require('../resources/images/confirmTxModal_bg.png')} style={styles.backgroundImage}>
-              <View style={{height:130, width:330, flex: 1, alignSelf: 'center', justifyContent:'center', paddingTop:160}}>
+              <View style={{height:130, width:330, flex: 1, alignSelf: 'center', justifyContent:'center', paddingTop:this.state.paddingTop}}>
                   <ImageBackground source={require('../resources/images/confirmTxModal_window.png')} style={{width:null, height:"85%", flex:1}} >
-                      <View style={{alignSelf:'center', paddingTop: 40, alignItems:'center'}}>
+                      <View style={{alignSelf:'center', paddingTop: this.state.paddingTopBelow, alignItems:'center'}}>
                           <Image source={require('../resources/images/confirmTxModal_check.png')} resizeMode={Image.resizeMode.contain} style={{height:75, width:75, marginBottom:15}} />
                           <Text style={{color:'white'}}>PLEASE CONFIRM</Text>
                           <Text style={{color:'white'}}>YOUR TRANSACTION</Text>
@@ -70,7 +96,7 @@ export default class ConfirmTxModal extends React.Component {
                           <Text style={{color:'gray'}}>YOU ARE SENDING</Text>
                           <Text style={{color:'black', fontSize:40}}>{this.props.navigation.state.params.amount} <Text style={{color:'gray', fontSize:12}}>QRL </Text></Text>
                           <Text style={{color:'gray'}}>TO THE FOLLOWING ADDRESS</Text>
-                          <Text style={{color:'black', fontSize:20}}>{this.props.navigation.state.params.recipient} </Text>
+                          <Text style={{color:'black', fontSize:18}}>{this.props.navigation.state.params.recipient} </Text>
                       </View>
                       {this.state.isLoading ?
                           <View>
@@ -81,7 +107,9 @@ export default class ConfirmTxModal extends React.Component {
                               <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ this.transferCoins } >
                                   <Text style={styles.TextStyle}>CONFIRM AND SEND</Text>
                               </TouchableOpacity>
-                              <Button onPress={() => this.props.navigation.navigate("SendReceive")} title="Cancel" color='red' />
+                              <TouchableOpacity onPress={() => this.props.navigation.navigate("SendReceive")} >
+                                  <Text style={styles.CancelTextStyle}>Cancel</Text>
+                              </TouchableOpacity>
                           </View>
                       }
                   </ImageBackground>
@@ -113,7 +141,6 @@ const styles = StyleSheet.create({
     },
     backgroundImage: {
         flex: 1,
-        // remove width and height to override fixed static size
         width: null,
         height: null,
     },
@@ -126,6 +153,13 @@ const styles = StyleSheet.create({
         backgroundColor:'#f33160',
         borderWidth: 1,
         borderColor: '#fff'
+    },
+    CancelTextStyle:{
+        alignSelf:'center',
+        color: 'red',
+        textAlign:'center',
+        fontSize:18,
+        paddingTop:5
     },
     TextStyle:{
         color:'#fff',

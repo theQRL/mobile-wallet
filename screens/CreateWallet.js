@@ -97,7 +97,6 @@ export default class CreateWallet extends React.Component {
 
 
   showHashSheet = () => {
-
       ActionSheetIOS.showActionSheetWithOptions({
           options: ['Cancel','Hash Function: SHAKE_128','Hash Function: SHAKE_256','Hash Function: SHA2_256'],
           cancelButtonIndex: 0,

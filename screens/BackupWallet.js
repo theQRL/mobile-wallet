@@ -11,7 +11,7 @@ export default class BackupWallet extends React.Component {
     drawerLabel: 'BACK UP YOUR WALLET',
     drawerIcon: ({ tintColor }) => (
       <Image
-        source={require('../resources/images/backup_wallet_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain} style={{width:30, height:30}}
+        source={require('../resources/images/backup_wallet_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain} style={{width:25, height:25}}
       />
     ),
   };

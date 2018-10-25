@@ -84,10 +84,10 @@ string AndroidWallet::openWalletWithHexseed(string hexseed)
     hexSeed.append(" ");
     std::string xmsspk = bin2hstr(xmss.getPK() );
     hexSeed.append(xmsspk);
-    hexSeed.append(" ");
+//    hexSeed.append(" ");
     // convert height to string and append to hexSeed
-    hexSeed.append( std::to_string(desc.getHeight()) );
-    hexSeed.append(" ");
+//    hexSeed.append( std::to_string(desc.getHeight()) );
+//    hexSeed.append(" ");
     return hexSeed.c_str();
 }
 
@@ -103,21 +103,22 @@ string AndroidWallet::getMnemonic(string hexseed) {
 string AndroidWallet::transferCoins(string recipient, int amount, int fee, string hexseed, int otsIndex){
 
 
+    __android_log_print(ANDROID_LOG_INFO, "Tag", "RECIPIENT CPP : %s", recipient.c_str() );
     std::vector<unsigned char> concatenatedVector(55);
     // fee to byte array cpp
-    int64_t feeInt = fee;
+    int64_t feeInt = (int64_t) fee;
     for (int i = 0; i < 8; i++) {
         concatenatedVector[7 - i] = (feeInt >> (i * 8));
     }
 
-    // converting recipeint address string to char array
+    // converting recipient address string to char array
     // https://stackoverflow.com/questions/3408706/hexadecimal-string-to-byte-array-in-c
     int nrec = recipient.length();
     char rechexBytes[nrec+1];
     strcpy(rechexBytes, recipient.c_str());
     char *recpos = rechexBytes;
     // Alternatively
-    //    const char hexstring[] = "recipientwalletadddress", *pos = hexstring;
+//    const char rechexBytes[] = "0105003e32fcbcdcaf09485272f1aa1c1e318daaa8cf7cd03bacf7cfceeddf936bb88efe1e4d21", *recpos = rechexBytes;
     unsigned char val[39];
     int vectorPos = 8;
     for (int count = 0; count < (sizeof(rechexBytes)/2) ; count++) {
@@ -133,8 +134,19 @@ string AndroidWallet::transferCoins(string recipient, int amount, int fee, strin
     for (int i = 0; i < 8; i++){
         concatenatedVector[vectorPos2 - i] = (amountInt >> (i * 8) );
     }
+
+
+    for (int i = 0; i < concatenatedVector.size(); i++){
+        __android_log_print(ANDROID_LOG_INFO, "Tag", "concatenatedVector : %hhu", concatenatedVector[i] );
+    }
+
     // shaSum
     auto shaSum = sha2_256(concatenatedVector);
+    __android_log_print(ANDROID_LOG_INFO, "Tag", "SHASUM : %s", bin2hstr(shaSum).c_str() );
+
+
+
+
 
     int n = hexseed.substr(6).length();
     char hexseedBytes[n+1];
@@ -154,7 +166,7 @@ string AndroidWallet::transferCoins(string recipient, int amount, int fee, strin
 
     // opening wallet and signing shasum
     QRLDescriptor desc = QRLDescriptor::fromExtendedSeed(hstr2bin( hexseed ));
-    XmssFast xmss_obj( hexSeedVector, desc.getHeight());
+    XmssFast xmss_obj( hexSeedVector, desc.getHeight() );
     xmss_obj.setIndex(otsIndex);
     // signing shasum
     auto signature = xmss_obj.sign(shaSum);

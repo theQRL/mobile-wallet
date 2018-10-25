@@ -172,6 +172,10 @@ RCT_EXPORT_METHOD(sendCoins:(NSString* )recipient withAmount:(NSNumber* _Nonnull
       concatenatedVector.push_back(byData3);
     }
     
+    for (int i = 0; i < concatenatedVector.size(); i++){
+      NSLog(@" concatenatedVector %hhu", concatenatedVector[i] );
+    }
+    
     // Generate the SHA sum of concatenated array
     auto shaSum = sha2_256(concatenatedVector);
     std::string hashSumStr = bin2hstr(shaSum);

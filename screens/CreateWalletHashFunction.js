@@ -24,7 +24,7 @@ export default class CreateWalletHashFunction extends React.Component {
           this.setState({y3: y3, showModal: true})
       }
       else {
-          var y3 = this.state.y1_android - this.state.y2_android
+          var y3 = this.state.y1_android - this.state.y2_android + 85
           this.setState({y3: y3, showModal: true})
       }
   }

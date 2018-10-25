@@ -183,14 +183,21 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void checkPendingTx(Callback errorCallback, Callback successCallback) {
 //        String address = PreferenceHelper.getString("address");
-        String address = getEncrypted("address");
-        try {
+        String walletAddress = getEncrypted("address");
+        int len = walletAddress.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(walletAddress.charAt(i), 16) << 4)
+                    + Character.digit(walletAddress.charAt(i+1), 16));
+        }
 
+        try {
             ManagedChannel channel = OkHttpChannelBuilder.forAddress(server , port).usePlaintext(true).build();
             PublicAPIGrpc.PublicAPIBlockingStub blockingStub = PublicAPIGrpc.newBlockingStub(channel);
             // get all tx unconfirmed
             Qrl.GetLatestDataReq getLatestDataReq = Qrl.GetLatestDataReq.newBuilder().setFilter(Qrl.GetLatestDataReq.Filter.TRANSACTIONS_UNCONFIRMED).build();
             Qrl.GetLatestDataResp getLatestDataResp = blockingStub.getLatestData(getLatestDataReq);
+
             // no unconfirmed tx
             if (getLatestDataResp.getTransactionsUnconfirmedCount() == 0){
                 successCallback.invoke("success");
@@ -199,7 +206,8 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
             else {
                 int found = 0;
                 for (int i=0; i<getLatestDataResp.getTransactionsUnconfirmedCount(); i++ ){
-                    if (address == getLatestDataResp.getTransactionsUnconfirmed(i).getAddrFrom().toString() ){
+                    // check if there is a pending tx for the given wallet address
+                    if ( ByteString.copyFrom(data).equals(getLatestDataResp.getTransactionsUnconfirmed(i).getAddrFrom()) ){
                         found++;
                         successCallback.invoke("error");
                     }
@@ -218,6 +226,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
     @ReactMethod
     // Method to update the wallet's balance
     public void refreshWallet(Callback errorCallback, Callback successCallback) {
+        System.out.println( "refresWallet from Android" );
         String walletAddress = getEncrypted("address");
         // get the list of the latest 10 tx
         int completed = 0;
@@ -250,56 +259,67 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
             // JSON Array to save information related to tx and send back to RN
             JSONArray txJsonAll = new JSONArray();
 
-            for (int i = tx_count - 1 ; i > tx_end ; i -= 1) {
-                // get txhashbytes and call getObject for each tx
-                ByteString txhashbytes = getAddressStateResp.getState().getTransactionHashesList().get(i);
-                // call getObject method from API for each transactions
-                Qrl.GetObjectReq getObjectReq = Qrl.GetObjectReq.newBuilder().setQuery(txhashbytes).build();
-                Qrl.GetObjectResp getObjectResp = blockingStub.getObject(getObjectReq);
-                // date formatter
-                SimpleDateFormat dt = new SimpleDateFormat("h:mm a, MMM d yyyy");
-                Date date = new Date(getObjectResp.getTransaction().getTimestampSeconds() * 1000);
-                // JSON object to save information realted to each tx
-                JSONObject txJson = new JSONObject();
-                try{
-                    txJson.put("title","SENT");
-                    txJson.put("desc",getObjectResp.getTransaction().getTx().getTransfer().getAmounts(0));
-                    txJson.put("date", dt.format(date) ) ;
-                    txJsonAll.put(txJson);
-                    completed++;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
-                int otsIndex = 0;
-                if (completed == tx_total){
-                    // check latest available ots index
-                    for (int j=0; j<getAddressStateResp.getState().getOtsBitfieldCount(); j++){
-                        // Byte to binaryString (https://stackoverflow.com/questions/12310017/how-to-convert-a-byte-to-its-binary-string-representation)
-                        byte bitfiedByte = getAddressStateResp.getState().getOtsBitfield(j).byteAt(0);
-                        String bitfieldString = String.format("%8s", Integer.toBinaryString(bitfiedByte & 0xFF)).replace(' ', '0');
-                        String bitfieldStringBigendian = new StringBuffer(bitfieldString).reverse().toString();
+            if (tx_count == 0){
+                successCallback.invoke( walletAddress, 0 ,Long.toString(getAddressStateResp.getState().getBalance()), txJsonAll.toString() );
+            }
+            else {
+                for (int i = tx_count - 1 ; i > tx_end ; i -= 1) {
+                    // get txhashbytes and call getObject for each tx
+                    ByteString txhashbytes = getAddressStateResp.getState().getTransactionHashesList().get(i);
+                    // call getObject method from API for each transactions
+                    Qrl.GetObjectReq getObjectReq = Qrl.GetObjectReq.newBuilder().setQuery(txhashbytes).build();
+                    Qrl.GetObjectResp getObjectResp = blockingStub.getObject(getObjectReq);
+                    // date formatter
+                    SimpleDateFormat dt = new SimpleDateFormat("h:mm a, MMM d yyyy");
+                    Date date = new Date(getObjectResp.getTransaction().getTimestampSeconds() * 1000);
+                    // JSON object to save information realted to each tx
+                    JSONObject txJson = new JSONObject();
+                    try{
+                        txJson.put("title","SENT");
+                        txJson.put("desc",getObjectResp.getTransaction().getTx().getTransfer().getAmounts(0));
+                        txJson.put("date", dt.format(date) ) ;
+                        txJsonAll.put(txJson);
+                        completed++;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-                        // System.out.println( Integer.toString(bitfiedInt,2));
-                        if (bitfiedByte != -1){
-                            System.out.println(bitfieldStringBigendian);
-                            for (int o=0; o<bitfieldStringBigendian.length(); o++) {
-                                if (bitfieldStringBigendian.charAt(o) == '0') {
-                                    otsIndex = (8 * j) + o;
-                                    System.out.println("NEXT OTS INDEX IS");
-                                    System.out.println(otsIndex);
-                                    break;
+                    int otsIndex = -1;
+                    if (completed == tx_total){
+                        // check latest available ots index
+                        for (int j=0; j<getAddressStateResp.getState().getOtsBitfieldCount(); j++){
+                            // Byte to binaryString (https://stackoverflow.com/questions/12310017/how-to-convert-a-byte-to-its-binary-string-representation)
+                            byte bitfiedByte = getAddressStateResp.getState().getOtsBitfield(j).byteAt(0);
+                            String bitfieldString = String.format("%8s", Integer.toBinaryString(bitfiedByte & 0xFF)).replace(' ', '0');
+                            String bitfieldStringBigendian = new StringBuffer(bitfieldString).reverse().toString();
+
+                            // System.out.println( Integer.toString(bitfiedInt,2));
+                            if (bitfiedByte != -1){
+                                System.out.println(bitfieldStringBigendian);
+                                for (int o=0; o<bitfieldStringBigendian.length(); o++) {
+                                    if (bitfieldStringBigendian.charAt(o) == '0') {
+                                        otsIndex = (8 * j) + o;
+                                        System.out.println("NEXT OTS INDEX IS");
+                                        System.out.println(otsIndex);
+                                        break;
+                                    }
                                 }
                             }
-                        }
-                        // obtained next available ots index
-                        if (otsIndex > 0){
-                            successCallback.invoke( walletAddress, otsIndex ,Long.toString(getAddressStateResp.getState().getBalance()), txJsonAll.toString() );
-                            break;
+                            System.out.println( "OTSINDEX IS: " );
+                            System.out.println( otsIndex );
+                            // obtained next available ots index
+                            if (otsIndex > 0){
+                                successCallback.invoke( walletAddress, otsIndex ,Long.toString(getAddressStateResp.getState().getBalance()), txJsonAll.toString() );
+                                break;
+                            }
                         }
                     }
                 }
             }
+
+
+
         } catch (IllegalViewOperationException e) {
             errorCallback.invoke(e.getMessage());
         }
@@ -313,17 +333,19 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
         System.out.println( Long.valueOf(amount) * 1000000000 );
         Long amount_long = Long.valueOf(amount) * 1000000000;
         String hexseed = getEncrypted("hexseed");
+        System.out.println( hexseed );
         ManagedChannel channel = OkHttpChannelBuilder.forAddress(server, port).usePlaintext(true).build();
         PublicAPIGrpc.PublicAPIBlockingStub blockingStub = PublicAPIGrpc.newBlockingStub(channel);
 
         // converting the wallet address to byte array
         String walletAddress = getEncrypted("address");
-        int len = walletAddress.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(walletAddress.charAt(i), 16) << 4)
-                    + Character.digit(walletAddress.charAt(i+1), 16));
-        }
+        System.out.println( walletAddress );
+//        int len = walletAddress.length();
+//        byte[] data = new byte[len / 2];
+//        for (int i = 0; i < len; i += 2) {
+//            data[i / 2] = (byte) ((Character.digit(walletAddress.charAt(i), 16) << 4)
+//                    + Character.digit(walletAddress.charAt(i+1), 16));
+//        }
 
         // converting the recipient address to byte arary
         String recipientAddress = recipient.substring(1);
@@ -337,6 +359,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
         // converting xmssPK to byte array
 //        String xmssPK = PreferenceHelper.getString("xmsspk");
         String xmssPK = getEncrypted("xmsspk");
+        System.out.println( xmssPK );
         int xmsslen = xmssPK.length();
         byte[] xmssdata = new byte[xmsslen / 2];
         for (int i = 0; i < xmsslen; i += 2) {
@@ -348,17 +371,17 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
 
         try {
             // converting the amount and fee to long before passing to cpp
-            String androidWallet = transferCoins(walletAddress, amount, fee, hexseed, otsIndex);
+            String androidWallet = transferCoins(recipientAddress, amount, fee, hexseed, otsIndex);
 
-            System.out.println( androidWallet.length() )  ;
-            System.out.println( androidWallet )  ;
-
+//            System.out.println( androidWallet.length() )  ;
+//            System.out.println( androidWallet )  ;
+//
             String signature = androidWallet.substring(0, 5000);
             String txHash = androidWallet.substring(5000, 5064);
-            System.out.println( "NOW SIGNATURE AND TXHASH RECEIVED IN JAVA" )  ;
-            System.out.println( signature.length() )  ;
-            System.out.println( signature )  ;
-            System.out.println( txHash )  ;
+//            System.out.println( "NOW SIGNATURE AND TXHASH RECEIVED IN JAVA" )  ;
+//            System.out.println( signature.length() )  ;
+//            System.out.println( signature )  ;
+//            System.out.println( txHash )  ;
 
             // converting signature to ByteString
             int txsiglen = signature.length();
