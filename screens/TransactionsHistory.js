@@ -157,7 +157,6 @@ export default class Wallet extends React.Component{
     }
 
     render() {
-        console.log("LOADING TX HISTORY MAINVIEW...")
         if (this.state.isLoading) {
             return (
                 <ImageBackground source={require('../resources/images/main_bg_half.png')} style={styles.backgroundImage}>
@@ -176,10 +175,10 @@ export default class Wallet extends React.Component{
                </View>
 
                <View style={{ alignItems:'center',flex:1}}>
-                   <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:240, width:330, justifyContent:'center',alignItems:'center'}} >
+                   <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:240, width:330, justifyContent:'center',alignItems:'center', paddingTop: 30}} >
                        <Text style={{color:'white'}}>QRL BALANCE</Text>
-                       <Text style={{color:'white',fontSize:30}}>{this.state.balance / 1000000000 }</Text>
-
+                       <Text style={{color:'white',fontSize:30}}>0</Text>
+                       <Text style={{color:'white',fontSize:13}}>USD $0</Text>
                        <View style={{width:"80%", borderRadius:10, flexDirection:'row', paddingTop:30,paddingBottom:5}}>
                            <View style={{flex:1}}><Text style={{fontSize:12, color:"white"}}>MARKET CAP</Text></View>
                            <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text style={{fontSize:12, color:"white"}}>PRICE</Text></View>
@@ -190,6 +189,10 @@ export default class Wallet extends React.Component{
                            <View style={{flex:1, justifyContent:'center'}}><Text style={{fontSize:12, color:"white"}}>NA</Text></View>
                            <View style={{flex:1, alignItems:'center', justifyContent:'center'}}><Text style={{fontSize:12, color:"white"}}>NA</Text></View>
                            <View style={{flex:1, justifyContent:'center'}}><Text style={{fontSize:12, color:"white"}}>NA</Text></View>
+                       </View>
+
+                       <View style={{alignSelf:'flex-end', right:23}}>
+                           <Text style={{color:'white',fontSize:10}}>Powered by COINLIB</Text>
                        </View>
 
                        <TouchableOpacity style={styles.SubmitButtonStyle2} activeOpacity = { .5 } onPress={ this.refreshWallet }>

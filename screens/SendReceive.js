@@ -16,6 +16,8 @@ var IosWallet = NativeModules.refreshWallet;
 // android
 var AndroidWallet = NativeModules.AndroidWallet;
 
+var GLOBALS = require('./globals');
+
 export default class SendReceive extends React.Component {
   static navigationOptions = {
     drawerLabel: 'SEND & RECEIVE',
@@ -26,13 +28,14 @@ export default class SendReceive extends React.Component {
     ),
   };
 
+
+
   componentDidMount() {
 
       const recipient = this.props.navigation.getParam('recipient', 'norecipient');
       if (recipient == "norecipient"){
           // this.setState({recipient:""})
-          // this.setState({recipient:"Q0105003e32fcbcdcaf09485272f1aa1c1e318daaa8cf7cd03bacf7cfceeddf936bb88efe1e4d21"})
-
+          this.setState({recipient: GLOBALS.recipient })
       }
       else {
           this.setState({recipient:recipient})
@@ -57,13 +60,13 @@ export default class SendReceive extends React.Component {
               }
           }
           IosWallet.refreshWallet((error, walletAddress, otsIndex, balance, keys)=> {
-              this.setState({walletAddress: walletAddress, balance: balance, otsIndex: otsIndex, isLoading:false})
+              this.setState({walletAddress: walletAddress, balance: balance/ 1000000000, otsIndex: otsIndex, isLoading:false})
           });
       }
       // Android
       else {
           AndroidWallet.refreshWallet( (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
-              this.setState({walletAddress: walletAddress, balance: balance, otsIndex: otsIndex, isLoading:false})
+              this.setState({walletAddress: walletAddress, balance: balance/ 1000000000, otsIndex: otsIndex, isLoading:false})
           });
       }
   }
@@ -71,6 +74,7 @@ export default class SendReceive extends React.Component {
 
   state={
       // amount: "10",
+      balance: "loading...",
       view: 'send',
       fee: "0.001"
   }
@@ -137,7 +141,6 @@ export default class SendReceive extends React.Component {
                             Alert.alert( "PENDING TRANSACTION IDENTIFIED"  , "You have a pending transaction on the network. Please check your OTS index again as it might need to be adjusted manually." , [{text: "OK", onPress: () => this.props.navigation.navigate('SendReceive') } ] )
                         }
                     });
-
                 }
             }
             else {
@@ -160,7 +163,7 @@ export default class SendReceive extends React.Component {
                         <View style={{ alignItems:'center', paddingTop:this.state.paddingTopMain }}>
                             <ImageBackground source={require('../resources/images/fund_bg_small.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:330, justifyContent:'center',alignItems:'center'}} >
                             <Text style={{color:'white'}}>QRL BALANCE</Text>
-                            <Text style={{color:'white',fontSize:30}}>{this.state.balance / 1000000000 }</Text>
+                            <Text style={{color:'white',fontSize:30}}>{this.state.balance}</Text>
                             </ImageBackground>
                             <TouchableOpacity style={styles.SubmitButtonStyle2} activeOpacity = { .5 } onPress={ this.refreshWallet }>
                                 <Image source={require("../resources/images/refresh.png")} style={{height:40, width:40}}/>
@@ -226,7 +229,6 @@ export default class SendReceive extends React.Component {
                             </View>
                         </View>
                     }
-
             </ImageBackground>
           );
       }
@@ -244,7 +246,7 @@ export default class SendReceive extends React.Component {
                         <View style={{ alignItems:'center', paddingTop:20}}>
                             <ImageBackground source={require('../resources/images/fund_bg_small.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:330, justifyContent:'center',alignItems:'center'}} >
                             <Text style={{color:'white'}}>QRL BALANCE</Text>
-                            <Text style={{color:'white',fontSize:30}}>{this.state.balance / 1000000000 }</Text>
+                            <Text style={{color:'white',fontSize:30}}>{this.state.balance}</Text>
                             </ImageBackground>
                             <TouchableOpacity style={styles.SubmitButtonStyle2} activeOpacity = { .5 } onPress={ this.refreshWallet }>
                                 <Image source={require("../resources/images/refresh.png")} style={{height:40, width:40}}/>

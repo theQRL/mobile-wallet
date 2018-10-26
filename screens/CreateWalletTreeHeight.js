@@ -70,8 +70,10 @@ export default class CreateWalletTreeHeight extends React.Component {
                   <Text>SET UP YOUR WALLET</Text>
                   <Text style={styles.bigTitle}>TREE HEIGHT</Text>
                   <View style={{width:100, height:1, backgroundColor:'white', marginTop:30,marginBottom:20}}></View>
-                  <Text style={{color:'white'}}>Important: Once you run out of signatures you</Text>
-                  <Text style={{color:'white'}}>will need to create a new wallet</Text>
+                  <Text style={{color:'white'}}><Text style={{textDecorationLine:'underline'}}>Important:</Text> Once you run out of signatures you</Text>
+                  <Text style={{color:'white'}}>will need to create a new wallet.</Text>
+                  <Text style={{color:'white'}}>Be aware that wallet creation time increases</Text>
+                  <Text style={{color:'white'}}>with wallet height.</Text>
 
                   {Platform.OS === 'ios' ?
 

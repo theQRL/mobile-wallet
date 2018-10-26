@@ -92,10 +92,10 @@ const MainDrawerMenu = DrawerNavigator(
             path: '/',
             screen: BackupWallet,
         },
-        // CreateNewWallet : {
-        //     path: '/',
-        //     screen: CreateNewWallet
-        // },
+        CreateNewWallet : {
+            path: '/',
+            screen: CreateNewWallet
+        },
     },
     {
         // initialRouteName: 'Wallet',
