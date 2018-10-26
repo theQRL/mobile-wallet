@@ -76,7 +76,7 @@ export default class CompleteSetup extends React.Component {
                     <Text style={styles.TextStyleWhite}> START AGAIN </Text>
                   </TouchableOpacity>
 
-                  {this.state.loading ? <ActivityIndicator style={{paddingTop:20}} size={'large'}></ActivityIndicator> : undefined}
+                  {this.state.loading ? <View style={{alignItems:'center'}}><ActivityIndicator style={{paddingTop:20}} size={'large'}></ActivityIndicator><Text style={{color:'white'}}>This may take a while.</Text><Text style={{color:'white'}}>Please be patient...</Text></View> : undefined}
 
               </View>
           </ImageBackground>

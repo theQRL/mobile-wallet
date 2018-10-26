@@ -200,6 +200,15 @@ RCT_EXPORT_METHOD(openWalletWithHexseed:(NSString* )hexseed callback:(RCTRespons
   
 }
 
+// close the open wallet before creating a new one
+RCT_EXPORT_METHOD(closeWallet: (RCTResponseSenderBlock)callback){
+    // remove all the information saved on the keyChain
+    NSDictionary *spec = @{(__bridge id)kSecClass:(__bridge id)kSecClassGenericPassword};
+    SecItemDelete((__bridge CFDictionaryRef)spec);
+    callback(@[[NSNull null], @"success" ]);
+}
+
+
 @end
 
 

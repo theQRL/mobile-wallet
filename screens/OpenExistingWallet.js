@@ -25,11 +25,13 @@ var IosWallet = NativeModules.CreateWallet;
 // android
 var AndroidWallet = NativeModules.AndroidWallet;
 
+var GLOBALS = require('./globals');
+
 export default class OpenExistingWallet extends React.Component {
 
     state={
-        hexseed: '01050025f6c0b547c4231721f71c90176b6ee20b2aeff81f81773e099f2d9625e8045cba8aa504bdade1b6e5e3e05d9264e8d3',
-        // hexseed: '',
+        hexseed: GLOBALS.hexseed,
+        // hexseed : "",
         isLoading: false
     }
 
@@ -77,6 +79,7 @@ export default class OpenExistingWallet extends React.Component {
   }
 
   render() {
+      console.log("HEXSEED IS: ", this.state.hexseed)
       return (
           <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
           <ImageBackground source={require('../resources/images/signin_process_bg.png')} style={styles.backgroundImage}>
