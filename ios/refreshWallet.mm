@@ -83,6 +83,7 @@ RCT_EXPORT_METHOD(refreshWallet: (RCTResponseSenderBlock)callback)
         [client getObjectWithRequest:getObjectRect handler:^(GetObjectResp *response, NSError *error) {
           // Check the type of the tx [from 7 to 13]
           NSString *stringFromDate = [WalletHelperFunctions formatDate:(NSTimeInterval)response.transaction.header.timestampSeconds];
+          NSString *txHash = [WalletHelperFunctions nsDataHex2string:response.transaction.tx.transactionHash];
           
           // 7 = Transfer
           if (response.transaction.tx.transactionTypeOneOfCase == 7){
@@ -117,6 +118,7 @@ RCT_EXPORT_METHOD(refreshWallet: (RCTResponseSenderBlock)callback)
                                               title, @"title",
                                               amountStr, @"desc",
                                               stringFromDate, @"date",
+                                              txHash, @"txhash",
                                               nil];
             [txResponseArray addObject:txJsonDictionary];
             // increment to mark the end of the for loop
@@ -131,6 +133,7 @@ RCT_EXPORT_METHOD(refreshWallet: (RCTResponseSenderBlock)callback)
                                               @"MESSAGE", @"title",
                                               @"View message", @"desc",
                                               stringFromDate, @"date",
+                                              txHash, @"txhash",
                                               nil];
             [txResponseArray addObject:txJsonDictionary];
             // increment to mark the end of the for loop
@@ -146,6 +149,7 @@ RCT_EXPORT_METHOD(refreshWallet: (RCTResponseSenderBlock)callback)
                                               @"TOKEN CREATION", @"title",
                                               tokenSymbol, @"desc",
                                               stringFromDate, @"date",
+                                              txHash, @"txhash",
                                               nil];
             [txResponseArray addObject:txJsonDictionary];
             // increment to mark the end of the for loop
@@ -160,6 +164,7 @@ RCT_EXPORT_METHOD(refreshWallet: (RCTResponseSenderBlock)callback)
                                               @"SENT", @"title",
                                               @"", @"desc",
                                               stringFromDate, @"date",
+                                              txHash, @"txhash",
                                               nil];
             [txResponseArray addObject:txJsonDictionary];
             // increment to mark the end of the for loop
@@ -271,16 +276,27 @@ RCT_EXPORT_METHOD(checkPendingTx: (RCTResponseSenderBlock)callback)
 }
 
 
-
-
-
-
-
-
-
-
-
-
+// get tx details
+RCT_EXPORT_METHOD(getTxDetails:(NSString* )txhash callback:(RCTResponseSenderBlock)callback)
+{
+  [GRPCCall useInsecureConnectionsForHost:kHostAddress];
+  PublicAPI *client = [[PublicAPI alloc] initWithHost:kHostAddress];
+  
+  GetObjectReq *getObjectReq = [GetObjectReq message];
+  getObjectReq.query = [WalletHelperFunctions nsStringHex2nsData:txhash];
+  
+  [client getObjectWithRequest:getObjectReq handler:^(GetObjectResp *response, NSError *error) {
+    NSLog(@"%@", response);
+    
+    NSDictionary *txInfoJson = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      @(response.transaction.header.blockNumber), @"blocknumber",
+                                      @(response.transaction.header.miningNonce), @"nonce",
+                                      nil];
+    NSData *txJsonData = [NSJSONSerialization dataWithJSONObject:txInfoJson options:NSJSONWritingPrettyPrinted error:&error];
+    NSString *txInfoJsonStr = [[NSString alloc] initWithData:txJsonData encoding:NSUTF8StringEncoding];
+    callback(@[[NSNull null], txInfoJsonStr ]);
+  }];
+}
 
 
 @end
