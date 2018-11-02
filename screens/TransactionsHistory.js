@@ -128,23 +128,27 @@ export default class Wallet extends React.Component{
             amount = rowData.desc / 1000000000
         }
 
+        var txhash = rowData.txhash;
         return (
-            <View style={{flex: 1, flexDirection:'row',  height:80, paddingTop:20}}>
-                {rowData.title == "RECEIVED"?
+            <TouchableHighlight onPress={()=> this.props.navigation.navigate('TxDetailsView', {txhash: txhash })} underlayColor='white'>
+                <View style={{flex: 1, flexDirection:'row',  height:80, paddingTop:20}}>
+
+                    {rowData.title == "RECEIVED"?
+                        <View>
+                            <Image source={require('../resources/images/received.png')} resizeMode={Image.resizeMode.contain} style={{height:40, width:40,marginLeft:10, marginRight:10}} />
+                        </View>
+                    :
+                        <View>
+                            <Image source={require('../resources/images/sent.png')} resizeMode={Image.resizeMode.contain} style={{height:40, width:40,marginLeft:10, marginRight:10}} />
+                        </View>
+                    }
                     <View>
-                        <Image source={require('../resources/images/received.png')} resizeMode={Image.resizeMode.contain} style={{height:40, width:40,marginLeft:10, marginRight:10}} />
+                        <Text>{rowData.title}</Text>
+                        <Text>{rowData.date}</Text>
+                        <Text>{amount.toString()} QUANTA</Text>
                     </View>
-                :
-                    <View>
-                        <Image source={require('../resources/images/sent.png')} resizeMode={Image.resizeMode.contain} style={{height:40, width:40,marginLeft:10, marginRight:10}} />
-                    </View>
-                }
-                <View>
-                    <Text>{rowData.title}</Text>
-                    <Text>{rowData.date}</Text>
-                    <Text>{amount.toString()} QUANTA</Text>
                 </View>
-          </View>
+            </TouchableHighlight>
           );
     }
 

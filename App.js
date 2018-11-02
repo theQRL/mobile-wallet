@@ -16,6 +16,7 @@ import CreateWalletHashFunction from './screens/CreateWalletHashFunction'
 import ScanQrModal from './screens/ScanQrModal'
 import ConfirmTxModal from './screens/ConfirmTxModal'
 import CreateAdvancedWallet from './screens/CreateAdvancedWallet'
+import TxDetailsView from './screens/TxDetailsView'
 
 // import { QRLLIB } from './node_modules/qrllib/build/web-libjsqrl.js'
 
@@ -31,19 +32,11 @@ class AuthLoadingScreen extends React.Component {
   // Fetch the token from storage then navigate to our appropriate place
   _bootstrapAsync = async () => {
     // check if a wallet was already created
-
     const walletCreated = await AsyncStorage.getItem('walletcreated');
-    // const userToken = await AsyncStorage.getItem('blklk');
 
     // This will switch to the App screen or Auth screen and this loading
     // screen will be unmounted and thrown away.
-
-
     this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
-
-
-    // this.props.navigation.navigate('Auth');
-
   };
 
   // Render any loading content that you like here
@@ -96,6 +89,10 @@ const MainDrawerMenu = DrawerNavigator(
             path: '/',
             screen: CreateNewWallet
         },
+        TxDetailsView : {
+            path: '/',
+            screen: TxDetailsView
+        }
     },
     {
         // initialRouteName: 'Wallet',
@@ -121,7 +118,7 @@ const MainDrawerModal = DrawerNavigator(
         },
         ConfirmTxModal : {
             screen: ConfirmTxModal
-        },
+        }
     }
 );
 
@@ -156,7 +153,6 @@ const AuthStack = StackNavigator(
 
 
 // const AuthStack = StackNavigator({ SignIn: CreateWallet });
-
 export default SwitchNavigator(
   {
     AuthLoading: AuthLoadingScreen,
