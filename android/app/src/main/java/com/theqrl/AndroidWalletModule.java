@@ -408,5 +408,11 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
         }
     }
 
+    @ReactMethod
+    public void closeWallet(Callback errorCallback, Callback successCallback) {
+        PreferenceHelper.clearPreferences();
+        successCallback.invoke("success");
+    }
+
 
 }
