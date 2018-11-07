@@ -18,7 +18,7 @@ export default class txDetailsView extends React.Component {
             IosWallet.getTxDetails(this.props.navigation.state.params.txhash, (error, result)=> {
                 // convert result to JSON
                 var results = JSON.parse(result);
-                this.setState({isLoading:false, blocknumber: results.blocknumber, nonce: results.nonce});
+                this.setState({isLoading:false, blocknumber: results.blocknumber, nonce: results.nonce, fromAddr: results.from, toAddr: results.to, amount: results.amount});
             });
         }
         // Android
@@ -67,9 +67,9 @@ export default class txDetailsView extends React.Component {
                 </View>
             </ImageBackground>
           );
-
       }
       else {
+          amount = this.state.amount / 1000000000
           return (
               <ImageBackground source={require('../resources/images/sendreceive_bg_half.jpg')} style={styles.backgroundImage}>
                 <View style={{flex:1}}>
@@ -87,18 +87,28 @@ export default class txDetailsView extends React.Component {
                             </View>
                         </ImageBackground>
                     </View>
-                    <View style={{flex:1, paddingTop: 50, paddingBottom:100, width:330, alignSelf: 'center',  borderRadius:10}}>
-                        <View style={{height:50, backgroundColor:'white'}}>
-                            <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fafafa'}}>
-                                <Text style={{justifyContent:'center'}}>Transfer</Text>
-                            </View>
-                        </View>
-                        <View style={{width:'100%',height:1, backgroundColor:'red', alignSelf:'flex-end'}}></View>
+                    <View style={{flex:1, paddingTop: 10, paddingBottom:100, width:330, alignSelf: 'center',  borderRadius:10}}>
+
                         <View style={{flex:2, backgroundColor:'white', width:330, padding:30, alignItems:'center'}}>
-                            <View>
-                                <Text>Transaction: {this.props.navigation.state.params.txhash}</Text>
-                                <Text>Block: {this.state.blocknumber}</Text>
-                                <Text>Nonce: {this.state.nonce}</Text>
+                            <View style={{alignItems:'center'}}>
+                                <Text style={{fontSize:25}}>Transfer</Text>
+                                <Text style={{fontSize:25}}>{amount.toString()}</Text>
+                                <Text>QUANTA</Text>
+                                <Text>{'\n'}</Text>
+                                <Text style={{fontSize:25}}>From</Text>
+                                <Text>Q{this.state.fromAddr}</Text>
+                                <Text>{'\n'}</Text>
+                                <Text style={{fontSize:25}}>To</Text>
+                                <Text>Q{this.state.toAddr}</Text>
+                                <Text>{'\n'}</Text>
+                                <Text style={{fontSize:25}}>Transaction</Text>
+                                <Text>{this.props.navigation.state.params.txhash}</Text>
+                                {/*
+                                <Text>Block</Text>
+                                <Text>{this.state.blocknumber}</Text>
+                                <Text>Nonce</Text>
+                                <Text>{this.state.nonce}</Text>
+                                */}
                             </View>
                         </View>
                     </View>

@@ -130,22 +130,26 @@ export default class Wallet extends React.Component{
 
         var txhash = rowData.txhash;
         return (
-            <TouchableHighlight onPress={()=> this.props.navigation.navigate('TxDetailsView', {txhash: txhash })} underlayColor='white'>
+            <TouchableHighlight onPress={()=> this.props.navigation.navigate('TxDetailsView', {txhash: txhash})} underlayColor='white'>
                 <View style={{flex: 1, flexDirection:'row',  height:80, paddingTop:20}}>
 
                     {rowData.title == "RECEIVED"?
                         <View>
-                            <Image source={require('../resources/images/received.png')} resizeMode={Image.resizeMode.contain} style={{height:40, width:40,marginLeft:10, marginRight:10}} />
+                            <Image source={require('../resources/images/received.png')} resizeMode={Image.resizeMode.contain} style={{height:40, width:40,marginLeft:20, marginRight:10}} />
                         </View>
                     :
                         <View>
-                            <Image source={require('../resources/images/sent.png')} resizeMode={Image.resizeMode.contain} style={{height:40, width:40,marginLeft:10, marginRight:10}} />
+                            <Image source={require('../resources/images/sent.png')} resizeMode={Image.resizeMode.contain} style={{height:40, width:40,marginLeft:20, marginRight:10}} />
                         </View>
                     }
-                    <View>
-                        <Text>{rowData.title}</Text>
-                        <Text>{rowData.date}</Text>
-                        <Text>{amount.toString()} QUANTA</Text>
+                    <View style={{flex:1, flexDirection:'row'}}>
+                        <View style={{flex:1,alignItems:'flex-start'}}>
+                            <Text>{rowData.title}</Text>
+                            <Text>{rowData.date}</Text>
+                        </View>
+                        <View style={{alignItems:'flex-end', paddingRight:20}}>
+                            <Text style={{color:'#15437a'}}>{amount.toString()} QUANTA</Text>
+                        </View>
                     </View>
                 </View>
             </TouchableHighlight>
@@ -281,9 +285,6 @@ export default class Wallet extends React.Component{
 
                          <TouchableOpacity style={styles.SubmitButtonStyle2} activeOpacity = { .5 } onPress={ this.refreshWallet }>
                              <Image source={require("../resources/images/refresh.png")} style={{height:40, width:40}}/>
-                             {/*
-                             <Text style={styles.TextStyle}> Refresh </Text>
-                             */}
                          </TouchableOpacity>
 
 
@@ -293,6 +294,7 @@ export default class Wallet extends React.Component{
 
                   <View style={{backgroundColor:'white', flex:2, width:320, alignSelf:'center', borderRadius:10}}>
                       <Text style={{alignItems:'center', alignSelf:'center', paddingTop:20, marginBottom:20}}>TRANSACTION HISTORY</Text>
+                          <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
                       {this.state.dataSource == "{}" ?
                           <Text style={{alignSelf:'center'}}>No Transaction</Text>
                           :
