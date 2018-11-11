@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Platform,StyleSheet,ImageBackground,Text,View,TouchableOpacity,} from 'react-native';
+import {Platform,StyleSheet,ImageBackground,Text,View,TouchableOpacity} from 'react-native';
 
 
 export default class SignIn extends React.Component {

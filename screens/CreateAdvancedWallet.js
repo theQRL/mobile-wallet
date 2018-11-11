@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Platform,StyleSheet,ImageBackground,Text,View,TouchableOpacity,} from 'react-native';
+import {Platform,StyleSheet,ImageBackground,Text,View,TouchableOpacity,Button} from 'react-native';
 
 
 export default class SignIn extends React.Component {
@@ -22,6 +22,8 @@ export default class SignIn extends React.Component {
                   <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={ () => this.props.navigation.push('OpenExistingWallet') }>
                       <Text style={styles.TextStyleWhite}> OPEN EXISTING WALLET </Text>
                   </TouchableOpacity>
+
+                  <Button color="white" onPress={() => this.props.navigation.pop()  } title="Go Back"/>
               </View>
           </ImageBackground>
       );

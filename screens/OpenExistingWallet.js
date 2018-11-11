@@ -95,7 +95,9 @@ export default class OpenExistingWallet extends React.Component {
 
                   {this.state.isLoading ?
                       <View style={{alignSelf:'center', paddingTop:10}}>
-                        <ActivityIndicator size={'large'}></ActivityIndicator>
+                            <ActivityIndicator size={'large'}></ActivityIndicator>
+                            <Text style={{color:'white'}}>This may take a while.</Text>
+                            <Text style={{color:'white'}}>Please be patient...</Text>
                       </View>
                       :
                       <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={this.openWallet}>

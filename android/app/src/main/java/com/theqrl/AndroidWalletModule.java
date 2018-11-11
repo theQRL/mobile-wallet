@@ -275,10 +275,21 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
                     Date date = new Date(getObjectResp.getTransaction().getTimestampSeconds() * 1000);
                     // JSON object to save information realted to each tx
                     JSONObject txJson = new JSONObject();
+
+                    // converting a ByteString to hexstring (https://stackoverflow.com/a/13006907)
+                    // 1. convert ByteString to byte[]
+                    // 2. convert byte[] to hexstring using StringBuilder
+                    byte[] txHashByte = getObjectResp.getTransaction().getTx().getTransactionHash().toByteArray();
+                    StringBuilder txHashString = new StringBuilder(txHashByte.length * 2);
+                    for(byte txbyte: txHashByte)
+                        txHashString.append(String.format("%02x", txbyte));
+
+
                     try{
                         txJson.put("title","SENT");
-                        txJson.put("desc",getObjectResp.getTransaction().getTx().getTransfer().getAmounts(0));
+                        txJson.put("desc", getObjectResp.getTransaction().getTx().getTransfer().getAmounts(0));
                         txJson.put("date", dt.format(date) ) ;
+                        txJson.put("txhash", txHashString.toString() ) ;
                         txJsonAll.put(txJson);
                         completed++;
                     } catch (JSONException e) {
@@ -317,9 +328,6 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
                     }
                 }
             }
-
-
-
         } catch (IllegalViewOperationException e) {
             errorCallback.invoke(e.getMessage());
         }
@@ -412,6 +420,58 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
     public void closeWallet(Callback errorCallback, Callback successCallback) {
         PreferenceHelper.clearPreferences();
         successCallback.invoke("success");
+    }
+
+
+    @ReactMethod
+    public void getTxDetails(String txhash, Callback errorCallback, Callback successCallback) {
+
+        System.out.println( "TXHASH Andrdoid" );
+        System.out.println( txhash );
+
+        // converting txhash to byte arary
+        int txlen = txhash.length();
+        byte[] txdata = new byte[txlen / 2];
+        for (int i = 0; i < txlen; i += 2) {
+            txdata[i / 2] = (byte) ((Character.digit(txhash.charAt(i), 16) << 4)
+                    + Character.digit(txhash.charAt(i+1), 16));
+        }
+
+        ManagedChannel channel = OkHttpChannelBuilder.forAddress(server, port).usePlaintext(true).build();
+        PublicAPIGrpc.PublicAPIBlockingStub blockingStub = PublicAPIGrpc.newBlockingStub(channel);
+
+        Qrl.GetObjectReq getObjectReq = Qrl.GetObjectReq.newBuilder().setQuery(ByteString.copyFrom(txdata)).build();
+        Qrl.GetObjectResp getObjectResp = blockingStub.getObject(getObjectReq);
+
+        // converting a ByteString to hexstring (https://stackoverflow.com/a/13006907)
+        // 1. convert ByteString to byte[]
+        // 2. convert byte[] to hexstring using StringBuilder
+        byte[] addrFromByte = getObjectResp.getTransaction().getAddrFrom().toByteArray();
+        StringBuilder addrFromString = new StringBuilder(addrFromByte.length * 2);
+        for(byte txbyte: addrFromByte)
+            addrFromString.append(String.format("%02x", txbyte));
+
+        byte[] addrToByte = getObjectResp.getTransaction().getTx().getTransfer().getAddrsTo(0).toByteArray();
+        StringBuilder addrToString = new StringBuilder(addrToByte.length * 2);
+        for(byte txbyte: addrToByte)
+            addrToString.append(String.format("%02x", txbyte));
+
+        JSONObject txJson = new JSONObject();
+
+        try{
+            txJson.put("blocknumber", getObjectResp.getTransaction().getHeader().getBlockNumber() );
+            txJson.put("nonce", getObjectResp.getTransaction().getTx().getNonce() );
+            txJson.put("from", addrFromString ) ;
+            txJson.put("to", addrToString ) ;
+            txJson.put("amount", getObjectResp.getTransaction().getTx().getTransfer().getAmounts(0) ) ;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println( "Getobject Andrdoid" );
+        System.out.println( getObjectResp.getTransaction() );
+
+        successCallback.invoke(txJson.toString());
     }
 
 

@@ -83,6 +83,7 @@ export default class Wallet extends React.Component{
             passphrase : '',
             processing: false,
             balance : 0,
+            refreshBtnTop: Platform.OS === 'ios'? 10: 2,
         }
     }
 
@@ -183,7 +184,7 @@ export default class Wallet extends React.Component{
                </View>
 
                <View style={{ alignItems:'center',flex:1}}>
-                   <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:240, width:330, justifyContent:'center',alignItems:'center', paddingTop: 30}} >
+                   <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:240, width: 360, justifyContent:'center',alignItems:'center', paddingTop: 30}} >
                        <Text style={{color:'white'}}>QRL BALANCE</Text>
                        <Text style={{color:'white',fontSize:30}}>0</Text>
                        <Text style={{color:'white',fontSize:13}}>USD $0</Text>
@@ -203,7 +204,7 @@ export default class Wallet extends React.Component{
                            <Text style={{color:'white',fontSize:10}}>Powered by COINLIB</Text>
                        </View>
 
-                       <TouchableOpacity style={styles.SubmitButtonStyle2} activeOpacity = { .5 } onPress={ this.refreshWallet }>
+                       <TouchableOpacity style={{alignItems:'center',justifyContent:'center',alignSelf:'center',top:this.state.refreshBtnTop,right:2}} activeOpacity = { .5 } onPress={ this.refreshWallet }>
                            <Image source={require("../resources/images/refresh.png")} style={{height:40, width:40}}/>
                        </TouchableOpacity>
 
@@ -211,7 +212,7 @@ export default class Wallet extends React.Component{
                 </View>
 
 
-                <View style={{backgroundColor:'white', flex:2, width:320, alignSelf:'center', borderRadius:10}}>
+                <View style={{backgroundColor:'white', flex:2, width:350, alignSelf:'center', borderRadius:10, marginTop:10}}>
                     <Text style={{alignItems:'center', alignSelf:'center', paddingTop:20, marginBottom:20}}>TRANSACTION HISTORY</Text>
                 </View>
 
@@ -247,7 +248,7 @@ export default class Wallet extends React.Component{
                  </View>
 
                  <View style={{ alignItems:'center',flex:1}}>
-                     <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:240, width:330, justifyContent:'center',alignItems:'center', paddingTop: 30}} >
+                     <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:240, width:360, justifyContent:'center',alignItems:'center', paddingTop: 30}} >
                          <Text style={{color:'white'}}>QRL BALANCE</Text>
                          <Text style={{color:'white',fontSize:30}}>{this.state.balance / 1000000000 }</Text>
                          <Text style={{color:'white',fontSize:13}}>USD ${ ((this.state.balance / 1000000000 ) * this.state.price).toFixed(2) }</Text>
@@ -283,7 +284,7 @@ export default class Wallet extends React.Component{
                              <Text style={{color:'white',fontSize:10}}>Powered by COINLIB</Text>
                          </View>
 
-                         <TouchableOpacity style={styles.SubmitButtonStyle2} activeOpacity = { .5 } onPress={ this.refreshWallet }>
+                         <TouchableOpacity style={{alignItems:'center',justifyContent:'center',alignSelf:'center',top:this.state.refreshBtnTop,right:2}} activeOpacity = { .5 } onPress={ this.refreshWallet }>
                              <Image source={require("../resources/images/refresh.png")} style={{height:40, width:40}}/>
                          </TouchableOpacity>
 
@@ -292,7 +293,7 @@ export default class Wallet extends React.Component{
                      </ImageBackground>
                   </View>
 
-                  <View style={{backgroundColor:'white', flex:2, width:320, alignSelf:'center', borderRadius:10}}>
+                  <View style={{backgroundColor:'white', flex:2, width:350, alignSelf:'center', borderRadius:10, marginTop:10}}>
                       <Text style={{alignItems:'center', alignSelf:'center', paddingTop:20, marginBottom:20}}>TRANSACTION HISTORY</Text>
                           <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
                       {this.state.dataSource == "{}" ?
@@ -315,13 +316,7 @@ export default class Wallet extends React.Component{
 }
 
 const styles = StyleSheet.create({
-    SubmitButtonStyle2: {
-        alignItems:'center',
-        justifyContent:'center',
-        alignSelf:'center',
-        // bottom:-28,
-        right:2
-    },
+
     SubmitButtonStyle: {
         width: 200,
         marginTop:10,

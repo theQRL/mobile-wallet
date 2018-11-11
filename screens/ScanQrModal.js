@@ -6,6 +6,10 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 // View for scanning QR code of QRL address
 export default class ScanQrModal extends React.Component {
 
+    static navigationOptions = {
+         drawerLabel: () => null
+    };
+
     showQRLaddress(e){
         this.props.navigation.navigate("SendReceive",{recipient: e.data});
     }
