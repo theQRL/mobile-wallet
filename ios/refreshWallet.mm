@@ -290,7 +290,10 @@ RCT_EXPORT_METHOD(getTxDetails:(NSString* )txhash callback:(RCTResponseSenderBlo
     
     NSDictionary *txInfoJson = [NSDictionary dictionaryWithObjectsAndKeys:
                                       @(response.transaction.header.blockNumber), @"blocknumber",
-                                      @(response.transaction.header.miningNonce), @"nonce",
+                                      @(response.transaction.tx.nonce), @"nonce",
+                                      [WalletHelperFunctions nsDataHex2string:response.transaction.addrFrom], @"from",
+                                      [WalletHelperFunctions nsDataHex2string:response.transaction.tx.transfer.addrsToArray[0]], @"to",
+                                      @([response.transaction.tx.transfer.amountsArray valueAtIndex:0]), @"amount",
                                       nil];
     NSData *txJsonData = [NSJSONSerialization dataWithJSONObject:txInfoJson options:NSJSONWritingPrettyPrinted error:&error];
     NSString *txInfoJsonStr = [[NSString alloc] initWithData:txJsonData encoding:NSUTF8StringEncoding];

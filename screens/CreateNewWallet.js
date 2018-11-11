@@ -36,8 +36,12 @@ export default class CreateNewWallet extends React.Component {
       }
       // Android
       else {
-          AndroidWallet.sendWalletPrivateInfo((error) => {console.log("ERROR");} , (mnemonic, hexseed)=> {
-              this.setState({loading:false, mnemonic: mnemonic, hexseed: hexseed })
+          AndroidWallet.closeWallet((error) => {console.log("ERROR");} , (status)=> {
+              if (status == "success") {
+                  // remove the walletCreate item from asyncStorage and redirect to main wallet creation page
+                  this.props.navigation.navigate( 'Auth');
+                  AsyncStorage.removeItem("walletcreated");
+              }
           });
       }
   }

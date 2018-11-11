@@ -12,6 +12,10 @@ var AndroidWallet = NativeModules.AndroidWallet;
 export default class ConfirmTxModal extends React.Component {
 
 
+    static navigationOptions = {
+         drawerLabel: () => null
+    };
+    
     componentDidMount() {
         // Ios
         if (Platform.OS === 'ios'){

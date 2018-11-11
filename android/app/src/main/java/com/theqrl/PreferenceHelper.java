@@ -25,7 +25,10 @@ public class PreferenceHelper extends ReactActivity {
         return MainActivity.preferences.getString(key, "");
     }
 
-
+    // remove all wallet related information from sharedPrefs
+    public static void clearPreferences() {
+        MainActivity.preferences.edit().clear().commit();
+    }
 
 
 

@@ -92,6 +92,12 @@ const MainDrawerMenu = DrawerNavigator(
         TxDetailsView : {
             path: '/',
             screen: TxDetailsView
+        },
+        ScanQrModal : {
+            screen: ScanQrModal
+        },
+        ConfirmTxModal : {
+            screen: ConfirmTxModal
         }
     },
     {
@@ -108,19 +114,19 @@ const MainDrawerMenu = DrawerNavigator(
 );
 
 // MainDrawerMenu
-const MainDrawerModal = DrawerNavigator(
-    {
-        Main : {
-            screen: MainDrawerMenu
-        },
-        ScanQrModal : {
-            screen: ScanQrModal
-        },
-        ConfirmTxModal : {
-            screen: ConfirmTxModal
-        }
-    }
-);
+// const MainDrawerModal = DrawerNavigator(
+//     {
+//         Main : {
+//             screen: MainDrawerMenu
+//         },
+//         ScanQrModal : {
+//             screen: ScanQrModal
+//         },
+//         ConfirmTxModal : {
+//             screen: ConfirmTxModal
+//         }
+//     }
+// );
 
 
 
@@ -156,7 +162,7 @@ const AuthStack = StackNavigator(
 export default SwitchNavigator(
   {
     AuthLoading: AuthLoadingScreen,
-    App: MainDrawerModal,
+    App: MainDrawerMenu,
     Auth: AuthStack,
   },
   {
