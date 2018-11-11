@@ -2,7 +2,7 @@
 
 This mobile application is based on the react-native framework to provide an Android and iOS implementation of the QRL wallet.
 
-<img src="https://github.com/ademcan/mobile-wallet/blob/master/simulator_recording.gif" width="300" />
+<img src="https://github.com/ademcan/mobile-wallet/blob/master/iosQrlWalletScreenshot.png" width="300" />
 
 ## General information
 
