@@ -124,7 +124,7 @@ android {
         multiDexEnabled true
         applicationId "com.theqrl"
         minSdkVersion 23
-        targetSdkVersion 23
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
 
