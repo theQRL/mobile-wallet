@@ -26,33 +26,55 @@ export default class CompleteSetup extends React.Component {
   // Create QRL wallet
     createWallet = () => {
         this.setState({loading:true})
-        // Ios
-        if (Platform.OS === 'ios'){
-            IosWallet.createWallet(this.props.navigation.state.params.treeHeight, this.props.navigation.state.params.hashFunctionId,  (err, status)=> {
-                this.setState({loading:false})
-                // if success -> open the main view of the app
-                if (status =="success"){
-                    AsyncStorage.setItem("walletcreated","yes");
-                    this.props.navigation.navigate('App');
-                }
-                else {
-                    console.log("ERROR while opening wallet: ")
-                }
-            })
-        }
-        // Android
-        else {
-          AndroidWallet.createWallet(this.props.navigation.state.params.treeHeight, this.props.navigation.state.params.hashFunctionId, (err) => {console.log(err); }, (status) => {
-              // if success -> open the main view of the app
-              if (status =="success"){
-                  AsyncStorage.setItem("walletcreated","yes");
-                  this.props.navigation.navigate('App');
-              }
-              else {
-                  console.log("ERROR while opening wallet: ", error)
-              }
-          })
-        }
+
+            //
+            //
+            // console.log("CHECK WALLETINDEX")
+            // // get index for wallet count
+            // try{
+            //     const walletIndex = await AsyncStorage.getItem('walletindex');
+            //     if (walletIndex){
+            //         console.log("WALLETINDEX", walletIndex);
+            //         updatedIndex = parseInt(walletIndex, 10) + 1;
+            //         await AsyncStorage.setItem('walletindex', updatedIndex.toString() );
+            //     }
+            //     else{
+            //         console.log("NOWALLETINDEX");
+            //         await AsyncStorage.setItem('walletindex', "1" ) ;
+            //     }
+            // } catch (error){
+            //     console.log(error)
+            // }
+
+
+            // Ios
+            if (Platform.OS === 'ios'){
+                IosWallet.createWallet(this.props.navigation.state.params.treeHeight, this.props.navigation.state.params.hashFunctionId,  (err, status)=> {
+                    this.setState({loading:false})
+                    // if success -> open the main view of the app
+                    if (status =="success"){
+                        AsyncStorage.setItem("walletcreated","yes");
+                        this.props.navigation.navigate('App');
+                    }
+                    else {
+                        console.log("ERROR while opening wallet: ")
+                    }
+                })
+            }
+            // Android
+            else {
+              AndroidWallet.createWallet(this.props.navigation.state.params.treeHeight, this.props.navigation.state.params.hashFunctionId, (err) => {console.log(err); }, (status) => {
+                  // if success -> open the main view of the app
+                  if (status =="success"){
+                      AsyncStorage.setItem("walletcreated","yes");
+                      this.props.navigation.navigate('App');
+                  }
+                  else {
+                      console.log("ERROR while opening wallet: ", error)
+                  }
+              })
+            }
+
     }
 
     render() {

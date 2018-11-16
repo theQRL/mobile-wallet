@@ -25,7 +25,6 @@ var IosWallet = NativeModules.refreshWallet;
 // android
 var AndroidWallet = NativeModules.AndroidWallet;
 
-
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 export default class Wallet extends React.Component{

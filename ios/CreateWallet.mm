@@ -125,8 +125,10 @@ RCT_EXPORT_METHOD(createWallet:(NSNumber* _Nonnull)treeHeight hashFunction:(NSNu
 
 
 // save the user's entered hexseed to keychain
-RCT_EXPORT_METHOD(openWalletWithHexseed:(NSString* )hexseed callback:(RCTResponseSenderBlock)callback){
+RCT_EXPORT_METHOD(openWalletWithHexseed:(NSString* )hexseed withIndex:(NSString*)walletindex callback:(RCTResponseSenderBlock)callback){
   
+
+  NSLog(@"WALLET INDEX: %@", walletindex);
   // Remove all previous data from the keychain
   NSDictionary *spec = @{(__bridge id)kSecClass:(__bridge id)kSecClassGenericPassword};
   SecItemDelete((__bridge CFDictionaryRef)spec);
@@ -151,6 +153,8 @@ RCT_EXPORT_METHOD(openWalletWithHexseed:(NSString* )hexseed callback:(RCTRespons
   try{
     
     QRLDescriptor desc = QRLDescriptor::fromExtendedSeed(hexSeed);
+//    [NSString stringWithFormat:@"%@/%@/%@", three, two, one];
+//    OSStatus sts = [WalletHelperFunctions saveToKeychain:@"hexseed" withValue:hexseed];
     OSStatus sts = [WalletHelperFunctions saveToKeychain:@"hexseed" withValue:hexseed];
     
     // send callback to RN
@@ -171,7 +175,7 @@ RCT_EXPORT_METHOD(openWalletWithHexseed:(NSString* )hexseed callback:(RCTRespons
           //save wallet address to the keychain
           OSStatus sts4 = [WalletHelperFunctions saveToKeychain:@"treeheight" withValue:tree_height];
           if( (int)sts4 == 0 ){
-            callback(@[[NSNull null], @"success" ]);
+            callback(@[[NSNull null], @"success", wallet_address ]);
           }
           else {
             NSLog(@"ERROR saving treeheight to keychain: %d",(int)sts4);
