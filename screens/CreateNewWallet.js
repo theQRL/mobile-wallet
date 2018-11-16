@@ -38,26 +38,30 @@ export default class CreateNewWallet extends React.Component {
     // Close active wallet (remove all information from "cache") and open new one
     closeWallet = () => {
         this.setState({isLoading: true});
+        this.props.navigation.navigate( 'Auth');
+        AsyncStorage.removeItem("walletcreated");
+
+        // DO not call closeWallet here, as it removes everything from the keychain
         // ios
-        if (Platform.OS === 'ios'){
-            IosWallet.closeWallet((error, status)=> {
-                if (status == "success") {
-                    // remove the walletCreate item from asyncStorage and redirect to main wallet creation page
-                    this.props.navigation.navigate( 'Auth');
-                    AsyncStorage.removeItem("walletcreated");
-                }
-            });
-        }
-        // android
-        else {
-            AndroidWallet.closeWallet((error) => {console.log("ERROR");} , (status)=> {
-                if (status == "success") {
-                    // remove the walletCreate item from asyncStorage and redirect to main wallet creation page
-                    this.props.navigation.navigate( 'Auth');
-                    AsyncStorage.removeItem("walletcreated");
-                }
-            });
-        }
+        // if (Platform.OS === 'ios'){
+        //     IosWallet.closeWallet((error, status)=> {
+        //         if (status == "success") {
+        //             // remove the walletCreate item from asyncStorage and redirect to main wallet creation page
+        //             this.props.navigation.navigate( 'Auth');
+        //             AsyncStorage.removeItem("walletcreated");
+        //         }
+        //     });
+        // }
+        // // android
+        // else {
+        //     AndroidWallet.closeWallet((error) => {console.log("ERROR");} , (status)=> {
+        //         if (status == "success") {
+        //             // remove the walletCreate item from asyncStorage and redirect to main wallet creation page
+        //             this.props.navigation.navigate( 'Auth');
+        //             AsyncStorage.removeItem("walletcreated");
+        //         }
+        //     });
+        // }
     }
 
 

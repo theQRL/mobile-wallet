@@ -14,7 +14,8 @@ import {
   TouchableOpacity,
   ScrollView,
   TouchableHighlight,
-  ListView
+  ListView,
+  AsyncStorage
 } from 'react-native';
 
 
@@ -60,17 +61,21 @@ export default class Wallet extends React.Component{
             // Update the wallet each time the user switch to this view
             // Ios
             this.setState({isLoading:true})
-            if (Platform.OS === 'ios'){
-                IosWallet.refreshWallet((error, walletAddress, otsIndex, balance, keys)=> {
-                    this.setState({isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
-                });
-            }
-            // Android
-            else {
-                AndroidWallet.refreshWallet( (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
-                    this.setState({isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
-                });
-            }
+
+            // get the currect walletindex
+            AsyncStorage.getItem("walletindex").then((walletindex) => {
+                if (Platform.OS === 'ios'){
+                    IosWallet.refreshWallet(walletindex, (error, walletAddress, otsIndex, balance, keys)=> {
+                        this.setState({isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
+                    });
+                }
+                // Android
+                else {
+                    AndroidWallet.refreshWallet( (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
+                        this.setState({isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
+                    });
+                }
+            }).catch((error) => {console.log(error)});
         })
     }
 
@@ -105,17 +110,25 @@ export default class Wallet extends React.Component{
             // Update the wallet each time the user switch to this view
             // Ios
             this.setState({isLoading:true})
-            if (Platform.OS === 'ios'){
-                IosWallet.refreshWallet((error, walletAddress, otsIndex, balance, keys)=> {
-                    this.setState({isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
-                });
-            }
-            // Android
-            else {
-                AndroidWallet.refreshWallet( (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
-                    this.setState({isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
-                });
-            }
+            // get the currect walletindex
+            AsyncStorage.getItem("walletindex").then((walletindex) => {
+
+                if (Platform.OS === 'ios'){
+                    IosWallet.refreshWallet(walletindex, (error, walletAddress, otsIndex, balance, keys)=> {
+                        this.setState({isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
+                    });
+                }
+                // Android
+                else {
+                    AndroidWallet.refreshWallet( (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
+                        this.setState({isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
+                    });
+                }
+
+            }).catch((error) => {console.log(error)});
+
+
+
         })
     }
 

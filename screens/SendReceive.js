@@ -1,5 +1,5 @@
 import React from 'react';
-import {Picker, Text, View, Button, Image, ScrollView, ImageBackground, Clipboard, StyleSheet, TouchableHighlight, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Alert} from 'react-native';
+import {Picker, Text, View, Button, Image, ScrollView, ImageBackground, AsyncStorage, Clipboard, StyleSheet, TouchableHighlight, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Alert} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import { Header } from 'react-navigation';
 var validate = require('@theqrl/validate-qrl-address');
@@ -43,32 +43,38 @@ export default class SendReceive extends React.Component {
 
       // Update the wallet each time the user switch to this view
       this.setState({isLoading:true})
-      // Ios
-      if (Platform.OS === 'ios'){
-          // iPhone Plus
-          if (DeviceInfo.getModel().includes("Plus")){
-              this.setState({paddingTopMain:40, paddingTopCentral: 10, menuHeight:80})
-          }
-          // iPhoneX
-          else {
-              if (DeviceInfo.getModel().includes("X")){
-                  this.setState({paddingTopMain:70, paddingTopCentral: 10, menuHeight:80})
+
+      // get the currect walletindex
+      AsyncStorage.getItem("walletindex").then((walletindex) => {
+
+          // Ios
+          if (Platform.OS === 'ios'){
+              // iPhone Plus
+              if (DeviceInfo.getModel().includes("Plus")){
+                  this.setState({paddingTopMain:40, paddingTopCentral: 10, menuHeight:80})
               }
-              // other iPhones
+              // iPhoneX
               else {
-                  this.setState({paddingTopMain:15, paddingTopCentral:0, menuHeight:50})
+                  if (DeviceInfo.getModel().includes("X")){
+                      this.setState({paddingTopMain:70, paddingTopCentral: 10, menuHeight:80})
+                  }
+                  // other iPhones
+                  else {
+                      this.setState({paddingTopMain:15, paddingTopCentral:0, menuHeight:50})
+                  }
               }
+              IosWallet.refreshWallet(walletindex, (error, walletAddress, otsIndex, balance, keys)=> {
+                  this.setState({walletAddress: walletAddress, balance: balance/ 1000000000, otsIndex: otsIndex, isLoading:false})
+              });
           }
-          IosWallet.refreshWallet((error, walletAddress, otsIndex, balance, keys)=> {
-              this.setState({walletAddress: walletAddress, balance: balance/ 1000000000, otsIndex: otsIndex, isLoading:false})
-          });
-      }
-      // Android
-      else {
-          AndroidWallet.refreshWallet( (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
-              this.setState({walletAddress: walletAddress, balance: balance/ 1000000000, otsIndex: otsIndex, isLoading:false})
-          });
-      }
+          // Android
+          else {
+              AndroidWallet.refreshWallet( (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
+                  this.setState({walletAddress: walletAddress, balance: balance/ 1000000000, otsIndex: otsIndex, isLoading:false})
+              });
+          }
+      }).catch((error) => {console.log(error)});
+
   }
 
 
@@ -103,45 +109,48 @@ export default class SendReceive extends React.Component {
         else {
             var isValid = validate.hexString(this.state.recipient).result;
             if (isValid){
-                if (Platform.OS === 'ios'){
-                    // check that there are no pending tx
-                    IosWallet.checkPendingTx((error, status)=> {
-                        if (status =="success"){
-                            // check that amount is a Number
-                            var isAmountNumber = /^\d*\.?\d+$/.test(this.state.amount)
-                            if (isAmountNumber){
-                                this.props.navigation.navigate('ConfirmTxModal',{amount: this.state.amount, recipient: this.state.recipient, otsIndex: this.state.otsIndex, fee: this.state.fee})
+                // get the currect walletindex
+                AsyncStorage.getItem("walletindex").then((walletindex) => {
+                    if (Platform.OS === 'ios'){
+                        // check that there are no pending tx
+                        IosWallet.checkPendingTx(walletindex, (error, status)=> {
+                            if (status =="success"){
+                                // check that amount is a Number
+                                var isAmountNumber = /^\d*\.?\d+$/.test(this.state.amount)
+                                if (isAmountNumber){
+                                    this.props.navigation.navigate('ConfirmTxModal',{amount: this.state.amount, recipient: this.state.recipient, otsIndex: this.state.otsIndex, fee: this.state.fee})
+                                }
+                                else {
+                                    Alert.alert( "INVALID AMOUNT"  , "Enter a correct amount" , [{text: "OK", onPress: () => console.log('OK Pressed')} ] )
+                                }
                             }
+                            // wallet has a pending tx
                             else {
-                                Alert.alert( "INVALID AMOUNT"  , "Enter a correct amount" , [{text: "OK", onPress: () => console.log('OK Pressed')} ] )
+                                Alert.alert( "PENDING TRANSACTION IDENTIFIED"  , "You have a pending transaction on the network. Please check your OTS index again as it might need to be adjusted manually." , [{text: "OK", onPress: () => this.props.navigation.navigate('SendReceive') } ] )
                             }
-                        }
-                        // wallet has a pending tx
-                        else {
-                            Alert.alert( "PENDING TRANSACTION IDENTIFIED"  , "You have a pending transaction on the network. Please check your OTS index again as it might need to be adjusted manually." , [{text: "OK", onPress: () => this.props.navigation.navigate('SendReceive') } ] )
-                        }
-                    });
-                }
+                        });
+                    }
 
-                else {
-                    // check that there are no pending tx
-                    AndroidWallet.checkPendingTx((error) => {console.log("ERROR")}, (status)=> {
-                        if (status =="success"){
-                            // check that amount is a Number
-                            var isAmountNumber = /^\d*\.?\d+$/.test(this.state.amount)
-                            if (isAmountNumber){
-                                this.props.navigation.navigate('ConfirmTxModal',{amount: this.state.amount, recipient: this.state.recipient, otsIndex: this.state.otsIndex, fee: this.state.fee})
+                    else {
+                        // check that there are no pending tx
+                        AndroidWallet.checkPendingTx((error) => {console.log("ERROR")}, (status)=> {
+                            if (status =="success"){
+                                // check that amount is a Number
+                                var isAmountNumber = /^\d*\.?\d+$/.test(this.state.amount)
+                                if (isAmountNumber){
+                                    this.props.navigation.navigate('ConfirmTxModal',{amount: this.state.amount, recipient: this.state.recipient, otsIndex: this.state.otsIndex, fee: this.state.fee})
+                                }
+                                else {
+                                    Alert.alert( "INVALID AMOUNT"  , "Enter a correct amount" , [{text: "OK", onPress: () => console.log('OK Pressed')} ] )
+                                }
                             }
+                            // wallet has a pending tx
                             else {
-                                Alert.alert( "INVALID AMOUNT"  , "Enter a correct amount" , [{text: "OK", onPress: () => console.log('OK Pressed')} ] )
+                                Alert.alert( "PENDING TRANSACTION IDENTIFIED"  , "You have a pending transaction on the network. Please check your OTS index again as it might need to be adjusted manually." , [{text: "OK", onPress: () => this.props.navigation.navigate('SendReceive') } ] )
                             }
-                        }
-                        // wallet has a pending tx
-                        else {
-                            Alert.alert( "PENDING TRANSACTION IDENTIFIED"  , "You have a pending transaction on the network. Please check your OTS index again as it might need to be adjusted manually." , [{text: "OK", onPress: () => this.props.navigation.navigate('SendReceive') } ] )
-                        }
-                    });
-                }
+                        });
+                    }
+                }).catch((error) => {console.log(error)});
             }
             else {
                 Alert.alert( "INVALID ADDRESS"  , "The QRL address you provided as recipient is invalid" , [{text: "OK", onPress: () => console.log('OK Pressed')} ] )

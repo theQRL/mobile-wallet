@@ -1,5 +1,5 @@
 import React from 'react';
-import {Picker, Text, View, Button, Image, ScrollView, ImageBackground, StyleSheet, TouchableHighlight, TouchableOpacity,ActivityIndicator, TextInput, KeyboardAvoidingView, Platform, Alert} from 'react-native';
+import {Picker, Text, View, Button, Image, ScrollView, ImageBackground, StyleSheet,AsyncStorage, TouchableHighlight, TouchableOpacity,ActivityIndicator, TextInput, KeyboardAvoidingView, Platform, Alert} from 'react-native';
 var validate = require('@theqrl/validate-qrl-address');
 // Android and Ios native modules
 import DeviceInfo from 'react-native-device-info';
@@ -15,7 +15,7 @@ export default class ConfirmTxModal extends React.Component {
     static navigationOptions = {
          drawerLabel: () => null
     };
-    
+
     componentDidMount() {
         // Ios
         if (Platform.OS === 'ios'){
@@ -48,42 +48,48 @@ export default class ConfirmTxModal extends React.Component {
     // transfer coins
     transferCoins = () => {
         this.setState({isLoading:true})
-        // Ios
-        if (Platform.OS === 'ios'){
-            // recheck the otsIndex in case
-            IosWallet.refreshWallet((error, walletAddress, otsIndex, balance, keys)=> {
-                amountShor = this.props.navigation.state.params.amount * 1000000000
-                feeShor = this.props.navigation.state.params.fee * 1000000000
-                IosTransferCoins.sendCoins(this.props.navigation.state.params.recipient, amountShor, otsIndex, feeShor , (error, status)=> {
-                    // if tx is successfull, back to main
-                    if (status == "success"){
-                        this.props.navigation.navigate("TransactionsHistory")
-                    }
-                    else {
-                        Alert.alert( "ERROR"  , "Something went wrong. Please try again." , [{text: "OK", onPress: () => this.props.navigation.navigate("SendReceive") } ] )
-                    }
+
+
+        // get the currect walletindex
+        AsyncStorage.getItem("walletindex").then((walletindex) => {
+            // Ios
+            if (Platform.OS === 'ios'){
+                // recheck the otsIndex in case
+                IosWallet.refreshWallet(walletindex, (error, walletAddress, otsIndex, balance, keys)=> {
+                    amountShor = this.props.navigation.state.params.amount * 1000000000
+                    feeShor = this.props.navigation.state.params.fee * 1000000000
+                    IosTransferCoins.sendCoins(this.props.navigation.state.params.recipient, amountShor, otsIndex, feeShor, walletindex, (error, status)=> {
+                        // if tx is successfull, back to main
+                        if (status == "success"){
+                            this.props.navigation.navigate("TransactionsHistory")
+                        }
+                        else {
+                            Alert.alert( "ERROR"  , "Something went wrong. Please try again." , [{text: "OK", onPress: () => this.props.navigation.navigate("SendReceive") } ] )
+                        }
+                    });
                 });
-            });
-        }
-        // Android
-        else {
-            AndroidWallet.refreshWallet( (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
+            }
+            // Android
+            else {
+                AndroidWallet.refreshWallet( (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
 
-                amountShor = this.props.navigation.state.params.amount
-                feeShor = this.props.navigation.state.params.fee * 1000000000
+                    amountShor = this.props.navigation.state.params.amount
+                    feeShor = this.props.navigation.state.params.fee * 1000000000
 
-                AndroidWallet.transferCoins( this.props.navigation.state.params.recipient, parseInt(amountShor), otsIndex, feeShor,  (err) => {console.log(err)}, (status) => {
-                    // if tx is successfull, back to main
-                    if (status == "success"){
-                        this.props.navigation.navigate("TransactionsHistory")
-                    }
-                    else {
-                        Alert.alert( "ERROR"  , "Something went wrong. Please try again." , [{text: "OK", onPress: () => this.props.navigation.navigate("SendReceive") } ] )
-                    }
+                    AndroidWallet.transferCoins( this.props.navigation.state.params.recipient, parseInt(amountShor), otsIndex, feeShor,  (err) => {console.log(err)}, (status) => {
+                        // if tx is successfull, back to main
+                        if (status == "success"){
+                            this.props.navigation.navigate("TransactionsHistory")
+                        }
+                        else {
+                            Alert.alert( "ERROR"  , "Something went wrong. Please try again." , [{text: "OK", onPress: () => this.props.navigation.navigate("SendReceive") } ] )
+                        }
+                    });
                 });
-            });
 
-        }
+            }
+        }).catch((error) => {console.log(error)});
+
     }
 
     render() {

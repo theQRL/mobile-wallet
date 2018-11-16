@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, Button, Image, ImageBackground, StyleSheet, TouchableHighlight, TouchableOpacity, Platform, ActivityIndicator} from 'react-native';
+import {Text, View, Button, Image, ImageBackground, AsyncStorage, StyleSheet, TouchableHighlight, TouchableOpacity, Platform, ActivityIndicator} from 'react-native';
 
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.refreshWallet;
@@ -26,17 +26,22 @@ export default class BackupWallet extends React.Component {
   getInfo = () => {
       // Ios
       this.setState({loading: true});
-      if (Platform.OS === 'ios'){
-          IosWallet.sendWalletPrivateInfo((error, mnemonic, hexseed)=> {
-              this.setState({loading:false, mnemonic: mnemonic, hexseed: hexseed })
-          });
-      }
-      // Android
-      else {
-          AndroidWallet.sendWalletPrivateInfo((error) => {console.log("ERROR");} , (mnemonic, hexseed)=> {
-              this.setState({loading:false, mnemonic: mnemonic, hexseed: hexseed })
-          });
-      }
+
+      // get the currect walletindex
+      AsyncStorage.getItem("walletindex").then((walletindex) => {
+
+          if (Platform.OS === 'ios'){
+              IosWallet.sendWalletPrivateInfo(walletindex, (error, mnemonic, hexseed)=> {
+                  this.setState({loading:false, mnemonic: mnemonic, hexseed: hexseed })
+              });
+          }
+          // Android
+          else {
+              AndroidWallet.sendWalletPrivateInfo((error) => {console.log("ERROR");} , (mnemonic, hexseed)=> {
+                  this.setState({loading:false, mnemonic: mnemonic, hexseed: hexseed })
+              });
+          }
+      }).catch((error) => {console.log(error)});
   }
 
   // render view

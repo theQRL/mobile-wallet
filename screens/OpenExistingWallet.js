@@ -30,8 +30,8 @@ var GLOBALS = require('./globals');
 export default class OpenExistingWallet extends React.Component {
 
     state={
-        // hexseed: GLOBALS.hexseed,
-        hexseed : "010500cdeee465921510d0a9d50c8a6a5325f2acdf373014ecb2023a9363710f2417fce58d16d591b86b29650739c51ac8460d",
+        hexseed: GLOBALS.hexseed1,
+        // hexseed : "",
         isLoading: false
     }
 
