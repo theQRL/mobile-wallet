@@ -50,7 +50,7 @@ RCT_EXPORT_METHOD(sendCoins:(NSString* )recipient withAmount:(NSNumber* _Nonnull
   
   std::vector<uint8_t> hexSeed= {};
   // Opening XMSS object with hexseed
-  NSString* hexseed = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@/%@", @"hexseed", walletindex]];
+  NSString* hexseed = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@%@", @"hexseed", walletindex]];
 //  NSString* walletAddress = [WalletHelperFunctions getFromKeychain:@"address"];
 //  NSString* hexseed = @"01050025f6c0b547c4231721f71c90176b6ee20b2aeff81f81773e099f2d9625e8045cba8aa504bdade1b6e5e3e05d9264e8d3";
   NSLog(@"HEXSEED TO USE : %@", hexseed);
@@ -80,7 +80,7 @@ RCT_EXPORT_METHOD(sendCoins:(NSString* )recipient withAmount:(NSNumber* _Nonnull
 //  NSData *sender_xmssPkData = [NSKeyedArchiver archivedDataWithRootObject:sender_xmssPkArray];
   
   
-  NSString* xmsspk = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@/%@", @"xmsspk", walletindex]];
+  NSString* xmsspk = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@%@", @"xmsspk", walletindex]];
   NSLog(@"XMSS PK %@", xmsspk);
   
 //  NSString* xmsspk = @"0105007e41c011a706c8edd8d1a2f18d558d14311917cd549b3edae07775b12d6640ef35ea0d4dd47fc36e2bc6d5aa5f6ef7582fcf6b8a564ea0ff3af3b42af05cbac9";
@@ -188,7 +188,7 @@ RCT_EXPORT_METHOD(sendCoins:(NSString* )recipient withAmount:(NSNumber* _Nonnull
     
     NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
     f.numberStyle = NSNumberFormatterDecimalStyle;
-    NSNumber *myNumber = [f numberFromString: [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@/%@", @"treeheight", walletindex]]];
+    NSNumber *myNumber = [f numberFromString: [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@%@", @"treeheight", walletindex]]];
     int tree_height = [myNumber intValue];
     
     XmssFast xmss_obj(hexSeed, tree_height);

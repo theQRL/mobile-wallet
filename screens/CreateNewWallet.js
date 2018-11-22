@@ -35,6 +35,11 @@ export default class CreateNewWallet extends React.Component {
         isLoading: true
     }
 
+    openHexseedModal = (walletindexToOpen) => {
+        this.props.navigation.navigate('OpenExistingWalletModal',{onGoBack: () => this.refreshWalletIndex(), walletIndexToOpen: walletindexToOpen})
+    }
+
+
     // Close active wallet (remove all information from "cache") and open new one
     closeWallet = () => {
         this.setState({isLoading: true});
@@ -86,7 +91,7 @@ export default class CreateNewWallet extends React.Component {
                       {this.state.walletindex == rowData.index ?
                           <Text style={{color:'green', fontSize:20}}>Active</Text>
                           :
-                           <Button color="red" onPress={() => this.props.navigation.pop()  } title="Open"/>
+                           <Button color="red" onPress={() => this.openHexseedModal(rowData.index)  } title="Open"/>
                       }
                     </View>
               </View>
@@ -101,10 +106,18 @@ export default class CreateNewWallet extends React.Component {
         );
       }
 
-
+      // refresh wallet index on switch
+      refreshWalletIndex(){
+          // get walletindex (index of the opened wallet)
+          this.setState({isLoading:true});
+          AsyncStorage.getItem("walletindex").then((walletindex) => {
+              this.setState({isLoading:false, walletindex: walletindex})
+          }).catch((error) => {console.log(error)});
+      }
 
   // render view
   render() {
+
       if (this.state.isLoading){
           return(<View><Text>Loading...</Text></View>)
       }

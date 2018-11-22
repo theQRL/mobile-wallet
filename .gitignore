@@ -23,6 +23,7 @@ DerivedData
 project.xcworkspace
 old.objc
 old.java
+old.js
 # Android/IntelliJ
 #
 build/

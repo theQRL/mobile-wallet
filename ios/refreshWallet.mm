@@ -30,7 +30,7 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
   [GRPCCall useInsecureConnectionsForHost:kHostAddress];
   PublicAPI *client = [[PublicAPI alloc] initWithHost:kHostAddress];
   
-  NSString* walletAddress = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@/%@", @"address", walletindex]  ];
+  NSString* walletAddress = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@%@", @"address", walletindex]  ];
   
   NSLog(@"WALLET ADDRESS FROM KEYCHAIN IS %@", walletAddress);
   
@@ -217,7 +217,7 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
 RCT_EXPORT_METHOD(sendWalletPrivateInfo:(NSString*)walletindex callback:(RCTResponseSenderBlock)callback)
 {
   std::vector<uint8_t> hexSeed= {};
-  NSString* hexseed = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@/%@", @"hexseed", walletindex]];
+  NSString* hexseed = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@%@", @"hexseed", walletindex]];
   
   int i;
   for (i=6; i < [hexseed length]; i+=2) {
@@ -242,7 +242,7 @@ RCT_EXPORT_METHOD(sendWalletPrivateInfo:(NSString*)walletindex callback:(RCTResp
 RCT_EXPORT_METHOD(checkPendingTx:(NSString*)walletindex callback:(RCTResponseSenderBlock)callback)
 {
   NSLog(@"CHECKING IF UNCONFIRMED TX OBJC");
-  NSString* wallet_address = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@/%@", @"address", walletindex]];
+  NSString* wallet_address = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@%@", @"address", walletindex]];
   [GRPCCall useInsecureConnectionsForHost:kHostAddress];
   PublicAPI *client = [[PublicAPI alloc] initWithHost:kHostAddress];
   

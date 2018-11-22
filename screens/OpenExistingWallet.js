@@ -30,7 +30,7 @@ var GLOBALS = require('./globals');
 export default class OpenExistingWallet extends React.Component {
 
     state={
-        hexseed: GLOBALS.hexseed1,
+        hexseed: GLOBALS.hexseed2,
         // hexseed : "",
         isLoading: false
     }
@@ -86,10 +86,7 @@ export default class OpenExistingWallet extends React.Component {
                                 // update walletlist JSON
                                 AsyncStorage.getItem("walletlist").then((walletlist) => {
                                     walletlist = JSON.parse(walletlist)
-                                    console.log("KEYSLEN")
-                                    console.log(Object.keys(walletlist).length)
                                     walletlist.push({"index":walletIndexToCreate, "address": "Q"+address})
-                                    // walletlist.push(JSON.stringify( {"index":walletIndexToCreate, "address": "Q"+address} ) );
                                     AsyncStorage.setItem("walletlist", JSON.stringify( walletlist ));
                                 });
                             }
