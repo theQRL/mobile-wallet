@@ -47,8 +47,34 @@ export default class OpenExistingWallet extends React.Component {
         AsyncStorage.setItem("walletcounter", walletcounterUpdate);
     }
 
+
+    _updateWalletIndex = (walletIndexToCreate, address) => {
+        AsyncStorage.setItem("walletcreated","yes");
+        // update the walletindex
+        AsyncStorage.setItem("walletindex",walletIndexToCreate );
+        // update the walletlist JSON
+        // if first wallet create, just instantiate the walletlist JSON
+        if (walletIndexToCreate == "1"){
+            AsyncStorage.setItem("walletlist", JSON.stringify( [{"index":walletIndexToCreate, "address": "Q"+address}] ) );
+        }
+        else {
+            // update walletlist JSON
+            AsyncStorage.getItem("walletlist").then((walletlist) => {
+                walletlist = JSON.parse(walletlist)
+                walletlist.push({"index":walletIndexToCreate, "address": "Q"+address})
+                AsyncStorage.setItem("walletlist", JSON.stringify( walletlist ));
+            });
+        }
+        // show main menu once wallet is open
+        this.props.navigation.navigate('App');
+    }
+
+
     // open QRL wallet
     openWallet = () => {
+        console.log("HEXSEED")
+        console.log(this.state.hexseed)
+
         this.setState({isLoading: true})
         if (this.state.hexseed.length != 102){
             Alert.alert( "INVALID SEED"  , "The hexseed you provided is incorrect" , [{text: "OK", onPress: () => console.log('OK Pressed')} ] );
@@ -74,24 +100,26 @@ export default class OpenExistingWallet extends React.Component {
                         this.setState({isLoading:false})
                         // if success -> open the main view of the app
                         if (status =="success"){
-                            AsyncStorage.setItem("walletcreated","yes");
-                            // update the walletindex
-                            AsyncStorage.setItem("walletindex",walletIndexToCreate );
-                            // update the walletlist JSON
-                            // if first wallet create, just instantiate the walletlist JSON
-                            if (walletIndexToCreate == "1"){
-                                AsyncStorage.setItem("walletlist", JSON.stringify( [{"index":walletIndexToCreate, "address": "Q"+address}] ) );
-                            }
-                            else {
-                                // update walletlist JSON
-                                AsyncStorage.getItem("walletlist").then((walletlist) => {
-                                    walletlist = JSON.parse(walletlist)
-                                    walletlist.push({"index":walletIndexToCreate, "address": "Q"+address})
-                                    AsyncStorage.setItem("walletlist", JSON.stringify( walletlist ));
-                                });
-                            }
 
-                            this.props.navigation.navigate('App');
+                            this._updateWalletIndex(walletIndexToCreate, address)
+                            // AsyncStorage.setItem("walletcreated","yes");
+                            // // update the walletindex
+                            // AsyncStorage.setItem("walletindex",walletIndexToCreate );
+                            // // update the walletlist JSON
+                            // // if first wallet create, just instantiate the walletlist JSON
+                            // if (walletIndexToCreate == "1"){
+                            //     AsyncStorage.setItem("walletlist", JSON.stringify( [{"index":walletIndexToCreate, "address": "Q"+address}] ) );
+                            // }
+                            // else {
+                            //     // update walletlist JSON
+                            //     AsyncStorage.getItem("walletlist").then((walletlist) => {
+                            //         walletlist = JSON.parse(walletlist)
+                            //         walletlist.push({"index":walletIndexToCreate, "address": "Q"+address})
+                            //         AsyncStorage.setItem("walletlist", JSON.stringify( walletlist ));
+                            //     });
+                            // }
+                            //
+                            // this.props.navigation.navigate('App');
                         }
                         else {
                             Alert.alert( "INVALID SEED"  , "The hexseed you provided is incorrect" , [{text: "OK", onPress: () => console.log('OK Pressed')} ] )
@@ -100,14 +128,15 @@ export default class OpenExistingWallet extends React.Component {
                 }
                 // Android
                 else {
-                  AndroidWallet.openWalletWithHexseed(this.state.hexseed, (err) => {console.log(err); } , (status)=> {
+                  AndroidWallet.openWalletWithHexseed(this.state.hexseed, walletIndexToCreate, (err) => {console.log(err); } , (status, address)=> {
                       this.setState({isLoading:false})
                       // if success -> open the main view of the app
                       if (status =="success"){
-                          AsyncStorage.setItem("walletcreated","yes");
-                          // update the walletindex
-                          AsyncStorage.setItem("walletindex",walletIndexToCreate );
-                          this.props.navigation.navigate('App');
+                          this._updateWalletIndex(walletIndexToCreate, address)
+                          // AsyncStorage.setItem("walletcreated","yes");
+                          // // update the walletindex
+                          // AsyncStorage.setItem("walletindex",walletIndexToCreate );
+                          // this.props.navigation.navigate('App');
                       }
                       else {
                           Alert.alert( "INVALID SEED"  , "The hexseed you provided is incorrect" , [{text: "OK", onPress: () => console.log('OK Pressed')} ] )

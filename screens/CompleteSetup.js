@@ -28,6 +28,29 @@ export default class CompleteSetup extends React.Component {
       AsyncStorage.setItem("walletcounter", walletcounterUpdate);
   }
 
+
+  _updateWalletIndex = (walletIndexToCreate, address) => {
+      AsyncStorage.setItem("walletcreated","yes");
+      // update the walletindex
+      AsyncStorage.setItem("walletindex",walletIndexToCreate );
+      // update the walletlist JSON
+      // if first wallet create, just instantiate the walletlist JSON
+      if (walletIndexToCreate == "1"){
+          AsyncStorage.setItem("walletlist", JSON.stringify( [{"index":walletIndexToCreate, "address": "Q"+address}] ) );
+      }
+      else {
+          // update walletlist JSON
+          AsyncStorage.getItem("walletlist").then((walletlist) => {
+              walletlist = JSON.parse(walletlist)
+              walletlist.push({"index":walletIndexToCreate, "address": "Q"+address})
+              AsyncStorage.setItem("walletlist", JSON.stringify( walletlist ));
+          });
+      }
+      // show main menu once wallet is open
+      this.props.navigation.navigate('App');
+  }
+
+
   // Create QRL wallet
     createWallet = () => {
         this.setState({loading:true})
@@ -50,24 +73,25 @@ export default class CompleteSetup extends React.Component {
                     this.setState({loading:false})
                     // if success -> open the main view of the app
                     if (status =="success"){
-                        AsyncStorage.setItem("walletcreated","yes");
-                        // update the walletindex
-                        AsyncStorage.setItem("walletindex",walletIndexToCreate );
-                        // update the walletlist JSON
-                        // if first wallet create, just instantiate the walletlist JSON
-                        if (walletIndexToCreate == "1"){
-                            AsyncStorage.setItem("walletlist", JSON.stringify( [{"index":walletIndexToCreate, "address": "Q"+address}] ) );
-                        }
-                        else {
-                            // update walletlist JSON
-                            AsyncStorage.getItem("walletlist").then((walletlist) => {
-                                walletlist = JSON.parse(walletlist)
-                                walletlist.push({"index":walletIndexToCreate, "address": "Q"+address})
-                                AsyncStorage.setItem("walletlist", JSON.stringify( walletlist ));
-                            });
-                        }
-                        // show main menu once wallet is open
-                        this.props.navigation.navigate('App');
+                        this._updateWalletIndex(walletIndexToCreate, address)
+                        // AsyncStorage.setItem("walletcreated","yes");
+                        // // update the walletindex
+                        // AsyncStorage.setItem("walletindex",walletIndexToCreate );
+                        // // update the walletlist JSON
+                        // // if first wallet create, just instantiate the walletlist JSON
+                        // if (walletIndexToCreate == "1"){
+                        //     AsyncStorage.setItem("walletlist", JSON.stringify( [{"index":walletIndexToCreate, "address": "Q"+address}] ) );
+                        // }
+                        // else {
+                        //     // update walletlist JSON
+                        //     AsyncStorage.getItem("walletlist").then((walletlist) => {
+                        //         walletlist = JSON.parse(walletlist)
+                        //         walletlist.push({"index":walletIndexToCreate, "address": "Q"+address})
+                        //         AsyncStorage.setItem("walletlist", JSON.stringify( walletlist ));
+                        //     });
+                        // }
+                        // // show main menu once wallet is open
+                        // this.props.navigation.navigate('App');
                     }
                     else {
                         console.log("ERROR while opening wallet: ")
@@ -76,11 +100,14 @@ export default class CompleteSetup extends React.Component {
             }
             // Android
             else {
-              AndroidWallet.createWallet(this.props.navigation.state.params.treeHeight, this.props.navigation.state.params.hashFunctionId, (err) => {console.log(err); }, (status) => {
+              AndroidWallet.createWallet(this.props.navigation.state.params.treeHeight, walletIndexToCreate, this.props.navigation.state.params.hashFunctionId, (err) => {console.log(err); }, (status, address) => {
                   // if success -> open the main view of the app
                   if (status =="success"){
-                      AsyncStorage.setItem("walletcreated","yes");
-                      this.props.navigation.navigate('App');
+
+                      this._updateWalletIndex(walletIndexToCreate, address)
+
+                      // AsyncStorage.setItem("walletcreated","yes");
+                      // this.props.navigation.navigate('App');
                   }
                   else {
                       console.log("ERROR while opening wallet: ", error)

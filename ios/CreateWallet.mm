@@ -215,14 +215,7 @@ RCT_EXPORT_METHOD(closeWallet: (RCTResponseSenderBlock)callback){
 
 // check if user provided hexseed is correct for a given wallet and return wallet if true
 RCT_EXPORT_METHOD(checkHexseedIdentical:(NSString* )userHexseed withIndex:(NSString*)walletindex callback:(RCTResponseSenderBlock)callback){
-  NSLog(@"INDEX : %@", walletindex);
-  NSString* acc = [NSString stringWithFormat:@"%@%@", @"hexseed", walletindex];
-  NSLog(@"SHOULDGET : %@", acc);
-  NSLog(@"USERHEXSEED : %@", userHexseed);
-  NSString* walletAddress = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@%@", @"address", walletindex]  ];
-  NSLog(@"KCHAINADDR : %@", walletAddress);
   NSString* hexseed = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@%@", @"hexseed", walletindex]];
-  NSLog(@"KCHAINHEXSEED : %@", hexseed);
   // if provided hexseed is correct then open the wallet
   if ([hexseed isEqualToString:userHexseed]){
     callback(@[[NSNull null], @"success" ]);

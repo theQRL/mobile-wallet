@@ -58,7 +58,6 @@ export default class OpenExistingWalletModal extends React.Component {
                 // check if the hexseed provided for a given index is correct
                 // IosWallet.checkHexseedIdentical(this.state.hexseed, this.props.navigation.state.params.walletIndexToOpen , (error, status)=> {
                 IosWallet.checkHexseedIdentical(this.state.hexseed, this.props.navigation.state.params.walletIndexToOpen  , (error, status)=> {
-                    console.log(status)
                     // if correct hexseed
                     if (status =="success"){
                         // update walletindex
@@ -70,57 +69,23 @@ export default class OpenExistingWalletModal extends React.Component {
                         Alert.alert( "INVALID SEED"  , "The hexseed you provided is incorrect" , [{text: "OK", onPress: () => console.log('OK Pressed')} ] )
                         this.setState({isLoading: false});
                     }
-
                 })
+            }
 
-
-            //     IosWallet.openWalletWithHexseed(this.state.hexseed, walletIndexToCreate , (error, status, address)=> {
-            //         this.setState({isLoading:false})
-            //         // if success -> open the main view of the app
-            //         if (status =="success"){
-            //             AsyncStorage.setItem("walletcreated","yes");
-            //             // update the walletindex
-            //             AsyncStorage.setItem("walletindex",walletIndexToCreate );
-            //             // update the walletlist JSON
-            //             // if first wallet create, just instantiate the walletlist JSON
-            //             if (walletIndexToCreate == "1"){
-            //                 AsyncStorage.setItem("walletlist", JSON.stringify( [{"index":walletIndexToCreate, "address": "Q"+address}] ) );
-            //             }
-            //             else {
-            //                 // update walletlist JSON
-            //                 AsyncStorage.getItem("walletlist").then((walletlist) => {
-            //                     walletlist = JSON.parse(walletlist)
-            //                     console.log("KEYSLEN")
-            //                     console.log(Object.keys(walletlist).length)
-            //                     walletlist.push({"index":walletIndexToCreate, "address": "Q"+address})
-            //                     // walletlist.push(JSON.stringify( {"index":walletIndexToCreate, "address": "Q"+address} ) );
-            //                     AsyncStorage.setItem("walletlist", JSON.stringify( walletlist ));
-            //                 });
-            //             }
-            //
-            //             this.props.navigation.navigate('App');
-            //         }
-            //         else {
-            //             Alert.alert( "INVALID SEED"  , "The hexseed you provided is incorrect" , [{text: "OK", onPress: () => console.log('OK Pressed')} ] )
-            //         }
-            //     })
-            // }
-            // // Android
-            // else {
-            //   AndroidWallet.openWalletWithHexseed(this.state.hexseed, (err) => {console.log(err); } , (status)=> {
-            //       this.setState({isLoading:false})
-            //       // if success -> open the main view of the app
-            //       if (status =="success"){
-            //           AsyncStorage.setItem("walletcreated","yes");
-            //           // update the walletindex
-            //           AsyncStorage.setItem("walletindex",walletIndexToCreate );
-            //           this.props.navigation.navigate('App');
-            //       }
-            //       else {
-            //           Alert.alert( "INVALID SEED"  , "The hexseed you provided is incorrect" , [{text: "OK", onPress: () => console.log('OK Pressed')} ] )
-            //       }
-            //   })
-
+            else {
+                AndroidWallet.checkHexseedIdentical(this.state.hexseed, this.props.navigation.state.params.walletIndexToOpen, (err) => {console.log(err); }, (status)=> {
+                    // if correct hexseed
+                    if (status =="success"){
+                        // update walletindex
+                        AsyncStorage.setItem("walletindex", this.props.navigation.state.params.walletIndexToOpen );
+                        this.props.navigation.state.params.onGoBack();
+                        this.props.navigation.goBack();
+                    }
+                    else {
+                        Alert.alert( "INVALID SEED"  , "The hexseed you provided does not match" , [{text: "OK", onPress: () => console.log('OKEY Pressed')} ] )
+                        this.setState({isLoading: false});
+                    }
+                })
             }
         }
     }

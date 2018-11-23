@@ -71,12 +71,12 @@ export default class ConfirmTxModal extends React.Component {
             }
             // Android
             else {
-                AndroidWallet.refreshWallet( (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
+                AndroidWallet.refreshWallet(walletindex,  (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
 
                     amountShor = this.props.navigation.state.params.amount
                     feeShor = this.props.navigation.state.params.fee * 1000000000
 
-                    AndroidWallet.transferCoins( this.props.navigation.state.params.recipient, parseInt(amountShor), otsIndex, feeShor,  (err) => {console.log(err)}, (status) => {
+                    AndroidWallet.transferCoins(walletindex, this.props.navigation.state.params.recipient, parseInt(amountShor), otsIndex, feeShor,  (err) => {console.log(err)}, (status) => {
                         // if tx is successfull, back to main
                         if (status == "success"){
                             this.props.navigation.navigate("TransactionsHistory")

@@ -69,7 +69,7 @@ export default class SendReceive extends React.Component {
           }
           // Android
           else {
-              AndroidWallet.refreshWallet( (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
+              AndroidWallet.refreshWallet(walletindex, (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
                   this.setState({walletAddress: walletAddress, balance: balance/ 1000000000, otsIndex: otsIndex, isLoading:false})
               });
           }
@@ -134,7 +134,7 @@ export default class SendReceive extends React.Component {
 
                     else {
                         // check that there are no pending tx
-                        AndroidWallet.checkPendingTx((error) => {console.log("ERROR")}, (status)=> {
+                        AndroidWallet.checkPendingTx(walletindex, (error) => {console.log("ERROR")}, (status)=> {
                             if (status =="success"){
                                 // check that amount is a Number
                                 var isAmountNumber = /^\d*\.?\d+$/.test(this.state.amount)

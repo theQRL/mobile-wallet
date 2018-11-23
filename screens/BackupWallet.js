@@ -37,7 +37,7 @@ export default class BackupWallet extends React.Component {
           }
           // Android
           else {
-              AndroidWallet.sendWalletPrivateInfo((error) => {console.log("ERROR");} , (mnemonic, hexseed)=> {
+              AndroidWallet.sendWalletPrivateInfo(walletindex, (error) => {console.log("ERROR");} , (mnemonic, hexseed)=> {
                   this.setState({loading:false, mnemonic: mnemonic, hexseed: hexseed })
               });
           }
