@@ -22,7 +22,7 @@
 
 RCT_EXPORT_MODULE();
 // Refresh the wallet balance and last transactions list
-RCT_EXPORT_METHOD(refreshWallet: (RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSenderBlock)callback)
 {
   
 //  static NSString * const kHostAddress = @"testnet-2.automated.theqrl.org:19009";
@@ -30,7 +30,7 @@ RCT_EXPORT_METHOD(refreshWallet: (RCTResponseSenderBlock)callback)
   [GRPCCall useInsecureConnectionsForHost:kHostAddress];
   PublicAPI *client = [[PublicAPI alloc] initWithHost:kHostAddress];
   
-  NSString* walletAddress = [WalletHelperFunctions getFromKeychain:@"address"];
+  NSString* walletAddress = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@%@", @"address", walletindex]  ];
   
   NSLog(@"WALLET ADDRESS FROM KEYCHAIN IS %@", walletAddress);
   
@@ -76,7 +76,7 @@ RCT_EXPORT_METHOD(refreshWallet: (RCTResponseSenderBlock)callback)
     
     else {
       for (j=tx_count - 1; j > tx_end ; j--) {
-        NSLog(@"ENTERED FOR LOOP" );
+        //NSLog(@"ENTERED FOR LOOP" );
         // GRPC call getObject
         GetObjectReq *getObjectRect = [GetObjectReq message];
         getObjectRect.query = response2.state.transactionHashesArray[j];
@@ -185,7 +185,7 @@ RCT_EXPORT_METHOD(refreshWallet: (RCTResponseSenderBlock)callback)
               BOOL otsFound = false;
               
               for (int j=7; j>-1; j--){
-                NSLog(@"J : %d", j );
+                //NSLog(@"J : %d", j );
                 NSString *otsValue = [binaryStr substringWithRange:NSMakeRange(j, 1)];
                 if ([otsValue isEqual: @"0"]){
                   otsFound = true;
@@ -193,7 +193,7 @@ RCT_EXPORT_METHOD(refreshWallet: (RCTResponseSenderBlock)callback)
                   otsIndex = (8 * i) + 7 - j;
                   break;
                 }
-                NSLog(@"OTS_BITFILED STRING : %@", otsValue );
+                //NSLog(@"OTS_BITFILED STRING : %@", otsValue );
               }
               if (otsFound){
                 break;
@@ -202,7 +202,7 @@ RCT_EXPORT_METHOD(refreshWallet: (RCTResponseSenderBlock)callback)
             
             NSData *txJsonData = [NSJSONSerialization dataWithJSONObject:txResponseArray options:NSJSONWritingPrettyPrinted error:&error];
             NSString *txJsonString = [[NSString alloc] initWithData:txJsonData encoding:NSUTF8StringEncoding];
-            NSLog(@"jsonData as string:\n%@", txJsonString);
+            //NSLog(@"jsonData as string:\n%@", txJsonString);
             callback(@[[NSNull null], walletAddress, @(otsIndex), @(response2.state.balance), txJsonString ]);
           }
         }];
@@ -214,10 +214,10 @@ RCT_EXPORT_METHOD(refreshWallet: (RCTResponseSenderBlock)callback)
 
 
 // Return the mnemonic and hexseed for the wallet
-RCT_EXPORT_METHOD(sendWalletPrivateInfo: (RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(sendWalletPrivateInfo:(NSString*)walletindex callback:(RCTResponseSenderBlock)callback)
 {
   std::vector<uint8_t> hexSeed= {};
-  NSString* hexseed = [WalletHelperFunctions getFromKeychain:@"hexseed"];
+  NSString* hexseed = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@%@", @"hexseed", walletindex]];
   
   int i;
   for (i=6; i < [hexseed length]; i+=2) {
@@ -239,10 +239,10 @@ RCT_EXPORT_METHOD(sendWalletPrivateInfo: (RCTResponseSenderBlock)callback)
 
 
 // Check if the wallet has a pending tx
-RCT_EXPORT_METHOD(checkPendingTx: (RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(checkPendingTx:(NSString*)walletindex callback:(RCTResponseSenderBlock)callback)
 {
   NSLog(@"CHECKING IF UNCONFIRMED TX OBJC");
-  NSString* wallet_address = [WalletHelperFunctions getFromKeychain:@"address"];
+  NSString* wallet_address = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@%@", @"address", walletindex]];
   [GRPCCall useInsecureConnectionsForHost:kHostAddress];
   PublicAPI *client = [[PublicAPI alloc] initWithHost:kHostAddress];
   

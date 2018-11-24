@@ -14,7 +14,8 @@ import {
   TouchableOpacity,
   ScrollView,
   TouchableHighlight,
-  ListView
+  ListView,
+  AsyncStorage
 } from 'react-native';
 
 
@@ -24,7 +25,6 @@ import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.refreshWallet;
 // android
 var AndroidWallet = NativeModules.AndroidWallet;
-
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
@@ -61,17 +61,23 @@ export default class Wallet extends React.Component{
             // Update the wallet each time the user switch to this view
             // Ios
             this.setState({isLoading:true})
-            if (Platform.OS === 'ios'){
-                IosWallet.refreshWallet((error, walletAddress, otsIndex, balance, keys)=> {
-                    this.setState({isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
-                });
-            }
-            // Android
-            else {
-                AndroidWallet.refreshWallet( (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
-                    this.setState({isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
-                });
-            }
+
+            // get the currect walletindex
+            AsyncStorage.getItem("walletindex").then((walletindex) => {
+                if (Platform.OS === 'ios'){
+                    IosWallet.refreshWallet(walletindex, (error, walletAddress, otsIndex, balance, keys)=> {
+                        this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
+                    });
+                }
+                // Android
+                else {
+                    AndroidWallet.refreshWallet(walletindex,  (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
+                        console.log("wALLET ADDRESS ANDROID")
+                        console.log(walletAddress)
+                        this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
+                    });
+                }
+            }).catch((error) => {console.log(error)});
         })
     }
 
@@ -106,17 +112,25 @@ export default class Wallet extends React.Component{
             // Update the wallet each time the user switch to this view
             // Ios
             this.setState({isLoading:true})
-            if (Platform.OS === 'ios'){
-                IosWallet.refreshWallet((error, walletAddress, otsIndex, balance, keys)=> {
-                    this.setState({isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
-                });
-            }
-            // Android
-            else {
-                AndroidWallet.refreshWallet( (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
-                    this.setState({isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
-                });
-            }
+            // get the currect walletindex
+            AsyncStorage.getItem("walletindex").then((walletindex) => {
+
+                if (Platform.OS === 'ios'){
+                    IosWallet.refreshWallet(walletindex, (error, walletAddress, otsIndex, balance, keys)=> {
+                        this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
+                    });
+                }
+                // Android
+                else {
+                    AndroidWallet.refreshWallet(walletindex, (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
+                        this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
+                    });
+                }
+
+            }).catch((error) => {console.log(error)});
+
+
+
         })
     }
 
@@ -166,6 +180,9 @@ export default class Wallet extends React.Component{
     }
 
     render() {
+
+
+
         if (this.state.isLoading) {
             return (
                 <ImageBackground source={require('../resources/images/main_bg_half.png')} style={styles.backgroundImage}>
@@ -229,6 +246,9 @@ export default class Wallet extends React.Component{
               minutes = this.state.updatedDate.getMinutes();
               minutes < 10 ? minUI = "0" + minutes : minUI = minutes;
 
+              addressBegin = this.state.walletAddress.substring(1, 10);
+              addressEnd = this.state.walletAddress.substring(58, 79);
+
               return (
                   <ImageBackground source={require('../resources/images/main_bg_half.png')} style={styles.backgroundImage}>
                       <View style={{flex:1}}>
@@ -250,10 +270,11 @@ export default class Wallet extends React.Component{
                  <View style={{ alignItems:'center',flex:1}}>
                      <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:240, width:360, justifyContent:'center',alignItems:'center', paddingTop: 30}} >
                          <Text style={{color:'white'}}>QRL BALANCE</Text>
+                         <Text style={{color:'white', fontWeight: "bold"}}>Q{addressBegin}...{addressEnd}</Text>
                          <Text style={{color:'white',fontSize:30}}>{this.state.balance / 1000000000 }</Text>
                          <Text style={{color:'white',fontSize:13}}>USD ${ ((this.state.balance / 1000000000 ) * this.state.price).toFixed(2) }</Text>
 
-                         <View style={{width:"80%", borderRadius:10, flexDirection:'row', paddingTop:30,paddingBottom:5}}>
+                         <View style={{width:"80%", borderRadius:10, flexDirection:'row', paddingTop:15,paddingBottom:5}}>
                              <View style={{flex:1}}><Text style={{fontSize:12, color:"white"}}>MARKET CAP</Text></View>
                              <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text style={{fontSize:12, color:"white"}}>PRICE</Text></View>
                              <View style={{flex:1}}><Text style={{fontSize:12, color:"white", right:-10}}>24H CHANGE</Text></View>

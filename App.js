@@ -6,7 +6,7 @@ import { DrawerNavigator , StackNavigator, SwitchNavigator, DrawerItems } from '
 import BackupWallet from './screens/BackupWallet'
 import SendReceive from './screens/SendReceive'
 import TransactionsHistory from './screens/TransactionsHistory'
-import CreateWallet from './screens/CreateWallet'
+// import CreateWallet from './screens/CreateWallet'
 import CreateNewWallet from './screens/CreateNewWallet'
 import CompleteSetup from './screens/CompleteSetup'
 import OpenExistingWallet from './screens/OpenExistingWallet'
@@ -17,6 +17,7 @@ import ScanQrModal from './screens/ScanQrModal'
 import ConfirmTxModal from './screens/ConfirmTxModal'
 import CreateAdvancedWallet from './screens/CreateAdvancedWallet'
 import TxDetailsView from './screens/TxDetailsView'
+import OpenExistingWalletModal from './screens/OpenExistingWalletModal'
 
 // import { QRLLIB } from './node_modules/qrllib/build/web-libjsqrl.js'
 
@@ -24,6 +25,7 @@ import TxDetailsView from './screens/TxDetailsView'
 // - if yes -> redirects to the app main view
 // - if no -> redirects to the CreateWallet view
 class AuthLoadingScreen extends React.Component {
+
   constructor(props) {
     super(props);
     this._bootstrapAsync();
@@ -44,7 +46,7 @@ class AuthLoadingScreen extends React.Component {
     return (
       <View>
         <ActivityIndicator />
-        <StatusBar barStyle="default" />
+
       </View>
     );
   }
@@ -93,12 +95,6 @@ const MainDrawerMenu = DrawerNavigator(
             path: '/',
             screen: TxDetailsView
         },
-        ScanQrModal : {
-            screen: ScanQrModal
-        },
-        ConfirmTxModal : {
-            screen: ConfirmTxModal
-        }
     },
     {
         // initialRouteName: 'Wallet',
@@ -113,21 +109,27 @@ const MainDrawerMenu = DrawerNavigator(
     }
 );
 
-// MainDrawerMenu
-// const MainDrawerModal = DrawerNavigator(
-//     {
-//         Main : {
-//             screen: MainDrawerMenu
-//         },
-//         ScanQrModal : {
-//             screen: ScanQrModal
-//         },
-//         ConfirmTxModal : {
-//             screen: ConfirmTxModal
-//         }
-//     }
-// );
-
+// The Stack for modals
+const RootStack = StackNavigator(
+  {
+    MainDrawer: {
+      screen: MainDrawerMenu,
+    },
+    OpenExistingWalletModal : {
+        screen: OpenExistingWalletModal
+    },
+    ConfirmTxModal : {
+        screen: ConfirmTxModal
+    },
+    ScanQrModal : {
+        screen: ScanQrModal
+    },
+  },
+  {
+    mode: 'modal',
+    headerMode: 'none',
+  }
+);
 
 
 const AuthStack = StackNavigator(
@@ -162,7 +164,7 @@ const AuthStack = StackNavigator(
 export default SwitchNavigator(
   {
     AuthLoading: AuthLoadingScreen,
-    App: MainDrawerMenu,
+    App: RootStack,
     Auth: AuthStack,
   },
   {

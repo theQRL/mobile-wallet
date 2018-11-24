@@ -23,37 +23,100 @@ export default class CompleteSetup extends React.Component {
       selectText : undefined
   }
 
+  // update the wallet counter
+  _updateWalletcounter = (walletcounterUpdate) => {
+      AsyncStorage.setItem("walletcounter", walletcounterUpdate);
+  }
+
+
+  _updateWalletIndex = (walletIndexToCreate, address) => {
+      AsyncStorage.setItem("walletcreated","yes");
+      // update the walletindex
+      AsyncStorage.setItem("walletindex",walletIndexToCreate );
+      // update the walletlist JSON
+      // if first wallet create, just instantiate the walletlist JSON
+      if (walletIndexToCreate == "1"){
+          AsyncStorage.setItem("walletlist", JSON.stringify( [{"index":walletIndexToCreate, "address": "Q"+address}] ) );
+      }
+      else {
+          // update walletlist JSON
+          AsyncStorage.getItem("walletlist").then((walletlist) => {
+              walletlist = JSON.parse(walletlist)
+              walletlist.push({"index":walletIndexToCreate, "address": "Q"+address})
+              AsyncStorage.setItem("walletlist", JSON.stringify( walletlist ));
+          });
+      }
+      // show main menu once wallet is open
+      this.props.navigation.navigate('App');
+  }
+
+
   // Create QRL wallet
     createWallet = () => {
         this.setState({loading:true})
-        // Ios
-        if (Platform.OS === 'ios'){
-            IosWallet.createWallet(this.props.navigation.state.params.treeHeight, this.props.navigation.state.params.hashFunctionId,  (err, status)=> {
-                this.setState({loading:false})
-                // if success -> open the main view of the app
-                if (status =="success"){
-                    AsyncStorage.setItem("walletcreated","yes");
-                    this.props.navigation.navigate('App');
-                }
-                else {
-                    console.log("ERROR while opening wallet: ")
-                }
-            })
-        }
-        // Android
-        else {
-          AndroidWallet.createWallet(this.props.navigation.state.params.treeHeight, this.props.navigation.state.params.hashFunctionId, (err) => {console.log(err); }, (status) => {
-              // if success -> open the main view of the app
-              if (status =="success"){
-                  AsyncStorage.setItem("walletcreated","yes");
-                  this.props.navigation.navigate('App');
-              }
-              else {
-                  console.log("ERROR while opening wallet: ", error)
-              }
-          })
-        }
+
+        AsyncStorage.getItem('walletcounter').then((walletcounter) => {
+            // if not first wallet
+            if(walletcounter != null){
+                walletIndexToCreate = (parseInt(walletcounter, 10) + 1).toString();
+                this._updateWalletcounter(walletIndexToCreate)
+            }
+            // if first wallet
+            else {
+                walletIndexToCreate = "1"
+                this._updateWalletcounter("1");
+            }
+
+            // Ios
+            if (Platform.OS === 'ios'){
+                IosWallet.createWallet(this.props.navigation.state.params.treeHeight, walletIndexToCreate, this.props.navigation.state.params.hashFunctionId,  (err, status, address)=> {
+                    this.setState({loading:false})
+                    // if success -> open the main view of the app
+                    if (status =="success"){
+                        this._updateWalletIndex(walletIndexToCreate, address)
+                        // AsyncStorage.setItem("walletcreated","yes");
+                        // // update the walletindex
+                        // AsyncStorage.setItem("walletindex",walletIndexToCreate );
+                        // // update the walletlist JSON
+                        // // if first wallet create, just instantiate the walletlist JSON
+                        // if (walletIndexToCreate == "1"){
+                        //     AsyncStorage.setItem("walletlist", JSON.stringify( [{"index":walletIndexToCreate, "address": "Q"+address}] ) );
+                        // }
+                        // else {
+                        //     // update walletlist JSON
+                        //     AsyncStorage.getItem("walletlist").then((walletlist) => {
+                        //         walletlist = JSON.parse(walletlist)
+                        //         walletlist.push({"index":walletIndexToCreate, "address": "Q"+address})
+                        //         AsyncStorage.setItem("walletlist", JSON.stringify( walletlist ));
+                        //     });
+                        // }
+                        // // show main menu once wallet is open
+                        // this.props.navigation.navigate('App');
+                    }
+                    else {
+                        console.log("ERROR while opening wallet: ")
+                    }
+                })
+            }
+            // Android
+            else {
+              AndroidWallet.createWallet(this.props.navigation.state.params.treeHeight, walletIndexToCreate, this.props.navigation.state.params.hashFunctionId, (err) => {console.log(err); }, (status, address) => {
+                  // if success -> open the main view of the app
+                  if (status =="success"){
+
+                      this._updateWalletIndex(walletIndexToCreate, address)
+
+                      // AsyncStorage.setItem("walletcreated","yes");
+                      // this.props.navigation.navigate('App');
+                  }
+                  else {
+                      console.log("ERROR while opening wallet: ", error)
+                  }
+              })
+            }
+        }).catch((error) => {console.log(error)});
     }
+
 
     render() {
         return (

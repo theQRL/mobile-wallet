@@ -40,7 +40,7 @@ export default class txDetailsView extends React.Component {
   render() {
       if (this.state.isLoading){
           return (
-              <ImageBackground source={require('../resources/images/sendreceive_bg_half.jpg')} style={styles.backgroundImage}>
+              <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
                 <View style={{flex:1}}>
 
                     <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
@@ -76,7 +76,7 @@ export default class txDetailsView extends React.Component {
       else {
           amount = this.state.amount / 1000000000
           return (
-              <ImageBackground source={require('../resources/images/sendreceive_bg_half.jpg')} style={styles.backgroundImage}>
+              <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
                 <View style={{flex:1}}>
 
                     <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:this.state.paddingTop, paddingLeft:30}}>

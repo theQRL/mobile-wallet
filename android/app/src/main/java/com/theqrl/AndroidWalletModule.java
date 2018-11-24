@@ -140,14 +140,15 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
 
     // Create a QRL wallet from scratch
     @ReactMethod
-    public void createWallet(int treeHeight, int hashFunction, Callback errorCallback, Callback successCallback) {
+    public void createWallet(int treeHeight, String walletindex, int hashFunction, Callback errorCallback, Callback successCallback) {
         try {
             String hexSeed = createWallet(treeHeight, hashFunction);
             // save the required information to Shared Preferences
-            saveEncrypted("hexseed", hexSeed.split(" ")[0]);
-            saveEncrypted("address", hexSeed.split(" ")[1]);
-            saveEncrypted("xmsspk", hexSeed.split(" ")[2]);
-            successCallback.invoke("success");
+            saveEncrypted("hexseed".concat(walletindex), hexSeed.split(" ")[0]);
+            saveEncrypted("address".concat(walletindex), hexSeed.split(" ")[1]);
+            saveEncrypted("xmsspk".concat(walletindex), hexSeed.split(" ")[2]);
+            // returns success and wallet address
+            successCallback.invoke("success", hexSeed.split(" ")[1]);
         } catch (IllegalViewOperationException e) {
             errorCallback.invoke(e.getMessage());
         }
@@ -155,13 +156,13 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
 
     // Open an  existingQRL wallet with hexseed
     @ReactMethod
-    public void openWalletWithHexseed(String hexseed, Callback errorCallback, Callback successCallback) {
+    public void openWalletWithHexseed(String hexseed, String walletindex, Callback errorCallback, Callback successCallback) {
         try {
             String hexSeed = openWalletWithHexseed(hexseed);
-            saveEncrypted("hexseed", hexSeed.split(" ")[0]);
-            saveEncrypted("address", hexSeed.split(" ")[1]);
-            saveEncrypted("xmsspk", hexSeed.split(" ")[2]);
-            successCallback.invoke("success");
+            saveEncrypted("hexseed".concat(walletindex), hexSeed.split(" ")[0]);
+            saveEncrypted("address".concat(walletindex), hexSeed.split(" ")[1]);
+            saveEncrypted("xmsspk".concat(walletindex), hexSeed.split(" ")[2]);
+            successCallback.invoke("success", hexSeed.split(" ")[1]);
         } catch (IllegalViewOperationException e) {
             errorCallback.invoke(e.getMessage());
         }
@@ -169,8 +170,9 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
 
     // Show hexseed and mnemonic to user
     @ReactMethod
-    public void sendWalletPrivateInfo(Callback errorCallback, Callback successCallback) {
-        String hexseed = getEncrypted("hexseed");
+    public void sendWalletPrivateInfo(String walletindex, Callback errorCallback, Callback successCallback) {
+        String hexseed = getEncrypted("hexseed".concat(walletindex));
+
         try {
             String mnemonic = getMnemonic(hexseed);
             successCallback.invoke( mnemonic, hexseed);
@@ -179,11 +181,25 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
         }
     }
 
+
+    // Check if provided hexseed is correct
+    @ReactMethod
+    public void checkHexseedIdentical(String hexSeed, String walletindex, Callback errorCallback, Callback successCallback) {
+        String hexseed = getEncrypted("hexseed".concat(walletindex));
+        System.out.println(hexseed);
+        if (hexseed.equals(hexSeed)){
+            successCallback.invoke("success");
+        }
+        else {
+            successCallback.invoke("error");
+        }
+    }
+
     // Check if user has pending tx
     @ReactMethod
-    public void checkPendingTx(Callback errorCallback, Callback successCallback) {
+    public void checkPendingTx(String walletindex, Callback errorCallback, Callback successCallback) {
 //        String address = PreferenceHelper.getString("address");
-        String walletAddress = getEncrypted("address");
+        String walletAddress = getEncrypted("address".concat(walletindex));
         int len = walletAddress.length();
         byte[] data = new byte[len / 2];
         for (int i = 0; i < len; i += 2) {
@@ -225,9 +241,10 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
     // Send walet related information to RN
     @ReactMethod
     // Method to update the wallet's balance
-    public void refreshWallet(Callback errorCallback, Callback successCallback) {
+    public void refreshWallet(String walletindex, Callback errorCallback, Callback successCallback) {
         System.out.println( "refresWallet from Android" );
-        String walletAddress = getEncrypted("address");
+        String walletAddress = getEncrypted("address".concat(walletindex));
+        System.out.println( walletAddress );
         // get the list of the latest 10 tx
         int completed = 0;
         try {
@@ -335,18 +352,18 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
 
 
     @ReactMethod
-    public void transferCoins(String recipient, int amount, int otsIndex, int fee, Callback errorCallback, Callback successCallback) {
+    public void transferCoins(String walletindex, String recipient, int amount, int otsIndex, int fee, Callback errorCallback, Callback successCallback) {
 
         System.out.println( "Transfer Coins from Android" );
         System.out.println( Long.valueOf(amount) * 1000000000 );
         Long amount_long = Long.valueOf(amount) * 1000000000;
-        String hexseed = getEncrypted("hexseed");
+        String hexseed = getEncrypted("hexseed".concat(walletindex));
         System.out.println( hexseed );
         ManagedChannel channel = OkHttpChannelBuilder.forAddress(server, port).usePlaintext(true).build();
         PublicAPIGrpc.PublicAPIBlockingStub blockingStub = PublicAPIGrpc.newBlockingStub(channel);
 
         // converting the wallet address to byte array
-        String walletAddress = getEncrypted("address");
+        String walletAddress = getEncrypted("address".concat(walletindex));
         System.out.println( walletAddress );
 //        int len = walletAddress.length();
 //        byte[] data = new byte[len / 2];
@@ -366,7 +383,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
 
         // converting xmssPK to byte array
 //        String xmssPK = PreferenceHelper.getString("xmsspk");
-        String xmssPK = getEncrypted("xmsspk");
+        String xmssPK = getEncrypted("xmsspk".concat(walletindex));
         System.out.println( xmssPK );
         int xmsslen = xmssPK.length();
         byte[] xmssdata = new byte[xmsslen / 2];
