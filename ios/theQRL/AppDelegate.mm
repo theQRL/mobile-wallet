@@ -52,6 +52,19 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   
+  
+  
+  //Clear keychain on first run in case of reinstallation
+  if (![[NSUserDefaults standardUserDefaults] objectForKey:@"FirstRun"]) {
+    // Delete values from keychain here
+    NSDictionary *spec = @{(__bridge id)kSecClass:(__bridge id)kSecClassGenericPassword};
+    SecItemDelete((__bridge CFDictionaryRef)spec);
+    // Initisate NSUserDefaults, so that it keeps track of the app being uninstalled (to remove keychain values on reinstall)
+    [[NSUserDefaults standardUserDefaults] setValue:@"1strun" forKey:@"FirstRun"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+  }
+  
+  
 //  [testingEphemeral registerLattice];
   
   return YES;
