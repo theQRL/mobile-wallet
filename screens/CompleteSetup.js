@@ -53,18 +53,15 @@ export default class CompleteSetup extends React.Component {
   }
 
 
-
-  openPinView = () => {
-      console.log("OPENING PIN");
-      // this.props.navigation.navigate('ProvideWalletPin', {treeHeight: this.props.navigation.state.params.treeHeight, signatureCounts: this.props.navigation.state.params.signatureCounts, hashFunctionId:this.props.navigation.state.params.hashFunctionId,  hashFunctionName: this.props.navigation.state.params.hashFunctionName});
-  }
-
-
   // Create QRL wallet
     createWallet = () => {
         this.setState({loading:true, disableButton:true})
 
         AsyncStorage.getItem('walletcounter').then((walletcounter) => {
+
+
+            console.log("WALLETCOUNTER IS :", walletcounter)
+
             // if not first wallet
             if(walletcounter != null){
                 walletIndexToCreate = (parseInt(walletcounter, 10) + 1).toString();
@@ -76,6 +73,8 @@ export default class CompleteSetup extends React.Component {
                 this._updateWalletcounter("1");
             }
 
+            console.log("WALLETINDEXTOCREATE IS :", walletIndexToCreate)
+
             // Ios
             if (Platform.OS === 'ios'){
                 IosWallet.createWallet(this.props.navigation.state.params.treeHeight, walletIndexToCreate, this.state.pin, this.props.navigation.state.params.hashFunctionId,  (err, status, address)=> {
@@ -85,7 +84,7 @@ export default class CompleteSetup extends React.Component {
                         this._updateWalletIndex(walletIndexToCreate, address)
                     }
                     else {
-                        console.log("ERROR while opening wallet: ")
+                        console.log("ERROR while opening wallet: ", err)
                     }
                 })
             }
@@ -105,8 +104,8 @@ export default class CompleteSetup extends React.Component {
     }
 
 
+    // show/hide the PIN view
     launchModal(bool, pinValue) {
-        console.log("PIN IS", pinValue)
         this.setState({modalVisible: bool, pin: pinValue})
     }
 
@@ -116,7 +115,6 @@ export default class CompleteSetup extends React.Component {
           <ImageBackground source={require('../resources/images/complete_setup_bg.png')} style={styles.backgroundImage}>
 
               <Modal animationType="slide" visible={this.state.modalVisible}>
-
                     <ImageBackground source={require('../resources/images/complete_setup_bg.png')} style={styles.backgroundImage}>
                         <PINCode
                           status={'choose'}
@@ -141,8 +139,6 @@ export default class CompleteSetup extends React.Component {
                         />
                         </ImageBackground>
                 </Modal>
-
-
 
 
               <View style={{flex:1}}>

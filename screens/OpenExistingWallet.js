@@ -14,6 +14,7 @@ import {
   AsyncStorage,
   TouchableOpacity,
   Alert,
+  Modal,
   TouchableHighlight,
   KeyboardAvoidingView
 } from 'react-native';
@@ -26,13 +27,16 @@ var IosWallet = NativeModules.CreateWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
 
 var GLOBALS = require('./globals');
+import PINCode from '@haskkor/react-native-pincode'
 
 export default class OpenExistingWallet extends React.Component {
 
     state={
         hexseed: GLOBALS.hexseed2,
         // hexseed : "",
-        isLoading: false
+        isLoading: false,
+        pin: null,
+        modalVisible:false
     }
 
     _onHexSeedChange = (text) => {
@@ -96,7 +100,7 @@ export default class OpenExistingWallet extends React.Component {
 
                 // Ios
                 if (Platform.OS === 'ios'){
-                    IosWallet.openWalletWithHexseed(this.state.hexseed, walletIndexToCreate , (error, status, address)=> {
+                    IosWallet.openWalletWithHexseed(this.state.hexseed, walletIndexToCreate, this.state.pin, (error, status, address)=> {
                         this.setState({isLoading:false})
                         // if success -> open the main view of the app
                         if (status =="success"){
@@ -148,10 +152,48 @@ export default class OpenExistingWallet extends React.Component {
         }
     }
 
+
+    // show/hide the PIN view
+    launchModal(bool, pinValue) {
+        this.setState({modalVisible: bool, pin: pinValue})
+    }
+
   render() {
       console.log("HEXSEED IS: ", this.state.hexseed)
       return (
           <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
+
+
+
+              <Modal animationType="slide" visible={this.state.modalVisible}>
+                    <ImageBackground source={require('../resources/images/complete_setup_bg.png')} style={styles.backgroundImage}>
+                        <PINCode
+                          status={'choose'}
+
+                          storePin={(pin: string) => {
+                              this.setState({pin:pin})
+                          }}
+
+                          bottomLeftComponent = {
+                              <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+                                  <TouchableHighlight onPress={() => this.launchModal(false, null) } >
+                                      <Text style={{color:'white'}}>Cancel</Text>
+                                  </TouchableHighlight>
+                              </View>
+                          }
+                          subtitleChoose = "to keep your QRL wallet secure"
+                          stylePinCodeColorSubtitle ="white"
+                          stylePinCodeColorTitle="white"
+                          colorPassword="white"
+                          numbersButtonOverlayColor="white"
+                          finishProcess = {() => this.launchModal(false, this.state.pin) }
+                        />
+                        </ImageBackground>
+                </Modal>
+
+
+
+
           <ImageBackground source={require('../resources/images/signin_process_bg.png')} style={styles.backgroundImage}>
               <View style={{flex:1}}>
               </View>
@@ -170,10 +212,20 @@ export default class OpenExistingWallet extends React.Component {
                             <Text style={{color:'white'}}>Please be patient...</Text>
                       </View>
                       :
+                      <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={ () => {this.launchModal(true, null)} }>
+                          <Text style={styles.TextStyleWhite}> ADD PIN </Text>
+                      </TouchableOpacity>
+                  }
+
+                  {this.state.pin != null ?
                       <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={this.openWallet}>
                           <Text style={styles.TextStyleWhite}> OPEN WALLET </Text>
                       </TouchableOpacity>
+                      :
+                      <View></View>
                   }
+
+
               </View>
           </ImageBackground>
           </KeyboardAvoidingView>

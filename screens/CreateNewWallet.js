@@ -1,9 +1,10 @@
 import React from 'react';
-import {Platform, Text, View, Button, Image, StyleSheet, ImageBackground, TouchableOpacity, TouchableHighlight, AsyncStorage, ListView, ScrollView} from 'react-native';
+import {Platform, Text, View, Button, Image, StyleSheet, Modal, ImageBackground, TouchableOpacity, TouchableHighlight, AsyncStorage, ListView, ScrollView} from 'react-native';
 
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.CreateWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
+
 
 export default class CreateNewWallet extends React.Component {
 
@@ -21,10 +22,12 @@ export default class CreateNewWallet extends React.Component {
     componentWillMount(){
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         // get walletlist JSON
+
+
         AsyncStorage.getItem("walletlist").then((walletlist) => {
             // get walletindex (index of the opened wallet)
             AsyncStorage.getItem("walletindex").then((walletindex) => {
-                this.setState({isLoading:false, walletindex: walletindex, dataSource: ds.cloneWithRows(JSON.parse(walletlist).reverse() ) })
+                this.setState({isLoading:false, walletindex: walletindex, dataSource: ds.cloneWithRows(JSON.parse(walletlist).reverse() )})
             }).catch((error) => {console.log(error)});
         }).catch((error) => {console.log(error)});
     }
@@ -32,10 +35,13 @@ export default class CreateNewWallet extends React.Component {
     state={
         mnemonic: '',
         hexseed: '',
-        isLoading: true
+        isLoading: true,
+        modalVisible: false,
+        walletIndexToOpen: null
     }
 
     openHexseedModal = (walletindexToOpen) => {
+        // this.setState({modalVisible: true, walletIndexToOpen: walletindexToOpen })
         this.props.navigation.navigate('OpenExistingWalletModal',{onGoBack: () => this.refreshWalletIndex(), walletIndexToOpen: walletindexToOpen})
     }
 
@@ -106,6 +112,8 @@ export default class CreateNewWallet extends React.Component {
         );
       }
 
+
+
       // refresh wallet index on switch
       refreshWalletIndex(){
           // get walletindex (index of the opened wallet)
@@ -114,6 +122,17 @@ export default class CreateNewWallet extends React.Component {
               this.setState({isLoading:false, walletindex: walletindex})
           }).catch((error) => {console.log(error)});
       }
+
+
+      // // show/hide the PIN view
+      // launchModal(bool, walletIndexToOpen) {
+      //     console.log("LAUNCHMODAL")
+      //     console.log(bool)
+      //     console.log(walletIndexToOpen)
+      //     this.setState({walletIndexToOpen: walletindexToOpen, modalVisible: bool})
+      // }
+
+
 
   // render view
   render() {
@@ -124,6 +143,8 @@ export default class CreateNewWallet extends React.Component {
       else {
           return (
               <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
+
+
                 <View style={{flex:1}}>
 
                     <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
