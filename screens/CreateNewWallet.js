@@ -51,28 +51,6 @@ export default class CreateNewWallet extends React.Component {
         this.setState({isLoading: true});
         this.props.navigation.navigate( 'Auth');
         AsyncStorage.removeItem("walletcreated");
-
-        // DO not call closeWallet here, as it removes everything from the keychain
-        // ios
-        // if (Platform.OS === 'ios'){
-        //     IosWallet.closeWallet((error, status)=> {
-        //         if (status == "success") {
-        //             // remove the walletCreate item from asyncStorage and redirect to main wallet creation page
-        //             this.props.navigation.navigate( 'Auth');
-        //             AsyncStorage.removeItem("walletcreated");
-        //         }
-        //     });
-        // }
-        // // android
-        // else {
-        //     AndroidWallet.closeWallet((error) => {console.log("ERROR");} , (status)=> {
-        //         if (status == "success") {
-        //             // remove the walletCreate item from asyncStorage and redirect to main wallet creation page
-        //             this.props.navigation.navigate( 'Auth');
-        //             AsyncStorage.removeItem("walletcreated");
-        //         }
-        //     });
-        // }
     }
 
 
@@ -122,17 +100,6 @@ export default class CreateNewWallet extends React.Component {
               this.setState({isLoading:false, walletindex: walletindex})
           }).catch((error) => {console.log(error)});
       }
-
-
-      // // show/hide the PIN view
-      // launchModal(bool, walletIndexToOpen) {
-      //     console.log("LAUNCHMODAL")
-      //     console.log(bool)
-      //     console.log(walletIndexToOpen)
-      //     this.setState({walletIndexToOpen: walletindexToOpen, modalVisible: bool})
-      // }
-
-
 
   // render view
   render() {

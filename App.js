@@ -14,6 +14,7 @@ import SignIn from './screens/SignIn'
 import CreateWalletTreeHeight from './screens/CreateWalletTreeHeight'
 import CreateWalletHashFunction from './screens/CreateWalletHashFunction'
 import ScanQrModal from './screens/ScanQrModal'
+import ScanHexseedQrModal from './screens/ScanHexseedQrModal'
 import ConfirmTxModal from './screens/ConfirmTxModal'
 import CreateAdvancedWallet from './screens/CreateAdvancedWallet'
 import TxDetailsView from './screens/TxDetailsView'
@@ -128,6 +129,9 @@ const RootStack = StackNavigator(
     },
     ScanQrModal : {
         screen: ScanQrModal
+    },
+    ScanHexseedQrModal : {
+        screen: ScanHexseedQrModal
     },
   },
   {
