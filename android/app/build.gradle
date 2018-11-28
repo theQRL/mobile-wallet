@@ -182,6 +182,13 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
+            // change the default name of the generated apk
+            applicationVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "qrlwallet-${defaultConfig.versionName}.apk"
+                }
+            }
+
         }
     }
     lintOptions {
@@ -283,7 +290,6 @@ protobuf {
 
 dependencies {
     compile project(':react-native-vector-icons')
-    compile "com.android.support:appcompat-v7:26.0.2"
     compile project(':react-native-camera')
     compile project(':react-native-device-info')
     compile project(':react-native-udp')

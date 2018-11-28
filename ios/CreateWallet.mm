@@ -248,7 +248,6 @@ RCT_EXPORT_METHOD(checkHexseedIdentical:(NSString* )userHexseed withIndex:(NSStr
   }
 }
 
-
 // Return wallet PIN to check
 RCT_EXPORT_METHOD(getWalletPin:(NSString*)walletindex callback:(RCTResponseSenderBlock)callback ){
   NSString* walletpin = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@%@", @"pin", walletindex]];

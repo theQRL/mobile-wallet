@@ -37,13 +37,15 @@ export default class OpenExistingWalletModal extends React.Component {
     // get the wallet PIN code from keychain
     componentWillMount(){
         if (Platform.OS === 'ios'){
-            IosWallet.getWalletPin(this.props.navigation.state.params.walletIndexToOpen, (error, walletpin)=> {
+            IosWallet.getWalletPin(this.props.navigation.state.params.walletIndexToOpen, (err, walletpin)=> {
                 this.setState({isLoading:false, walletpin: walletpin })
             });
         }
         // android
         else {
-            console.log("ANdroid")
+            AndroidWallet.getWalletPin(this.props.navigation.state.params.walletIndexToOpen, (err) => {console.log(err); }, (walletpin) => {
+                this.setState({isLoading:false, walletpin: walletpin })
+            })
         }
     }
 

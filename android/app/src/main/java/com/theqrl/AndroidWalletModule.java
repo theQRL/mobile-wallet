@@ -140,13 +140,14 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
 
     // Create a QRL wallet from scratch
     @ReactMethod
-    public void createWallet(int treeHeight, String walletindex, int hashFunction, Callback errorCallback, Callback successCallback) {
+    public void createWallet(int treeHeight, String walletindex, String walletpin, int hashFunction, Callback errorCallback, Callback successCallback) {
         try {
             String hexSeed = createWallet(treeHeight, hashFunction);
             // save the required information to Shared Preferences
             saveEncrypted("hexseed".concat(walletindex), hexSeed.split(" ")[0]);
             saveEncrypted("address".concat(walletindex), hexSeed.split(" ")[1]);
             saveEncrypted("xmsspk".concat(walletindex), hexSeed.split(" ")[2]);
+            saveEncrypted("pin".concat(walletindex), walletpin);
             // returns success and wallet address
             successCallback.invoke("success", hexSeed.split(" ")[1]);
         } catch (IllegalViewOperationException e) {
@@ -156,23 +157,30 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
 
     // Open an  existingQRL wallet with hexseed
     @ReactMethod
-    public void openWalletWithHexseed(String hexseed, String walletindex, Callback errorCallback, Callback successCallback) {
+    public void openWalletWithHexseed(String hexseed, String walletindex, String walletpin,  Callback errorCallback, Callback successCallback) {
         try {
             String hexSeed = openWalletWithHexseed(hexseed);
             saveEncrypted("hexseed".concat(walletindex), hexSeed.split(" ")[0]);
             saveEncrypted("address".concat(walletindex), hexSeed.split(" ")[1]);
             saveEncrypted("xmsspk".concat(walletindex), hexSeed.split(" ")[2]);
+            saveEncrypted("pin".concat(walletindex), walletpin);
             successCallback.invoke("success", hexSeed.split(" ")[1]);
         } catch (IllegalViewOperationException e) {
             errorCallback.invoke(e.getMessage());
         }
     }
 
+    // Return wallet PIN to check
+    @ReactMethod
+    public void getWalletPin(String walletindex, Callback errorCallback, Callback successCallback) {
+        String walletpin = getEncrypted("pin".concat(walletindex));
+        successCallback.invoke(walletpin);
+    }
+
     // Show hexseed and mnemonic to user
     @ReactMethod
     public void sendWalletPrivateInfo(String walletindex, Callback errorCallback, Callback successCallback) {
         String hexseed = getEncrypted("hexseed".concat(walletindex));
-
         try {
             String mnemonic = getMnemonic(hexseed);
             successCallback.invoke( mnemonic, hexseed);

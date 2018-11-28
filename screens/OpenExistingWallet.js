@@ -33,7 +33,6 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 export default class OpenExistingWallet extends React.Component {
 
 
-
     componentDidMount(){
         const hexseed = this.props.navigation.getParam('hexseed', 'nohexseed');
         if (hexseed == "nohexseed"){
@@ -87,9 +86,6 @@ export default class OpenExistingWallet extends React.Component {
 
     // open QRL wallet
     openWallet = () => {
-        console.log("HEXSEED")
-        console.log(this.state.hexseed)
-
         this.setState({isLoading: true})
         if (this.state.hexseed.length != 102){
             Alert.alert( "INVALID SEED"  , "The hexseed you provided is incorrect" , [{text: "OK", onPress: () => console.log('OK Pressed')} ] );
@@ -124,7 +120,7 @@ export default class OpenExistingWallet extends React.Component {
                 }
                 // Android
                 else {
-                  AndroidWallet.openWalletWithHexseed(this.state.hexseed, walletIndexToCreate, (err) => {console.log(err); } , (status, address)=> {
+                  AndroidWallet.openWalletWithHexseed(this.state.hexseed, walletIndexToCreate, this.state.pin, (err) => {console.log(err); } , (status, address)=> {
                       this.setState({isLoading:false})
                       // if success -> open the main view of the app
                       if (status =="success"){
@@ -155,7 +151,6 @@ export default class OpenExistingWallet extends React.Component {
             );
         }
     }
-
 
     // show/hide the PIN view
     launchModal(bool, pinValue) {
@@ -223,11 +218,10 @@ export default class OpenExistingWallet extends React.Component {
               <ImageBackground source={require('../resources/images/signin_process_bg.png')} style={styles.backgroundImage}>
                   <View style={{flex:1}}>
                   </View>
-                  <View style={{flex:1, alignItems:'center'}}>
+                  <View style={{flex:1.5, alignItems:'center'}}>
                       <Text style={styles.bigTitle}>OPEN EXISTING WALLET</Text>
-
-                          <View style={{width:100, height:1, backgroundColor:'white', marginTop:30,marginBottom:20}}></View>
-                          <Text style={{color:'white'}}>Enter your hexseed below</Text>
+                      <View style={{width:100, height:1, backgroundColor:'white', marginTop:30,marginBottom:20}}></View>
+                      <Text style={{color:'white'}}>Enter your hexseed below</Text>
 
                       <TextInput onChangeText={ (text) => this._onHexSeedChange(text) } editable={!this.state.isLoading}  underlineColorAndroid="transparent" style={styles.hexInput} value={this.state.hexseed} />
 

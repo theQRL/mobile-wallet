@@ -6,6 +6,7 @@ import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.CreateWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
 import PINCode from '@haskkor/react-native-pincode'
+
 export default class CompleteSetup extends React.Component {
 
   static navigationOptions = {
@@ -58,10 +59,6 @@ export default class CompleteSetup extends React.Component {
         this.setState({loading:true, disableButton:true})
 
         AsyncStorage.getItem('walletcounter').then((walletcounter) => {
-
-
-            console.log("WALLETCOUNTER IS :", walletcounter)
-
             // if not first wallet
             if(walletcounter != null){
                 walletIndexToCreate = (parseInt(walletcounter, 10) + 1).toString();
@@ -72,8 +69,6 @@ export default class CompleteSetup extends React.Component {
                 walletIndexToCreate = "1"
                 this._updateWalletcounter("1");
             }
-
-            console.log("WALLETINDEXTOCREATE IS :", walletIndexToCreate)
 
             // Ios
             if (Platform.OS === 'ios'){
@@ -90,7 +85,7 @@ export default class CompleteSetup extends React.Component {
             }
             // Android
             else {
-              AndroidWallet.createWallet(this.props.navigation.state.params.treeHeight, walletIndexToCreate, this.props.navigation.state.params.hashFunctionId, (err) => {console.log(err); }, (status, address) => {
+              AndroidWallet.createWallet(this.props.navigation.state.params.treeHeight, walletIndexToCreate, this.state.pin, this.props.navigation.state.params.hashFunctionId, (err) => {console.log(err); }, (status, address) => {
                   // if success -> open the main view of the app
                   if (status =="success"){
                       this._updateWalletIndex(walletIndexToCreate, address)
