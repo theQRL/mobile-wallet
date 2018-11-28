@@ -30,11 +30,14 @@ RCT_EXPORT_MODULE();
 
 // Create wallet function that returns the wallet address as a callback
 //RCT_EXPORT_METHOD(createWallet:(NSString*)hashFunction (RCTResponseSenderBlock)callback )
-RCT_EXPORT_METHOD(createWallet:(NSNumber* _Nonnull)treeHeight withIndex:(NSString*)walletindex hashFunction:(NSNumber* _Nonnull)hashFunction callback:(RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(createWallet:(NSNumber* _Nonnull)treeHeight withIndex:(NSString*)walletindex withPin:(NSString*)walletpin hashFunction:(NSNumber* _Nonnull)hashFunction callback:(RCTResponseSenderBlock)callback)
 {
   // Remove all previous data from the keychain
 //  NSDictionary *spec = @{(__bridge id)kSecClass:(__bridge id)kSecClassGenericPassword};
 //  SecItemDelete((__bridge CFDictionaryRef)spec);
+  
+  
+  NSLog(@"WALLET PIN IS %@ ", walletpin);
   
   // empty array of unsigned char
   unsigned char seed_array[48];
@@ -95,27 +98,36 @@ RCT_EXPORT_METHOD(createWallet:(NSNumber* _Nonnull)treeHeight withIndex:(NSStrin
         //save wallet address to the keychain
         OSStatus sts4 = [WalletHelperFunctions saveToKeychain:[NSString stringWithFormat:@"%@%@", @"treeheight", walletindex] withValue:tree_height];
         if( (int)sts4 == 0 ){
-          callback(@[[NSNull null], @"success",  wallet_address ]);
+
+//          callback(@[[NSNull null], @"success",  wallet_address ]);
+          
+          OSStatus sts5 = [WalletHelperFunctions saveToKeychain:[NSString stringWithFormat:@"%@%@", @"pin", walletindex] withValue:walletpin];
+          if( (int)sts5 == 0 ){
+            callback(@[[NSNull null], @"success",  wallet_address ]);
+          }
+          else {
+            NSLog(@"ERROR saving pin to keychain: %d",(int)sts5);
+            callback(@[[NSNull null], @"error" ]);
+          }
+
         }
         else {
           NSLog(@"ERROR saving treeheight to keychain: %d",(int)sts4);
           callback(@[[NSNull null], @"error" ]);
         }
-        
-        
-//        callback(@[[NSNull null], @"success" ]);
       }
       else {
+        NSLog(@"ERROR saving xmsspk to keychain: %d",(int)sts3);
         callback(@[[NSNull null], @"error" ]);
       }
     }
     else {
-      NSLog(@"Error Code: %d", (int)sts);
+      NSLog(@"ERROR saving address to keychain: %d",(int)sts2);
       callback(@[[NSNull null], @"error" ]);
     }
   }
   else{
-    NSLog(@"Error Code: %d", (int)sts);
+    NSLog(@"ERROR saving hexseed to keychain: %d",(int)sts);
     callback(@[[NSNull null], @"error" ]);
   }
 }
@@ -125,7 +137,7 @@ RCT_EXPORT_METHOD(createWallet:(NSNumber* _Nonnull)treeHeight withIndex:(NSStrin
 
 
 // save the user's entered hexseed to keychain
-RCT_EXPORT_METHOD(openWalletWithHexseed:(NSString* )hexseed withIndex:(NSString*)walletindex callback:(RCTResponseSenderBlock)callback){
+RCT_EXPORT_METHOD(openWalletWithHexseed:(NSString* )hexseed withIndex:(NSString*)walletindex withPin:(NSString*)walletpin callback:(RCTResponseSenderBlock)callback){
   
 
   NSLog(@"WALLET INDEX: %@", walletindex);
@@ -175,7 +187,17 @@ RCT_EXPORT_METHOD(openWalletWithHexseed:(NSString* )hexseed withIndex:(NSString*
           //save wallet address to the keychain
           OSStatus sts4 = [WalletHelperFunctions saveToKeychain:[NSString stringWithFormat:@"%@%@", @"treeheight", walletindex] withValue:tree_height];
           if( (int)sts4 == 0 ){
-            callback(@[[NSNull null], @"success", wallet_address ]);
+//            callback(@[[NSNull null], @"success", wallet_address ]);
+            
+            OSStatus sts5 = [WalletHelperFunctions saveToKeychain:[NSString stringWithFormat:@"%@%@", @"pin", walletindex] withValue:walletpin];
+            if( (int)sts5 == 0 ){
+              callback(@[[NSNull null], @"success",  wallet_address ]);
+            }
+            else {
+              NSLog(@"ERROR saving pin to keychain: %d",(int)sts5);
+              callback(@[[NSNull null], @"error" ]);
+            }
+            
           }
           else {
             NSLog(@"ERROR saving treeheight to keychain: %d",(int)sts4);
@@ -224,6 +246,12 @@ RCT_EXPORT_METHOD(checkHexseedIdentical:(NSString* )userHexseed withIndex:(NSStr
   else {
     callback(@[[NSNull null], @"error" ]);
   }
+}
+
+// Return wallet PIN to check
+RCT_EXPORT_METHOD(getWalletPin:(NSString*)walletindex callback:(RCTResponseSenderBlock)callback ){
+  NSString* walletpin = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@%@", @"pin", walletindex]];
+  callback(@[[NSNull null], walletpin ]);
 }
 
 

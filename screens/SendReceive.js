@@ -74,7 +74,6 @@ export default class SendReceive extends React.Component {
               });
           }
       }).catch((error) => {console.log(error)});
-
   }
 
 

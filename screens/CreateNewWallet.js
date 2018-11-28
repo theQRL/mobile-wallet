@@ -1,9 +1,5 @@
 import React from 'react';
-import {Platform, Text, View, Button, Image, StyleSheet, ImageBackground, TouchableOpacity, TouchableHighlight, AsyncStorage, ListView, ScrollView} from 'react-native';
-
-import {NativeModules} from 'react-native';
-var IosWallet = NativeModules.CreateWallet;
-var AndroidWallet = NativeModules.AndroidWallet;
+import {Platform, Text, View, Button, Image, StyleSheet, Modal, ImageBackground, TouchableOpacity, TouchableHighlight, AsyncStorage, ListView, ScrollView} from 'react-native';
 
 export default class CreateNewWallet extends React.Component {
 
@@ -24,7 +20,7 @@ export default class CreateNewWallet extends React.Component {
         AsyncStorage.getItem("walletlist").then((walletlist) => {
             // get walletindex (index of the opened wallet)
             AsyncStorage.getItem("walletindex").then((walletindex) => {
-                this.setState({isLoading:false, walletindex: walletindex, dataSource: ds.cloneWithRows(JSON.parse(walletlist).reverse() ) })
+                this.setState({isLoading:false, walletindex: walletindex, dataSource: ds.cloneWithRows(JSON.parse(walletlist).reverse() )})
             }).catch((error) => {console.log(error)});
         }).catch((error) => {console.log(error)});
     }
@@ -32,10 +28,13 @@ export default class CreateNewWallet extends React.Component {
     state={
         mnemonic: '',
         hexseed: '',
-        isLoading: true
+        isLoading: true,
+        modalVisible: false,
+        walletIndexToOpen: null
     }
 
     openHexseedModal = (walletindexToOpen) => {
+        // this.setState({modalVisible: true, walletIndexToOpen: walletindexToOpen })
         this.props.navigation.navigate('OpenExistingWalletModal',{onGoBack: () => this.refreshWalletIndex(), walletIndexToOpen: walletindexToOpen})
     }
 
@@ -45,28 +44,6 @@ export default class CreateNewWallet extends React.Component {
         this.setState({isLoading: true});
         this.props.navigation.navigate( 'Auth');
         AsyncStorage.removeItem("walletcreated");
-
-        // DO not call closeWallet here, as it removes everything from the keychain
-        // ios
-        // if (Platform.OS === 'ios'){
-        //     IosWallet.closeWallet((error, status)=> {
-        //         if (status == "success") {
-        //             // remove the walletCreate item from asyncStorage and redirect to main wallet creation page
-        //             this.props.navigation.navigate( 'Auth');
-        //             AsyncStorage.removeItem("walletcreated");
-        //         }
-        //     });
-        // }
-        // // android
-        // else {
-        //     AndroidWallet.closeWallet((error) => {console.log("ERROR");} , (status)=> {
-        //         if (status == "success") {
-        //             // remove the walletCreate item from asyncStorage and redirect to main wallet creation page
-        //             this.props.navigation.navigate( 'Auth');
-        //             AsyncStorage.removeItem("walletcreated");
-        //         }
-        //     });
-        // }
     }
 
 
@@ -125,13 +102,11 @@ export default class CreateNewWallet extends React.Component {
           return (
               <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
                 <View style={{flex:1}}>
-
                     <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
                         <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='white'>
                           <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
                         </TouchableHighlight>
                     </View>
-
 
                     <ScrollView style={{flex:2}}>
                         <View style={{ height:130, width:330, borderRadius:10, alignSelf:'center', marginTop: 30}}>
