@@ -36,9 +36,8 @@ class AuthLoadingScreen extends React.Component {
 	_bootstrapAsync = async () => {
 		// check if a wallet was already created
 		const walletCreated = await AsyncStorage.getItem('walletcreated');
-
 		// This will switch to the App screen or Auth screen and this loading
-		// screen will be unmounted and thrown away.
+        // screen will be unmounted and thrown away.
 		this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
 	};
 
@@ -51,7 +50,6 @@ class AuthLoadingScreen extends React.Component {
 		);
 	}
 }
-
 
 const CustomDrawerContentComponent = (props) => (
     <View style={{flex:1, backgroundColor:'#164278', paddingTop:50}}>

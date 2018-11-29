@@ -38,12 +38,11 @@ export default class CreateNewWallet extends React.Component {
         this.props.navigation.navigate('OpenExistingWalletModal',{onGoBack: () => this.refreshWalletIndex(), walletIndexToOpen: walletindexToOpen})
     }
 
-
-    // Close active wallet (remove all information from "cache") and open new one
+    // Launch wallet creation process
     closeWallet = () => {
         this.setState({isLoading: true});
-        this.props.navigation.navigate( 'Auth');
-        AsyncStorage.removeItem("walletcreated");
+        this.props.navigation.navigate( 'SignIn', { closable: true});
+        // AsyncStorage.removeItem("walletcreated");
     }
 
 

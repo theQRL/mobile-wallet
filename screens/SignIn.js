@@ -4,6 +4,10 @@ import {Platform,StyleSheet,ImageBackground,Text,View,TouchableOpacity} from 're
 export default class SignIn extends React.Component {
 
     render() {
+        // check if user can close the new wallet process
+        // true if the user already has a wallet open and asking to open a new wallet 
+        const closable = this.props.navigation.getParam('closable', false);
+        
         return (
             <ImageBackground source={require('../resources/images/signin_process_bg.png')} style={styles.backgroundImage}>
                 <View style={{flex:1}}></View>
@@ -17,6 +21,14 @@ export default class SignIn extends React.Component {
                     <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={ () => this.props.navigation.push('CreateAdvancedWallet') }>
                         <Text style={styles.TextStyleWhite}> ADVANCED OPTIONS </Text>
                     </TouchableOpacity>
+
+                    {closable?
+                        <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={ () => this.props.navigation.navigate('CreateNewWallet') }>
+                            <Text style={styles.TextStyleWhite}> CANCEL </Text>
+                        </TouchableOpacity>
+                    :
+                        undefined
+                    }
                 </View>
             </ImageBackground>
         );
