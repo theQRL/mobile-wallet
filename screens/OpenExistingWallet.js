@@ -1,29 +1,9 @@
 import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  ImageBackground,
-  Text,
-  View,
-  Image,
-  ActionSheetIOS,
-  TextInput,
-  Button,
-  ActivityIndicator,
-  Picker,
-  AsyncStorage,
-  TouchableOpacity,
-  Alert,
-  Modal,
-  TouchableHighlight,
-  KeyboardAvoidingView
-} from 'react-native';
+import {Platform, StyleSheet, ImageBackground, Text, View, Image, ActionSheetIOS, TextInput, Button, ActivityIndicator, Picker, AsyncStorage, TouchableOpacity, Alert, Modal, TouchableHighlight, KeyboardAvoidingView} from 'react-native';
 
 // Android and Ios native modules
 import {NativeModules} from 'react-native';
-// ios
 var IosWallet = NativeModules.CreateWallet;
-// android
 var AndroidWallet = NativeModules.AndroidWallet;
 
 var GLOBALS = require('./globals');
@@ -31,7 +11,6 @@ import PINCode from '@haskkor/react-native-pincode'
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
 export default class OpenExistingWallet extends React.Component {
-
 
     componentDidMount(){
         const hexseed = this.props.navigation.getParam('hexseed', 'nohexseed');
@@ -51,17 +30,17 @@ export default class OpenExistingWallet extends React.Component {
         hexModalVisible: false
     }
 
+    // udpate hexseed
     _onHexSeedChange = (text) => {
         this.setState({hexseed:text});
     }
-
 
     // update walletcounter
     _updateWalletcounter = (walletcounterUpdate) => {
         AsyncStorage.setItem("walletcounter", walletcounterUpdate);
     }
 
-
+    // udpate to opened wallet index
     _updateWalletIndex = (walletIndexToCreate, address) => {
         AsyncStorage.setItem("walletcreated","yes");
         // update the walletindex
@@ -82,7 +61,6 @@ export default class OpenExistingWallet extends React.Component {
         // show main menu once wallet is open
         this.props.navigation.navigate('App');
     }
-
 
     // open QRL wallet
     openWallet = () => {
@@ -167,90 +145,85 @@ export default class OpenExistingWallet extends React.Component {
         this.setState({hexModalVisible: bool})
     }
 
-  render() {
-      return (
-          <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
+    render() {
+        return (
+            <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
 
-              <Modal animationType="slide" visible={this.state.modalVisible}>
+                <Modal animationType="slide" visible={this.state.modalVisible}>
                     <ImageBackground source={require('../resources/images/complete_setup_bg.png')} style={styles.backgroundImage}>
                         <PINCode
-                          status={'choose'}
-
-                          storePin={(pin: string) => {
-                              this.setState({pin:pin})
-                          }}
-
-                          bottomLeftComponent = {
-                              <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-                                  <TouchableHighlight onPress={() => this.launchModal(false, null) } >
-                                      <Text style={{color:'white'}}>Cancel</Text>
-                                  </TouchableHighlight>
-                              </View>
-                          }
-                          subtitleChoose = "to keep your QRL wallet secure"
-                          stylePinCodeColorSubtitle ="white"
-                          stylePinCodeColorTitle="white"
-                          colorPassword="white"
-                          numbersButtonOverlayColor="white"
-                          finishProcess = {() => this.launchModal(false, this.state.pin) }
+                            status={'choose'}
+                            storePin={(pin: string) => {
+                                this.setState({pin:pin})
+                            }}
+                            bottomLeftComponent = {
+                                <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+                                    <TouchableHighlight onPress={() => this.launchModal(false, null) } >
+                                        <Text style={{color:'white'}}>Cancel</Text>
+                                    </TouchableHighlight>
+                                </View>
+                            }
+                            subtitleChoose = "to keep your QRL wallet secure"
+                            stylePinCodeColorSubtitle ="white"
+                            stylePinCodeColorTitle="white"
+                            colorPassword="white"
+                            numbersButtonOverlayColor="white"
+                            finishProcess = {() => this.launchModal(false, this.state.pin) }
                         />
-                        </ImageBackground>
+                    </ImageBackground>
                 </Modal>
-
 
                 <Modal animationType="slide" visible={this.state.hexModalVisible}>
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                      <QRCodeScanner onRead={ this.updateHexseed.bind(this) }
-                          topContent={
-                              <Text style={styles.centerText}>
-                                  Scan hexseed QR code
-                              </Text>
-                          }
-                          bottomContent={
-                              <TouchableOpacity onPress={() => this.launchHexModal(false) } >
-                                  <Text style={styles.CancelTextStyle}>Dismiss</Text>
-                              </TouchableOpacity>
-                          }
-                      />
+                        <QRCodeScanner onRead={ this.updateHexseed.bind(this) }
+                            topContent={
+                                <Text style={styles.centerText}>
+                                    Scan hexseed QR code
+                                </Text>
+                            }
+                            bottomContent={
+                                <TouchableOpacity onPress={() => this.launchHexModal(false) } >
+                                    <Text style={styles.CancelTextStyle}>Dismiss</Text>
+                                </TouchableOpacity>
+                            }
+                        />
                     </View>
                 </Modal>
 
-              <ImageBackground source={require('../resources/images/signin_process_bg.png')} style={styles.backgroundImage}>
-                  <View style={{flex:1}}>
-                  </View>
-                  <View style={{flex:1.5, alignItems:'center'}}>
-                      <Text style={styles.bigTitle}>OPEN EXISTING WALLET</Text>
-                      <View style={{width:100, height:1, backgroundColor:'white', marginTop:30,marginBottom:20}}></View>
-                      <Text style={{color:'white'}}>Enter your hexseed below</Text>
+                <ImageBackground source={require('../resources/images/signin_process_bg.png')} style={styles.backgroundImage}>
+                    <View style={{flex:1}}></View>
+                    <View style={{flex:1.5, alignItems:'center'}}>
+                        <Text style={styles.bigTitle}>OPEN EXISTING WALLET</Text>
+                        <View style={{width:100, height:1, backgroundColor:'white', marginTop:30,marginBottom:20}}></View>
+                        <Text style={{color:'white'}}>Enter your hexseed below</Text>
 
-                      <TextInput onChangeText={ (text) => this._onHexSeedChange(text) } editable={!this.state.isLoading}  underlineColorAndroid="transparent" style={styles.hexInput} value={this.state.hexseed} />
+                        <TextInput onChangeText={ (text) => this._onHexSeedChange(text) } editable={!this.state.isLoading}  underlineColorAndroid="transparent" style={styles.hexInput} value={this.state.hexseed} />
 
-                      {this.state.isLoading ?
-                          <View style={{alignSelf:'center', paddingTop:10}}>
+                        {this.state.isLoading ?
+                            <View style={{alignSelf:'center', paddingTop:10}}>
                                 <ActivityIndicator size={'large'}></ActivityIndicator>
                                 <Text style={{color:'white'}}>This may take a while.</Text>
                                 <Text style={{color:'white'}}>Please be patient...</Text>
-                          </View>
-                          :
-                          <View>
-                              <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={ () => {this.launchHexModal(true)} } >
-                                  <Text style={styles.TextStyleWhite}> SCAN HEXSEED QR CODE </Text>
-                              </TouchableOpacity>
-                              <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={ () => {this.launchModal(true, null)} }>
-                                  <Text style={styles.TextStyleWhite}> ADD PIN </Text>
-                              </TouchableOpacity>
-                              {this.openButton()}
-                          </View>
-                      }
-                  </View>
-              </ImageBackground>
-
-          </KeyboardAvoidingView>
-      );
-  }
+                            </View>
+                            :
+                            <View>
+                                <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={ () => {this.launchHexModal(true)} } >
+                                    <Text style={styles.TextStyleWhite}> SCAN HEXSEED QR CODE </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={ () => {this.launchModal(true, null)} }>
+                                    <Text style={styles.TextStyleWhite}> ADD PIN </Text>
+                                </TouchableOpacity>
+                                {this.openButton()}
+                            </View>
+                        }
+                    </View>
+                </ImageBackground>
+            </KeyboardAvoidingView>
+        );
+    }
 }
 
-
+// styling
 const styles = StyleSheet.create({
     container: {
         flex: 1,

@@ -7,52 +7,48 @@ var AndroidWallet = NativeModules.AndroidWallet;
 
 export default class BackupWallet extends React.Component {
 
-  static navigationOptions = {
-    drawerLabel: 'BACK UP YOUR WALLET',
-    drawerIcon: ({ tintColor }) => (
-      <Image
-        source={require('../resources/images/backup_wallet_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain} style={{width:25, height:25}}
-      />
-    ),
-  };
+    static navigationOptions = {
+        drawerLabel: 'BACK UP YOUR WALLET',
+        drawerIcon: ({ tintColor }) => (
+            <Image source={require('../resources/images/backup_wallet_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain} style={{width:25, height:25}}/>
+        ),
+    };
 
-  state={
-      mnemonic: '',
-      hexseed: '',
-      loading: false
-  }
+    state={
+        mnemonic: '',
+        hexseed: '',
+        loading: false
+    }
 
-  // Get wallet private info
-  getInfo = () => {
-      // Ios
-      this.setState({loading: true});
+    // Get wallet private info
+    getInfo = () => {
+        this.setState({loading: true});
+        // get the currect walletindex
+        AsyncStorage.getItem("walletindex").then((walletindex) => {
+            // iOS
+            if (Platform.OS === 'ios'){
+                IosWallet.sendWalletPrivateInfo(walletindex, (error, mnemonic, hexseed)=> {
+                    this.setState({loading:false, mnemonic: mnemonic, hexseed: hexseed })
+                });
+            }
+            // Android
+            else {
+                AndroidWallet.sendWalletPrivateInfo(walletindex, (error) => {console.log("ERROR");} , (mnemonic, hexseed)=> {
+                    this.setState({loading:false, mnemonic: mnemonic, hexseed: hexseed })
+                });
+            }
+        }).catch((error) => {console.log(error)});
+    }
 
-      // get the currect walletindex
-      AsyncStorage.getItem("walletindex").then((walletindex) => {
-
-          if (Platform.OS === 'ios'){
-              IosWallet.sendWalletPrivateInfo(walletindex, (error, mnemonic, hexseed)=> {
-                  this.setState({loading:false, mnemonic: mnemonic, hexseed: hexseed })
-              });
-          }
-          // Android
-          else {
-              AndroidWallet.sendWalletPrivateInfo(walletindex, (error) => {console.log("ERROR");} , (mnemonic, hexseed)=> {
-                  this.setState({loading:false, mnemonic: mnemonic, hexseed: hexseed })
-              });
-          }
-      }).catch((error) => {console.log(error)});
-  }
-
-  // render view
-  render() {
-      return (
-          <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
+    // render view
+    render() {
+        return (
+            <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
             <View style={{flex:1}}>
 
                 <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
                     <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='white'>
-                      <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
+                        <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
                     </TouchableHighlight>
                 </View>
                 <View style={{ height:130, width:330, borderRadius:10, alignSelf:'center', marginTop: 30}}>
@@ -60,7 +56,6 @@ export default class BackupWallet extends React.Component {
                         <View style={{flex:1, alignSelf:'center', width:330, justifyContent:'center', alignItems:'center'}}>
                             <Text style={{color:'white', fontSize:20}}>BACK UP YOUR WALLET</Text>
                         </View>
-
                     </ImageBackground>
                 </View>
                 <View style={{flex:1, paddingTop: 50, paddingBottom:100, width:330, alignSelf: 'center',  borderRadius:10}}>
@@ -91,11 +86,11 @@ export default class BackupWallet extends React.Component {
                 </View>
             </View>
         </ImageBackground>
-      );
-  }
+        );
+    }
 }
 
-
+// styling
 const styles = StyleSheet.create({
     SubmitButtonStyle: {
         alignSelf:'center',
@@ -120,6 +115,4 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
         left: 0
     },
-
-
 });

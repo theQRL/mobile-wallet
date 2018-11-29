@@ -15,26 +15,26 @@ export default class ScanQrModal extends React.Component {
     }
 
     render() {
-      return(
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <QRCodeScanner onRead={this.showQRLaddress.bind(this)}
-                topContent={
-                    <Text style={styles.centerText}>
-                        Scan QRL wallet QR code
-                    </Text>
-                }
-                bottomContent={
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate("SendReceive")} >
-                        <Text style={styles.CancelTextStyle}>Dismiss</Text>
-                    </TouchableOpacity>
-                }
-            />
-          </View>
-      )
+        return(
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <QRCodeScanner onRead={this.showQRLaddress.bind(this)}
+                    topContent={
+                        <Text style={styles.centerText}>
+                            Scan QRL wallet QR code
+                        </Text>
+                    }
+                    bottomContent={
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate("SendReceive")} >
+                            <Text style={styles.CancelTextStyle}>Dismiss</Text>
+                        </TouchableOpacity>
+                    }
+                />
+            </View>
+        )
     }
-
 }
 
+// styling
 const styles = StyleSheet.create({
     centerText: {
         flex: 1,

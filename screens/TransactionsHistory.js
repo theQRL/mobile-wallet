@@ -1,43 +1,21 @@
 import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  ImageBackground,
-  Text,
-  View,
-  Image,
-  ActionSheetIOS,
-  TextInput,
-  Button,
-  ActivityIndicator,
-  Picker,
-  TouchableOpacity,
-  ScrollView,
-  TouchableHighlight,
-  ListView,
-  AsyncStorage
-} from 'react-native';
-
+import { Platform, StyleSheet, ImageBackground, Text, View, Image, ActionSheetIOS, TextInput, Button, ActivityIndicator, Picker, TouchableOpacity, ScrollView, TouchableHighlight, ListView, AsyncStorage} from 'react-native';
 
 // Android and Ios native modules
 import {NativeModules} from 'react-native';
-// ios
 var IosWallet = NativeModules.refreshWallet;
-// android
 var AndroidWallet = NativeModules.AndroidWallet;
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 export default class Wallet extends React.Component{
 
-
     static navigationOptions = {
-      drawerLabel: 'TRANSACTION HISTORY',
-      drawerIcon: ({ tintColor }) => (
-        <Image source={require('../resources/images/transaction_history_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain}  style={{width:25, height:25}}/>
-      ),
+        drawerLabel: 'TRANSACTION HISTORY',
+        drawerIcon: ({ tintColor }) => (
+            <Image source={require('../resources/images/transaction_history_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain}  style={{width:25, height:25}}/>
+        ),
     };
-
 
     // every time we open the main page fo the following
     // 1. update cmc related info
@@ -93,7 +71,6 @@ export default class Wallet extends React.Component{
         }
     }
 
-
     // Refresh wallet balance
     refreshWallet = () => {
         fetch('https://market-data.automated.theqrl.org/', {
@@ -128,9 +105,6 @@ export default class Wallet extends React.Component{
                 }
 
             }).catch((error) => {console.log(error)});
-
-
-
         })
     }
 
@@ -180,164 +154,144 @@ export default class Wallet extends React.Component{
     }
 
     render() {
-
-
-
         if (this.state.isLoading) {
             return (
                 <ImageBackground source={require('../resources/images/main_bg_half.png')} style={styles.backgroundImage}>
                     <View style={{flex:1}}>
+                        <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
+                            <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='white'>
+                                <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
+                            </TouchableHighlight>
+                        </View>
+                        <ScrollView style={{flex:2}}>
+                            <View style={{ alignItems:'center',paddingTop:10, flex:0.5}}>
+                                <Image source={require('../resources/images/qrl_logo_wallet.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:100}} />
+                                <Text style={{color:'white'}}>LAST UPDATE: ...</Text>
+                            </View>
 
-                    <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
-                        <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='white'>
-                            <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
-                        </TouchableHighlight>
+                            <View style={{ alignItems:'center',flex:1}}>
+                                <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:240, width: 360, justifyContent:'center',alignItems:'center', paddingTop: 30}} >
+                                    <Text style={{color:'white'}}>QRL BALANCE</Text>
+                                    <Text style={{color:'white',fontSize:30}}>0</Text>
+                                    <Text style={{color:'white',fontSize:13}}>USD $0</Text>
+                                    <View style={{width:"80%", borderRadius:10, flexDirection:'row', paddingTop:30,paddingBottom:5}}>
+                                        <View style={{flex:1}}><Text style={{fontSize:12, color:"white"}}>MARKET CAP</Text></View>
+                                        <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text style={{fontSize:12, color:"white"}}>PRICE</Text></View>
+                                        <View style={{flex:1}}><Text style={{fontSize:12, color:"white"}}>24H CHANGE</Text></View>
+                                    </View>
+
+                                    <View style={{backgroundColor:"#d12835", height:40, flexDirection:'row', width:"90%", borderRadius:10}}>
+                                        <View style={{flex:1, justifyContent:'center'}}><Text style={{fontSize:12, color:"white"}}>NA</Text></View>
+                                        <View style={{flex:1, alignItems:'center', justifyContent:'center'}}><Text style={{fontSize:12, color:"white"}}>NA</Text></View>
+                                        <View style={{flex:1, justifyContent:'center'}}><Text style={{fontSize:12, color:"white"}}>NA</Text></View>
+                                    </View>
+
+                                    <View style={{alignSelf:'flex-end', right:23}}>
+                                        <Text style={{color:'white',fontSize:10}}>Powered by COINLIB</Text>
+                                    </View>
+
+                                    <TouchableOpacity style={{alignItems:'center',justifyContent:'center',alignSelf:'center',top:this.state.refreshBtnTop,right:2}} activeOpacity = { .5 } onPress={ this.refreshWallet }>
+                                        <Image source={require("../resources/images/refresh.png")} style={{height:40, width:40}}/>
+                                    </TouchableOpacity>
+                                </ImageBackground>
+                            </View>
+
+                            <View style={{backgroundColor:'white', flex:2, width:350, alignSelf:'center', borderRadius:10, marginTop:10}}>
+                                <Text style={{alignItems:'center', alignSelf:'center', paddingTop:20, marginBottom:20}}>TRANSACTION HISTORY</Text>
+                            </View>
+                        </ScrollView>
                     </View>
-              <ScrollView style={{flex:2}}>
-
-              <View style={{ alignItems:'center',paddingTop:10, flex:0.5}}>
-                  <Image source={require('../resources/images/qrl_logo_wallet.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:100}} />
-                  <Text style={{color:'white'}}>LAST UPDATE: ...</Text>
-               </View>
-
-               <View style={{ alignItems:'center',flex:1}}>
-                   <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:240, width: 360, justifyContent:'center',alignItems:'center', paddingTop: 30}} >
-                       <Text style={{color:'white'}}>QRL BALANCE</Text>
-                       <Text style={{color:'white',fontSize:30}}>0</Text>
-                       <Text style={{color:'white',fontSize:13}}>USD $0</Text>
-                       <View style={{width:"80%", borderRadius:10, flexDirection:'row', paddingTop:30,paddingBottom:5}}>
-                           <View style={{flex:1}}><Text style={{fontSize:12, color:"white"}}>MARKET CAP</Text></View>
-                           <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text style={{fontSize:12, color:"white"}}>PRICE</Text></View>
-                           <View style={{flex:1}}><Text style={{fontSize:12, color:"white"}}>24H CHANGE</Text></View>
-                       </View>
-
-                       <View style={{backgroundColor:"#d12835", height:40, flexDirection:'row', width:"90%", borderRadius:10}}>
-                           <View style={{flex:1, justifyContent:'center'}}><Text style={{fontSize:12, color:"white"}}>NA</Text></View>
-                           <View style={{flex:1, alignItems:'center', justifyContent:'center'}}><Text style={{fontSize:12, color:"white"}}>NA</Text></View>
-                           <View style={{flex:1, justifyContent:'center'}}><Text style={{fontSize:12, color:"white"}}>NA</Text></View>
-                       </View>
-
-                       <View style={{alignSelf:'flex-end', right:23}}>
-                           <Text style={{color:'white',fontSize:10}}>Powered by COINLIB</Text>
-                       </View>
-
-                       <TouchableOpacity style={{alignItems:'center',justifyContent:'center',alignSelf:'center',top:this.state.refreshBtnTop,right:2}} activeOpacity = { .5 } onPress={ this.refreshWallet }>
-                           <Image source={require("../resources/images/refresh.png")} style={{height:40, width:40}}/>
-                       </TouchableOpacity>
-
-                   </ImageBackground>
-                </View>
-
-
-                <View style={{backgroundColor:'white', flex:2, width:350, alignSelf:'center', borderRadius:10, marginTop:10}}>
-                    <Text style={{alignItems:'center', alignSelf:'center', paddingTop:20, marginBottom:20}}>TRANSACTION HISTORY</Text>
-                </View>
-
-            </ScrollView>
-
-          </View>
-        </ImageBackground>
-
+                </ImageBackground>
             );
-          }
+        }
 
-          else {
-              // formatting minutes to user interface
-              minutes = this.state.updatedDate.getMinutes();
-              minutes < 10 ? minUI = "0" + minutes : minUI = minutes;
+        else {
+            // formatting minutes and address to user interface
+            minutes = this.state.updatedDate.getMinutes();
+            minutes < 10 ? minUI = "0" + minutes : minUI = minutes;
+            addressBegin = this.state.walletAddress.substring(1, 10);
+            addressEnd = this.state.walletAddress.substring(58, 79);
 
-              addressBegin = this.state.walletAddress.substring(1, 10);
-              addressEnd = this.state.walletAddress.substring(58, 79);
+            return (
+                <ImageBackground source={require('../resources/images/main_bg_half.png')} style={styles.backgroundImage}>
+                    <View style={{flex:1}}>
 
-              return (
-                  <ImageBackground source={require('../resources/images/main_bg_half.png')} style={styles.backgroundImage}>
-                      <View style={{flex:1}}>
+                        <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
+                            <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='white'>
+                                <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
+                            </TouchableHighlight>
+                        </View>
 
-                      <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
-                          <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='white'>
-                              <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
-                          </TouchableHighlight>
-                      </View>
+                        <ScrollView style={{flex:2}}>
+                            <View style={{ alignItems:'center',paddingTop:10, flex:0.5}}>
+                                <Image source={require('../resources/images/qrl_logo_wallet.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:100}} />
+                                <Text style={{color:'white'}}>LAST UPDATE: {this.state.updatedDate.getDate()}.{this.state.updatedDate.getMonth() + 1}.{this.state.updatedDate.getFullYear()} {this.state.updatedDate.getHours()}:{minUI}</Text>
+                            </View>
 
+                            <View style={{ alignItems:'center',flex:1}}>
+                                <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:240, width:360, justifyContent:'center',alignItems:'center', paddingTop: 30}} >
+                                    <Text style={{color:'white'}}>QRL BALANCE</Text>
+                                    <Text style={{color:'white', fontWeight: "bold"}}>Q{addressBegin}...{addressEnd}</Text>
+                                    <Text style={{color:'white',fontSize:30}}>{this.state.balance / 1000000000 }</Text>
+                                    <Text style={{color:'white',fontSize:13}}>USD ${ ((this.state.balance / 1000000000 ) * this.state.price).toFixed(2) }</Text>
 
-                <ScrollView style={{flex:2}}>
+                                    <View style={{width:"80%", borderRadius:10, flexDirection:'row', paddingTop:15,paddingBottom:5}}>
+                                        <View style={{flex:1}}><Text style={{fontSize:12, color:"white"}}>MARKET CAP</Text></View>
+                                        <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text style={{fontSize:12, color:"white"}}>PRICE</Text></View>
+                                        <View style={{flex:1}}><Text style={{fontSize:12, color:"white", right:-10}}>24H CHANGE</Text></View>
+                                    </View>
 
-                <View style={{ alignItems:'center',paddingTop:10, flex:0.5}}>
-                    <Image source={require('../resources/images/qrl_logo_wallet.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:100}} />
-                    <Text style={{color:'white'}}>LAST UPDATE: {this.state.updatedDate.getDate()}.{this.state.updatedDate.getMonth() + 1}.{this.state.updatedDate.getFullYear()} {this.state.updatedDate.getHours()}:{minUI}</Text>
-                 </View>
+                                    <View style={{backgroundColor:"#d12835", height:40, flexDirection:'row', width:"90%", borderRadius:10, paddingLeft:15}}>
+                                        <View style={{flex:1, justifyContent:'center'}}><Text style={{fontSize:12, color:"white",fontWeight: "bold"}}>${ (this.state.marketcap / 1000000).toFixed(2) }M <Text style={{fontSize:8, color:"white"}}>USD</Text></Text></View>
+                                        <View style={{flex:1, alignItems:'center', justifyContent:'center'}}><Text style={{fontSize:12, color:"white",fontWeight: "bold"}}>${this.state.price}<Text style={{fontSize:8, color:"white"}}> USD</Text></Text></View>
 
-                 <View style={{ alignItems:'center',flex:1}}>
-                     <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:240, width:360, justifyContent:'center',alignItems:'center', paddingTop: 30}} >
-                         <Text style={{color:'white'}}>QRL BALANCE</Text>
-                         <Text style={{color:'white', fontWeight: "bold"}}>Q{addressBegin}...{addressEnd}</Text>
-                         <Text style={{color:'white',fontSize:30}}>{this.state.balance / 1000000000 }</Text>
-                         <Text style={{color:'white',fontSize:13}}>USD ${ ((this.state.balance / 1000000000 ) * this.state.price).toFixed(2) }</Text>
+                                        { this.state.changeup ?
+                                            <View style={{flex:1, justifyContent:'center'}}>
+                                                <View style={{flexDirection:'row', justifyContent:'center'}}>
+                                                    <Image source={require('../resources/images/arrow_up.png')} resizeMode={Image.resizeMode.contain} style={{height:10, width:10}} />
+                                                    <Text style={{fontSize:12, color:"white"}}>({this.state.change24} %)</Text>
+                                                </View>
+                                            </View>
+                                            :
+                                            <View style={{flex:1, justifyContent:'center'}}>
+                                                <View style={{flexDirection:'row', justifyContent:'center'}}>
+                                                    <Image source={require('../resources/images/arrow_down.png')} resizeMode={Image.resizeMode.contain} style={{height:10, width:10}} />
+                                                    <Text style={{fontSize:12, color:"white"}}>({this.state.change24} %)</Text>
+                                                </View>
+                                            </View>
+                                        }
+                                    </View>
 
-                         <View style={{width:"80%", borderRadius:10, flexDirection:'row', paddingTop:15,paddingBottom:5}}>
-                             <View style={{flex:1}}><Text style={{fontSize:12, color:"white"}}>MARKET CAP</Text></View>
-                             <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text style={{fontSize:12, color:"white"}}>PRICE</Text></View>
-                             <View style={{flex:1}}><Text style={{fontSize:12, color:"white", right:-10}}>24H CHANGE</Text></View>
-                         </View>
+                                    <View style={{alignSelf:'flex-end', right:23}}>
+                                        <Text style={{color:'white',fontSize:10}}>Powered by COINLIB</Text>
+                                    </View>
 
-                         <View style={{backgroundColor:"#d12835", height:40, flexDirection:'row', width:"90%", borderRadius:10, paddingLeft:15}}>
-                             <View style={{flex:1, justifyContent:'center'}}><Text style={{fontSize:12, color:"white",fontWeight: "bold"}}>${ (this.state.marketcap / 1000000).toFixed(2) }M <Text style={{fontSize:8, color:"white"}}>USD</Text></Text></View>
-                             <View style={{flex:1, alignItems:'center', justifyContent:'center'}}><Text style={{fontSize:12, color:"white",fontWeight: "bold"}}>${this.state.price}<Text style={{fontSize:8, color:"white"}}> USD</Text></Text></View>
+                                    <TouchableOpacity style={{alignItems:'center',justifyContent:'center',alignSelf:'center',top:this.state.refreshBtnTop,right:2}} activeOpacity = { .5 } onPress={ this.refreshWallet }>
+                                        <Image source={require("../resources/images/refresh.png")} style={{height:40, width:40}}/>
+                                    </TouchableOpacity>
+                                </ImageBackground>
+                            </View>
 
-                             { this.state.changeup ?
-                                 <View style={{flex:1, justifyContent:'center'}}>
-                                     <View style={{flexDirection:'row', justifyContent:'center'}}>
-                                         <Image source={require('../resources/images/arrow_up.png')} resizeMode={Image.resizeMode.contain} style={{height:10, width:10}} />
-                                         <Text style={{fontSize:12, color:"white"}}>({this.state.change24} %)</Text>
-                                     </View>
-                                 </View>
-                                 :
-                                 <View style={{flex:1, justifyContent:'center'}}>
-                                     <View style={{flexDirection:'row', justifyContent:'center'}}>
-                                         <Image source={require('../resources/images/arrow_down.png')} resizeMode={Image.resizeMode.contain} style={{height:10, width:10}} />
-                                         <Text style={{fontSize:12, color:"white"}}>({this.state.change24} %)</Text>
-                                     </View>
-                                 </View>
-                             }
-                         </View>
-
-                         <View style={{alignSelf:'flex-end', right:23}}>
-                             <Text style={{color:'white',fontSize:10}}>Powered by COINLIB</Text>
-                         </View>
-
-                         <TouchableOpacity style={{alignItems:'center',justifyContent:'center',alignSelf:'center',top:this.state.refreshBtnTop,right:2}} activeOpacity = { .5 } onPress={ this.refreshWallet }>
-                             <Image source={require("../resources/images/refresh.png")} style={{height:40, width:40}}/>
-                         </TouchableOpacity>
-
-
-
-                     </ImageBackground>
-                  </View>
-
-                  <View style={{backgroundColor:'white', flex:2, width:350, alignSelf:'center', borderRadius:10, marginTop:10}}>
-                      <Text style={{alignItems:'center', alignSelf:'center', paddingTop:20, marginBottom:20}}>TRANSACTION HISTORY</Text>
-                          <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
-                      {this.state.dataSource == "{}" ?
-                          <Text style={{alignSelf:'center'}}>No Transaction</Text>
-                          :
-                          <ListView automaticallyAdjustContentInsets={false} dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)} renderSeparator= {this.ListViewItemSeparator} enableEmptySections={true} />
-                      }
-                  </View>
-
-              </ScrollView>
-
-              <View style={{height:30}}></View>
-
-            </View>
-          </ImageBackground>
-
-              );
-          }
+                            <View style={{backgroundColor:'white', flex:2, width:350, alignSelf:'center', borderRadius:10, marginTop:10}}>
+                                <Text style={{alignItems:'center', alignSelf:'center', paddingTop:20, marginBottom:20}}>TRANSACTION HISTORY</Text>
+                                    <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
+                                {this.state.dataSource == "{}" ?
+                                    <Text style={{alignSelf:'center'}}>No Transaction</Text>
+                                    :
+                                    <ListView automaticallyAdjustContentInsets={false} dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)} renderSeparator= {this.ListViewItemSeparator} enableEmptySections={true} />
+                                }
+                            </View>
+                        </ScrollView>
+                        <View style={{height:30}}></View>
+                    </View>
+                </ImageBackground>
+            );
+        }
     }
 }
 
+// styling
 const styles = StyleSheet.create({
-
     SubmitButtonStyle: {
         width: 200,
         marginTop:10,

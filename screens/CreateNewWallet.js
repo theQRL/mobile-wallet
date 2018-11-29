@@ -50,47 +50,45 @@ export default class CreateNewWallet extends React.Component {
     // ListView for the
       renderRow(rowData, sectionID, rowID) {
           // format the QUANTA amount
-          addressBegin = rowData.address.substring(1, 10);
-          addressEnd = rowData.address.substring(68, 79);
+        addressBegin = rowData.address.substring(1, 10);
+        addressEnd = rowData.address.substring(68, 79);
 
-          return (
-              <View  style={{flex: 1, flexDirection:'row', alignSelf:'center', height:80, width:300}} onPress={()=> this.props.navigation.navigate('TxDetailsView', {txhash: txhash})} underlayColor='white'>
-
-                  <View style={{justifyContent:'center'}}>
-                      <Image
-                        source={require('../resources/images/wallet_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain} style={{width:25, height:25}}
-                      />
-                  </View>
-                  <View style={{justifyContent:'center'}}>
-                      <Text>    Q{addressBegin}...{addressEnd} </Text>
-                  </View>
-                  <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
-                      {this.state.walletindex == rowData.index ?
-                          <Text style={{color:'green', fontSize:20}}>Active</Text>
-                          :
-                           <Button color="red" onPress={() => this.openHexseedModal(rowData.index)  } title="Open"/>
-                      }
-                    </View>
-              </View>
-            );
-      }
-
-      ListViewItemSeparator = () => {
         return (
-          <View
-            style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}
-          />
-        );
-      }
+            <View  style={{flex: 1, flexDirection:'row', alignSelf:'center', height:80, width:300}} onPress={()=> this.props.navigation.navigate('TxDetailsView', {txhash: txhash})} underlayColor='white'>
 
-      // refresh wallet index on switch
-      refreshWalletIndex(){
-          // get walletindex (index of the opened wallet)
-          this.setState({isLoading:true});
-          AsyncStorage.getItem("walletindex").then((walletindex) => {
-              this.setState({isLoading:false, walletindex: walletindex})
-          }).catch((error) => {console.log(error)});
-      }
+                <View style={{justifyContent:'center'}}>
+                    <Image
+                        source={require('../resources/images/wallet_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain} style={{width:25, height:25}}
+                    />
+                </View>
+                <View style={{justifyContent:'center'}}>
+                    <Text>    Q{addressBegin}...{addressEnd} </Text>
+                </View>
+                <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
+                    {this.state.walletindex == rowData.index ?
+                        <Text style={{color:'green', fontSize:20}}>Active</Text>
+                            :
+                        <Button color="red" onPress={() => this.openHexseedModal(rowData.index)  } title="Open"/>
+                    }
+                </View>
+            </View>
+        );
+    }
+
+    ListViewItemSeparator = () => {
+        return (
+            <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
+        );
+    }
+
+    // refresh wallet index on switch
+    refreshWalletIndex(){
+        // get walletindex (index of the opened wallet)
+        this.setState({isLoading:true});
+        AsyncStorage.getItem("walletindex").then((walletindex) => {
+            this.setState({isLoading:false, walletindex: walletindex})
+        }).catch((error) => {console.log(error)});
+    }
 
   // render view
   render() {

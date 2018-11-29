@@ -6,7 +6,6 @@ import { DrawerNavigator , StackNavigator, SwitchNavigator, DrawerItems } from '
 import BackupWallet from './screens/BackupWallet'
 import SendReceive from './screens/SendReceive'
 import TransactionsHistory from './screens/TransactionsHistory'
-// import CreateWallet from './screens/CreateWallet'
 import CreateNewWallet from './screens/CreateNewWallet'
 import CompleteSetup from './screens/CompleteSetup'
 import OpenExistingWallet from './screens/OpenExistingWallet'
@@ -28,30 +27,29 @@ import OpenExistingWalletModal from './screens/OpenExistingWalletModal'
 // - if no -> redirects to the CreateWallet view
 class AuthLoadingScreen extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this._bootstrapAsync();
-  }
+  	constructor(props) {
+    	super(props);
+    	this._bootstrapAsync();
+  	}
 
-  // Fetch the token from storage then navigate to our appropriate place
-  _bootstrapAsync = async () => {
-    // check if a wallet was already created
-    const walletCreated = await AsyncStorage.getItem('walletcreated');
+	// Fetch the token from storage then navigate to our appropriate place
+	_bootstrapAsync = async () => {
+		// check if a wallet was already created
+		const walletCreated = await AsyncStorage.getItem('walletcreated');
 
-    // This will switch to the App screen or Auth screen and this loading
-    // screen will be unmounted and thrown away.
-    this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
-  };
+		// This will switch to the App screen or Auth screen and this loading
+		// screen will be unmounted and thrown away.
+		this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
+	};
 
-  // Render any loading content that you like here
-  render() {
-    return (
-      <View>
-        <ActivityIndicator />
-
-      </View>
-    );
-  }
+	// Render any loading content that you like here
+	render() {
+		return (
+			<View>
+				<ActivityIndicator />
+			</View>
+		);
+	}
 }
 
 
@@ -69,10 +67,9 @@ const CustomDrawerContentComponent = (props) => (
                 <Text style={{color:'white',paddingTop:20}}>DISCORD</Text>
                 <Text style={{color:'white',paddingTop:20}}>SUPPORT</Text>
             </View>
-    </ImageBackground>
+    	</ImageBackground>
     </View>
 )
-
 
 // MainDrawerMenu
 const MainDrawerMenu = DrawerNavigator(
@@ -136,7 +133,6 @@ const RootStack = StackNavigator(
   }
 );
 
-
 const AuthStack = StackNavigator(
   {
     SignIn: {
@@ -164,18 +160,16 @@ const AuthStack = StackNavigator(
   }
 );
 
-
 // const AuthStack = StackNavigator({ SignIn: CreateWallet });
 export default SwitchNavigator(
-  {
-    AuthLoading: AuthLoadingScreen,
-    App: RootStack,
-    Auth: AuthStack,
-  },
-  {
-    initialRouteName: 'AuthLoading',
-  }
+  	{
+		AuthLoading: AuthLoadingScreen,
+		App: RootStack,
+		Auth: AuthStack,
+  	},
+  	{
+    	initialRouteName: 'AuthLoading',
+  	}
 );
-
 
 // export default MainDrawerMenu

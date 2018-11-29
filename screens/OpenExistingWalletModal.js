@@ -1,37 +1,17 @@
 import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  ImageBackground,
-  Text,
-  View,
-  Image,
-  ActionSheetIOS,
-  TextInput,
-  Button,
-  ActivityIndicator,
-  Picker,
-  AsyncStorage,
-  TouchableOpacity,
-  Alert,
-  TouchableHighlight,
-  KeyboardAvoidingView
-} from 'react-native';
+import { Platform, StyleSheet, ImageBackground, Text, View, AsyncStorage, TouchableHighlight} from 'react-native';
 
 // Android and Ios native modules
 import {NativeModules} from 'react-native';
-// ios
 var IosWallet = NativeModules.CreateWallet;
-// android
 var AndroidWallet = NativeModules.AndroidWallet;
 import PINCode from '@haskkor/react-native-pincode'
-
 var GLOBALS = require('./globals');
 
 export default class OpenExistingWalletModal extends React.Component {
 
     static navigationOptions = {
-         drawerLabel: () => null
+        drawerLabel: () => null
     };
 
     // get the wallet PIN code from keychain
@@ -59,7 +39,6 @@ export default class OpenExistingWalletModal extends React.Component {
         this.setState({hexseed:text});
     }
 
-
     // open QRL wallet
     openWallet = () => {
         this.setState({isLoading: true})
@@ -68,19 +47,17 @@ export default class OpenExistingWalletModal extends React.Component {
         this.props.navigation.goBack();
     }
 
-  render() {
-      if (this.state.isLoading){
+    render() {
+        if (this.state.isLoading){
             return(<View></View>)
-      }
-      else {
-          return(
-
-              <ImageBackground source={require('../resources/images/complete_setup_bg.png')} style={styles.backgroundImage}>
-                  <PINCode
+        }
+        else {
+            return(
+                <ImageBackground source={require('../resources/images/complete_setup_bg.png')} style={styles.backgroundImage}>
+                    <PINCode
                     status={'enter'}
                     touchIDDisabled={true}
                     storedPin={this.state.walletpin}
-
                     bottomLeftComponent = {
                         <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
                             <TouchableHighlight onPress={() => this.props.navigation.goBack()  } >
@@ -93,18 +70,14 @@ export default class OpenExistingWalletModal extends React.Component {
                     colorPassword="white"
                     numbersButtonOverlayColor="white"
                     finishProcess = { this.openWallet }
-                  />
-          </ImageBackground>
-
-
-          );
-
-      }
-
-  }
+                    />
+                </ImageBackground>
+            );
+        }
+    }
 }
 
-
+// styling
 const styles = StyleSheet.create({
     container: {
         flex: 1,
