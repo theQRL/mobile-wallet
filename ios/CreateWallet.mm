@@ -226,12 +226,55 @@ RCT_EXPORT_METHOD(openWalletWithHexseed:(NSString* )hexseed withIndex:(NSString*
   
 }
 
-// close the open wallet before creating a new one
-RCT_EXPORT_METHOD(closeWallet: (RCTResponseSenderBlock)callback){
-    // remove all the information saved on the keyChain
-    NSDictionary *spec = @{(__bridge id)kSecClass:(__bridge id)kSecClassGenericPassword};
-    SecItemDelete((__bridge CFDictionaryRef)spec);
-    callback(@[[NSNull null], @"success" ]);
+// removing a wallet items from the keychain
+RCT_EXPORT_METHOD(closeWallet:(NSString* )walletindex  callback:(RCTResponseSenderBlock)callback){
+  
+  OSStatus sts1 = [WalletHelperFunctions removeFromKeychain:[NSString stringWithFormat:@"%@%@", @"pin", walletindex]];
+  if( (int)sts1 == 0 ){
+  
+    OSStatus sts2 = [WalletHelperFunctions removeFromKeychain:[NSString stringWithFormat:@"%@%@", @"hexseed", walletindex]];
+    if( (int)sts2 == 0 ){
+      
+      OSStatus sts3 = [WalletHelperFunctions removeFromKeychain:[NSString stringWithFormat:@"%@%@", @"address", walletindex]];
+      if( (int)sts3 == 0 ){
+        
+        OSStatus sts4 = [WalletHelperFunctions removeFromKeychain:[NSString stringWithFormat:@"%@%@", @"xmsspk", walletindex]];
+        if( (int)sts4 == 0 ){
+          
+          OSStatus sts5 = [WalletHelperFunctions removeFromKeychain:[NSString stringWithFormat:@"%@%@", @"treeheight", walletindex]];
+          if( (int)sts5 == 0 ){
+            NSLog(@"Wallet removed from Keychain");
+            callback(@[[NSNull null], @"success" ]);
+          }
+          else {
+            NSLog(@"ERROR removing treeheight from keychain: %d",(int)sts5);
+            callback(@[[NSNull null], @"error" ]);
+          }
+          
+        }
+        else {
+          NSLog(@"ERROR removing xmsspk from keychain: %d",(int)sts4);
+          callback(@[[NSNull null], @"error" ]);
+        }
+        
+      }
+      else {
+        NSLog(@"ERROR removing address from keychain: %d",(int)sts3);
+        callback(@[[NSNull null], @"error" ]);
+      }
+      
+    }
+    else {
+      NSLog(@"ERROR removing hexseed from keychain: %d",(int)sts2);
+      callback(@[[NSNull null], @"error" ]);
+    }
+    
+  }
+  else {
+    NSLog(@"ERROR removing pin from keychain: %d",(int)sts1);
+    callback(@[[NSNull null], @"error" ]);
+  }
+
 }
 
 

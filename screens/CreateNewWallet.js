@@ -1,5 +1,8 @@
 import React from 'react';
 import {Platform, Text, View, Button, Image, StyleSheet, Modal, ImageBackground, TouchableOpacity, TouchableHighlight, AsyncStorage, ListView, ScrollView} from 'react-native';
+import {NativeModules} from 'react-native';
+var IosWallet = NativeModules.CreateWallet;
+var AndroidWallet = NativeModules.AndroidWallet;
 
 export default class CreateNewWallet extends React.Component {
 
@@ -17,10 +20,15 @@ export default class CreateNewWallet extends React.Component {
     componentWillMount(){
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         // get walletlist JSON
+        console.log("MOUNTING")
         AsyncStorage.getItem("walletlist").then((walletlist) => {
             // get walletindex (index of the opened wallet)
             AsyncStorage.getItem("walletindex").then((walletindex) => {
-                this.setState({isLoading:false, walletindex: walletindex, dataSource: ds.cloneWithRows(JSON.parse(walletlist).reverse() )})
+                console.log(walletlist)
+                this.setState({isLoading:false, walletindex: walletindex, dataSource: ds.cloneWithRows(JSON.parse(walletlist).reverse()), walletlist: JSON.parse(walletlist) })
+
+                console.log("WALLETLIST", JSON.parse(walletlist))
+
             }).catch((error) => {console.log(error)});
         }).catch((error) => {console.log(error)});
     }
@@ -31,6 +39,49 @@ export default class CreateNewWallet extends React.Component {
         isLoading: true,
         modalVisible: false,
         walletIndexToOpen: null
+    }
+
+    // remove wallet from app
+    removeWallet = (walletid) => {
+        console.log("DELETING...")
+        var c, found=false;
+        for(c in this.state.walletlist) {
+            if(this.state.walletlist[c]["index"] == walletid) {
+                console.log("FOUND", c)
+                found=true;
+                break;
+            }
+        }
+        if(found){
+            console.log("FOUND AND SHOULD BE DELETED")
+            // remove wallet from keychain
+            if (Platform.OS === 'ios'){
+                IosWallet.closeWallet(walletid,  (err, status)=> {
+                    // if success -> open the main view of the app
+                    if (status =="success"){
+                        // delete this.state.walletlist[c];
+                        this.state.walletlist.splice(c, 1);
+                        AsyncStorage.setItem("walletlist",  JSON.stringify( this.state.walletlist ))
+                    }
+                    else {
+                        console.log("ERROR while removing wallet: ", err)
+                    }
+                })
+            }
+            // Android
+            else {
+                AndroidWallet.createWallet(this.props.navigation.state.params.treeHeight, walletIndexToCreate, this.state.pin, this.props.navigation.state.params.hashFunctionId, (err) => {console.log(err); }, (status, address) => {
+                    // if success -> open the main view of the app
+                    if (status =="success"){
+                        this._updateWalletIndex(walletIndexToCreate, address)
+                    }
+                    else {
+                        console.log("ERROR while opening wallet: ", error)
+                    }
+                })
+            }
+
+        }
     }
 
     openHexseedModal = (walletindexToOpen) => {
@@ -45,33 +96,37 @@ export default class CreateNewWallet extends React.Component {
         // AsyncStorage.removeItem("walletcreated");
     }
 
+    // ListView for the wallet list
+    renderRow(rowData, sectionID, rowID) {
+        if (rowData != null){
+            // format the QUANTA amount
+            addressBegin = rowData.address.substring(1, 15);
+            addressEnd = rowData.address.substring(66, 79);
 
-    // ListView for the
-      renderRow(rowData, sectionID, rowID) {
-          // format the QUANTA amount
-        addressBegin = rowData.address.substring(1, 10);
-        addressEnd = rowData.address.substring(68, 79);
-
-        return (
-            <View  style={{flex: 1, flexDirection:'row', alignSelf:'center', height:80, width:300}} onPress={()=> this.props.navigation.navigate('TxDetailsView', {txhash: txhash})} underlayColor='white'>
-
-                <View style={{justifyContent:'center'}}>
-                    <Image
-                        source={require('../resources/images/wallet_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain} style={{width:25, height:25}}
-                    />
-                </View>
-                <View style={{justifyContent:'center'}}>
-                    <Text>    Q{addressBegin}...{addressEnd} </Text>
-                </View>
-                <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
-                    {this.state.walletindex == rowData.index ?
-                        <Text style={{color:'green', fontSize:20}}>Active</Text>
+            return (
+                <View  style={{flex: 1, flexDirection:'row', alignSelf:'center', height:80, width:300}} onPress={()=> this.props.navigation.navigate('TxDetailsView', {txhash: txhash})} underlayColor='white'>
+                    <View style={{flex:1, justifyContent:'center'}}>
+                        <Button color="red" onPress={() => this.removeWallet(rowData.index)  } title="Delete"/>
+                    </View>
+                    <View style={{flex:2, justifyContent:'center'}}>
+                        <Text>    Q{addressBegin}... </Text>
+                        <Text>    ...{addressEnd} </Text>
+                    </View>
+                    <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
+                        {this.state.walletindex == rowData.index ?
+                            <Text style={{color:'green', fontSize:20}}>Active</Text>
                             :
-                        <Button color="red" onPress={() => this.openHexseedModal(rowData.index)  } title="Open"/>
-                    }
+                            <Button color="red" onPress={() => this.openHexseedModal(rowData.index)  } title="Open"/>
+                        }
+                    </View>
                 </View>
-            </View>
-        );
+            );
+        }
+        else {
+            return(
+                <View></View>
+            );
+        }
     }
 
     ListViewItemSeparator = () => {
