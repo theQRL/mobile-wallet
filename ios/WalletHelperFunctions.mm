@@ -91,6 +91,18 @@ NSNumber * const shor = @1000000000;
   return sts;
 }
 
+// remove item from keychain
++ (OSStatus) removeFromKeychain:(NSString *)account{
+  // saving the hexSeed to the kexchain
+  NSMutableDictionary *keychainItem = [NSMutableDictionary dictionary];
+  keychainItem[(__bridge id)kSecClass] = (__bridge id)kSecClassGenericPassword;
+  keychainItem[(__bridge id)kSecAttrAccessible] = (__bridge id)kSecAttrAccessibleWhenUnlocked;
+  keychainItem[(__bridge id)kSecAttrAccount] = account;
+  OSStatus sts = SecItemDelete((__bridge CFDictionaryRef)keychainItem);
+  return sts;
+}
+
+
 // save nsnumber value to keychain
 + (OSStatus) saveIntToKeychain:(NSString *)account withValue:(NSNumber *)value{
   // saving the hexSeed to the kexchain

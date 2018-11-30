@@ -17,6 +17,7 @@ extern NSNumber * const shor;
 + (NSMutableData *) nsStringHex2nsData:(NSString *)nsStringHex ;
 + (NSMutableString *) nsStringHex2ascii:(NSString *)nsStringHex ;
 + (NSString *) formatDate:(NSTimeInterval)timestamp;
++ (OSStatus) removeFromKeychain:(NSString *)account;
 + (OSStatus) saveToKeychain:(NSString *)account withValue:(NSString *)value;
 + (OSStatus) saveIntToKeychain:(NSString *)account withValue:(NSNumber *)value;
 + (NSString *) getFromKeychain:(NSString *)account;
