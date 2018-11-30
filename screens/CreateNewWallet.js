@@ -1,9 +1,10 @@
 import React from 'react';
-import {Platform, Text, View, Button, Image, StyleSheet, Modal, ImageBackground, TouchableOpacity, TouchableHighlight, AsyncStorage, ListView, ScrollView} from 'react-native';
+import {Platform, Text, View, Alert, Button, Image, StyleSheet, Modal, ImageBackground, TouchableOpacity, TouchableHighlight, AsyncStorage, ListView, ScrollView} from 'react-native';
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.CreateWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
 
+let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 export default class CreateNewWallet extends React.Component {
 
     // seetings for react-native navigation
@@ -18,17 +19,11 @@ export default class CreateNewWallet extends React.Component {
 
     // get the required information from asyncStorage
     componentWillMount(){
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         // get walletlist JSON
-        console.log("MOUNTING")
         AsyncStorage.getItem("walletlist").then((walletlist) => {
             // get walletindex (index of the opened wallet)
             AsyncStorage.getItem("walletindex").then((walletindex) => {
-                console.log(walletlist)
                 this.setState({isLoading:false, walletindex: walletindex, dataSource: ds.cloneWithRows(JSON.parse(walletlist).reverse()), walletlist: JSON.parse(walletlist) })
-
-                console.log("WALLETLIST", JSON.parse(walletlist))
-
             }).catch((error) => {console.log(error)});
         }).catch((error) => {console.log(error)});
     }
@@ -41,27 +36,27 @@ export default class CreateNewWallet extends React.Component {
         walletIndexToOpen: null
     }
 
-    // remove wallet from app
-    removeWallet = (walletid) => {
-        console.log("DELETING...")
+    // remove wallet from the app
+    removeWallet = (walletid, walletlist) => {
         var c, found=false;
-        for(c in this.state.walletlist) {
-            if(this.state.walletlist[c]["index"] == walletid) {
-                console.log("FOUND", c)
+        console.log(walletlist)
+        for(c in walletlist) {
+            if(walletlist[c]["index"] == walletid) {
                 found=true;
                 break;
             }
         }
         if(found){
-            console.log("FOUND AND SHOULD BE DELETED")
             // remove wallet from keychain
             if (Platform.OS === 'ios'){
                 IosWallet.closeWallet(walletid,  (err, status)=> {
-                    // if success -> open the main view of the app
+                    // if success then delete the wallet from the app
                     if (status =="success"){
-                        // delete this.state.walletlist[c];
-                        this.state.walletlist.splice(c, 1);
-                        AsyncStorage.setItem("walletlist",  JSON.stringify( this.state.walletlist ))
+                        walletlist.splice(c, 1);
+                        AsyncStorage.setItem("walletlist",  JSON.stringify( walletlist ))
+                        console.log("THIS.STATE.WALLETLIST: ")
+                        console.log(this.state.walletlist)
+                        this.setState({ dataSource: ds.cloneWithRows(JSON.parse(JSON.stringify( walletlist )).reverse()) })
                     }
                     else {
                         console.log("ERROR while removing wallet: ", err)
@@ -76,12 +71,16 @@ export default class CreateNewWallet extends React.Component {
                         this._updateWalletIndex(walletIndexToCreate, address)
                     }
                     else {
-                        console.log("ERROR while opening wallet: ", error)
+                        console.log("ERROR while removing wallet: ", error)
                     }
                 })
             }
-
         }
+    }
+
+    // popup to confirm wallet removal
+    removeWalletPopup = (walletid) => {
+        Alert.alert( "REMOVE WALLET"  , "Do you really want to remove this wallet?" , [{text: "Cancel", onPress: () => {console.log("Canceled")}}, {text: "Remove", onPress: () => this.removeWallet(walletid, this.state.walletlist) } ] )
     }
 
     openHexseedModal = (walletindexToOpen) => {
@@ -106,7 +105,11 @@ export default class CreateNewWallet extends React.Component {
             return (
                 <View  style={{flex: 1, flexDirection:'row', alignSelf:'center', height:80, width:300}} onPress={()=> this.props.navigation.navigate('TxDetailsView', {txhash: txhash})} underlayColor='white'>
                     <View style={{flex:1, justifyContent:'center'}}>
-                        <Button color="red" onPress={() => this.removeWallet(rowData.index)  } title="Delete"/>
+                        {this.state.walletindex == rowData.index ?
+                            undefined
+                            :
+                            <Button color="red" onPress={() => this.removeWalletPopup(rowData.index)  } title="Delete"/>
+                        }
                     </View>
                     <View style={{flex:2, justifyContent:'center'}}>
                         <Text>    Q{addressBegin}... </Text>
