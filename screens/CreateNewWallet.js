@@ -65,10 +65,11 @@ export default class CreateNewWallet extends React.Component {
             }
             // Android
             else {
-                AndroidWallet.createWallet(this.props.navigation.state.params.treeHeight, walletIndexToCreate, this.state.pin, this.props.navigation.state.params.hashFunctionId, (err) => {console.log(err); }, (status, address) => {
-                    // if success -> open the main view of the app
+                AndroidWallet.closeWallet( walletid, (err) => {console.log(err); }, (status) => {
                     if (status =="success"){
-                        this._updateWalletIndex(walletIndexToCreate, address)
+                        walletlist.splice(c, 1);
+                        AsyncStorage.setItem("walletlist",  JSON.stringify( walletlist ))
+                        this.setState({ dataSource: ds.cloneWithRows(JSON.parse(JSON.stringify( walletlist )).reverse()) })
                     }
                     else {
                         console.log("ERROR while removing wallet: ", error)

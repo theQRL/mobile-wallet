@@ -30,10 +30,8 @@ public class PreferenceHelper extends ReactActivity {
         MainActivity.preferences.edit().clear().commit();
     }
 
-
-
-
-
-
-
+    // remove a single key/pair value from Preferences
+    public static void removeFromPreferences(String key){
+        MainActivity.preferences.edit().remove( key ).commit();
+    }
 }
