@@ -96,35 +96,32 @@ export default class CreateNewWallet extends React.Component {
         // AsyncStorage.removeItem("walletcreated");
     }
 
-    // ListView for the wallet list
-    renderRow(rowData, sectionID, rowID) {
-        if (rowData != null){
-            // format the QUANTA amount
-            addressBegin = rowData.address.substring(1, 15);
-            addressEnd = rowData.address.substring(66, 79);
+    // View for current wallet
+    renderCurrentWalletRow(rowData, sectionID, rowID) {
+        // format the QUANTA amount
+        addressBegin = rowData.address.substring(1, 5);
+        addressEnd = rowData.address.substring(75, 79);
 
+        // only return information related to current wallet
+        if (this.state.walletindex == rowData.index){
             return (
-                <View  style={{flex: 1, flexDirection:'row', alignSelf:'center', height:80, width:300}} onPress={()=> this.props.navigation.navigate('TxDetailsView', {txhash: txhash})} underlayColor='white'>
+                <View  style={{flex: 1, flexDirection:'row', alignSelf:'center', height:80, width:300}}>
                     <View style={{flex:1, justifyContent:'center'}}>
-                        {this.state.walletindex == rowData.index ?
-                            undefined
-                            :
-                            <Button color="red" onPress={() => this.removeWalletPopup(rowData.index)  } title="Delete"/>
-                        }
+                        <Button color="red" onPress={() => this.removeWalletPopup(rowData.index)  } title="Delete"/>
                     </View>
                     <View style={{flex:2, justifyContent:'center'}}>
-                        <Text>    Q{addressBegin}... </Text>
-                        <Text>    ...{addressEnd} </Text>
+                        <Text>Q{addressBegin}...{addressEnd}</Text>
                     </View>
                     <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
-                        {this.state.walletindex == rowData.index ?
-                            <Text style={{color:'green', fontSize:20}}>Active</Text>
-                            :
-                            <Button color="red" onPress={() => this.openHexseedModal(rowData.index)  } title="Open"/>
-                        }
+                        <TouchableHighlight onPress={()=> this.props.navigation.navigate( "ShowQrCodeModal", {qrcode:rowData.address} )} underlayColor='white'>
+                            <Text style={{color:'green', fontSize:20}}>QR</Text>
+                        </TouchableHighlight>
+                    </View>
+                    <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
+                        <Text style={{color:'green', fontSize:20}}>Active</Text>
                     </View>
                 </View>
-            );
+            );    
         }
         else {
             return(
@@ -133,10 +130,49 @@ export default class CreateNewWallet extends React.Component {
         }
     }
 
-    ListViewItemSeparator = () => {
-        return (
-            <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
-        );
+    // ListView for the wallet list
+    renderRow(rowData, sectionID, rowID) {
+
+        console.log(rowID)
+        console.log(this.state.walletindex.length)
+        if (this.state.walletindex != rowData.index){
+            // format the QUANTA amount
+            addressBegin = rowData.address.substring(1, 5);
+            addressEnd = rowData.address.substring(75, 79);
+
+            return (
+                <View>
+                <View  style={{flex: 1, flexDirection:'row', alignSelf:'center', height:80, width:300}} onPress={()=> this.props.navigation.navigate('TxDetailsView', {txhash: txhash})} underlayColor='white'>
+                    <View style={{flex:1, justifyContent:'center'}}>
+                        <Button color="red" onPress={() => this.removeWalletPopup(rowData.index)  } title="Delete"/>
+                    </View>
+                    <View style={{flex:2, justifyContent:'center'}}>
+                        <Text>Q{addressBegin}...{addressEnd} </Text>
+                    </View>
+                    <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
+                        <TouchableHighlight onPress={()=> this.props.navigation.navigate( "ShowQrCodeModal", {qrcode:rowData.address} )} underlayColor='white'>
+                            <Text style={{color:'green', fontSize:20}}>QR</Text>
+                        </TouchableHighlight>
+                    </View>
+                    <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
+                        <Button color="red" onPress={() => this.openHexseedModal(rowData.index)  } title="Open"/>
+                    </View>
+                </View>
+                {/*Add separators*/}
+                {rowID < this.state.walletlist.length - 1 ? 
+                    <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
+                    :
+                    undefined
+                }
+                </View>
+                
+            );
+        }
+        else {
+            return(
+                <View></View>
+            );
+        }
     }
 
     // refresh wallet index on switch
@@ -172,7 +208,30 @@ export default class CreateNewWallet extends React.Component {
                                 </View>
                             </ImageBackground>
                         </View>
-                        <View style={{flex:1, paddingTop: 50, paddingBottom:100, width:330, alignSelf: 'center',  borderRadius:10}}>
+
+                        <View style={{flex:1, paddingTop: 10, marginBottom:40, width:330, alignSelf: 'center',  borderRadius:10, backgroundColor:'white'}}>
+                            <View style={{alignItems:'center'}}>
+                                <Text>CURRENT WALLET</Text>
+                                <ListView automaticallyAdjustContentInsets={false} dataSource={this.state.dataSource} renderRow={this.renderCurrentWalletRow.bind(this)} enableEmptySections={true} />
+                            </View>
+                            
+                        </View>
+            
+                        {this.state.walletlist.length > 1 ? 
+                            <View style={{flex:1, paddingTop: 10, width:330, alignSelf: 'center',  borderRadius:10, backgroundColor:'white'}}>
+                                <View style={{alignItems:'center'}}>
+                                    <Text>EXISTING WALLETS</Text>
+                                    <ListView automaticallyAdjustContentInsets={false} dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)} enableEmptySections={true} />
+                                </View>
+                            </View>
+                            :
+                            undefined
+                        }
+                        
+
+                        {/* 
+
+                            <View style={{flex:1, paddingTop: 50, paddingBottom:100, width:330, alignSelf: 'center',  borderRadius:10}}>
                             <View style={{height:50, backgroundColor:'white'}}>
                                 <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fafafa'}}>
                                     <Text>New wallet creation</Text>
@@ -195,9 +254,12 @@ export default class CreateNewWallet extends React.Component {
                                     </View>
                                 </View>
                                 <View style={{width:'100%',height:1, backgroundColor:'red', alignSelf:'flex-end'}}></View>
-                                <ListView automaticallyAdjustContentInsets={false} dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)} renderSeparator= {this.ListViewItemSeparator} enableEmptySections={true} />
+                                
                             </View>
                         </View>
+
+                        */}
+                        
 
                     </ScrollView>
                 </View>

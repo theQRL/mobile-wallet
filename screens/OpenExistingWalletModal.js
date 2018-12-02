@@ -30,13 +30,7 @@ export default class OpenExistingWalletModal extends React.Component {
     }
 
     state={
-        hexseed: GLOBALS.hexseed2,
-        // hexseed : "",
         isLoading: false
-    }
-
-    _onHexSeedChange = (text) => {
-        this.setState({hexseed:text});
     }
 
     // open QRL wallet

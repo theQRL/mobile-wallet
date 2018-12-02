@@ -18,7 +18,7 @@ import CreateAdvancedWallet from './screens/CreateAdvancedWallet'
 import TxDetailsView from './screens/TxDetailsView'
 import ProvideWalletPin from './screens/ProvideWalletPin'
 import OpenExistingWalletModal from './screens/OpenExistingWalletModal'
-
+import ShowQrCodeModal from './screens/ShowQrCodeModal'
 
 // import { QRLLIB } from './node_modules/qrllib/build/web-libjsqrl.js'
 
@@ -123,6 +123,9 @@ const RootStack = StackNavigator(
     },
     ScanQrModal : {
         screen: ScanQrModal
+    },
+    ShowQrCodeModal : {
+        screen: ShowQrCodeModal
     },
   },
   {

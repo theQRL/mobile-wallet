@@ -116,10 +116,11 @@ export default class Wallet extends React.Component{
         else {
             amount = rowData.desc / 1000000000
         }
-
         var txhash = rowData.txhash;
+
         return (
             <TouchableHighlight onPress={()=> this.props.navigation.navigate('TxDetailsView', {txhash: txhash})} underlayColor='white'>
+            <View>
                 <View style={{flex: 1, flexDirection:'row',  height:80, paddingTop:20}}>
 
                     {rowData.title == "RECEIVED"?
@@ -141,16 +142,16 @@ export default class Wallet extends React.Component{
                         </View>
                     </View>
                 </View>
+                {/*Do not show separator on the last item of the list*/}
+                {rowID < 9 ? 
+                    <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
+                    :
+                    undefined
+                }
+                </View>
+
             </TouchableHighlight>
           );
-    }
-
-    ListViewItemSeparator = () => {
-      return (
-        <View
-          style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}
-        />
-      );
     }
 
     render() {
@@ -278,7 +279,7 @@ export default class Wallet extends React.Component{
                                 {this.state.dataSource == "{}" ?
                                     <Text style={{alignSelf:'center'}}>No Transaction</Text>
                                     :
-                                    <ListView automaticallyAdjustContentInsets={false} dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)} renderSeparator= {this.ListViewItemSeparator} enableEmptySections={true} />
+                                    <ListView automaticallyAdjustContentInsets={false} dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)} enableEmptySections={true} />
                                 }
                             </View>
                         </ScrollView>
