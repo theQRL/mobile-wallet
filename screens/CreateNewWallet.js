@@ -23,7 +23,7 @@ export default class CreateNewWallet extends React.Component {
         AsyncStorage.getItem("walletlist").then((walletlist) => {
             // get walletindex (index of the opened wallet)
             AsyncStorage.getItem("walletindex").then((walletindex) => {
-                this.setState({isLoading:false, walletindex: walletindex, dataSource: ds.cloneWithRows(JSON.parse(walletlist).reverse()), walletlist: JSON.parse(walletlist) })
+                this.setState({isLoading:false, walletindex: walletindex, dataSource: ds.cloneWithRows(JSON.parse(walletlist)), walletlist: JSON.parse(walletlist) })
             }).catch((error) => {console.log(error)});
         }).catch((error) => {console.log(error)});
     }
@@ -53,7 +53,7 @@ export default class CreateNewWallet extends React.Component {
                     if (status =="success"){
                         walletlist.splice(c, 1);
                         AsyncStorage.setItem("walletlist",  JSON.stringify( walletlist ))
-                        this.setState({ dataSource: ds.cloneWithRows(JSON.parse(JSON.stringify( walletlist )).reverse()) })
+                        this.setState({ dataSource: ds.cloneWithRows(JSON.parse(JSON.stringify( walletlist ))) })
                     }
                     else {
                         console.log("ERROR while removing wallet: ", err)
@@ -66,7 +66,7 @@ export default class CreateNewWallet extends React.Component {
                     if (status =="success"){
                         walletlist.splice(c, 1);
                         AsyncStorage.setItem("walletlist",  JSON.stringify( walletlist ))
-                        this.setState({ dataSource: ds.cloneWithRows(JSON.parse(JSON.stringify( walletlist )).reverse()) })
+                        this.setState({ dataSource: ds.cloneWithRows(JSON.parse(JSON.stringify( walletlist ))) })
                     }
                     else {
                         console.log("ERROR while removing wallet: ", error)
