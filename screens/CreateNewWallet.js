@@ -23,7 +23,7 @@ export default class CreateNewWallet extends React.Component {
         AsyncStorage.getItem("walletlist").then((walletlist) => {
             // get walletindex (index of the opened wallet)
             AsyncStorage.getItem("walletindex").then((walletindex) => {
-                this.setState({isLoading:false, walletindex: walletindex, dataSource: ds.cloneWithRows(JSON.parse(walletlist).reverse()), walletlist: JSON.parse(walletlist) })
+                this.setState({isLoading:false, walletindex: walletindex, dataSource: ds.cloneWithRows(JSON.parse(walletlist)), walletlist: JSON.parse(walletlist) })
             }).catch((error) => {console.log(error)});
         }).catch((error) => {console.log(error)});
     }
@@ -39,7 +39,6 @@ export default class CreateNewWallet extends React.Component {
     // remove wallet from the app
     removeWallet = (walletid, walletlist) => {
         var c, found=false;
-        console.log(walletlist)
         for(c in walletlist) {
             if(walletlist[c]["index"] == walletid) {
                 found=true;
@@ -54,9 +53,7 @@ export default class CreateNewWallet extends React.Component {
                     if (status =="success"){
                         walletlist.splice(c, 1);
                         AsyncStorage.setItem("walletlist",  JSON.stringify( walletlist ))
-                        console.log("THIS.STATE.WALLETLIST: ")
-                        console.log(this.state.walletlist)
-                        this.setState({ dataSource: ds.cloneWithRows(JSON.parse(JSON.stringify( walletlist )).reverse()) })
+                        this.setState({ dataSource: ds.cloneWithRows(JSON.parse(JSON.stringify( walletlist ))) })
                     }
                     else {
                         console.log("ERROR while removing wallet: ", err)
@@ -65,10 +62,11 @@ export default class CreateNewWallet extends React.Component {
             }
             // Android
             else {
-                AndroidWallet.createWallet(this.props.navigation.state.params.treeHeight, walletIndexToCreate, this.state.pin, this.props.navigation.state.params.hashFunctionId, (err) => {console.log(err); }, (status, address) => {
-                    // if success -> open the main view of the app
+                AndroidWallet.closeWallet( walletid, (err) => {console.log(err); }, (status) => {
                     if (status =="success"){
-                        this._updateWalletIndex(walletIndexToCreate, address)
+                        walletlist.splice(c, 1);
+                        AsyncStorage.setItem("walletlist",  JSON.stringify( walletlist ))
+                        this.setState({ dataSource: ds.cloneWithRows(JSON.parse(JSON.stringify( walletlist ))) })
                     }
                     else {
                         console.log("ERROR while removing wallet: ", error)
@@ -95,35 +93,29 @@ export default class CreateNewWallet extends React.Component {
         // AsyncStorage.removeItem("walletcreated");
     }
 
-    // ListView for the wallet list
-    renderRow(rowData, sectionID, rowID) {
-        if (rowData != null){
-            // format the QUANTA amount
-            addressBegin = rowData.address.substring(1, 15);
-            addressEnd = rowData.address.substring(66, 79);
+    // View for current wallet
+    renderCurrentWalletRow(rowData, sectionID, rowID) {
+        // format the QUANTA amount
+        addressBegin = rowData.address.substring(1, 5);
+        addressEnd = rowData.address.substring(65, 79);
 
+        // only return information related to current wallet
+        if (this.state.walletindex == rowData.index){
             return (
-                <View  style={{flex: 1, flexDirection:'row', alignSelf:'center', height:80, width:300}} onPress={()=> this.props.navigation.navigate('TxDetailsView', {txhash: txhash})} underlayColor='white'>
+                <View  style={{flex: 1, flexDirection:'row', alignSelf:'center', height:80, width:300}}>
                     <View style={{flex:1, justifyContent:'center'}}>
-                        {this.state.walletindex == rowData.index ?
-                            undefined
-                            :
-                            <Button color="red" onPress={() => this.removeWalletPopup(rowData.index)  } title="Delete"/>
-                        }
+                        <Image source={require('../resources/images/wallet_unlocked.png')} resizeMode={Image.resizeMode.contain} style={{height:35, width:35}} />
                     </View>
-                    <View style={{flex:2, justifyContent:'center'}}>
-                        <Text>    Q{addressBegin}... </Text>
-                        <Text>    ...{addressEnd} </Text>
+                    <View style={{flex:5, justifyContent:'center'}}>
+                        <Text>Q{addressBegin}...{addressEnd}</Text>
                     </View>
                     <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
-                        {this.state.walletindex == rowData.index ?
-                            <Text style={{color:'green', fontSize:20}}>Active</Text>
-                            :
-                            <Button color="red" onPress={() => this.openHexseedModal(rowData.index)  } title="Open"/>
-                        }
+                        <TouchableHighlight onPress={()=> this.props.navigation.navigate( "ShowQrCodeModal", {qrcode:rowData.address} )} underlayColor='white'>
+                            <Image source={require('../resources/images/qr_code_icon.png')} resizeMode={Image.resizeMode.contain} style={{height:35, width:35}} />
+                        </TouchableHighlight>
                     </View>
                 </View>
-            );
+            );    
         }
         else {
             return(
@@ -132,10 +124,48 @@ export default class CreateNewWallet extends React.Component {
         }
     }
 
-    ListViewItemSeparator = () => {
-        return (
-            <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
-        );
+    // ListView for the wallet list
+    renderRow(rowData, sectionID, rowID) {
+        if (this.state.walletindex != rowData.index){
+            // format the QUANTA amount
+            addressBegin = rowData.address.substring(1, 5);
+            addressEnd = rowData.address.substring(65, 79);
+
+            return (
+                <View>
+                    <View  style={{flex: 1, flexDirection:'row', alignSelf:'center', height:80, width:300}} onPress={()=> this.props.navigation.navigate('TxDetailsView', {txhash: txhash})} underlayColor='white'>
+                        <View style={{flex:1, justifyContent:'center'}}>
+                            <TouchableHighlight onPress={() => this.openHexseedModal(rowData.index)  } underlayColor='white'>
+                                <Image source={require('../resources/images/wallet_locked.png')} resizeMode={Image.resizeMode.contain} style={{height:35, width:35}} />
+                            </TouchableHighlight>
+                        </View>
+                        <View style={{flex:5, justifyContent:'center', paddingLeft:5}}>
+                            <Text>Q{addressBegin}...{addressEnd} </Text>
+                        </View>
+                        <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
+                            <TouchableHighlight onPress={()=> this.props.navigation.navigate( "ShowQrCodeModal", {qrcode:rowData.address} )} underlayColor='white'>
+                                <Image source={require('../resources/images/qr_code_icon.png')} resizeMode={Image.resizeMode.contain} style={{height:35, width:35}} />
+                            </TouchableHighlight>
+                        </View>
+                        <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
+                            <TouchableHighlight onPress={() => this.removeWalletPopup(rowData.index)  }  underlayColor='white'>
+                                <Image source={require('../resources/images/trash_solid.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
+                            </TouchableHighlight>                    
+                        </View>
+                    </View>
+                    {rowID < this.state.walletlist.length - 1 ? 
+                        <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
+                        :
+                        undefined
+                    }
+                </View>
+            );
+        }
+        else {
+            return(
+                <View></View>
+            );
+        }
     }
 
     // refresh wallet index on switch
@@ -171,33 +201,31 @@ export default class CreateNewWallet extends React.Component {
                                 </View>
                             </ImageBackground>
                         </View>
-                        <View style={{flex:1, paddingTop: 50, paddingBottom:100, width:330, alignSelf: 'center',  borderRadius:10}}>
-                            <View style={{height:50, backgroundColor:'white'}}>
-                                <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fafafa'}}>
-                                    <Text>New wallet creation</Text>
-                                </View>
-                            </View>
-                            <View style={{width:'100%',height:1, backgroundColor:'red', alignSelf:'flex-end'}}></View>
-                            <View style={{ backgroundColor:'white', width:330, padding:30, alignItems:'center'}}>
-                                <View>
-                                    <Text>You are about to create a new wallet and close the existing one.</Text>
-                                    <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ this.closeWallet }>
-                                        <Text style={styles.TextStyle}> CREATE </Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                            <View style={{backgroundColor:"white"}}>
-                                <View style={{width:'100%',height:1, backgroundColor:'red', alignSelf:'flex-end'}}></View>
-                                <View style={{height:50, backgroundColor:'white'}}>
-                                    <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fafafa'}}>
-                                        <Text>Open existing wallet</Text>
-                                    </View>
-                                </View>
-                                <View style={{width:'100%',height:1, backgroundColor:'red', alignSelf:'flex-end'}}></View>
-                                <ListView automaticallyAdjustContentInsets={false} dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)} renderSeparator= {this.ListViewItemSeparator} enableEmptySections={true} />
-                            </View>
-                        </View>
 
+                        <View style={{flex:1, paddingTop: 10, marginBottom:40, width:330, alignSelf: 'center',  borderRadius:10, backgroundColor:'white'}}>
+                            <View style={{alignItems:'center'}}>
+                                <Text>CURRENT WALLET</Text>
+                                <ListView automaticallyAdjustContentInsets={false} dataSource={this.state.dataSource} renderRow={this.renderCurrentWalletRow.bind(this)} enableEmptySections={true} />
+                            </View>
+                            
+                        </View>
+            
+                        {this.state.walletlist.length > 1 ? 
+                            <View style={{flex:1, paddingTop: 10, width:330, alignSelf: 'center',  borderRadius:10, backgroundColor:'white'}}>
+                                <View style={{alignItems:'center'}}>
+                                    <Text>EXISTING WALLETS</Text>
+                                    <ListView automaticallyAdjustContentInsets={false} dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)} enableEmptySections={true} />
+                                </View>
+                            </View>
+                            :
+                            undefined
+                        }
+
+                        <View style={{paddingTop:50, paddingRight:20, alignSelf:'flex-end'}}>
+                            <TouchableOpacity onPress={ this.closeWallet } >
+                                <Image source={require('../resources/images/icon_plus.png')} resizeMode={Image.resizeMode.contain} style={{height:65, width:65}} />
+                            </TouchableOpacity>
+                        </View>
                     </ScrollView>
                 </View>
             </ImageBackground>
@@ -210,7 +238,7 @@ export default class CreateNewWallet extends React.Component {
 
 const styles = StyleSheet.create({
     SubmitButtonStyle: {
-        alignSelf:'center',
+        alignSelf:'flex-end',
         width: 150,
         marginTop:30,
         paddingTop:15,

@@ -16,7 +16,7 @@ export default class OpenExistingWallet extends React.Component {
         const hexseed = this.props.navigation.getParam('hexseed', 'nohexseed');
         if (hexseed == "nohexseed"){
             this.setState({hexseed: "" })
-            // this.setState({ hexseed: GLOBALS.hexseed2 })
+            // this.setState({ hexseed: GLOBALS.hexseed1 })
         }
         else {
             this.setState({hexseed: hexseed})
@@ -70,7 +70,6 @@ export default class OpenExistingWallet extends React.Component {
             this.setState({isLoading: false})
         }
         else {
-
             AsyncStorage.getItem('walletcounter').then((walletcounter) => {
                 // if not first wallet
                 if(walletcounter != null){

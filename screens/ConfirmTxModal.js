@@ -69,10 +69,8 @@ export default class ConfirmTxModal extends React.Component {
             // Android
             else {
                 AndroidWallet.refreshWallet(walletindex,  (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
-
                     amountShor = this.props.navigation.state.params.amount
                     feeShor = this.props.navigation.state.params.fee * 1000000000
-
                     AndroidWallet.transferCoins(walletindex, this.props.navigation.state.params.recipient, parseInt(amountShor), otsIndex, feeShor,  (err) => {console.log(err)}, (status) => {
                         // if tx is successfull, back to main
                         if (status == "success"){
@@ -86,7 +84,6 @@ export default class ConfirmTxModal extends React.Component {
 
             }
         }).catch((error) => {console.log(error)});
-
     }
 
     render() {
@@ -124,7 +121,6 @@ export default class ConfirmTxModal extends React.Component {
             </ImageBackground>
         )
     }
-
 }
 
 // styling

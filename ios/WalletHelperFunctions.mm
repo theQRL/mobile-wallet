@@ -117,7 +117,6 @@ NSNumber * const shor = @1000000000;
 
 // retrieve value from keychain
 + (NSString *) getFromKeychain:(NSString *)account {
-  NSLog(@"ACCOUNT : %@", account);
   NSMutableDictionary *keychainItem = [NSMutableDictionary dictionary];
   //Populate it with the data and the attributes we want to use.
   keychainItem[(__bridge id)kSecClass] = (__bridge id)kSecClassGenericPassword; // We specify what kind of keychain item this is.
@@ -128,7 +127,6 @@ NSNumber * const shor = @1000000000;
   
   CFDictionaryRef result = nil;
   OSStatus sts = SecItemCopyMatching((__bridge CFDictionaryRef)keychainItem, (CFTypeRef *)&result);
-  NSLog(@"STS ERROR CODE : %d", (int)sts);
   if(sts == noErr){
     NSDictionary *resultDict = (__bridge_transfer NSDictionary *)result;
     NSData *hexseeddata = resultDict[(__bridge id)kSecValueData];

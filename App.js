@@ -18,7 +18,7 @@ import CreateAdvancedWallet from './screens/CreateAdvancedWallet'
 import TxDetailsView from './screens/TxDetailsView'
 import ProvideWalletPin from './screens/ProvideWalletPin'
 import OpenExistingWalletModal from './screens/OpenExistingWalletModal'
-
+import ShowQrCodeModal from './screens/ShowQrCodeModal'
 
 // import { QRLLIB } from './node_modules/qrllib/build/web-libjsqrl.js'
 
@@ -61,9 +61,9 @@ const CustomDrawerContentComponent = (props) => (
             <View style={{paddingLeft: 40, paddingTop:50}}>
                 <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://theqrl.org/')}>QRL WEBSITE</Text>
                 <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://qrl.foundation/')}>QRL FOUNDATION</Text>
-                <Text style={{color:'white',paddingTop:20}}>REDDIT</Text>
-                <Text style={{color:'white',paddingTop:20}}>DISCORD</Text>
-                <Text style={{color:'white',paddingTop:20}}>SUPPORT</Text>
+                <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://www.reddit.com/r/qrl')}>REDDIT</Text>
+                <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://discord.gg/jBT6BEp')}>DISCORD</Text>
+                <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('mailto:support@theqrl.org') }>SUPPORT</Text>
             </View>
     	</ImageBackground>
     </View>
@@ -123,6 +123,9 @@ const RootStack = StackNavigator(
     },
     ScanQrModal : {
         screen: ScanQrModal
+    },
+    ShowQrCodeModal : {
+        screen: ShowQrCodeModal
     },
   },
   {

@@ -194,7 +194,6 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void checkHexseedIdentical(String hexSeed, String walletindex, Callback errorCallback, Callback successCallback) {
         String hexseed = getEncrypted("hexseed".concat(walletindex));
-        System.out.println(hexseed);
         if (hexseed.equals(hexSeed)){
             successCallback.invoke("success");
         }
@@ -441,9 +440,17 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
         }
     }
 
+    // remove wallet related information from Shared Preferences
     @ReactMethod
-    public void closeWallet(Callback errorCallback, Callback successCallback) {
-        PreferenceHelper.clearPreferences();
+    public void closeWallet(String walletindex, Callback errorCallback, Callback successCallback) {
+        PreferenceHelper.removeFromPreferences("xmsspk"+walletindex+"iv" );
+        PreferenceHelper.removeFromPreferences("xmsspk"+walletindex+"enc");
+        PreferenceHelper.removeFromPreferences("pin"+walletindex+"iv");
+        PreferenceHelper.removeFromPreferences("pin"+walletindex+"enc");
+        PreferenceHelper.removeFromPreferences("address"+walletindex+"iv");
+        PreferenceHelper.removeFromPreferences("address"+walletindex+"enc");
+        PreferenceHelper.removeFromPreferences("hexseed"+walletindex+"iv");
+        PreferenceHelper.removeFromPreferences("hexseed"+walletindex+"enc");
         successCallback.invoke("success");
     }
 

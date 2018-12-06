@@ -32,8 +32,6 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
   
   NSString* walletAddress = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@%@", @"address", walletindex]  ];
   
-  NSLog(@"WALLET ADDRESS FROM KEYCHAIN IS %@", walletAddress);
-  
   // Initialization of variables
   __block int completed = 0;
   NSMutableArray *txResponseArray = [[NSMutableArray alloc] init];
@@ -286,8 +284,6 @@ RCT_EXPORT_METHOD(getTxDetails:(NSString* )txhash callback:(RCTResponseSenderBlo
   getObjectReq.query = [WalletHelperFunctions nsStringHex2nsData:txhash];
   
   [client getObjectWithRequest:getObjectReq handler:^(GetObjectResp *response, NSError *error) {
-    NSLog(@"%@", response);
-    
     NSDictionary *txInfoJson = [NSDictionary dictionaryWithObjectsAndKeys:
                                       @(response.transaction.header.blockNumber), @"blocknumber",
                                       @(response.transaction.tx.nonce), @"nonce",
