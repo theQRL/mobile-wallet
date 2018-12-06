@@ -26,7 +26,6 @@ export default class txDetailsView extends React.Component {
         // Android
         else {
             this.setState({paddingBottom: 10, paddingTop: 10, marginTop:10})
-            console.log("TXHASH IS ", this.props.navigation.state.params.txhash)
             AndroidWallet.getTxDetails(this.props.navigation.state.params.txhash, (err) => {console.log(err);}, (result)=> {
                 var results = JSON.parse(result);
                 this.setState({isLoading:false, blocknumber: results.blocknumber, nonce: results.nonce, fromAddr: results.from, toAddr: results.to, amount: results.amount});
@@ -150,6 +149,4 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
         left: 0
     },
-
-
 });

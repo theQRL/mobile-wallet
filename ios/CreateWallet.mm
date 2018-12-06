@@ -36,9 +36,6 @@ RCT_EXPORT_METHOD(createWallet:(NSNumber* _Nonnull)treeHeight withIndex:(NSStrin
 //  NSDictionary *spec = @{(__bridge id)kSecClass:(__bridge id)kSecClassGenericPassword};
 //  SecItemDelete((__bridge CFDictionaryRef)spec);
   
-  
-  NSLog(@"WALLET PIN IS %@ ", walletpin);
-  
   // empty array of unsigned char
   unsigned char seed_array[48];
   // filling the array with randombytes
@@ -139,14 +136,9 @@ RCT_EXPORT_METHOD(createWallet:(NSNumber* _Nonnull)treeHeight withIndex:(NSStrin
 // save the user's entered hexseed to keychain
 RCT_EXPORT_METHOD(openWalletWithHexseed:(NSString* )hexseed withIndex:(NSString*)walletindex withPin:(NSString*)walletpin callback:(RCTResponseSenderBlock)callback){
   
-
-  NSLog(@"WALLET INDEX: %@", walletindex);
   // Remove all previous data from the keychain
 //  NSDictionary *spec = @{(__bridge id)kSecClass:(__bridge id)kSecClassGenericPassword};
 //  SecItemDelete((__bridge CFDictionaryRef)spec);
-
-  NSLog(@"OPENING WALLET FROM HEXSEED");
-  NSLog(@"HEXSEED IS %@", hexseed);
     
   // convert hexseed NSString to a vector of uint8_t
   std::vector<uint8_t> hexSeed= {};

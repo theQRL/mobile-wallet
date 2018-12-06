@@ -194,7 +194,6 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void checkHexseedIdentical(String hexSeed, String walletindex, Callback errorCallback, Callback successCallback) {
         String hexseed = getEncrypted("hexseed".concat(walletindex));
-        System.out.println(hexseed);
         if (hexseed.equals(hexSeed)){
             successCallback.invoke("success");
         }

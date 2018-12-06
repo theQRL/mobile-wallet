@@ -1,16 +1,12 @@
 import React from 'react';
-import {Picker, Text, View, Button, Image, ScrollView, ImageBackground, StyleSheet, TouchableHighlight, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Alert} from 'react-native';
+import {Text, View, Button, Image, ImageBackground, StyleSheet, TouchableHighlight} from 'react-native';
+
 import QRCode from 'react-native-qrcode';
-// View for scanning QR code of QRL address
 export default class ShowQrCodeModal extends React.Component {
 
     static navigationOptions = {
          drawerLabel: () => null
     };
-
-    showQRLaddress(e){
-        this.props.navigation.navigate("SendReceive",{recipient: e.data});
-    }
 
     render() {
         return(
@@ -56,30 +52,6 @@ export default class ShowQrCodeModal extends React.Component {
 
 // styling
 const styles = StyleSheet.create({
-    centerText: {
-        flex: 1,
-        fontSize: 18,
-        paddingTop: 80,
-        color: '#777',
-    },
-    textBold: {
-        fontWeight: '500',
-        color: '#000',
-    },
-    buttonText: {
-        fontSize: 21,
-        color: 'rgb(0,122,255)',
-    },
-    buttonTouchable: {
-        padding: 16,
-  },
-  CancelTextStyle:{
-        alignSelf:'center',
-        color: 'red',
-        textAlign:'center',
-        fontSize:18,
-        paddingTop:5
-  },
     backgroundImage: {
         flex: 1,
         width: null,

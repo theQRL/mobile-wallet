@@ -119,9 +119,6 @@ RCT_EXPORT_METHOD(sendCoins:(NSString* )recipient withAmount:(NSNumber* _Nonnull
  
   
   [client transferCoinsWithRequest:transferCoinsReq handler:^(TransferCoinsResp *response, NSError *error) {
-    
-    NSLog(@" RESPONSE %@", response);
-    NSLog(@" ERROR %@", error);
 //    NSLog(@" TX FEE %llu", response.extendedTransactionUnsigned.tx.fee);
     
 //    NSMutableData *concatenatedArrays = [[NSMutableData alloc] init];
@@ -234,8 +231,6 @@ RCT_EXPORT_METHOD(sendCoins:(NSString* )recipient withAmount:(NSNumber* _Nonnull
     pushTransactionReq.transactionSigned = signedTx;
     
     [client pushTransactionWithRequest:pushTransactionReq handler:^(PushTransactionResp *response2, NSError *error2) {
-      NSLog(@"PUSHTRANSACTION ERROR : %@", error2);
-      NSLog(@"PUSHTRANSACTION RESPONSE : %@", response2);
       NSString *txHash = [WalletHelperFunctions nsDataHex2string:response2.txHash];
       NSLog(@" PUSHED TRANSACTION HASH IS : %@", txHash);
       if (error2){

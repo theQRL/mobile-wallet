@@ -26,8 +26,8 @@ export default class SendReceive extends React.Component {
     componentDidMount() {
         const recipient = this.props.navigation.getParam('recipient', 'norecipient');
         if (recipient == "norecipient"){
-            // this.setState({recipient:""})
-            this.setState({recipient: GLOBALS.recipient })
+            this.setState({recipient:""})
+            // this.setState({recipient: GLOBALS.recipient })
         }
         else {
             this.setState({recipient:recipient})

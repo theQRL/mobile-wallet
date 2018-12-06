@@ -50,8 +50,6 @@ export default class Wallet extends React.Component{
                 // Android
                 else {
                     AndroidWallet.refreshWallet(walletindex,  (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
-                        console.log("wALLET ADDRESS ANDROID")
-                        console.log(walletAddress)
                         this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
                     });
                 }
