@@ -16,10 +16,13 @@ export default class SignIn extends React.Component {
                     <Text style={styles.bigTitle}>LOGIN / CREATE</Text>
                         <View style={{width:100, height:1, backgroundColor:'white', marginTop:30,marginBottom:20}}></View>
                     <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={() => this.props.navigation.navigate('CompleteSetup',{treeHeight: 10, signatureCounts: "1024",  hashFunctionName: "SHAKE_128", hashFunctionId:1 }) }>
-                        <Text style={styles.TextStyle}> CREATE NEW WALLET </Text>
+                        <Text style={styles.TextStyle}> CREATE DEFAULT WALLET </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={ () => this.props.navigation.push('CreateAdvancedWallet') }>
-                        <Text style={styles.TextStyleWhite}> ADVANCED OPTIONS </Text>
+                    <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={() => this.props.navigation.navigate('CreateWalletTreeHeight',{treeHeight: 10, signatureCounts: "1024",  hashFunctionName: "SHAKE_128", hashFunctionId:1 }) }>
+                        <Text style={styles.TextStyle}> CREATE ADVANCED WALLET </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => this.props.navigation.push('OpenExistingWallet') }>
+                        <Text style={styles.TextStyle}> OPEN EXISTING WALLET </Text>
                     </TouchableOpacity>
 
                     {closable?
