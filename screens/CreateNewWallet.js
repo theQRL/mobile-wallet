@@ -9,7 +9,7 @@ export default class CreateNewWallet extends React.Component {
 
     // seetings for react-native navigation
     static navigationOptions = {
-        drawerLabel: 'CREATE NEW WALLET',
+        drawerLabel: 'WALLETS',
         drawerIcon: ({ tintColor }) => (
             <Image
             source={require('../resources/images/wallet_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain} style={{width:25, height:25}}
@@ -134,13 +134,17 @@ export default class CreateNewWallet extends React.Component {
             return (
                 <View>
                     <View  style={{flex: 1, flexDirection:'row', alignSelf:'center', height:80, width:300}} onPress={()=> this.props.navigation.navigate('TxDetailsView', {txhash: txhash})} underlayColor='white'>
-                        <View style={{flex:1, justifyContent:'center'}}>
-                            <TouchableHighlight onPress={() => this.openHexseedModal(rowData.index)  } underlayColor='white'>
-                                <Image source={require('../resources/images/wallet_locked.png')} resizeMode={Image.resizeMode.contain} style={{height:35, width:35}} />
+                        <View style={{flex:6, flexDirection:'row'}}>
+                            <TouchableHighlight onPress={() => this.openHexseedModal(rowData.index)  } underlayColor='white' style={{flex:1, justifyContent:'center'}}>    
+                                <View style={{flex:1, flexDirection:'row'}}>
+                                    <View style={{flex:1, justifyContent:'center'}}>
+                                        <Image source={require('../resources/images/wallet_locked.png')} resizeMode={Image.resizeMode.contain} style={{height:35, width:35}} />
+                                    </View>
+                                    <View style={{flex:5, justifyContent:'center', paddingLeft:5}}>
+                                        <Text>Q{addressBegin}...{addressEnd} </Text>
+                                    </View>
+                                </View>
                             </TouchableHighlight>
-                        </View>
-                        <View style={{flex:5, justifyContent:'center', paddingLeft:5}}>
-                            <Text>Q{addressBegin}...{addressEnd} </Text>
                         </View>
                         <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
                             <TouchableHighlight onPress={()=> this.props.navigation.navigate( "ShowQrCodeModal", {qrcode:rowData.address} )} underlayColor='white'>
