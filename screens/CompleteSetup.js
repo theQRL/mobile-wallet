@@ -142,7 +142,7 @@ export default class CompleteSetup extends React.Component {
                         </TouchableOpacity>
                         :
                         <TouchableOpacity style={styles.SubmitButtonStyle} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => {this.launchModal(true, null)}}  >
-                            <Text style={styles.TextStyle}> ADD PIN </Text>
+                            <Text style={styles.TextStyle}> CREATE 4-DIGIT PIN </Text>
                         </TouchableOpacity>
                     }
 
