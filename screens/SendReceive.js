@@ -206,8 +206,8 @@ export default class SendReceive extends React.Component {
                                             <View style={{flex:1, alignItems:'flex-end'}}><Text>OTS Key Index: <Text style={{color:'red'}}>{this.state.otsIndex}</Text></Text></View>
                                         </View>
 
-                                        <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ this.checkAddress } >
-                                            <Text style={styles.TextStyle}> REVIEW </Text>
+                                        <TouchableOpacity style={styles.SubmitButtonStyleBig} activeOpacity = { .5 } onPress={ this.checkAddress } >
+                                            <Text style={styles.TextStyle}> REVIEW AND CONFIRM</Text>
                                         </TouchableOpacity>
 
                                         <TouchableOpacity style={styles.SubmitButtonStyle3} activeOpacity = { .5 } onPress={() => this.props.navigation.navigate('ScanQrModal')} >
@@ -284,8 +284,8 @@ export default class SendReceive extends React.Component {
                                             <View style={{flex:1, alignItems:'flex-end'}}><Text>OTS Key Index: <Text style={{color:'red'}}>{this.state.otsIndex}</Text></Text></View>
                                         </View>
 
-                                        <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ this.checkAddress }>
-                                            <Text style={styles.TextStyle}> REVIEW </Text>
+                                        <TouchableOpacity style={styles.SubmitButtonStyleBig} activeOpacity = { .5 } onPress={ this.checkAddress }>
+                                            <Text style={styles.TextStyle}> REVIEW AND CONFIRM </Text>
                                         </TouchableOpacity>
                                     </View>
 
@@ -332,6 +332,16 @@ const styles = StyleSheet.create({
     SubmitButtonStyle: {
         alignSelf:'flex-end',
         width: 150,
+        marginTop:30,
+        paddingTop:15,
+        paddingBottom:15,
+        backgroundColor:'#f33160',
+        borderWidth: 1,
+        borderColor: '#fff'
+    },
+    SubmitButtonStyleBig: {
+        alignSelf:'center',
+        width: 250,
         marginTop:30,
         paddingTop:15,
         paddingBottom:15,

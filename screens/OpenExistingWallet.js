@@ -210,7 +210,7 @@ export default class OpenExistingWallet extends React.Component {
                                     <Text style={styles.TextStyleWhite}> SCAN HEXSEED QR CODE </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={ () => {this.launchModal(true, null)} }>
-                                    <Text style={styles.TextStyleWhite}> ADD PIN </Text>
+                                    <Text style={styles.TextStyleWhite}> CREATE 4-DIGIT PIN </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.SubmitButtonStyleRed} activeOpacity = { .5 } onPress={ () => this.props.navigation.navigate('SignIn') }>
                                     <Text style={styles.TextStyleWhite}> CANCEL </Text>
