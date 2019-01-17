@@ -146,8 +146,8 @@ export default class CompleteSetup extends React.Component {
                         </TouchableOpacity>
                     }
 
-                    <TouchableOpacity style={styles.SubmitButtonStyleDark} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => {this.props.navigation.popToTop()} }>
-                        <Text style={styles.TextStyleWhite}> START AGAIN </Text>
+                    <TouchableOpacity style={styles.SubmitButtonStyleRed} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => {this.props.navigation.popToTop()} }>
+                        <Text style={styles.TextStyleWhite}> CANCEL </Text>
                     </TouchableOpacity>
 
                     {this.state.loading ?
@@ -191,6 +191,18 @@ const styles = StyleSheet.create({
         borderRadius:10,
         borderWidth: 1,
         borderColor: '#144b82'
+    },
+    SubmitButtonStyleRed: {
+        width: 300,
+        marginTop:10,
+        paddingTop:15,
+        paddingBottom:15,
+        marginLeft:30,
+        marginRight:30,
+        backgroundColor:'#D72E61',
+        borderRadius:10,
+        borderWidth: 1,
+        borderColor: '#D72E61'
     },
     TextStyle:{
         color:'#1e79cb',
