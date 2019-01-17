@@ -26,7 +26,7 @@ export default class SignIn extends React.Component {
                     </TouchableOpacity>
 
                     {closable?
-                        <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={ () => this.props.navigation.navigate('CreateNewWallet') }>
+                        <TouchableOpacity style={styles.SubmitButtonStyleRed} activeOpacity = { .5 } onPress={ () => this.props.navigation.navigate('CreateNewWallet') }>
                             <Text style={styles.TextStyleWhite}> CANCEL </Text>
                         </TouchableOpacity>
                     :
@@ -67,6 +67,18 @@ const styles = StyleSheet.create({
         borderRadius:10,
         borderWidth: 1,
         borderColor: '#144b82'
+    },
+    SubmitButtonStyleRed: {
+        width: 300,
+        marginTop:10,
+        paddingTop:15,
+        paddingBottom:15,
+        marginLeft:30,
+        marginRight:30,
+        backgroundColor:'#D72E61',
+        borderRadius:10,
+        borderWidth: 1,
+        borderColor: '#D72E61'
     },
     TextStyle:{
         color:'#1e79cb',

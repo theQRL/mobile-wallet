@@ -92,6 +92,9 @@ export default class CreateWalletTreeHeight extends React.Component {
                             }
                         </TouchableOpacity>
                     }
+                    <TouchableOpacity style={styles.SubmitButtonStyleRed} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => this.props.navigation.navigate('SignIn') }>
+                        <Text style={styles.TextStyleWhite}> CANCEL </Text>
+                    </TouchableOpacity>
                     {this.state.selectText ?  
                         <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={() => this.props.navigation.navigate('CreateWalletHashFunction',{treeHeight: this.state.treeHeight, signatureCounts: this.state.signatureCounts}) } >
                             <Text style={styles.TextStyleWhite}> CONTINUE </Text>
@@ -153,6 +156,18 @@ const styles = StyleSheet.create({
         borderRadius:10,
         borderWidth: 1,
         borderColor: '#144b82'
+    },
+    SubmitButtonStyleRed: {
+        width: 300,
+        marginTop:10,
+        paddingTop:15,
+        paddingBottom:15,
+        marginLeft:30,
+        marginRight:30,
+        backgroundColor:'#D72E61',
+        borderRadius:10,
+        borderWidth: 1,
+        borderColor: '#D72E61'
     },
     TextStyle:{
         color:'#1e79cb',

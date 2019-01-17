@@ -117,8 +117,8 @@ export default class OpenExistingWallet extends React.Component {
     openButton = () => {
         if (this.state.pin != null){
             return(
-                <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={this.openWallet}>
-                    <Text style={styles.TextStyleWhite}> OPEN WALLET </Text>
+                <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={this.openWallet}>
+                    <Text style={styles.TextStyle}> OPEN WALLET </Text>
                 </TouchableOpacity>
             );
         }
@@ -212,6 +212,9 @@ export default class OpenExistingWallet extends React.Component {
                                 <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={ () => {this.launchModal(true, null)} }>
                                     <Text style={styles.TextStyleWhite}> ADD PIN </Text>
                                 </TouchableOpacity>
+                                <TouchableOpacity style={styles.SubmitButtonStyleRed} activeOpacity = { .5 } onPress={ () => this.props.navigation.navigate('SignIn') }>
+                                    <Text style={styles.TextStyleWhite}> CANCEL </Text>
+                                </TouchableOpacity>
                                 {this.openButton()}
                             </View>
                         }
@@ -233,6 +236,18 @@ const styles = StyleSheet.create({
         color:'white',
         fontSize: 25,
     },
+    SubmitButtonStyle: {
+        width: 300,
+        marginTop:10,
+        paddingTop:15,
+        paddingBottom:15,
+        marginLeft:30,
+        marginRight:30,
+        backgroundColor:'white',
+        borderRadius:10,
+        borderWidth: 1,
+        borderColor: '#fff'
+    },
     SubmitButtonStyleDark: {
         width: 300,
         marginTop:10,
@@ -244,6 +259,22 @@ const styles = StyleSheet.create({
         borderRadius:10,
         borderWidth: 1,
         borderColor: '#144b82'
+    },
+    SubmitButtonStyleRed: {
+        width: 300,
+        marginTop:10,
+        paddingTop:15,
+        paddingBottom:15,
+        marginLeft:30,
+        marginRight:30,
+        backgroundColor:'#D72E61',
+        borderRadius:10,
+        borderWidth: 1,
+        borderColor: '#D72E61'
+    },
+    TextStyle:{
+        color:'#1e79cb',
+        textAlign:'center',
     },
     TextStyleWhite:{
         color:'white',
