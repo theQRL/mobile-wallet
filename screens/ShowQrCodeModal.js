@@ -12,14 +12,10 @@ export default class ShowQrCodeModal extends React.Component {
         return(
             <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
                 <View style={{flex:1}}>
-                    <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
-                        <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='white'>
-                          <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
-                        </TouchableHighlight>
-                    </View>
+                    <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}></View>
 
                     <View style={{flex:2}}>
-                        <View style={{ height:130, width:330, borderRadius:10, alignSelf:'center', marginTop: 30}}>
+                        <View style={{ height:130, width:330, borderRadius:10, alignSelf:'center', marginTop: 50}}>
                             <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage2}>
                                 <View style={{flex:1, alignSelf:'center', width:330, justifyContent:'center', alignItems:'center'}}>
                                     <Text style={{color:'white', fontSize:20}}>QR code</Text>
