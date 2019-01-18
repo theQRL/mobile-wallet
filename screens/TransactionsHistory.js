@@ -107,6 +107,9 @@ export default class Wallet extends React.Component{
     }
 
     renderRow(rowData, sectionID, rowID) {
+
+        console.log("NUMBER OF TX IS : ");
+
         // format the QUANTA amount
         if (rowData.desc % 1000000000 == 0){
             amount = rowData.desc / 1000000000
@@ -141,6 +144,9 @@ export default class Wallet extends React.Component{
                     </View>
                 </View>
                 {/*Do not show separator on the last item of the list*/}
+
+
+
                 {rowID < 9 ? 
                     <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
                     :
