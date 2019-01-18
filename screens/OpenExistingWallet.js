@@ -206,11 +206,11 @@ export default class OpenExistingWallet extends React.Component {
                             </View>
                             :
                             <View>
-                                <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={ () => {this.launchHexModal(true)} } >
-                                    <Text style={styles.TextStyleWhite}> SCAN HEXSEED QR CODE </Text>
+                                <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => {this.launchHexModal(true)} } >
+                                    <Text style={styles.TextStyle}> SCAN HEXSEED QR CODE </Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={ () => {this.launchModal(true, null)} }>
-                                    <Text style={styles.TextStyleWhite}> CREATE 4-DIGIT PIN </Text>
+                                <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => {this.launchModal(true, null)} }>
+                                    <Text style={styles.TextStyle}> CREATE 4-DIGIT PIN </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.SubmitButtonStyleRed} activeOpacity = { .5 } onPress={ () => this.props.navigation.navigate('SignIn') }>
                                     <Text style={styles.TextStyleWhite}> CANCEL </Text>
@@ -239,8 +239,8 @@ const styles = StyleSheet.create({
     SubmitButtonStyle: {
         width: 300,
         marginTop:10,
-        paddingTop:15,
-        paddingBottom:15,
+        paddingTop:10,
+        paddingBottom:10,
         marginLeft:30,
         marginRight:30,
         backgroundColor:'white',
@@ -248,23 +248,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#fff'
     },
-    SubmitButtonStyleDark: {
-        width: 300,
-        marginTop:10,
-        paddingTop:15,
-        paddingBottom:15,
-        marginLeft:30,
-        marginRight:30,
-        backgroundColor:'#144b82',
-        borderRadius:10,
-        borderWidth: 1,
-        borderColor: '#144b82'
-    },
     SubmitButtonStyleRed: {
         width: 300,
         marginTop:10,
-        paddingTop:15,
-        paddingBottom:15,
+        paddingTop:10,
+        paddingBottom:10,
         marginLeft:30,
         marginRight:30,
         backgroundColor:'#D72E61',

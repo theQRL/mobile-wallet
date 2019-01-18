@@ -85,8 +85,8 @@ const styles = StyleSheet.create({
     SubmitButtonStyleDark: {
         width: 300,
         marginTop:10,
-        paddingTop:15,
-        paddingBottom:15,
+        paddingTop:10,
+        paddingBottom:10,
         marginLeft:30,
         marginRight:30,
         backgroundColor:'#144b82',

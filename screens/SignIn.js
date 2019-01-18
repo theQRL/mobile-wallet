@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import {Platform,StyleSheet,ImageBackground,Text,View,TouchableOpacity} from 'react-native';
+import {Platform,StyleSheet,ImageBackground,Text,View,TouchableOpacity,Dimensions} from 'react-native';
 
 export default class SignIn extends React.Component {
 
     render() {
+        console.log("GETTING DIMENSION INFORMATION....");
+        console.log("WIDTH:", Dimensions.get('window').width);
+        console.log("HEIGHT:", Dimensions.get('window').height);
+
         // check if user can close the new wallet process
         // true if the user already has a wallet open and asking to open a new wallet 
         const closable = this.props.navigation.getParam('closable', false);
@@ -47,8 +51,8 @@ const styles = StyleSheet.create({
     SubmitButtonStyle: {
         width: 300,
         marginTop:10,
-        paddingTop:15,
-        paddingBottom:15,
+        paddingTop:10,
+        paddingBottom:10,
         marginLeft:30,
         marginRight:30,
         backgroundColor:'white',
@@ -56,23 +60,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#fff'
     },
-    SubmitButtonStyleDark: {
-        width: 300,
-        marginTop:10,
-        paddingTop:15,
-        paddingBottom:15,
-        marginLeft:30,
-        marginRight:30,
-        backgroundColor:'#144b82',
-        borderRadius:10,
-        borderWidth: 1,
-        borderColor: '#144b82'
-    },
     SubmitButtonStyleRed: {
         width: 300,
         marginTop:10,
-        paddingTop:15,
-        paddingBottom:15,
+        paddingTop:10,
+        paddingBottom:10,
         marginLeft:30,
         marginRight:30,
         backgroundColor:'#D72E61',
