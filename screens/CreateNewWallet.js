@@ -78,7 +78,7 @@ export default class CreateNewWallet extends React.Component {
 
     // popup to confirm wallet removal
     removeWalletPopup = (walletid) => {
-        Alert.alert( "REMOVE WALLET"  , "Do you really want to remove this wallet?" , [{text: "Cancel", onPress: () => {console.log("Canceled")}}, {text: "Remove", onPress: () => this.removeWallet(walletid, this.state.walletlist) } ] )
+        Alert.alert( "REMOVE WALLET"  , "Do you really want to remove this wallet from the app?" , [{text: "Cancel", onPress: () => {console.log("Canceled")}}, {text: "Remove", onPress: () => this.removeWallet(walletid, this.state.walletlist) } ] )
     }
 
     openHexseedModal = (walletindexToOpen) => {
@@ -131,6 +131,9 @@ export default class CreateNewWallet extends React.Component {
             addressBegin = rowData.address.substring(1, 5);
             addressEnd = rowData.address.substring(65, 79);
 
+            console.log("NUMBER OF WALLET IS :")
+            console.log(this.state.walletlist.length)
+
             return (
                 <View>
                     <View  style={{flex: 1, flexDirection:'row', alignSelf:'center', height:80, width:300}} onPress={()=> this.props.navigation.navigate('TxDetailsView', {txhash: txhash})} underlayColor='white'>
@@ -157,7 +160,7 @@ export default class CreateNewWallet extends React.Component {
                             </TouchableHighlight>                    
                         </View>
                     </View>
-                    {rowID < this.state.walletlist.length - 1 ? 
+                    {rowID < this.state.walletlist.length - 2 ? 
                         <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
                         :
                         undefined

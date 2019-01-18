@@ -163,9 +163,14 @@ export default class SendReceive extends React.Component {
             addressBegin = this.state.walletAddress.substring(1, 10);
             addressEnd = this.state.walletAddress.substring(58, 79);
 
+
+            // <KeyboardAvoidingView style={{flex:1, paddingTop: this.state.paddingTopCentral, paddingBottom:100, width:330, alignSelf: 'center', borderRadius:10}} behavior="padding">
+
             // View for iOS
             if (DeviceInfo.getDeviceId().includes("iPhone10")){
                 return (
+
+                    <ScrollView scrollEnabled={false} contentContainerStyle={{flex: 1}} >
                     <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
                         <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
                             <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} activeOpacity={1}>
@@ -240,6 +245,8 @@ export default class SendReceive extends React.Component {
                             </View>
                         }
                     </ImageBackground>
+
+                    </ScrollView>
                 );
             }
             // View for Android

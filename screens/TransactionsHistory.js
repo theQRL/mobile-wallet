@@ -44,7 +44,15 @@ export default class Wallet extends React.Component{
             AsyncStorage.getItem("walletindex").then((walletindex) => {
                 if (Platform.OS === 'ios'){
                     IosWallet.refreshWallet(walletindex, (error, walletAddress, otsIndex, balance, keys)=> {
+
+                        
+
                         this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
+
+                        console.log(keys)
+                        console.log( keys.length)
+
+                        
                     });
                 }
                 // Android
@@ -145,9 +153,7 @@ export default class Wallet extends React.Component{
                 </View>
                 {/*Do not show separator on the last item of the list*/}
 
-
-
-                {rowID < 9 ? 
+                { rowID < 9  ? 
                     <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
                     :
                     undefined
@@ -280,7 +286,7 @@ export default class Wallet extends React.Component{
                             <View style={{backgroundColor:'white', flex:2, width:350, alignSelf:'center', borderRadius:10, marginTop:10}}>
                                 <Text style={{alignItems:'center', alignSelf:'center', paddingTop:20, marginBottom:20}}>TRANSACTION HISTORY</Text>
                                     <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
-                                {this.state.dataSource == "{}" ?
+                                {this.state.dataSource.length == 0 ?
                                     <Text style={{alignSelf:'center'}}>No Transaction</Text>
                                     :
                                     <ListView automaticallyAdjustContentInsets={false} dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)} enableEmptySections={true} />

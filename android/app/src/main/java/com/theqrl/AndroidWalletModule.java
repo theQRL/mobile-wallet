@@ -341,7 +341,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
                                     }
                                 }
                             }
-                            System.out.println( "OTSINDEX IS: " );
+                            System.out.println( "OTSINDEX IS: " );  
                             System.out.println( otsIndex );
                             // obtained next available ots index
                             if (otsIndex > 0){
