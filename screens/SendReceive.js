@@ -276,6 +276,7 @@ export default class SendReceive extends React.Component {
                                 <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
                                 </TouchableHighlight>
                             </View>
+                            <FlashMessage/> 
 
                             <View style={{ alignItems:'center', paddingTop:20}}>
                                 <ImageBackground source={require('../resources/images/fund_bg_small.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:330, justifyContent:'center',alignItems:'center'}} >
@@ -337,7 +338,14 @@ export default class SendReceive extends React.Component {
                                         <Text>Q{this.state.walletAddress}</Text>
                                     </View>
                                     <View>
-                                        <TouchableOpacity style={styles.SubmitButtonStyleCopy} activeOpacity = { .5 } onPress={ Clipboard.setString('Q'+this.state.walletAddress) } >
+                                        {/* <TouchableOpacity style={styles.SubmitButtonStyleCopy} activeOpacity = { .5 } onPress={ Clipboard.setString('Q'+this.state.walletAddress) } > */}
+                                        
+                                        <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => { Clipboard.setString('Q'+this.state.walletAddress);
+                                            showMessage({
+                                                message: "QRL address copied to clipboard",
+                                                backgroundColor: "#EB2E42"
+                                            });
+                                        }}>
                                             <Text style={styles.TextStyle}> COPY </Text>
                                         </TouchableOpacity>
                                     </View>
