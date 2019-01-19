@@ -204,7 +204,7 @@ export default class CreateNewWallet extends React.Component {
                         <View style={{ height:130, width:330, borderRadius:10, alignSelf:'center', marginTop: 30}}>
                             <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage2}>
                                 <View style={{flex:1, alignSelf:'center', width:330, justifyContent:'center', alignItems:'center'}}>
-                                    <Text style={{color:'white', fontSize:20}}>OPEN NEW WALLET</Text>
+                                    <Text style={{color:'white', fontSize:20}}>WALLETS</Text>
                                 </View>
                             </ImageBackground>
                         </View>

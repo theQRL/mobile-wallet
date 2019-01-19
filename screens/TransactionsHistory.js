@@ -240,10 +240,11 @@ export default class Wallet extends React.Component{
                             </View>
 
                             <View style={{ alignItems:'center',flex:1}}>
-                                <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:240, width:360, justifyContent:'center',alignItems:'center', paddingTop: 30}} >
-                                    <Text style={{color:'white'}}>QRL BALANCE</Text>
-                                    <Text style={{color:'white', fontWeight: "bold"}}>Q{addressBegin}...{addressEnd}</Text>
-                                    <Text style={{color:'white',fontSize:30}}>{this.state.balance / 1000000000 }</Text>
+                                <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:240, width:360, justifyContent:'center',alignItems:'center', paddingTop: 30, paddingLeft:10, paddingRight:10}} >
+                                    {/* <Text style={{color:'white'}}>QRL BALANCE</Text> */}
+                                    {/* <Text style={{color:'white', fontWeight: "bold"}} selectable={true}>Q{addressBegin}...{addressEnd}</Text> */}
+                                    <Text style={{color:'white', fontWeight: "bold", fontSize:12, textAlign:'center'}} selectable={true}>{this.state.walletAddress}</Text>
+                                    <Text style={{color:'white',fontSize:30}}>{this.state.balance / 1000000000 } QRL</Text>
                                     <Text style={{color:'white',fontSize:13}}>USD ${ ((this.state.balance / 1000000000 ) * this.state.price).toFixed(2) }</Text>
 
                                     <View style={{width:"80%", borderRadius:10, flexDirection:'row', paddingTop:15,paddingBottom:5}}>
