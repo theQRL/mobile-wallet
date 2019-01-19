@@ -71,7 +71,7 @@ export default class BackupWallet extends React.Component {
             <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
 
 
-                <Modal visible={this.state.showModal} transparent={true}>
+                <Modal onRequestClose={ () => {console.log("")}  } visible={this.state.showModal} transparent={true}>
                 <View
                     style={{
                     position: 'absolute',

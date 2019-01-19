@@ -148,7 +148,7 @@ export default class OpenExistingWallet extends React.Component {
         return (
             <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
 
-                <Modal animationType="slide" visible={this.state.modalVisible}>
+                <Modal onRequestClose={ console.log("") } animationType="slide" visible={this.state.modalVisible}>
                     <ImageBackground source={require('../resources/images/complete_setup_bg.png')} style={styles.backgroundImage}>
                         <PINCode
                             status={'choose'}
