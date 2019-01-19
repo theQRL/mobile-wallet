@@ -139,12 +139,17 @@ export default class Wallet extends React.Component{
                         </View>
                         <View style={{alignItems:'flex-end', paddingRight:20}}>
                             <Text style={{color:'#15437a'}}>{amount.toString()} QUANTA</Text>
+                            {rowData.unconfirmed != null ? 
+                               <Text style={{color:'red'}}>UNCONFIRMED</Text>
+                                : 
+                                undefined
+                            }
                         </View>
                     </View>
                 </View>
-                {/*Do not show separator on the last item of the list*/}
 
-                { rowID < this.state.tx_count - 2  ? 
+                {/*Do not show separator on the last item of the list*/}
+                { rowID <= this.state.tx_count - 2  ? 
                     <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
                     :
                     undefined

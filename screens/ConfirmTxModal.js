@@ -58,7 +58,7 @@ export default class ConfirmTxModal extends React.Component {
                     IosTransferCoins.sendCoins(this.props.navigation.state.params.recipient, amountShor, otsIndex, feeShor, walletindex, (error, status)=> {
                         // if tx is successfull, back to main
                         if (status == "success"){
-                            this.props.navigation.navigate("TransactionsHistory")
+                            setTimeout( () => {this.props.navigation.navigate("TransactionsHistory") } , 10000)
                         }
                         else {
                             Alert.alert( "ERROR"  , "Something went wrong. Please try again." , [{text: "OK", onPress: () => this.props.navigation.navigate("SendReceive") } ] )
