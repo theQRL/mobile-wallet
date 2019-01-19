@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, Image, ImageBackground, AsyncStorage, StyleSheet, TouchableHighlight, TouchableOpacity, Platform, ActivityIndicator} from 'react-native';
+import {Text, View, Image, ImageBackground, AsyncStorage, StyleSheet, TouchableHighlight, TouchableOpacity, Platform, ActivityIndicator, Modal} from 'react-native';
 
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.refreshWallet;
@@ -17,12 +17,18 @@ export default class BackupWallet extends React.Component {
     state={
         mnemonic: '',
         hexseed: '',
-        loading: false
+        loading: false,
+        showModal: false,
+    }
+
+    // show modal to select tree height
+    showModal = (bool) => {
+        this.setState({showModal: bool})
     }
 
     // Get wallet private info
     getInfo = () => {
-        this.setState({loading: true});
+        this.setState({showModal:false, loading: true});
         // get the currect walletindex
         AsyncStorage.getItem("walletindex").then((walletindex) => {
             // iOS
@@ -40,10 +46,57 @@ export default class BackupWallet extends React.Component {
         }).catch((error) => {console.log(error)});
     }
 
+
+    showLoading = () => {
+        if (!this.state.loading){
+            return(
+                <View>
+                    <Text>Warning: Keep this information private at all times! </Text>
+                    <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => {this.showModal(true)} }>
+                        <Text style={styles.TextStyle}> VIEW </Text>
+                    </TouchableOpacity>
+                </View>
+            );
+        }
+        else {
+            return(
+                <View style={{paddingTop:20}}><ActivityIndicator size={'large'}></ActivityIndicator></View>
+            );
+        }
+    }
+
     // render view
     render() {
         return (
             <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
+
+
+                <Modal visible={this.state.showModal} transparent={true}>
+                <View
+                    style={{
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    justifyContent: 'center',
+                    backgroundColor: 'rgba(100,100,100, 0.5)',
+                    padding: 20,
+                    }}
+                >
+                    <View style={{borderRadius:10, alignItems:'center', alignSelf:'center', justifyContent:'center',backgroundColor:'white', top:200, width:330, height:300, position:'absolute'}}>
+                        <Text>WARNING</Text>
+                        <Text>Keep this information private at all times!</Text>
+                        <View style={{flexDirection:"row"}}>
+                            <TouchableOpacity style={styles.SubmitButtonStyleSmall} activeOpacity = { .5 } onPress={ () => {this.showModal(false)} }>
+                                <Text style={styles.TextStyle}> CANCEL </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.SubmitButtonStyleSmallBlue} activeOpacity = { .5 } onPress={this.getInfo}>
+                                <Text style={styles.TextStyle}> SHOW </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    </View>
+                </Modal>
+                
             <View style={{flex:1}}>
 
                 <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
@@ -69,19 +122,15 @@ export default class BackupWallet extends React.Component {
                         {this.state.mnemonic != '' ?
                             <View>
                                 <Text style={{fontWeight: "bold"}}>MNEMONIC</Text>
-                                <Text>{this.state.mnemonic}</Text>
+                                <Text selectable={true}>{this.state.mnemonic}</Text>
                                 <Text style={{fontWeight: "bold"}}>{'\n'}HEXSEED</Text>
-                                <Text>{this.state.hexseed}</Text>
+                                <Text selectable={true}>{this.state.hexseed}</Text>
                             </View>
                             :
                             <View>
-                                <Text>Warning: Keep this information private at all times! </Text>
-                                <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ this.getInfo }>
-                                    <Text style={styles.TextStyle}> VIEW </Text>
-                                </TouchableOpacity>
+                                {this.showLoading()}
                             </View>
                         }
-                        {this.state.loading ? <View style={{paddingTop:20}}><ActivityIndicator size={'large'}></ActivityIndicator></View>: <View></View>}
                     </View>
                 </View>
             </View>
@@ -101,6 +150,30 @@ const styles = StyleSheet.create({
         backgroundColor:'#f33160',
         borderWidth: 1,
         borderColor: '#fff'
+    },
+    SubmitButtonStyleSmall: {
+        alignSelf:'center',
+        width: 130,
+        marginTop:30,
+        paddingTop:15,
+        paddingBottom:15,
+        backgroundColor:'#f33160',
+        borderWidth: 1,
+        borderColor: '#fff',
+        marginRight: 10,
+        marginLeft: 10
+    },
+    SubmitButtonStyleSmallBlue: {
+        alignSelf:'center',
+        width: 130,
+        marginTop:30,
+        paddingTop:15,
+        paddingBottom:15,
+        backgroundColor:'#144b82',
+        borderWidth: 1,
+        borderColor: '#fff',
+        marginRight: 10,
+        marginLeft: 10
     },
     TextStyle:{
         color:'#fff',
