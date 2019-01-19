@@ -2,6 +2,8 @@ import React from 'react';
 import {Picker, Text, View, Button, Image, ScrollView, ImageBackground, AsyncStorage, Clipboard, StyleSheet, TouchableHighlight, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Alert} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import { Header } from 'react-navigation';
+import FlashMessage from "react-native-flash-message";
+import { showMessage, hideMessage } from "react-native-flash-message";
 var validate = require('@theqrl/validate-qrl-address');
 
 // Android and Ios native modules
@@ -26,8 +28,8 @@ export default class SendReceive extends React.Component {
     componentDidMount() {
         const recipient = this.props.navigation.getParam('recipient', 'norecipient');
         if (recipient == "norecipient"){
-            this.setState({recipient:""})
-            // this.setState({recipient: GLOBALS.recipient })
+            // this.setState({recipient:""})
+            this.setState({recipient: GLOBALS.recipient })
         }
         else {
             this.setState({recipient:recipient})
@@ -153,6 +155,15 @@ export default class SendReceive extends React.Component {
         }
     }
 
+    // Copy address to clipboard and return visual confirmation
+    copyAddress = (address) => {
+        Clipboard.setString('Q'+address);
+        showMessage({
+            message: "Simple message",
+            type: "info",
+        });
+    }
+
     render() {
         if (this.state.isLoading){
             return(<View></View>)
@@ -163,21 +174,26 @@ export default class SendReceive extends React.Component {
             addressBegin = this.state.walletAddress.substring(1, 10);
             addressEnd = this.state.walletAddress.substring(58, 79);
 
+
+            // <KeyboardAvoidingView style={{flex:1, paddingTop: this.state.paddingTopCentral, paddingBottom:100, width:330, alignSelf: 'center', borderRadius:10}} behavior="padding">
+
             // View for iOS
             if (DeviceInfo.getDeviceId().includes("iPhone10")){
                 return (
+                    <ScrollView scrollEnabled={false} contentContainerStyle={{flex: 1}} >
+                    
                     <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
                         <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
                             <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} activeOpacity={1}>
                                 <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
                             </TouchableHighlight>
                         </View>
+                        <FlashMessage/> 
 
                         <View style={{ alignItems:'center', paddingTop:this.state.paddingTopMain }}>
-                            <ImageBackground source={require('../resources/images/fund_bg_small.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:330, justifyContent:'center',alignItems:'center'}} >
-                                <Text style={{color:'white'}}>QRL BALANCE</Text>
-                                <Text style={{color:'white', fontWeight: "bold"}}>Q{addressBegin}...{addressEnd}</Text>
-                                <Text style={{color:'white',fontSize:30}}>{this.state.balance}</Text>
+                            <ImageBackground source={require('../resources/images/fund_bg_small.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:330, justifyContent:'center',alignItems:'center', paddingLeft:10, paddingRight:10}} >
+                            <Text style={{color:'white', fontWeight: "bold", fontSize:12, textAlign:'center'}} selectable={true}>{this.state.walletAddress}</Text>
+                                <Text style={{color:'white',fontSize:30}}>{this.state.balance} QRL</Text>
                             </ImageBackground>
                             <TouchableOpacity style={styles.SubmitButtonStyle2} activeOpacity = { .5 } onPress={ this.refreshWallet }>
                                 <Image source={require("../resources/images/refresh.png")} style={{height:40, width:40}}/>
@@ -233,13 +249,21 @@ export default class SendReceive extends React.Component {
                                     <Text>Q{this.state.walletAddress}</Text>
                                 </View>
                                 <View>
-                                    <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ Clipboard.setString('Q'+this.state.walletAddress) } >
-                                        <Text style={styles.TextStyle}> COPY </Text>
+                                    <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => { Clipboard.setString('Q'+this.state.walletAddress);
+                                        showMessage({
+                                            message: "QRL address copied to clipboard",
+                                            type: "info",
+                                            backgroundColor: "#EB2E42"
+                                        });
+                                    }}>
+                                    <Text style={styles.TextStyle}> COPY </Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
                         }
                     </ImageBackground>
+                    
+                    </ScrollView>
                 );
             }
             // View for Android
@@ -252,6 +276,7 @@ export default class SendReceive extends React.Component {
                                 <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
                                 </TouchableHighlight>
                             </View>
+                            <FlashMessage/> 
 
                             <View style={{ alignItems:'center', paddingTop:20}}>
                                 <ImageBackground source={require('../resources/images/fund_bg_small.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:330, justifyContent:'center',alignItems:'center'}} >
@@ -313,7 +338,14 @@ export default class SendReceive extends React.Component {
                                         <Text>Q{this.state.walletAddress}</Text>
                                     </View>
                                     <View>
-                                        <TouchableOpacity style={styles.SubmitButtonStyleCopy} activeOpacity = { .5 } onPress={ Clipboard.setString('Q'+this.state.walletAddress) } >
+                                        {/* <TouchableOpacity style={styles.SubmitButtonStyleCopy} activeOpacity = { .5 } onPress={ Clipboard.setString('Q'+this.state.walletAddress) } > */}
+                                        
+                                        <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => { Clipboard.setString('Q'+this.state.walletAddress);
+                                            showMessage({
+                                                message: "QRL address copied to clipboard",
+                                                backgroundColor: "#EB2E42"
+                                            });
+                                        }}>
                                             <Text style={styles.TextStyle}> COPY </Text>
                                         </TouchableOpacity>
                                     </View>

@@ -44,13 +44,13 @@ export default class Wallet extends React.Component{
             AsyncStorage.getItem("walletindex").then((walletindex) => {
                 if (Platform.OS === 'ios'){
                     IosWallet.refreshWallet(walletindex, (error, walletAddress, otsIndex, balance, keys)=> {
-                        this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
+                        this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys)), tx_count: JSON.parse(keys).length})
                     });
                 }
                 // Android
                 else {
                     AndroidWallet.refreshWallet(walletindex,  (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
-                        this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
+                        this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys)), tx_count: JSON.parse(keys).length })
                     });
                 }
             }).catch((error) => {console.log(error)});
@@ -92,13 +92,13 @@ export default class Wallet extends React.Component{
 
                 if (Platform.OS === 'ios'){
                     IosWallet.refreshWallet(walletindex, (error, walletAddress, otsIndex, balance, keys)=> {
-                        this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
+                        this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys)), tx_count: JSON.parse(keys).length})
                     });
                 }
                 // Android
                 else {
                     AndroidWallet.refreshWallet(walletindex, (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
-                        this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys) )})
+                        this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys)), tx_count: JSON.parse(keys).length})
                     });
                 }
 
@@ -115,6 +115,8 @@ export default class Wallet extends React.Component{
             amount = rowData.desc / 1000000000
         }
         var txhash = rowData.txhash;
+
+        console.log(rowID)
 
         return (
             <TouchableHighlight onPress={()=> this.props.navigation.navigate('TxDetailsView', {txhash: txhash})} underlayColor='white'>
@@ -141,7 +143,8 @@ export default class Wallet extends React.Component{
                     </View>
                 </View>
                 {/*Do not show separator on the last item of the list*/}
-                {rowID < 9 ? 
+
+                { rowID < this.state.tx_count - 2  ? 
                     <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
                     :
                     undefined
@@ -228,10 +231,11 @@ export default class Wallet extends React.Component{
                             </View>
 
                             <View style={{ alignItems:'center',flex:1}}>
-                                <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:240, width:360, justifyContent:'center',alignItems:'center', paddingTop: 30}} >
-                                    <Text style={{color:'white'}}>QRL BALANCE</Text>
-                                    <Text style={{color:'white', fontWeight: "bold"}}>Q{addressBegin}...{addressEnd}</Text>
-                                    <Text style={{color:'white',fontSize:30}}>{this.state.balance / 1000000000 }</Text>
+                                <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:240, width:360, justifyContent:'center',alignItems:'center', paddingTop: 30, paddingLeft:10, paddingRight:10}} >
+                                    {/* <Text style={{color:'white'}}>QRL BALANCE</Text> */}
+                                    {/* <Text style={{color:'white', fontWeight: "bold"}} selectable={true}>Q{addressBegin}...{addressEnd}</Text> */}
+                                    <Text style={{color:'white', fontWeight: "bold", fontSize:12, textAlign:'center'}} selectable={true}>{this.state.walletAddress}</Text>
+                                    <Text style={{color:'white',fontSize:30}}>{this.state.balance / 1000000000 } QRL</Text>
                                     <Text style={{color:'white',fontSize:13}}>USD ${ ((this.state.balance / 1000000000 ) * this.state.price).toFixed(2) }</Text>
 
                                     <View style={{width:"80%", borderRadius:10, flexDirection:'row', paddingTop:15,paddingBottom:5}}>
@@ -274,8 +278,8 @@ export default class Wallet extends React.Component{
                             <View style={{backgroundColor:'white', flex:2, width:350, alignSelf:'center', borderRadius:10, marginTop:10}}>
                                 <Text style={{alignItems:'center', alignSelf:'center', paddingTop:20, marginBottom:20}}>TRANSACTION HISTORY</Text>
                                     <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
-                                {this.state.dataSource == "{}" ?
-                                    <Text style={{alignSelf:'center'}}>No Transaction</Text>
+                                {this.state.tx_count == 0 ?
+                                    <Text style={{alignSelf:'center'}}>No Transaction yet</Text>
                                     :
                                     <ListView automaticallyAdjustContentInsets={false} dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)} enableEmptySections={true} />
                                 }

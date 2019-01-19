@@ -42,22 +42,29 @@ export default class CreateWalletHashFunction extends React.Component {
         return (
             <ImageBackground source={require('../resources/images/signin_process_hashfunction_bg.png')} style={styles.backgroundImage}>
 
-                <Modal visible={this.state.showModal} transparent={true}>
-                    <View style={{borderRadius:10, alignItems:'center', alignSelf:'center', justifyContent:'center',backgroundColor:'white', top:this.state.y3, left:this.state.modalx, width:300, position:'absolute'}}>
-                        <TouchableHighlight style={styles.selection} onPress={() => this.updateHashFunction(1)}>
-                            <Text style={styles.selectionText}>HASH FUNCTION: SHAKE_128</Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight style={styles.selection2} onPress={() => this.updateHashFunction(2)}>
-                            <Text style={styles.selectionText}>HASH FUNCTION: SHAKE_256</Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight style={styles.selection} onPress={() => this.updateHashFunction(3)}>
-                            <Text style={styles.selectionText}>HASH FUNCTION: SHA2_256</Text>
-                        </TouchableHighlight>
-                    </View>
+                <Modal visible={this.state.showModal} transparent={false}>
+                    <ImageBackground source={require('../resources/images/signin_process_hashfunction_bg.png')} style={styles.backgroundImage}>
+                        <View style={{flex:0.5}}></View>
+                        <View style={{flex:1, alignItems:'center'}}>
+                            <Text>SET UP YOUR WALLET</Text>
+                            <Text style={styles.bigTitle}>HASH FUNCTION</Text>
+                            <View style={{width:100, height:1, backgroundColor:'white', marginTop:30,marginBottom:20}}></View>
+                        </View>
+                        <View style={{ borderRadius:10, alignItems:'center', alignSelf:'center', justifyContent:'center',backgroundColor:'white', top:this.state.y3, left:this.state.modalx, width:300, position:'absolute'}}>
+                            <TouchableHighlight style={styles.selection} onPress={() => this.updateHashFunction(1)}>
+                                <Text style={styles.selectionText}>HASH FUNCTION: SHAKE_128</Text>
+                            </TouchableHighlight>
+                            <TouchableHighlight style={styles.selection2} onPress={() => this.updateHashFunction(2)}>
+                                <Text style={styles.selectionText}>HASH FUNCTION: SHAKE_256</Text>
+                            </TouchableHighlight>
+                            <TouchableHighlight style={styles.selection} onPress={() => this.updateHashFunction(3)}>
+                                <Text style={styles.selectionText}>HASH FUNCTION: SHA2_256</Text>
+                            </TouchableHighlight>
+                        </View>
+                    </ImageBackground>
                 </Modal>
 
-                <View style={{flex:1}}>
-                </View>
+                <View style={{flex:0.6}}></View>
                 <View style={{flex:1, alignItems:'center'}} ref='Marker2' onLayout={({nativeEvent}) => {this.refs.Marker2.measure((x, y, width, height, pageX, pageY) => {this.setState({y1:y, y1_android: height});}) }}>
                     <Text>SET UP YOUR WALLET</Text>
                     <Text style={styles.bigTitle}>HASH FUNCTION</Text>
@@ -85,8 +92,8 @@ export default class CreateWalletHashFunction extends React.Component {
 
                     }
                     {this.state.selectText ?  
-                        <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={ () =>  this.props.navigation.navigate('CompleteSetup',{treeHeight: this.props.navigation.state.params.treeHeight, signatureCounts: this.props.navigation.state.params.signatureCounts,  hashFunctionName: this.state.hashFunctionName, hashFunctionId: this.state.hashFunction}) }>
-                            <Text style={styles.TextStyleWhite}> CONTINUE </Text>
+                        <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () =>  this.props.navigation.navigate('CompleteSetup',{treeHeight: this.props.navigation.state.params.treeHeight, signatureCounts: this.props.navigation.state.params.signatureCounts,  hashFunctionName: this.state.hashFunctionName, hashFunctionId: this.state.hashFunction}) }>
+                            <Text style={styles.TextStyle}> CONTINUE </Text>
                         </TouchableOpacity>
                         : 
                         undefined 
@@ -104,7 +111,8 @@ const styles = StyleSheet.create({
     },
     selection: {
         width:300,
-        height:50,
+        marginTop:10,
+        marginBottom: 10,
         alignSelf:'center',
         justifyContent:'center',
         paddingLeft:50,
@@ -112,7 +120,10 @@ const styles = StyleSheet.create({
     selection2: {
         backgroundColor:'#f6f6f6',
         width:300,
-        height:50,
+
+        paddingTop:10,
+        paddingBottom:10,
+
         alignSelf:'center',
         justifyContent:'center',
         paddingLeft:50,
@@ -123,10 +134,9 @@ const styles = StyleSheet.create({
     },
     SubmitButtonStyle: {
         width: 300,
-        height:50,
         marginTop:10,
-        paddingTop:15,
-        paddingBottom:15,
+        paddingTop:10,
+        paddingBottom:10,
         marginLeft:30,
         marginRight:30,
         backgroundColor:'white',

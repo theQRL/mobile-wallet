@@ -14,6 +14,7 @@ export default class CompleteSetup extends React.Component {
     };
 
     state={
+        pin: null,
         hashFunction: '',
         loading: false,
         dimensions : undefined,
@@ -100,6 +101,36 @@ export default class CompleteSetup extends React.Component {
         this.setState({modalVisible: bool, pin: pinValue})
     }
 
+
+    showButtons = () => {
+        if (this.state.pin != null){
+            return(
+                <View>
+                    <TouchableOpacity style={styles.SubmitButtonStyle} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={this.createWallet} >
+                        <Text style={styles.TextStyle}> CREATE WALLET </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.SubmitButtonStyleRed} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => {this.props.navigation.popToTop()} }>
+                    <Text style={styles.TextStyleWhite}> CANCEL </Text>
+                    </TouchableOpacity>
+                </View>
+            );
+        }
+        else {
+            return(
+                <View>
+                    <TouchableOpacity style={styles.SubmitButtonStyle} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => {this.launchModal(true, null)}}  >
+                        <Text style={styles.TextStyle}> CREATE 4-DIGIT PIN </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.SubmitButtonStyleRed} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => {this.props.navigation.popToTop()} }>
+                    <Text style={styles.TextStyleWhite}> CANCEL </Text>
+                    </TouchableOpacity>
+                </View>
+
+            );
+        }
+    }
+
+
     render() {
         return (
             <ImageBackground source={require('../resources/images/complete_setup_bg.png')} style={styles.backgroundImage}>
@@ -136,24 +167,12 @@ export default class CompleteSetup extends React.Component {
                     <Text style={{color:'white'}}>Signatures: {this.props.navigation.state.params.signatureCounts}</Text>
                     <Text style={{color:'white'}}>Hash function: {this.props.navigation.state.params.hashFunctionName}</Text>
 
-                    {this.state.pin != null ?
-                        <TouchableOpacity style={styles.SubmitButtonStyle} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={this.createWallet} >
-                            <Text style={styles.TextStyle}> CREATE WALLET </Text>
-                        </TouchableOpacity>
-                        :
-                        <TouchableOpacity style={styles.SubmitButtonStyle} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => {this.launchModal(true, null)}}  >
-                            <Text style={styles.TextStyle}> CREATE 4-DIGIT PIN </Text>
-                        </TouchableOpacity>
-                    }
-
-                    <TouchableOpacity style={styles.SubmitButtonStyleRed} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => {this.props.navigation.popToTop()} }>
-                        <Text style={styles.TextStyleWhite}> CANCEL </Text>
-                    </TouchableOpacity>
-
                     {this.state.loading ?
                         <View style={{alignItems:'center'}}><ActivityIndicator style={{paddingTop:20}} size={'large'}></ActivityIndicator><Text style={{color:'white'}}>This may take a while.</Text><Text style={{color:'white'}}>Please be patient...</Text></View>
                         :
-                        undefined
+                        <View>
+                            {this.showButtons()}
+                        </View>
                     }
                 </View>
             </ImageBackground>
@@ -169,10 +188,9 @@ const styles = StyleSheet.create({
     },
     SubmitButtonStyle: {
         width: 300,
-        height:50,
         marginTop:10,
-        paddingTop:15,
-        paddingBottom:15,
+        paddingTop:10,
+        paddingBottom:10,
         marginLeft:30,
         marginRight:30,
         backgroundColor:'white',
@@ -180,23 +198,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#fff'
     },
-    SubmitButtonStyleDark: {
-        width: 300,
-        marginTop:10,
-        paddingTop:15,
-        paddingBottom:15,
-        marginLeft:30,
-        marginRight:30,
-        backgroundColor:'#144b82',
-        borderRadius:10,
-        borderWidth: 1,
-        borderColor: '#144b82'
-    },
     SubmitButtonStyleRed: {
         width: 300,
         marginTop:10,
-        paddingTop:15,
-        paddingBottom:15,
+        paddingTop:10,
+        paddingBottom:10,
         marginLeft:30,
         marginRight:30,
         backgroundColor:'#D72E61',

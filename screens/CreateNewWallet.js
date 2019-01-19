@@ -20,6 +20,7 @@ export default class CreateNewWallet extends React.Component {
     // get the required information from asyncStorage
     componentWillMount(){
         // get walletlist JSON
+        console.log("MOUNTING WALLETS")
         AsyncStorage.getItem("walletlist").then((walletlist) => {
             // get walletindex (index of the opened wallet)
             AsyncStorage.getItem("walletindex").then((walletindex) => {
@@ -78,7 +79,7 @@ export default class CreateNewWallet extends React.Component {
 
     // popup to confirm wallet removal
     removeWalletPopup = (walletid) => {
-        Alert.alert( "REMOVE WALLET"  , "Do you really want to remove this wallet?" , [{text: "Cancel", onPress: () => {console.log("Canceled")}}, {text: "Remove", onPress: () => this.removeWallet(walletid, this.state.walletlist) } ] )
+        Alert.alert( "REMOVE WALLET"  , "Do you really want to remove this wallet from the app?" , [{text: "Cancel", onPress: () => {console.log("Canceled")}}, {text: "Remove", onPress: () => this.removeWallet(walletid, this.state.walletlist) } ] )
     }
 
     openHexseedModal = (walletindexToOpen) => {
@@ -201,7 +202,7 @@ export default class CreateNewWallet extends React.Component {
                         <View style={{ height:130, width:330, borderRadius:10, alignSelf:'center', marginTop: 30}}>
                             <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage2}>
                                 <View style={{flex:1, alignSelf:'center', width:330, justifyContent:'center', alignItems:'center'}}>
-                                    <Text style={{color:'white', fontSize:20}}>OPEN NEW WALLET</Text>
+                                    <Text style={{color:'white', fontSize:20}}>WALLETS</Text>
                                 </View>
                             </ImageBackground>
                         </View>
