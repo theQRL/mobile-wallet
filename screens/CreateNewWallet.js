@@ -158,11 +158,6 @@ export default class CreateNewWallet extends React.Component {
                             </TouchableHighlight>                    
                         </View>
                     </View>
-                    {rowID < this.state.walletlist.length - 1 ? 
-                        <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
-                        :
-                        undefined
-                    }
                 </View>
             );
         }
@@ -193,7 +188,7 @@ export default class CreateNewWallet extends React.Component {
               <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
                 <View style={{flex:1}}>
                     <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
-                        <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='white'>
+                        <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
                           <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
                         </TouchableHighlight>
                     </View>

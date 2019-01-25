@@ -100,7 +100,7 @@ export default class BackupWallet extends React.Component {
             <View style={{flex:1}}>
 
                 <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
-                    <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='white'>
+                    <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
                         <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
                     </TouchableHighlight>
                 </View>
