@@ -116,14 +116,20 @@ export default class SendReceive extends React.Component {
                                 var isAmountNumber = /^\d*\.?\d+$/.test(this.state.amount)
                                 if (isAmountNumber){
 
-                                    // check the decimals
-                                    if (this.state.amount.toString().split(".")[1].length > 8 ){
-                                        Alert.alert( "INVALID AMOUNT"  , "The amount you are sending can have up to 8 decimals." , [{text: "OK", onPress: () => console.log('OK Pressed')} ] )    
+                                    // check the decimals (if there are any)
+                                    if (this.state.amount.toString().split(".").length > 1 ){
+                                        if (this.state.amount.toString().split(".")[1].length > 8 ){
+                                            Alert.alert( "INVALID AMOUNT"  , "The amount you are sending can have up to 8 decimals." , [{text: "OK", onPress: () => console.log('OK Pressed')} ] )    
+                                        }
+                                        // All good to send the tx
+                                        else {
+                                            this.props.navigation.navigate('ConfirmTxModal',{amount: this.state.amount, recipient: this.state.recipient, otsIndex: this.state.otsIndex, fee: this.state.fee})
+                                        }
                                     }
-                                    // All good to send the tx
                                     else {
                                         this.props.navigation.navigate('ConfirmTxModal',{amount: this.state.amount, recipient: this.state.recipient, otsIndex: this.state.otsIndex, fee: this.state.fee})
                                     }
+                                    
                                 }
                                 else {
                                     Alert.alert( "INVALID AMOUNT"  , "Enter a correct amount" , [{text: "OK", onPress: () => console.log('OK Pressed')} ] )
@@ -144,14 +150,22 @@ export default class SendReceive extends React.Component {
                                 var isAmountNumber = /^\d*\.?\d+$/.test(this.state.amount)
                                 if (isAmountNumber){
 
-                                    // check the decimals
-                                    if (this.state.amount.toString().split(".")[1].length > 8 ){
-                                        Alert.alert( "INVALID AMOUNT"  , "The amount you are sending can have up to 8 decimals." , [{text: "OK", onPress: () => console.log('OK Pressed')} ] )    
+                                    // check the decimals (if there are any)
+                                    if (this.state.amount.toString().split(".").length > 1 ){
+                                        if (this.state.amount.toString().split(".")[1].length > 8 ){
+                                            Alert.alert( "INVALID AMOUNT"  , "The amount you are sending can have up to 8 decimals." , [{text: "OK", onPress: () => console.log('OK Pressed')} ] )    
+                                        }
+                                        // All good to send the tx
+                                        else {
+                                            this.props.navigation.navigate('ConfirmTxModal',{amount: this.state.amount, recipient: this.state.recipient, otsIndex: this.state.otsIndex, fee: this.state.fee})    
+                                        }
                                     }
-                                    // All good to send the tx
                                     else {
                                         this.props.navigation.navigate('ConfirmTxModal',{amount: this.state.amount, recipient: this.state.recipient, otsIndex: this.state.otsIndex, fee: this.state.fee})    
                                     }
+                                    
+                                    // this.props.navigation.navigate('ConfirmTxModal',{amount: this.state.amount, recipient: this.state.recipient, otsIndex: this.state.otsIndex, fee: this.state.fee})    
+
                                 }
                                 else {
                                     Alert.alert( "INVALID AMOUNT"  , "Enter a correct amount" , [{text: "OK", onPress: () => console.log('OK Pressed')} ] )
