@@ -15,8 +15,8 @@ export default class OpenExistingWallet extends React.Component {
     componentDidMount(){
         const hexseed = this.props.navigation.getParam('hexseed', 'nohexseed');
         if (hexseed == "nohexseed"){
-            // this.setState({hexseed: "" })
-            this.setState({ hexseed: GLOBALS.hexseed1 })
+            this.setState({hexseed: "" })
+            // this.setState({ hexseed: GLOBALS.hexseed1 })
         }
         else {
             this.setState({hexseed: hexseed})

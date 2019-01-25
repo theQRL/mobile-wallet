@@ -166,7 +166,7 @@ export default class Wallet extends React.Component{
                 <ImageBackground source={require('../resources/images/main_bg_half.png')} style={styles.backgroundImage}>
                     <View style={{flex:1}}>
                         <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
-                            <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='white'>
+                            <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
                                 <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
                             </TouchableHighlight>
                         </View>
@@ -224,7 +224,7 @@ export default class Wallet extends React.Component{
                     <View style={{flex:1}}>
 
                         <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
-                            <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='white'>
+                            <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
                                 <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
                             </TouchableHighlight>
                         </View>
@@ -239,7 +239,7 @@ export default class Wallet extends React.Component{
                                 <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:240, width:360, justifyContent:'center',alignItems:'center', paddingTop: 30, paddingLeft:10, paddingRight:10}} >
                                     {/* <Text style={{color:'white'}}>QRL BALANCE</Text> */}
                                     {/* <Text style={{color:'white', fontWeight: "bold"}} selectable={true}>Q{addressBegin}...{addressEnd}</Text> */}
-                                    <Text style={{color:'white', fontWeight: "bold", fontSize:12, textAlign:'center'}} selectable={true}>{this.state.walletAddress}</Text>
+                                    <Text style={{color:'white', fontWeight: "bold", fontSize:12, textAlign:'center'}} selectable={true}>Q{this.state.walletAddress}</Text>
                                     <Text style={{color:'white',fontSize:30}}>{this.state.balance / 1000000000 } QRL</Text>
                                     <Text style={{color:'white',fontSize:13}}>USD ${ ((this.state.balance / 1000000000 ) * this.state.price).toFixed(2) }</Text>
 
