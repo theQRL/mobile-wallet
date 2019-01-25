@@ -63,6 +63,12 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
       tx_total = 10;
     }
     
+    
+//    NSLog(@"GetAddressState:\n%@", response2);
+//    NSLog(@"GetAddressState.STATE:\n%@", response2.state);
+    NSLog(@"GetAddressState.STATE.TRANSACTIONHASHESARRAY:\n%@", response2.state.transactionHashesArray);
+    
+    
     NSLog(@"ENTERED REFRESHWALLET" );
     NSLog(@"TX_COUNT %d", tx_count );
     NSLog(@"TX_END %d", tx_end );
@@ -198,10 +204,57 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
               }
             }
             
-            NSData *txJsonData = [NSJSONSerialization dataWithJSONObject:txResponseArray options:NSJSONWritingPrettyPrinted error:&error];
-            NSString *txJsonString = [[NSString alloc] initWithData:txJsonData encoding:NSUTF8StringEncoding];
-            //NSLog(@"jsonData as string:\n%@", txJsonString);
-            callback(@[[NSNull null], walletAddress, @(otsIndex), @(response2.state.balance), txJsonString ]);
+            
+            // get Unconfirmed tx
+            GetLatestDataReq *getLatestDataReq = [GetLatestDataReq message];
+            getLatestDataReq.filter = GetLatestDataReq_Filter_TransactionsUnconfirmed;
+
+            [client getLatestDataWithRequest:getLatestDataReq handler:^(GetLatestDataResp *response, NSError *error) {
+              if ( (unsigned long)response.transactionsUnconfirmedArray_Count == 0 ){
+                NSLog(@"NO UNCONFIRMED TX");
+                
+                NSData *txJsonData = [NSJSONSerialization dataWithJSONObject:txResponseArray options:NSJSONWritingPrettyPrinted error:&error];
+                NSString *txJsonString = [[NSString alloc] initWithData:txJsonData encoding:NSUTF8StringEncoding];
+                //NSLog(@"jsonData as string:\n%@", txJsonString);
+                callback(@[[NSNull null], walletAddress, @(otsIndex), @(response2.state.balance), txJsonString ]);
+                
+              }
+              // Unconfirmed tx found
+              else {
+                // loop through unconfirmed tx and add to JSON array
+                for (int i=0; i<response.transactionsUnconfirmedArray_Count; i++){
+                  NSString *tx_address = [WalletHelperFunctions  nsDataHex2string:response.transactionsUnconfirmedArray[i].addrFrom];
+                  NSString *stringFromDate = [WalletHelperFunctions formatDate:(NSTimeInterval)response.transactionsUnconfirmedArray[i].timestampSeconds];
+                  NSString *txHash = [WalletHelperFunctions nsDataHex2string:response.transactionsUnconfirmedArray[i].tx.transactionHash];
+                  NSString *amountStr = [NSString stringWithFormat:@"%llu", [response.transactionsUnconfirmedArray[i].tx.transfer.amountsArray valueAtIndex:0]];
+                  
+                  NSString *unconfirmed_title = [[NSString alloc] init];
+                  if ([tx_address isEqualToString:walletAddress]){
+                    unconfirmed_title= @"SENT";
+                  }
+                  else {
+                    unconfirmed_title= @"RECEIVED";
+                  }
+                  
+                  NSDictionary *txJsonDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                    unconfirmed_title, @"title",
+                                                    amountStr, @"desc",
+                                                    stringFromDate, @"date",
+                                                    txHash, @"txhash",
+                                                    @"true", @"unconfirmed",
+                                                    nil];
+                  [txResponseArray insertObject:txJsonDictionary atIndex:0];
+
+                  NSData *txJsonData = [NSJSONSerialization dataWithJSONObject:txResponseArray options:NSJSONWritingPrettyPrinted error:&error];
+                  NSString *txJsonString = [[NSString alloc] initWithData:txJsonData encoding:NSUTF8StringEncoding];
+                  //NSLog(@"jsonData as string:\n%@", txJsonString);
+                  callback(@[[NSNull null], walletAddress, @(otsIndex), @(response2.state.balance), txJsonString ]);
+                }
+              }
+            }];
+            
+            
+
           }
         }];
       }

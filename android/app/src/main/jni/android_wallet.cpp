@@ -130,7 +130,7 @@ string AndroidWallet::transferCoins(string recipient, int amount, int fee, strin
 
     // amount to byte array
     int vectorPos2 = 54;
-    int64_t amountInt = (int64_t) amount * 1000000000;
+    int64_t amountInt = (int64_t) amount;
     for (int i = 0; i < 8; i++){
         concatenatedVector[vectorPos2 - i] = (amountInt >> (i * 8) );
     }

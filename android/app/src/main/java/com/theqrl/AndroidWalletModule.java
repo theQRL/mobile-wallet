@@ -251,7 +251,6 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
     public void refreshWallet(String walletindex, Callback errorCallback, Callback successCallback) {
         System.out.println( "refresWallet from Android" );
         String walletAddress = getEncrypted("address".concat(walletindex));
-        System.out.println( walletAddress );
         // get the list of the latest 10 tx
         int completed = 0;
         try {
@@ -308,9 +307,20 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
                     for(byte txbyte: txHashByte)
                         txHashString.append(String.format("%02x", txbyte));
 
+                    byte[] addrFromByte = getObjectResp.getTransaction().getTx().getTransfer().getAddrsTo(0).toByteArray();
+                    StringBuilder addrFromString = new StringBuilder(addrFromByte.length * 2);
+                    for(byte txbyteAddr: addrFromByte)
+                        addrFromString.append(String.format("%02x", txbyteAddr));
+
 
                     try{
-                        txJson.put("title","SENT");
+                        if( addrFromString.toString().equals(walletAddress) ){
+                            txJson.put("title","RECEIVED");
+                        }
+                        else {
+                            txJson.put("title","SENT");
+                        }
+//                        txJson.put("title","SENT");
                         txJson.put("desc", getObjectResp.getTransaction().getTx().getTransfer().getAmounts(0));
                         txJson.put("date", dt.format(date) ) ;
                         txJson.put("txhash", txHashString.toString() ) ;
@@ -345,8 +355,66 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
                             System.out.println( otsIndex );
                             // obtained next available ots index
                             if (otsIndex > 0){
-                                successCallback.invoke( walletAddress, otsIndex ,Long.toString(getAddressStateResp.getState().getBalance()), txJsonAll.toString() );
-                                break;
+
+//                                successCallback.invoke( walletAddress, otsIndex ,Long.toString(getAddressStateResp.getState().getBalance()), txJsonAll.toString() );
+
+                                JSONArray txJsonTotal = new JSONArray();
+                                // add unconfirmed tx to the list
+                                try {
+                                    // get all tx unconfirmed
+                                    Qrl.GetLatestDataReq getLatestDataReq = Qrl.GetLatestDataReq.newBuilder().setFilter(Qrl.GetLatestDataReq.Filter.TRANSACTIONS_UNCONFIRMED).build();
+                                    Qrl.GetLatestDataResp getLatestDataResp = blockingStub.getLatestData(getLatestDataReq);
+
+                                    // found an unconfirmed tx
+                                    if (getLatestDataResp.getTransactionsUnconfirmedCount() != 0){
+                                        System.out.println("UNCONFIRMED TX FOUND");
+                                        for (int u=0; u<getLatestDataResp.getTransactionsUnconfirmedCount(); u++ ){
+                                            System.out.println("ENTERED FOR LOOP");
+                                            // check if there is a pending tx for the given wallet address
+                                            if ( ByteString.copyFrom(data).equals(getLatestDataResp.getTransactionsUnconfirmed(u).getAddrFrom()) ){
+                                                System.out.println("FOUND UNCONFIRMED TX FROM CURRENT WALLET");
+                                                JSONObject txJsonUnconfirmed = new JSONObject();
+                                                try{
+                                                    txJsonUnconfirmed.put("title","SENT");
+                                                    txJsonUnconfirmed.put("desc", getLatestDataResp.getTransactionsUnconfirmed(u).getTx().getTransfer().getAmounts(0));
+                                                    Date dateUnconfirmed = new Date( getLatestDataResp.getTransactionsUnconfirmed(u).getTimestampSeconds() * 1000);
+                                                    txJsonUnconfirmed.put("date", dt.format(dateUnconfirmed) ) ;
+
+                                                    byte[] txHashByteUnconfirmed = getLatestDataResp.getTransactionsUnconfirmed(u).getTx().getTransactionHash().toByteArray();
+                                                    StringBuilder txHashStringUnconfirmed = new StringBuilder(txHashByte.length * 2);
+                                                    for(byte txbyteUnconfirmed: txHashByteUnconfirmed)
+                                                        txHashStringUnconfirmed.append(String.format("%02x", txbyteUnconfirmed));
+
+                                                    txJsonUnconfirmed.put("txhash", txHashStringUnconfirmed.toString() ) ;
+                                                    txJsonUnconfirmed.put("unconfirmed", "true" ) ;
+
+                                                    System.out.println(txJsonUnconfirmed.toString());
+
+                                                    // add unconfirmed tx
+                                                    txJsonTotal.put(txJsonUnconfirmed);
+                                                }
+                                                catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        }
+                                    }
+                                } catch (IllegalViewOperationException e) {
+                                    errorCallback.invoke(e.getMessage());
+                                }
+
+
+                                try{
+                                    // add all other tx
+                                    for(int t = 0; t < txJsonAll.length() ; t++){
+                                        txJsonTotal.put(txJsonAll.getJSONObject(t));
+                                    }
+                                    successCallback.invoke( walletAddress, otsIndex ,Long.toString(getAddressStateResp.getState().getBalance()), txJsonTotal.toString() );
+                                    break;
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }
@@ -363,7 +431,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
 
         System.out.println( "Transfer Coins from Android" );
         System.out.println( Long.valueOf(amount) * 1000000000 );
-        Long amount_long = Long.valueOf(amount) * 1000000000;
+//        Long amount_long = Long.valueOf(amount) * 1000000000 ;
         String hexseed = getEncrypted("hexseed".concat(walletindex));
         System.out.println( hexseed );
         ManagedChannel channel = OkHttpChannelBuilder.forAddress(server, port).usePlaintext(true).build();
@@ -398,7 +466,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
             xmssdata[i / 2] = (byte) ((Character.digit(xmssPK.charAt(i), 16) << 4) + Character.digit(xmssPK.charAt(i+1), 16));
         }
 
-        Qrl.TransferCoinsReq transferCoinsReq = Qrl.TransferCoinsReq.newBuilder().addAddressesTo(ByteString.copyFrom(recdata)).addAmounts(amount_long).setFee(fee).setXmssPk(ByteString.copyFrom(xmssdata)).build();
+        Qrl.TransferCoinsReq transferCoinsReq = Qrl.TransferCoinsReq.newBuilder().addAddressesTo(ByteString.copyFrom(recdata)).addAmounts(amount).setFee(fee).setXmssPk(ByteString.copyFrom(xmssdata)).build();
         Qrl.TransferCoinsResp transferCoinsResp = blockingStub.transferCoins(transferCoinsReq);
 
         try {
@@ -430,7 +498,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
                 txhash[i / 2] = (byte) ((Character.digit(txHash.charAt(i), 16) << 4) + Character.digit(txHash.charAt(i+1), 16));
             }
 
-            Qrl.Transaction signedTx = Qrl.Transaction.newBuilder().setTransfer(Qrl.Transaction.Transfer.newBuilder().addAddrsTo(transferCoinsResp.getExtendedTransactionUnsigned().getTx().getTransfer().getAddrsTo(0)).addAmounts(amount_long)).setFee(fee).setSignature(ByteString.copyFrom(txsig)).setTransactionHash(ByteString.copyFrom(txhash)).setPublicKey(transferCoinsResp.getExtendedTransactionUnsigned().getTx().getPublicKey()).setNonce(12).build();
+            Qrl.Transaction signedTx = Qrl.Transaction.newBuilder().setTransfer(Qrl.Transaction.Transfer.newBuilder().addAddrsTo(transferCoinsResp.getExtendedTransactionUnsigned().getTx().getTransfer().getAddrsTo(0)).addAmounts(amount)).setFee(fee).setSignature(ByteString.copyFrom(txsig)).setTransactionHash(ByteString.copyFrom(txhash)).setPublicKey(transferCoinsResp.getExtendedTransactionUnsigned().getTx().getPublicKey()).setNonce(12).build();
             Qrl.PushTransactionReq pushtransactionReq = Qrl.PushTransactionReq.newBuilder().setTransactionSigned(signedTx).build();
             Qrl.PushTransactionResp pushTransactionResp = blockingStub.pushTransaction(pushtransactionReq);
 
@@ -461,7 +529,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
         System.out.println( "TXHASH Andrdoid" );
         System.out.println( txhash );
 
-        // converting txhash to byte arary
+        // converting txhash to byte array
         int txlen = txhash.length();
         byte[] txdata = new byte[txlen / 2];
         for (int i = 0; i < txlen; i += 2) {
