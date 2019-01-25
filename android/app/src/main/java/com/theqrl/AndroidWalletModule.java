@@ -363,7 +363,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
 
         System.out.println( "Transfer Coins from Android" );
         System.out.println( Long.valueOf(amount) * 1000000000 );
-        Long amount_long = Long.valueOf(amount) * 1000000000;
+//        Long amount_long = Long.valueOf(amount) * 1000000000 ;
         String hexseed = getEncrypted("hexseed".concat(walletindex));
         System.out.println( hexseed );
         ManagedChannel channel = OkHttpChannelBuilder.forAddress(server, port).usePlaintext(true).build();
@@ -398,7 +398,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
             xmssdata[i / 2] = (byte) ((Character.digit(xmssPK.charAt(i), 16) << 4) + Character.digit(xmssPK.charAt(i+1), 16));
         }
 
-        Qrl.TransferCoinsReq transferCoinsReq = Qrl.TransferCoinsReq.newBuilder().addAddressesTo(ByteString.copyFrom(recdata)).addAmounts(amount_long).setFee(fee).setXmssPk(ByteString.copyFrom(xmssdata)).build();
+        Qrl.TransferCoinsReq transferCoinsReq = Qrl.TransferCoinsReq.newBuilder().addAddressesTo(ByteString.copyFrom(recdata)).addAmounts(amount).setFee(fee).setXmssPk(ByteString.copyFrom(xmssdata)).build();
         Qrl.TransferCoinsResp transferCoinsResp = blockingStub.transferCoins(transferCoinsReq);
 
         try {
@@ -430,7 +430,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
                 txhash[i / 2] = (byte) ((Character.digit(txHash.charAt(i), 16) << 4) + Character.digit(txHash.charAt(i+1), 16));
             }
 
-            Qrl.Transaction signedTx = Qrl.Transaction.newBuilder().setTransfer(Qrl.Transaction.Transfer.newBuilder().addAddrsTo(transferCoinsResp.getExtendedTransactionUnsigned().getTx().getTransfer().getAddrsTo(0)).addAmounts(amount_long)).setFee(fee).setSignature(ByteString.copyFrom(txsig)).setTransactionHash(ByteString.copyFrom(txhash)).setPublicKey(transferCoinsResp.getExtendedTransactionUnsigned().getTx().getPublicKey()).setNonce(12).build();
+            Qrl.Transaction signedTx = Qrl.Transaction.newBuilder().setTransfer(Qrl.Transaction.Transfer.newBuilder().addAddrsTo(transferCoinsResp.getExtendedTransactionUnsigned().getTx().getTransfer().getAddrsTo(0)).addAmounts(amount)).setFee(fee).setSignature(ByteString.copyFrom(txsig)).setTransactionHash(ByteString.copyFrom(txhash)).setPublicKey(transferCoinsResp.getExtendedTransactionUnsigned().getTx().getPublicKey()).setNonce(12).build();
             Qrl.PushTransactionReq pushtransactionReq = Qrl.PushTransactionReq.newBuilder().setTransactionSigned(signedTx).build();
             Qrl.PushTransactionResp pushTransactionResp = blockingStub.pushTransaction(pushtransactionReq);
 
@@ -461,7 +461,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
         System.out.println( "TXHASH Andrdoid" );
         System.out.println( txhash );
 
-        // converting txhash to byte arary
+        // converting txhash to byte array
         int txlen = txhash.length();
         byte[] txdata = new byte[txlen / 2];
         for (int i = 0; i < txlen; i += 2) {
