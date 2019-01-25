@@ -158,11 +158,6 @@ export default class CreateNewWallet extends React.Component {
                             </TouchableHighlight>                    
                         </View>
                     </View>
-                    {rowID < this.state.walletlist.length - 1 ? 
-                        <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
-                        :
-                        undefined
-                    }
                 </View>
             );
         }

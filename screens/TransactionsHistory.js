@@ -45,6 +45,8 @@ export default class Wallet extends React.Component{
                 if (Platform.OS === 'ios'){
                     IosWallet.refreshWallet(walletindex, (error, walletAddress, otsIndex, balance, keys)=> {
                         this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys)), tx_count: JSON.parse(keys).length})
+
+                        
                     });
                 }
                 // Android
@@ -283,7 +285,7 @@ export default class Wallet extends React.Component{
                             <View style={{backgroundColor:'white', flex:2, width:350, alignSelf:'center', borderRadius:10, marginTop:10}}>
                                 <Text style={{alignItems:'center', alignSelf:'center', paddingTop:20, marginBottom:20}}>TRANSACTION HISTORY</Text>
                                     <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
-                                {this.state.tx_count == 0 ?
+                                {this.state.tx_count == 0 || this.state.tx_count == undefined ?
                                     <Text style={{alignSelf:'center'}}>No Transaction yet</Text>
                                     :
                                     <ListView automaticallyAdjustContentInsets={false} dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)} enableEmptySections={true} />

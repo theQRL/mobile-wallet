@@ -398,7 +398,6 @@ const styles = StyleSheet.create({
         paddingTop:15,
         paddingBottom:15,
         backgroundColor:'#f33160',
-        borderWidth: 1
     },
     SubmitButtonStyleBig: {
         alignSelf:'center',
