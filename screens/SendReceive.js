@@ -74,7 +74,8 @@ export default class SendReceive extends React.Component {
         balance: "loading...",
         view: 'send',
         fee: "0.001",
-        isLoading: true
+        isLoading: true,
+        amount: "2.99999999"
     }
 
     // update recipient

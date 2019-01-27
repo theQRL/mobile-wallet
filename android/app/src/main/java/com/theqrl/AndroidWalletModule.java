@@ -108,7 +108,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
     // Declaration of native method
     public native String createWallet(int treeHeight, int hashFunction);
     public native String openWalletWithHexseed(String hexseed);
-    public native String transferCoins(String address, int amount, int fee, String hexseed, int otsIndex);
+    public native String transferCoins(String address, String amount, int fee, String hexseed, int otsIndex);
     public native String getMnemonic(String hexseed);
     private ManagedChannel channel;
 
@@ -427,11 +427,14 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
 
 
     @ReactMethod
-    public void transferCoins(String walletindex, String recipient, int amount, int otsIndex, int fee, Callback errorCallback, Callback successCallback) {
+    public void transferCoins(String walletindex, String recipient, String amountStr, int otsIndex, int fee, Callback errorCallback, Callback successCallback) {
 
-        System.out.println( "Transfer Coins from Android" );
-        System.out.println( Long.valueOf(amount) * 1000000000 );
-//        Long amount_long = Long.valueOf(amount) * 1000000000 ;
+//        System.out.println( "_____JAVA_____ String amount is");
+//        System.out.println(amountStr);
+
+        double amountDouble = Double.parseDouble(amountStr) * 1000000000;
+        long amount = (long) amountDouble ;
+
         String hexseed = getEncrypted("hexseed".concat(walletindex));
         System.out.println( hexseed );
         ManagedChannel channel = OkHttpChannelBuilder.forAddress(server, port).usePlaintext(true).build();
@@ -447,7 +450,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
 //                    + Character.digit(walletAddress.charAt(i+1), 16));
 //        }
 
-        // converting the recipient address to byte arary
+        // converting the recipient address to byte array
         String recipientAddress = recipient.substring(1);
         int reclen = recipientAddress.length();
         byte[] recdata = new byte[reclen / 2];
@@ -471,7 +474,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
 
         try {
             // converting the amount and fee to long before passing to cpp
-            String androidWallet = transferCoins(recipientAddress, amount, fee, hexseed, otsIndex);
+            String androidWallet = transferCoins(recipientAddress, amountStr, fee, hexseed, otsIndex);
 
 //            System.out.println( androidWallet.length() )  ;
 //            System.out.println( androidWallet )  ;

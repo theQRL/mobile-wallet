@@ -100,10 +100,15 @@ string AndroidWallet::getMnemonic(string hexseed) {
 }
 
 // transgerCoins to send QRL
-string AndroidWallet::transferCoins(string recipient, int amount, int fee, string hexseed, int otsIndex){
+string AndroidWallet::transferCoins(string recipient, string amount, int fee, string hexseed, int otsIndex){
 
 
-    __android_log_print(ANDROID_LOG_INFO, "Tag", "RECIPIENT CPP : %s", recipient.c_str() );
+//    __android_log_print(ANDROID_LOG_INFO, "Tag", "_____CPP_____ amount is : %s", amount.c_str() );
+
+    double amountDouble = atof(amount.c_str()) * 1000000000 ;
+//    __android_log_print(ANDROID_LOG_INFO, "Tag", "_____CPP_____ amountDouble is : %f", amountDouble );
+
+//    __android_log_print(ANDROID_LOG_INFO, "Tag", "RECIPIENT CPP : %s", recipient.c_str() );
     std::vector<unsigned char> concatenatedVector(55);
     // fee to byte array cpp
     int64_t feeInt = (int64_t) fee;
@@ -130,15 +135,16 @@ string AndroidWallet::transferCoins(string recipient, int amount, int fee, strin
 
     // amount to byte array
     int vectorPos2 = 54;
-    int64_t amountInt = (int64_t) amount;
+    int64_t amountInt = static_cast<std::int64_t>(amountDouble);
+
     for (int i = 0; i < 8; i++){
         concatenatedVector[vectorPos2 - i] = (amountInt >> (i * 8) );
     }
 
 
-    for (int i = 0; i < concatenatedVector.size(); i++){
-        __android_log_print(ANDROID_LOG_INFO, "Tag", "concatenatedVector : %hhu", concatenatedVector[i] );
-    }
+//    for (int i = 0; i < concatenatedVector.size(); i++){
+//        __android_log_print(ANDROID_LOG_INFO, "Tag", "concatenatedVector : %hhu", concatenatedVector[i] );
+//    }
 
     // shaSum
     auto shaSum = sha2_256(concatenatedVector);
