@@ -12,6 +12,7 @@
 #import "testingEphemeral.h"
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <React/RCTLog.h>
 //
 //#import <GRPCClient/GRPCCall+ChannelArg.h>
 //#import <GRPCClient/GRPCCall+Tests.h>
@@ -36,6 +37,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  RCTSetLogThreshold(RCTLogLevelInfo - 1);
   NSURL *jsCodeLocation;
   
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
