@@ -1,5 +1,5 @@
 import React from 'react';
-import {Picker, Text, View, Button, Image, ScrollView, ImageBackground, AsyncStorage, Clipboard, StyleSheet, TouchableHighlight, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Alert} from 'react-native';
+import {Picker, Text, View, Button, Image, ScrollView, ImageBackground, AsyncStorage, Clipboard, StyleSheet, TouchableHighlight, Modal, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Alert} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import { Header } from 'react-navigation';
 import FlashMessage from "react-native-flash-message";
@@ -26,14 +26,6 @@ export default class SendReceive extends React.Component {
     };
 
     componentDidMount() {
-        const recipient = this.props.navigation.getParam('recipient', 'norecipient');
-        if (recipient == "norecipient"){
-            this.setState({recipient:""})
-            // this.setState({recipient: GLOBALS.recipient })
-        }
-        else {
-            this.setState({recipient:recipient})
-        }
 
         // Update the wallet each time the user switch to this view
         this.setState({isLoading:true})
@@ -75,7 +67,9 @@ export default class SendReceive extends React.Component {
         view: 'send',
         fee: "0.001",
         isLoading: true,
-        amount: "2.99999999"
+        amount: "",
+        showModal: false,
+        recipient: ""
     }
 
     // update recipient
@@ -195,6 +189,15 @@ export default class SendReceive extends React.Component {
         });
     }
 
+
+    showModal = (showBool) => {
+        this.setState({showModal: showBool})
+    }
+
+    qrScanned = (e) => {
+        this.setState({showModal: false, recipient: e.data});
+    }
+
     render() {
         if (this.state.isLoading){
             return(<View></View>)
@@ -213,6 +216,24 @@ export default class SendReceive extends React.Component {
                 return (
                     <ScrollView scrollEnabled={false} contentContainerStyle={{flex: 1}} >
                     
+                    <Modal onRequestClose={ console.log("") } animationType="slide" visible={this.state.showModal}>
+                        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                            <QRCodeScanner onRead={this.qrScanned.bind(this)}
+                                topContent={
+                                    <Text style={styles.centerText}>
+                                        Scan QRL wallet QR code
+                                    </Text>
+                                }
+                                bottomContent={
+                                    <TouchableOpacity onPress={() => this.showModal(false)} >
+                                        <Text style={styles.CancelTextStyle}>Dismiss</Text>
+                                    </TouchableOpacity>
+                                }
+                            />
+                        </View>
+                    </Modal>
+
+
                     <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
                         <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
                             <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
@@ -257,7 +278,7 @@ export default class SendReceive extends React.Component {
                                             <Text style={styles.TextStyle}> REVIEW AND CONFIRM</Text>
                                         </TouchableOpacity>
 
-                                        <TouchableOpacity style={styles.SubmitButtonStyle3} activeOpacity = { .5 } onPress={() => this.props.navigation.navigate('ScanQrModal')} >
+                                        <TouchableOpacity style={styles.SubmitButtonStyle3} activeOpacity = { .5 } onPress={() => this.showModal(true)} >
                                             <Image source={require('../resources/images/scan.png')} resizeMode={Image.resizeMode.contain} style={{height:80, width:80}} />
                                         </TouchableOpacity>
                                     </View>
@@ -301,6 +322,24 @@ export default class SendReceive extends React.Component {
             else {
                 return (
                     <KeyboardAvoidingView style={{flex:1}} keyboardVerticalOffset={-200} behavior="padding">
+
+                        <Modal onRequestClose={ console.log("") } animationType="slide" visible={this.state.showModal}>
+                            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                                <QRCodeScanner onRead={this.qrScanned.bind(this)}
+                                    topContent={
+                                        <Text style={styles.centerText}>
+                                            Scan QRL wallet QR code
+                                        </Text>
+                                    }
+                                    bottomContent={
+                                        <TouchableOpacity onPress={() => this.showModal(false)} >
+                                            <Text style={styles.CancelTextStyle}>Dismiss</Text>
+                                        </TouchableOpacity>
+                                    }
+                                />
+                            </View>
+                        </Modal>
+
                         <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
                             <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
                                 <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
@@ -346,7 +385,7 @@ export default class SendReceive extends React.Component {
                                     </View>
 
                                     <View style={{flex:0.1}}>
-                                        <TouchableOpacity style={styles.SubmitButtonStyle3} activeOpacity = { .5 } onPress={() => this.props.navigation.navigate('ScanQrModal')} >
+                                        <TouchableOpacity style={styles.SubmitButtonStyle3} activeOpacity = { .5 } onPress={() => this.showModal(true)} >
                                             <Image source={require('../resources/images/scan.png')} resizeMode={Image.resizeMode.contain} style={{height:70, width:70}} />
                                         </TouchableOpacity>
                                     </View>
@@ -441,5 +480,29 @@ const styles = StyleSheet.create({
         flex: 1,
         width: null,
         height: null,
-    }
+    },
+    centerText: {
+        flex: 1,
+        fontSize: 18,
+        paddingTop: 80,
+        color: '#777',
+    },
+    textBold: {
+        fontWeight: '500',
+        color: '#000',
+    },
+    buttonText: {
+        fontSize: 21,
+        color: 'rgb(0,122,255)',
+    },
+    buttonTouchable: {
+        padding: 16,
+    },
+    CancelTextStyle:{
+        alignSelf:'center',
+        color: 'red',
+        textAlign:'center',
+        fontSize:18,
+        paddingTop:5
+    },
 });
