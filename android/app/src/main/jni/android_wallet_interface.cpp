@@ -53,7 +53,7 @@ JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_openWalletWithHexs
 
 
 
-JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_transferCoins(JNIEnv* pEnv, jobject pThis, jstring address, jint amount, jint fee, jstring hexseed, jint otsIndex)
+JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_transferCoins(JNIEnv* pEnv, jobject pThis, jstring address, jstring amount, jint fee, jstring hexseed, jint otsIndex)
 {
     // convert jstring to string
     const jclass stringClass = pEnv->GetObjectClass(hexseed);
@@ -72,13 +72,24 @@ JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_transferCoins(JNIE
     const jbyteArray stringJbytesAddr = (jbyteArray) pEnv->CallObjectMethod(address, getBytesAddr, pEnv->NewStringUTF("UTF-8"));
     size_t lengthAddr = (size_t) pEnv->GetArrayLength(stringJbytesAddr);
     jbyte* pBytesAddr = pEnv->GetByteArrayElements(stringJbytesAddr, NULL);
-    std::string retAddr = std::string((char *)pBytesAddr, length);
+    std::string retAddr = std::string((char *)pBytesAddr, lengthAddr);
     pEnv->ReleaseByteArrayElements(stringJbytesAddr, pBytesAddr, JNI_ABORT);
     pEnv->DeleteLocalRef(stringJbytesAddr);
     pEnv->DeleteLocalRef(stringClassAddr);
 
+    // convert jstring to string AMOUNT
+    const jclass stringClassAmount = pEnv->GetObjectClass(amount);
+    const jmethodID getBytesAmount = pEnv->GetMethodID(stringClassAmount, "getBytes", "(Ljava/lang/String;)[B");
+    const jbyteArray stringJbytesAmount = (jbyteArray) pEnv->CallObjectMethod(amount, getBytesAmount, pEnv->NewStringUTF("UTF-8"));
+    size_t lengthAmount = (size_t) pEnv->GetArrayLength(stringJbytesAmount);
+    jbyte* pBytesAmount = pEnv->GetByteArrayElements(stringJbytesAmount, NULL);
+    std::string retAmount = std::string((char *)pBytesAmount, lengthAmount);
+    pEnv->ReleaseByteArrayElements(stringJbytesAmount, pBytesAmount, JNI_ABORT);
+    pEnv->DeleteLocalRef(stringJbytesAmount);
+    pEnv->DeleteLocalRef(stringClassAmount);
+
     AndroidWallet androidWallet;
-    return pEnv-> NewStringUTF( androidWallet.transferCoins(retAddr, amount, fee, ret, otsIndex).c_str() );
+    return pEnv-> NewStringUTF( androidWallet.transferCoins(retAddr, retAmount, fee, ret, otsIndex).c_str() );
 }
 
 

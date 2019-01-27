@@ -22,7 +22,7 @@ public:
     AndroidWallet();
     string createWallet(jint treeHeight, jint hashFunction);
     string openWalletWithHexseed(string hexseed);
-    string transferCoins(string address, int amount, int fee, string hexseed, int otsIndex);
+    string transferCoins(string address, string amount, int fee, string hexseed, int otsIndex);
     string getMnemonic(string hexseed);
 };
 
