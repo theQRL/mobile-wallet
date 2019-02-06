@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Button, Text, ImageBackground, ActivityIndicator, AsyncStorage, StatusBar, StyleSheet, View, Image, Linking } from 'react-native';
+import { Button, Text, ImageBackground, ActivityIndicator, AsyncStorage, StatusBar, StyleSheet, View, Image, Linking, Platform } from 'react-native';
 import { DrawerNavigator , StackNavigator, SwitchNavigator, DrawerItems } from 'react-navigation'; // Version can be specified in package.json
 // Import the different screens
 import BackupWallet from './screens/BackupWallet'
@@ -12,7 +12,7 @@ import OpenExistingWallet from './screens/OpenExistingWallet'
 import SignIn from './screens/SignIn'
 import CreateWalletTreeHeight from './screens/CreateWalletTreeHeight'
 import CreateWalletHashFunction from './screens/CreateWalletHashFunction'
-import ScanQrModal from './screens/ScanQrModal'
+// import ScanQrModal from './screens/ScanQrModal'
 import ConfirmTxModal from './screens/ConfirmTxModal'
 import CreateAdvancedWallet from './screens/CreateAdvancedWallet'
 import TxDetailsView from './screens/TxDetailsView'
@@ -20,6 +20,11 @@ import ProvideWalletPin from './screens/ProvideWalletPin'
 import OpenExistingWalletModal from './screens/OpenExistingWalletModal'
 import ShowQrCodeModal from './screens/ShowQrCodeModal'
 
+
+// Android and Ios native modules
+import {NativeModules} from 'react-native';
+var IosWallet = NativeModules.refreshWallet;
+var AndroidWallet = NativeModules.AndroidWallet;
 // import { QRLLIB } from './node_modules/qrllib/build/web-libjsqrl.js'
 
 // AuthLoadingScreen checks if a wallet already exists
@@ -38,7 +43,39 @@ class AuthLoadingScreen extends React.Component {
 		const walletCreated = await AsyncStorage.getItem('walletcreated');
 		// This will switch to the App screen or Auth screen and this loading
         // screen will be unmounted and thrown away.
-		this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
+
+        // check which network to connect to: node and port
+        fetch('https://ademcan.net/qrlnetwork.html', {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            if (Platform.OS === 'ios'){
+                IosWallet.saveNodeInformation( responseJson.node, responseJson.port, (error, status)=> {
+                    if (status == "saved"){
+                        this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
+                    }
+                });    
+            }
+            else {
+                AndroidWallet.saveNodeInformation(responseJson.node, responseJson.port,  (err) => {console.log(err);}, (status)=> {
+                    if (status == "saved"){
+                        this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
+                    }
+                });
+    
+            }
+
+            
+            // this.setState({node: responseJson.node, port: responseJson.port })
+        })
+        .catch((error) => { console.error(error); });
+
+		
 	};
 
 	// Render any loading content that you like here
@@ -121,9 +158,9 @@ const RootStack = StackNavigator(
     ConfirmTxModal : {
         screen: ConfirmTxModal
     },
-    ScanQrModal : {
-        screen: ScanQrModal
-    },
+    // ScanQrModal : {
+    //     screen: ScanQrModal
+    // },
     ShowQrCodeModal : {
         screen: ShowQrCodeModal
     },

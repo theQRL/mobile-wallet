@@ -68,6 +68,7 @@ RCT_EXPORT_METHOD(sendCoins:(NSString* )recipient withAmount:(NSNumber* _Nonnull
   
   // gRPC initialization
 //  static NSString * const kHostAddress = @"testnet-2.automated.theqrl.org:19009";
+  NSString* kHostAddress = [WalletHelperFunctions getNodeUrl];
   [GRPCCall useInsecureConnectionsForHost:kHostAddress];
   PublicAPI *client = [[PublicAPI alloc] initWithHost:kHostAddress];
   

@@ -112,8 +112,8 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
     public native String getMnemonic(String hexseed);
     private ManagedChannel channel;
 
-    public static String server = "testnet-2.automated.theqrl.org";
-    public static int port = 19009;
+//    public static String server = "testnet-2.automated.theqrl.org";
+//    public static int port = 19009;
 
     // encrypt and save information to shared preferences
     private void saveEncrypted(String key, String value){
@@ -190,6 +190,14 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
     }
 
 
+    // Save port and node information to Shared Preferences
+    @ReactMethod
+    public void saveNodeInformation(String node, String port, Callback errorCallback, Callback successCallback) {
+        PreferenceHelper.putString("node", node);
+        PreferenceHelper.putInt("port", Integer.valueOf(port));
+        successCallback.invoke("saved");
+    }
+
     // Check if provided hexseed is correct
     @ReactMethod
     public void checkHexseedIdentical(String hexSeed, String walletindex, Callback errorCallback, Callback successCallback) {
@@ -213,6 +221,9 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
             data[i / 2] = (byte) ((Character.digit(walletAddress.charAt(i), 16) << 4)
                     + Character.digit(walletAddress.charAt(i+1), 16));
         }
+
+        String server = PreferenceHelper.getString("node");
+        int port = PreferenceHelper.getInt("port");
 
         try {
             ManagedChannel channel = OkHttpChannelBuilder.forAddress(server , port).usePlaintext(true).build();
@@ -251,6 +262,9 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
     public void refreshWallet(String walletindex, Callback errorCallback, Callback successCallback) {
         System.out.println( "refresWallet from Android" );
         String walletAddress = getEncrypted("address".concat(walletindex));
+
+        String server = PreferenceHelper.getString("node");
+        int port = PreferenceHelper.getInt("port");
         // get the list of the latest 10 tx
         int completed = 0;
         try {
@@ -435,6 +449,9 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
         double amountDouble = Double.parseDouble(amountStr) * 1000000000;
         long amount = (long) amountDouble ;
 
+        String server = PreferenceHelper.getString("node");
+        int port = PreferenceHelper.getInt("port");
+
         String hexseed = getEncrypted("hexseed".concat(walletindex));
         System.out.println( hexseed );
         ManagedChannel channel = OkHttpChannelBuilder.forAddress(server, port).usePlaintext(true).build();
@@ -539,6 +556,9 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
             txdata[i / 2] = (byte) ((Character.digit(txhash.charAt(i), 16) << 4)
                     + Character.digit(txhash.charAt(i+1), 16));
         }
+
+        String server = PreferenceHelper.getString("node");
+        int port = PreferenceHelper.getInt("port");
 
         ManagedChannel channel = OkHttpChannelBuilder.forAddress(server, port).usePlaintext(true).build();
         PublicAPIGrpc.PublicAPIBlockingStub blockingStub = PublicAPIGrpc.newBlockingStub(channel);

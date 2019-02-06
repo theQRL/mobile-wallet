@@ -12,17 +12,22 @@
 
 @implementation WalletHelperFunctions
 
-NSString * const kHostAddress = @"testnet-2.automated.theqrl.org:19009";
+//NSString * const kHostAddress = @"testnet-2.automated.theqrl.org:19009";
 NSNumber * const shor = @1000000000;
 
 + (void) printTest {
   NSLog(@"test");
 }
 
+// return formatted node connection URL
++ (NSString*) getNodeUrl{
+  NSString* node = [[NSUserDefaults standardUserDefaults] objectForKey:@"node"];
+  NSString* port = [[NSUserDefaults standardUserDefaults] objectForKey:@"port"];
+  return [NSString stringWithFormat:@"%@%@%@", node, @":", port];
+}
 
 // Converting NSData hexstring (<a4a67b43 9c94efd9...>) bytes into NSString hexstring (a4a67b439c94efd9...)
 + (NSString *) nsDataHex2string:(NSData *)nsDataHex {
-  
   NSData *data = nsDataHex;
   NSUInteger capacity = data.length * 2;
   NSMutableString *sbuf = [NSMutableString stringWithCapacity:capacity];

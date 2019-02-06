@@ -22,11 +22,24 @@
 
 RCT_EXPORT_MODULE();
 // Refresh the wallet balance and last transactions list
+RCT_EXPORT_METHOD(saveNodeInformation:(NSString*)node withPort:(NSString*) port callback:(RCTResponseSenderBlock)callback)
+{
+  // save node and port to NSUserDefaults
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  [userDefaults setObject:node forKey:@"node"];
+  [userDefaults setObject:port forKey:@"port"];
+  [userDefaults synchronize];
+  callback(@[[NSNull null], @"saved"]);
+}
+
+
+// Refresh the wallet balance and last transactions list
 RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSenderBlock)callback)
 {
+
+  // get the node url to connect to
+  NSString* kHostAddress = [WalletHelperFunctions getNodeUrl];
   
-//  static NSString * const kHostAddress = @"testnet-2.automated.theqrl.org:19009";
-//  extern NSString *kHostAddress;
   [GRPCCall useInsecureConnectionsForHost:kHostAddress];
   PublicAPI *client = [[PublicAPI alloc] initWithHost:kHostAddress];
   
@@ -292,6 +305,7 @@ RCT_EXPORT_METHOD(sendWalletPrivateInfo:(NSString*)walletindex callback:(RCTResp
 // Check if the wallet has a pending tx
 RCT_EXPORT_METHOD(checkPendingTx:(NSString*)walletindex callback:(RCTResponseSenderBlock)callback)
 {
+  NSString* kHostAddress = [WalletHelperFunctions getNodeUrl];
   NSLog(@"CHECKING IF UNCONFIRMED TX OBJC");
   NSString* wallet_address = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@%@", @"address", walletindex]];
   [GRPCCall useInsecureConnectionsForHost:kHostAddress];
@@ -330,6 +344,7 @@ RCT_EXPORT_METHOD(checkPendingTx:(NSString*)walletindex callback:(RCTResponseSen
 // get tx details
 RCT_EXPORT_METHOD(getTxDetails:(NSString* )txhash callback:(RCTResponseSenderBlock)callback)
 {
+  NSString* kHostAddress = [WalletHelperFunctions getNodeUrl];
   [GRPCCall useInsecureConnectionsForHost:kHostAddress];
   PublicAPI *client = [[PublicAPI alloc] initWithHost:kHostAddress];
   

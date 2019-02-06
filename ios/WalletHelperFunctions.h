@@ -10,9 +10,10 @@
 #define WalletHelperFunctions_h
 
 @interface WalletHelperFunctions : NSObject {}
-extern NSString * const kHostAddress;
+//extern NSString * const kHostAddress;
 extern NSNumber * const shor;
 + (void)printTest;
++ (NSString*) getNodeUrl;
 + (NSString *) nsDataHex2string:(NSData *)nsDataHex ;
 + (NSMutableData *) nsStringHex2nsData:(NSString *)nsStringHex ;
 + (NSMutableString *) nsStringHex2ascii:(NSString *)nsStringHex ;
