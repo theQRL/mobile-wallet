@@ -11,7 +11,7 @@ var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 export default class Wallet extends React.Component{
 
     static navigationOptions = {
-        drawerLabel: 'TRANSACTION HISTORY',
+        drawerLabel: 'BALANCE',
         drawerIcon: ({ tintColor }) => (
             <Image source={require('../resources/images/transaction_history_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain}  style={{width:25, height:25}}/>
         ),

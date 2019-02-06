@@ -113,21 +113,6 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
             else {
               title = @"SENT";
             }
-            
-            //          NSString *desc;
-            //          // format the amount according to shor qty
-            //          uint64_t amountUint = [response.transaction.tx.transfer.amountsArray valueAtIndex:0];
-            //          if (amountUint % 1000000000 == 0){
-            //            NSString *amountStr = [NSString stringWithFormat:@"%llu", [response.transaction.tx.transfer.amountsArray valueAtIndex:0]/1000000000] ;
-            //            desc = [amountStr stringByAppendingString:@" QUANTA"];
-            //          }
-            //          else {
-            //            float amountFloat = [response.transaction.tx.transfer.amountsArray valueAtIndex:0] / 1000000000;
-            //            NSString *amountStr = [NSString stringWithFormat:@"%f", amountFloat] ;
-            //            desc = [amountStr stringByAppendingString:@" QUANTA"];
-            //          }
-            
-            
             NSString *amountStr = [NSString stringWithFormat:@"%llu", [response.transaction.tx.transfer.amountsArray valueAtIndex:0]] ;
             
             // add amount and recipient to NSDictionary
@@ -152,7 +137,7 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
                                               stringFromDate, @"date",
                                               txHash, @"txhash",
                                               nil];
-            [txResponseArray addObject:txJsonDictionary];
+//            [txResponseArray addObject:txJsonDictionary];
             // increment to mark the end of the for loop
             completed++;
           }
@@ -168,7 +153,7 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
                                               stringFromDate, @"date",
                                               txHash, @"txhash",
                                               nil];
-            [txResponseArray addObject:txJsonDictionary];
+//            [txResponseArray addObject:txJsonDictionary];
             // increment to mark the end of the for loop
             completed++;
           }
@@ -183,7 +168,7 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
                                               stringFromDate, @"date",
                                               txHash, @"txhash",
                                               nil];
-            [txResponseArray addObject:txJsonDictionary];
+//            [txResponseArray addObject:txJsonDictionary];
             // increment to mark the end of the for loop
             completed++;
           }
