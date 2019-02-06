@@ -65,7 +65,7 @@ export default class SendReceive extends React.Component {
         // amount: "10",
         balance: "loading...",
         view: 'send',
-        fee: "0.001",
+        fee: "0.01",
         isLoading: true,
         amount: "",
         showModal: false,
