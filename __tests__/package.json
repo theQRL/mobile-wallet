@@ -1,0 +1,21 @@
+{
+  "name": "androidsampletest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test_web.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "wd": "^1.11.0"
+  },
+  "bundledDependencies": [
+    "chai",
+    "mocha",
+    "wd"
+  ]
+}

@@ -10,53 +10,57 @@ var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 export default class Wallet extends React.Component{
 
-    static navigationOptions = {
-        drawerLabel: 'TRANSACTION HISTORY',
-        drawerIcon: ({ tintColor }) => (
-            <Image source={require('../resources/images/transaction_history_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain}  style={{width:25, height:25}}/>
-        ),
-    };
+    // static navigationOptions = {
+    //     drawerLabel: 'BALANCE',
+    //     drawerIcon: ({ tintColor }) => (
+    //         <Image source={require('../resources/images/transaction_history_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain}  style={{width:25, height:25}}/>
+    //     ),
+    // };
 
     // every time we open the main page fo the following
     // 1. update cmc related info
     // 2. update list of 10 latest tx
     componentDidMount() {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        // update QRL market data
-        fetch('https://market-data.automated.theqrl.org/', {
-            method: 'GET',
-            headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            },
-        }).then((response) => response.json())
-        .then((responseJson) => {
-            this.setState({marketcap: Number((parseFloat(responseJson.market_cap)).toFixed()), price: Number((parseFloat(responseJson.price)).toFixed(2)) , change24: Number((parseFloat(responseJson.change_24hr)).toFixed(2)) })
 
-            if (responseJson.change_24hr.includes("-")){this.setState({changeup: false})}
-            else {this.setState({changeup: true})}
 
-            // Update the wallet each time the user switch to this view
-            // Ios
-            this.setState({isLoading:true})
+        // AsyncStorage.multiGet(["node","port"]).then((connectionDetails) => {
+        //     node = connectionDetails[0][1]
+        //     port = connectionDetails[1][1]
+            // update QRL market data
+            fetch('https://market-data.automated.theqrl.org/', {
+                method: 'GET',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                },
+            }).then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({marketcap: Number((parseFloat(responseJson.market_cap)).toFixed()), price: Number((parseFloat(responseJson.price)).toFixed(2)) , change24: Number((parseFloat(responseJson.change_24hr)).toFixed(2)) })
 
-            // get the currect walletindex
-            AsyncStorage.getItem("walletindex").then((walletindex) => {
-                if (Platform.OS === 'ios'){
-                    IosWallet.refreshWallet(walletindex, (error, walletAddress, otsIndex, balance, keys)=> {
-                        this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys)), tx_count: JSON.parse(keys).length})
+                if (responseJson.change_24hr.includes("-")){this.setState({changeup: false})}
+                else {this.setState({changeup: true})}
 
-                        
-                    });
-                }
-                // Android
-                else {
-                    AndroidWallet.refreshWallet(walletindex,  (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
-                        this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys)), tx_count: JSON.parse(keys).length })
-                    });
-                }
-            }).catch((error) => {console.log(error)});
-        })
+                // Update the wallet each time the user switch to this view
+                // Ios
+                this.setState({isLoading:true})
+
+                // get the currect walletindex
+                AsyncStorage.getItem("walletindex").then((walletindex) => {
+                    if (Platform.OS === 'ios'){
+                        IosWallet.refreshWallet(walletindex, (error, walletAddress, otsIndex, balance, keys)=> {
+                            this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys)), tx_count: JSON.parse(keys).length})
+                        });
+                    }
+                    // Android
+                    else {
+                        AndroidWallet.refreshWallet(walletindex,  (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
+                            this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys)), tx_count: JSON.parse(keys).length })
+                        });
+                    }
+                }).catch((error) => {console.log(error)});
+            })
+        // });        
     }
 
     constructor(props) {
@@ -166,7 +170,7 @@ export default class Wallet extends React.Component{
         if (this.state.isLoading) {
             return (
                 <ImageBackground source={require('../resources/images/main_bg_half.png')} style={styles.backgroundImage}>
-                    <View style={{flex:1}}>
+                    <View  accessibilityLabel="TransactionsHistory" style={{flex:1}}>
                         <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
                             <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
                                 <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
@@ -223,7 +227,7 @@ export default class Wallet extends React.Component{
 
             return (
                 <ImageBackground source={require('../resources/images/main_bg_half.png')} style={styles.backgroundImage}>
-                    <View style={{flex:1}}>
+                    <View accessibilityLabel="TransactionsHistory" style={{flex:1}}>
 
                         <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
                             <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>

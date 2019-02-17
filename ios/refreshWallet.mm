@@ -22,11 +22,24 @@
 
 RCT_EXPORT_MODULE();
 // Refresh the wallet balance and last transactions list
+RCT_EXPORT_METHOD(saveNodeInformation:(NSString*)node withPort:(NSString*) port callback:(RCTResponseSenderBlock)callback)
+{
+  // save node and port to NSUserDefaults
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  [userDefaults setObject:node forKey:@"node"];
+  [userDefaults setObject:port forKey:@"port"];
+  [userDefaults synchronize];
+  callback(@[[NSNull null], @"saved"]);
+}
+
+
+// Refresh the wallet balance and last transactions list
 RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSenderBlock)callback)
 {
+
+  // get the node url to connect to
+  NSString* kHostAddress = [WalletHelperFunctions getNodeUrl];
   
-//  static NSString * const kHostAddress = @"testnet-2.automated.theqrl.org:19009";
-//  extern NSString *kHostAddress;
   [GRPCCall useInsecureConnectionsForHost:kHostAddress];
   PublicAPI *client = [[PublicAPI alloc] initWithHost:kHostAddress];
   
@@ -100,21 +113,6 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
             else {
               title = @"SENT";
             }
-            
-            //          NSString *desc;
-            //          // format the amount according to shor qty
-            //          uint64_t amountUint = [response.transaction.tx.transfer.amountsArray valueAtIndex:0];
-            //          if (amountUint % 1000000000 == 0){
-            //            NSString *amountStr = [NSString stringWithFormat:@"%llu", [response.transaction.tx.transfer.amountsArray valueAtIndex:0]/1000000000] ;
-            //            desc = [amountStr stringByAppendingString:@" QUANTA"];
-            //          }
-            //          else {
-            //            float amountFloat = [response.transaction.tx.transfer.amountsArray valueAtIndex:0] / 1000000000;
-            //            NSString *amountStr = [NSString stringWithFormat:@"%f", amountFloat] ;
-            //            desc = [amountStr stringByAppendingString:@" QUANTA"];
-            //          }
-            
-            
             NSString *amountStr = [NSString stringWithFormat:@"%llu", [response.transaction.tx.transfer.amountsArray valueAtIndex:0]] ;
             
             // add amount and recipient to NSDictionary
@@ -139,7 +137,7 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
                                               stringFromDate, @"date",
                                               txHash, @"txhash",
                                               nil];
-            [txResponseArray addObject:txJsonDictionary];
+//            [txResponseArray addObject:txJsonDictionary];
             // increment to mark the end of the for loop
             completed++;
           }
@@ -155,7 +153,7 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
                                               stringFromDate, @"date",
                                               txHash, @"txhash",
                                               nil];
-            [txResponseArray addObject:txJsonDictionary];
+//            [txResponseArray addObject:txJsonDictionary];
             // increment to mark the end of the for loop
             completed++;
           }
@@ -170,7 +168,7 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
                                               stringFromDate, @"date",
                                               txHash, @"txhash",
                                               nil];
-            [txResponseArray addObject:txJsonDictionary];
+//            [txResponseArray addObject:txJsonDictionary];
             // increment to mark the end of the for loop
             completed++;
           }
@@ -292,6 +290,7 @@ RCT_EXPORT_METHOD(sendWalletPrivateInfo:(NSString*)walletindex callback:(RCTResp
 // Check if the wallet has a pending tx
 RCT_EXPORT_METHOD(checkPendingTx:(NSString*)walletindex callback:(RCTResponseSenderBlock)callback)
 {
+  NSString* kHostAddress = [WalletHelperFunctions getNodeUrl];
   NSLog(@"CHECKING IF UNCONFIRMED TX OBJC");
   NSString* wallet_address = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@%@", @"address", walletindex]];
   [GRPCCall useInsecureConnectionsForHost:kHostAddress];
@@ -330,6 +329,7 @@ RCT_EXPORT_METHOD(checkPendingTx:(NSString*)walletindex callback:(RCTResponseSen
 // get tx details
 RCT_EXPORT_METHOD(getTxDetails:(NSString* )txhash callback:(RCTResponseSenderBlock)callback)
 {
+  NSString* kHostAddress = [WalletHelperFunctions getNodeUrl];
   [GRPCCall useInsecureConnectionsForHost:kHostAddress];
   PublicAPI *client = [[PublicAPI alloc] initWithHost:kHostAddress];
   

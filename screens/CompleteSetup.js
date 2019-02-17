@@ -106,10 +106,10 @@ export default class CompleteSetup extends React.Component {
         if (this.state.pin != null){
             return(
                 <View>
-                    <TouchableOpacity style={styles.SubmitButtonStyle} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={this.createWallet} >
+                    <TouchableOpacity accessibilityLabel="createWalletButton" style={styles.SubmitButtonStyle} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={this.createWallet} >
                         <Text style={styles.TextStyle}> CREATE WALLET </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.SubmitButtonStyleRed} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => {this.props.navigation.popToTop()} }>
+                    <TouchableOpacity accessibilityLabel="cancelButtonAfterPin" style={styles.SubmitButtonStyleRed} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => {this.props.navigation.popToTop()} }>
                     <Text style={styles.TextStyleWhite}> CANCEL </Text>
                     </TouchableOpacity>
                 </View>
@@ -118,10 +118,10 @@ export default class CompleteSetup extends React.Component {
         else {
             return(
                 <View>
-                    <TouchableOpacity style={styles.SubmitButtonStyle} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => {this.launchModal(true, null)}}  >
+                    <TouchableOpacity accessibilityLabel="create4digitPinButton" style={styles.SubmitButtonStyle} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => {this.launchModal(true, null)}}  >
                         <Text style={styles.TextStyle}> CREATE 4-DIGIT PIN </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.SubmitButtonStyleRed} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => {this.props.navigation.popToTop()} }>
+                    <TouchableOpacity accessibilityLabel="cancelButtonBeforePin" style={styles.SubmitButtonStyleRed} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => {this.props.navigation.popToTop()} }>
                     <Text style={styles.TextStyleWhite}> CANCEL </Text>
                     </TouchableOpacity>
                 </View>
@@ -133,10 +133,11 @@ export default class CompleteSetup extends React.Component {
 
     render() {
         return (
-            <ImageBackground source={require('../resources/images/complete_setup_bg.png')} style={styles.backgroundImage}>
+            <ImageBackground accessibilityLabel="CompleteSetup" source={require('../resources/images/complete_setup_bg.png')} style={styles.backgroundImage}>
                 <Modal animationType="slide" visible={this.state.modalVisible}>
                     <ImageBackground source={require('../resources/images/complete_setup_bg.png')} style={styles.backgroundImage}>
                         <PINCode
+                            accessibilityLabel="pinCodeView"
                             status={'choose'}
                             storePin={(pin: string) => {
                                 this.setState({pin:pin})

@@ -65,7 +65,7 @@ export default class SendReceive extends React.Component {
         // amount: "10",
         balance: "loading...",
         view: 'send',
-        fee: "0.001",
+        fee: "0.01",
         isLoading: true,
         amount: "",
         showModal: false,
@@ -207,7 +207,7 @@ export default class SendReceive extends React.Component {
             // formatting address for UI
             addressBegin = this.state.walletAddress.substring(1, 10);
             addressEnd = this.state.walletAddress.substring(58, 79);
-
+            QrWalletAddress = "Q"+this.state.walletAddress;
 
             // <KeyboardAvoidingView style={{flex:1, paddingTop: this.state.paddingTopCentral, paddingBottom:100, width:330, alignSelf: 'center', borderRadius:10}} behavior="padding">
 
@@ -270,7 +270,7 @@ export default class SendReceive extends React.Component {
                                         <Text>{'\n'}AMOUNT</Text>
                                         <TextInput keyboardType={'numeric'} onChangeText={ (text) => this._onAmountChange(text) } value={this.state.amount} style={{backgroundColor:'#ebe8e8', height:50}} />
                                         <View style={{flexDirection:'row', paddingTop:10}}>
-                                            <View style={{flex:1, alignItems:'flex-start'}}><Text>Fee: <Text style={{color:'red'}}>0.001</Text></Text></View>
+                                            <View style={{flex:1, alignItems:'flex-start'}}><Text>Fee: <Text style={{color:'red'}}>0.01</Text></Text></View>
                                             <View style={{flex:1, alignItems:'flex-end'}}><Text>OTS Key Index: <Text style={{color:'red'}}>{this.state.otsIndex}</Text></Text></View>
                                         </View>
 
@@ -296,7 +296,7 @@ export default class SendReceive extends React.Component {
                                 </View>
                                 <View style={{width:'50%',height:1, backgroundColor:'red', alignSelf:'flex-end'}}></View>
                                 <View style={{height:300, backgroundColor:'white', width:330, padding:30, alignItems:'center'}}>
-                                    <QRCode value={this.state.walletAddress} size={150} bgColor='black' fgColor='white'/>
+                                    <QRCode value={QrWalletAddress} size={150} bgColor='black' fgColor='white'/>
                                     <Text style={{fontWeight:'bold', paddingTop:30}}>Your public wallet address</Text>
                                     <Text>Q{this.state.walletAddress}</Text>
                                 </View>
@@ -375,7 +375,7 @@ export default class SendReceive extends React.Component {
                                         <Text>{'\n'}AMOUNT</Text>
                                         <TextInput keyboardType={'numeric'} underlineColorAndroid="transparent" onChangeText={ (text) => this._onAmountChange(text) } value={this.state.amount} style={{backgroundColor:'#ebe8e8', height:40}} />
                                         <View style={{flexDirection:'row', paddingTop:10}}>
-                                            <View style={{flex:1, alignItems:'flex-start'}}><Text>Fee: <Text style={{color:'red'}}>0.001</Text></Text></View>
+                                            <View style={{flex:1, alignItems:'flex-start'}}><Text>Fee: <Text style={{color:'red'}}>0.01</Text></Text></View>
                                             <View style={{flex:1, alignItems:'flex-end'}}><Text>OTS Key Index: <Text style={{color:'red'}}>{this.state.otsIndex}</Text></Text></View>
                                         </View>
 
@@ -403,7 +403,7 @@ export default class SendReceive extends React.Component {
                                     </View>
                                     <View style={{width:'50%',height:1, backgroundColor:'red', alignSelf:'flex-end'}}></View>
                                     <View style={{height:300, backgroundColor:'white', width:330, padding:30, alignItems:'center'}}>
-                                        <QRCode value={this.state.walletAddress} size={150} bgColor='black' fgColor='white'/>
+                                        <QRCode value={QrWalletAddress} size={150} bgColor='black' fgColor='white'/>
                                         <Text style={{fontWeight:'bold', paddingTop:30}}>Your public wallet address</Text>
                                         <Text>Q{this.state.walletAddress}</Text>
                                     </View>
