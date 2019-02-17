@@ -67,10 +67,7 @@ class AuthLoadingScreen extends React.Component {
                         this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
                     }
                 });
-    
             }
-
-            
             // this.setState({node: responseJson.node, port: responseJson.port })
         })
         .catch((error) => { console.error(error); });
@@ -106,13 +103,41 @@ const CustomDrawerContentComponent = (props) => (
     </View>
 )
 
+
+// The Stack for modals
+const TxStack = StackNavigator(
+  {
+    TransactionsHistory : {
+      path: '/',
+      screen: TransactionsHistory
+    },
+    TxDetailsView : {
+      path: '/',
+      screen: TxDetailsView
+  },
+  },
+  {
+    headerMode: 'none',
+  }
+);
+
+
 // MainDrawerMenu
 const MainDrawerMenu = DrawerNavigator(
     {
-        TransactionsHistory : {
-            path: '/',
-            screen: TransactionsHistory
-        },
+      TransactionsHistory : {
+        path: '/',
+        screen: TxStack,
+        navigationOptions: {
+          drawerLabel: 'BALANCE',
+          drawerIcon: ({ tintColor }) => (
+            <Image source={require('./resources/images/transaction_history_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain}  style={{width:25, height:25}}/>
+          ),
+          // drawerLabel: 'Settings',
+          // drawerIcon: ({ tintColor }) => <Icon name="cog" size={17} />,
+        }
+      },
+        // TransactionsHistory : TxStack,
         SendReceive : {
             path: '/',
             screen: SendReceive
@@ -125,10 +150,10 @@ const MainDrawerMenu = DrawerNavigator(
             path: '/',
             screen: CreateNewWallet
         },
-        TxDetailsView : {
-            path: '/',
-            screen: TxDetailsView
-        },
+        // TxDetailsView : {
+        //     path: '/',
+        //     screen: TxDetailsView
+        // },
     },
     {
         // initialRouteName: 'Wallet',

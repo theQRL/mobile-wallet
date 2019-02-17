@@ -10,12 +10,12 @@ var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 export default class Wallet extends React.Component{
 
-    static navigationOptions = {
-        drawerLabel: 'BALANCE',
-        drawerIcon: ({ tintColor }) => (
-            <Image source={require('../resources/images/transaction_history_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain}  style={{width:25, height:25}}/>
-        ),
-    };
+    // static navigationOptions = {
+    //     drawerLabel: 'BALANCE',
+    //     drawerIcon: ({ tintColor }) => (
+    //         <Image source={require('../resources/images/transaction_history_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain}  style={{width:25, height:25}}/>
+    //     ),
+    // };
 
     // every time we open the main page fo the following
     // 1. update cmc related info
