@@ -126,7 +126,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 26
         versionCode 1
-        versionName "1.0.7"
+        versionName "1.0.8"
 
         testBuildType System.getProperty('testBuildType', 'debug')  //this will later be used to control the test apk build type
         missingDimensionStrategy "minReactNative", "minReactNative46" //read note
