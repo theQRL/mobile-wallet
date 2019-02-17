@@ -207,7 +207,7 @@ export default class SendReceive extends React.Component {
             // formatting address for UI
             addressBegin = this.state.walletAddress.substring(1, 10);
             addressEnd = this.state.walletAddress.substring(58, 79);
-
+            QrWalletAddress = "Q"+this.state.walletAddress;
 
             // <KeyboardAvoidingView style={{flex:1, paddingTop: this.state.paddingTopCentral, paddingBottom:100, width:330, alignSelf: 'center', borderRadius:10}} behavior="padding">
 
@@ -296,7 +296,7 @@ export default class SendReceive extends React.Component {
                                 </View>
                                 <View style={{width:'50%',height:1, backgroundColor:'red', alignSelf:'flex-end'}}></View>
                                 <View style={{height:300, backgroundColor:'white', width:330, padding:30, alignItems:'center'}}>
-                                    <QRCode value={this.state.walletAddress} size={150} bgColor='black' fgColor='white'/>
+                                    <QRCode value={QrWalletAddress} size={150} bgColor='black' fgColor='white'/>
                                     <Text style={{fontWeight:'bold', paddingTop:30}}>Your public wallet address</Text>
                                     <Text>Q{this.state.walletAddress}</Text>
                                 </View>
@@ -403,7 +403,7 @@ export default class SendReceive extends React.Component {
                                     </View>
                                     <View style={{width:'50%',height:1, backgroundColor:'red', alignSelf:'flex-end'}}></View>
                                     <View style={{height:300, backgroundColor:'white', width:330, padding:30, alignItems:'center'}}>
-                                        <QRCode value={this.state.walletAddress} size={150} bgColor='black' fgColor='white'/>
+                                        <QRCode value={QrWalletAddress} size={150} bgColor='black' fgColor='white'/>
                                         <Text style={{fontWeight:'bold', paddingTop:30}}>Your public wallet address</Text>
                                         <Text>Q{this.state.walletAddress}</Text>
                                     </View>

@@ -2,6 +2,7 @@ package com.theqrl;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.webkit.WebView;
 
 import com.facebook.react.ReactActivity;
 
@@ -19,6 +20,7 @@ public class MainActivity extends ReactActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         preferences = getSharedPreferences("qrlpref", MODE_PRIVATE);
+//        WebView.setWebContentsDebuggingEnabled(true);
     }
 
     @Override
