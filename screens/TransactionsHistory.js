@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, ImageBackground, Text, View, Image, ActionSheetIOS, TextInput, Button, ActivityIndicator, Picker, TouchableOpacity, ScrollView, TouchableHighlight, ListView, AsyncStorage} from 'react-native';
-
+import Reactotron from 'reactotron-react-native'
 // Android and Ios native modules
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.refreshWallet;
@@ -167,6 +167,7 @@ export default class Wallet extends React.Component{
     }
 
     render() {
+        Reactotron.log('Reactotron connected')
         if (this.state.isLoading) {
             return (
                 <ImageBackground source={require('../resources/images/main_bg_half.png')} style={styles.backgroundImage}>
