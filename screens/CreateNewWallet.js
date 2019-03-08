@@ -207,7 +207,6 @@ export default class CreateNewWallet extends React.Component {
                                 <Text>CURRENT WALLET</Text>
                                 <ListView automaticallyAdjustContentInsets={false} dataSource={this.state.dataSource} renderRow={this.renderCurrentWalletRow.bind(this)} enableEmptySections={true} />
                             </View>
-                            
                         </View>
             
                         {this.state.walletlist.length > 1 ? 

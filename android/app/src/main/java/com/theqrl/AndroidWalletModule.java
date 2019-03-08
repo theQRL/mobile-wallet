@@ -356,13 +356,16 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
                     int otsIndex = -1;
                     if (completed == tx_total) {
                         // check latest available ots index
+                        System.out.println( "OTS Bitfield count is : "+ getAddressStateResp.getState().getOtsBitfieldCount() );
                         for (int j = 0; j < getAddressStateResp.getState().getOtsBitfieldCount(); j++) {
+                            System.out.println( "J is : "+j );
                             // Byte to binaryString (https://stackoverflow.com/questions/12310017/how-to-convert-a-byte-to-its-binary-string-representation)
                             byte bitfiedByte = getAddressStateResp.getState().getOtsBitfield(j).byteAt(0);
                             String bitfieldString = String.format("%8s", Integer.toBinaryString(bitfiedByte & 0xFF)).replace(' ', '0');
                             String bitfieldStringBigendian = new StringBuffer(bitfieldString).reverse().toString();
 
                             // System.out.println( Integer.toString(bitfiedInt,2));
+                            System.out.println( "bitfieldByte is  : "+ bitfiedByte );
                             if (bitfiedByte != -1) {
                                 System.out.println(bitfieldStringBigendian);
                                 for (int o = 0; o < bitfieldStringBigendian.length(); o++) {
@@ -377,7 +380,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
                             System.out.println("OTSINDEX IS: ");
                             System.out.println(otsIndex);
                             // obtained next available ots index
-                            if (otsIndex > 0) {
+                            if (otsIndex > -1) {
 
 //                                successCallback.invoke( walletAddress, otsIndex ,Long.toString(getAddressStateResp.getState().getBalance()), txJsonAll.toString() );
 
@@ -456,23 +459,22 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void transferCoins(String walletindex, String recipient, String amountStr, int otsIndex, int fee, Callback errorCallback, Callback successCallback) {
 
-//        System.out.println( "_____JAVA_____ String amount is");
-//        System.out.println(amountStr);
-
+        // convert amount to double
         double amountDouble = Double.parseDouble(amountStr) * 1000000000;
+        // convert amount to long
         long amount = (long) amountDouble ;
 
+        // get node connection related information
         String server = PreferenceHelper.getString("node");
         int port = PreferenceHelper.getInt("port");
 
-        String hexseed = getEncrypted("hexseed".concat(walletindex));
-        System.out.println( hexseed );
+        // connection information
         ManagedChannel channel = OkHttpChannelBuilder.forAddress(server, port).usePlaintext(true).build();
         PublicAPIGrpc.PublicAPIBlockingStub blockingStub = PublicAPIGrpc.newBlockingStub(channel);
 
         // converting the wallet address to byte array
-        String walletAddress = getEncrypted("address".concat(walletindex));
-        System.out.println( walletAddress );
+//        String walletAddress = getEncrypted("address".concat(walletindex));
+//        System.out.println( walletAddress );
 //        int len = walletAddress.length();
 //        byte[] data = new byte[len / 2];
 //        for (int i = 0; i < len; i += 2) {
@@ -490,7 +492,6 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
         }
 
         // converting xmssPK to byte array
-//        String xmssPK = PreferenceHelper.getString("xmsspk");
         String xmssPK = getEncrypted("xmsspk".concat(walletindex));
         System.out.println( xmssPK );
         int xmsslen = xmssPK.length();
@@ -499,46 +500,53 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
             xmssdata[i / 2] = (byte) ((Character.digit(xmssPK.charAt(i), 16) << 4) + Character.digit(xmssPK.charAt(i+1), 16));
         }
 
-        Qrl.TransferCoinsReq transferCoinsReq = Qrl.TransferCoinsReq.newBuilder().addAddressesTo(ByteString.copyFrom(recdata)).addAmounts(amount).setFee(fee).setXmssPk(ByteString.copyFrom(xmssdata)).build();
-        Qrl.TransferCoinsResp transferCoinsResp = blockingStub.transferCoins(transferCoinsReq);
 
         try {
+            // Preparing the tx by calling transferCoins
+            Qrl.TransferCoinsReq transferCoinsReq = Qrl.TransferCoinsReq.newBuilder().addAddressesTo(ByteString.copyFrom(recdata)).addAmounts(amount).setFee(fee).setXmssPk(ByteString.copyFrom(xmssdata)).build();
+            Qrl.TransferCoinsResp transferCoinsResp = blockingStub.transferCoins(transferCoinsReq);
+
             // converting the amount and fee to long before passing to cpp
+            String hexseed = getEncrypted("hexseed".concat(walletindex));
             String androidWallet = transferCoins(recipientAddress, amountStr, fee, hexseed, otsIndex);
 
-//            System.out.println( androidWallet.length() )  ;
-//            System.out.println( androidWallet )  ;
-//
-            String signature = androidWallet.substring(0, 5000);
-            String txHash = androidWallet.substring(5000, 5064);
-//            System.out.println( "NOW SIGNATURE AND TXHASH RECEIVED IN JAVA" )  ;
-//            System.out.println( signature.length() )  ;
-//            System.out.println( signature )  ;
-//            System.out.println( txHash )  ;
+            // androidWallet is a string containing the signature and the txHash as hexseed
+            // txHash is always 64 chars long
+            // signature is identified by substracting the txHash
+            String signature = androidWallet.substring(0, (androidWallet.length() - 64) );
+            System.out.println(androidWallet.length());
+            String txHash = androidWallet.substring( (androidWallet.length() - 64) , androidWallet.length() );
+            System.out.println(txHash);
 
             // converting signature to ByteString
             int txsiglen = signature.length();
             byte[] txsig = new byte[txsiglen / 2];
             for (int i = 0; i < txsiglen; i += 2) {
-                txsig[i / 2] = (byte) ((Character.digit(signature.charAt(i), 16) << 4) + Character.digit(signature.charAt(i+1), 16));
+                txsig[i / 2] = (byte) ((Character.digit(signature.charAt(i), 16) << 4) + Character.digit(signature.charAt(i + 1), 16));
             }
-            System.out.println( txsig )  ;
+            System.out.println(txsig);
 
             // converting txhash to ByteString
             int txhashlen = txHash.length();
             byte[] txhash = new byte[txhashlen / 2];
             for (int i = 0; i < txhashlen; i += 2) {
-                txhash[i / 2] = (byte) ((Character.digit(txHash.charAt(i), 16) << 4) + Character.digit(txHash.charAt(i+1), 16));
+                txhash[i / 2] = (byte) ((Character.digit(txHash.charAt(i), 16) << 4) + Character.digit(txHash.charAt(i + 1), 16));
             }
 
+            // push transaction to the nodes
             Qrl.Transaction signedTx = Qrl.Transaction.newBuilder().setTransfer(Qrl.Transaction.Transfer.newBuilder().addAddrsTo(transferCoinsResp.getExtendedTransactionUnsigned().getTx().getTransfer().getAddrsTo(0)).addAmounts(amount)).setFee(fee).setSignature(ByteString.copyFrom(txsig)).setTransactionHash(ByteString.copyFrom(txhash)).setPublicKey(transferCoinsResp.getExtendedTransactionUnsigned().getTx().getPublicKey()).setNonce(12).build();
             Qrl.PushTransactionReq pushtransactionReq = Qrl.PushTransactionReq.newBuilder().setTransactionSigned(signedTx).build();
             Qrl.PushTransactionResp pushTransactionResp = blockingStub.pushTransaction(pushtransactionReq);
-
+            // is success, send back information to JavaScript with a callback
             successCallback.invoke("success");
-        } catch (IllegalViewOperationException e) {
+
+        } catch (RuntimeException e) {
+            // catch RPC related errors such as not enough funds...
+            System.out.println(e.getMessage());
             errorCallback.invoke(e.getMessage());
+
         }
+
     }
 
     // remove wallet related information from Shared Preferences

@@ -69,7 +69,7 @@ export default class SendReceive extends React.Component {
         isLoading: true,
         amount: "",
         showModal: false,
-        recipient: ""
+        recipient: "",
     }
 
     // update recipient

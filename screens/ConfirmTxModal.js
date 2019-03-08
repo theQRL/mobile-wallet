@@ -78,7 +78,12 @@ export default class ConfirmTxModal extends React.Component {
                 AndroidWallet.refreshWallet(walletindex,  (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
                     amountShor = this.props.navigation.state.params.amount 
                     feeShor = this.props.navigation.state.params.fee * 1000000000
-                    AndroidWallet.transferCoins(walletindex, this.props.navigation.state.params.recipient, amountShor.toString(), otsIndex, feeShor,  (err) => {console.log(err)}, (status) => {
+                    AndroidWallet.transferCoins(walletindex, this.props.navigation.state.params.recipient, amountShor.toString(), otsIndex, feeShor,  
+                    (err) => {
+                        // Show the error message from the node, the split function removes the "INVALID_ARGUMENT:"" string from the error message
+                        Alert.alert( "ERROR"  , err.split(": ")[1] , [{text: "OK", onPress: () => this.props.navigation.navigate("SendReceive") } ] )
+                    }, 
+                    (status) => {
                         // if tx is successfull, back to main
                         if (status == "success"){
                             // this.props.navigation.navigate("TransactionsHistory")

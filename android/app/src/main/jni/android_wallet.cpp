@@ -94,7 +94,7 @@ string AndroidWallet::openWalletWithHexseed(string hexseed)
 // return mnemonic to user
 string AndroidWallet::getMnemonic(string hexseed) {
     QRLDescriptor desc = QRLDescriptor::fromExtendedSeed(hstr2bin( hexseed ));
-    XmssFast xmss = XmssFast( hstr2bin(hexseed.substr(6)), desc.getHeight());
+    XmssFast xmss = XmssFast( hstr2bin(hexseed.substr(6)), desc.getHeight(), desc.getHashFunction(), eAddrFormatType::SHA256_2X);
     std::string mnemonic = bin2mnemonic(xmss.getExtendedSeed());
     return mnemonic.c_str();
 }
@@ -151,9 +151,6 @@ string AndroidWallet::transferCoins(string recipient, string amount, int fee, st
     __android_log_print(ANDROID_LOG_INFO, "Tag", "SHASUM : %s", bin2hstr(shaSum).c_str() );
 
 
-
-
-
     int n = hexseed.substr(6).length();
     char hexseedBytes[n+1];
     strcpy(hexseedBytes, hexseed.substr(6).c_str());
@@ -172,7 +169,12 @@ string AndroidWallet::transferCoins(string recipient, string amount, int fee, st
 
     // opening wallet and signing shasum
     QRLDescriptor desc = QRLDescriptor::fromExtendedSeed(hstr2bin( hexseed ));
-    XmssFast xmss_obj( hexSeedVector, desc.getHeight() );
+
+    __android_log_print(ANDROID_LOG_INFO, "Tag", "HEIGHT : %i", desc.getHeight() );
+    __android_log_print(ANDROID_LOG_INFO, "Tag", "HASH FUNCTION : %i", desc.getHashFunction() );
+
+    XmssFast xmss_obj( hexSeedVector, desc.getHeight(), desc.getHashFunction(), eAddrFormatType::SHA256_2X );
+//    XmssFast xmss_obj( hexSeedVector, desc.getHeight() );
     xmss_obj.setIndex(otsIndex);
     // signing shasum
     auto signature = xmss_obj.sign(shaSum);
@@ -199,7 +201,15 @@ string AndroidWallet::transferCoins(string recipient, string amount, int fee, st
 //    auto signature2 = xmss_obj.sign(data2);
 
     std::string data = bin2hstr(signature);
+
+    __android_log_print(ANDROID_LOG_INFO, "Tag", "LEN(DATA) : %i", data.length() );
     data += bin2hstr(shaSumTx);
+    __android_log_print(ANDROID_LOG_INFO, "Tag", "LEN(DATA) : %i", bin2hstr(shaSumTx).length() );
+
+    __android_log_print(ANDROID_LOG_INFO, "Tag", "LEN(DATA) : %i", data.length() );
+//    __android_log_print(ANDROID_LOG_INFO, "Tag", "DATA : %s",data.c_str() );
+
+
     return data;
 }
 
