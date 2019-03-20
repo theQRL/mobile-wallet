@@ -104,10 +104,21 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
           
           // 7 = Transfer
           if (response.transaction.tx.transactionTypeOneOfCase == 7){
-            NSString * toAddr = [WalletHelperFunctions nsDataHex2string:response.transaction.tx.transfer.addrsToArray[0]];
+//            NSString * toAddr = [WalletHelperFunctions nsDataHex2string:response.transaction.tx.transfer.addrsToArray[0]];
             NSString *title = [[NSString alloc] init];
-            // check if sent or received
-            if ( [toAddr isEqual:walletAddress] ){
+            // check if walletaddress in recipient list
+            bool inRecipient = false;
+            for (int r = 0; r < response.transaction.tx.transfer.addrsToArray_Count; r++ ){
+              NSLog(@"-___ R ___- %d ", r);
+              NSString * toAddr = [WalletHelperFunctions nsDataHex2string:response.transaction.tx.transfer.addrsToArray[r]];
+              NSLog(@"_____________________TOADDR %@ ", toAddr);
+              if ([toAddr isEqual:walletAddress]){
+                inRecipient = true;
+              }
+            }
+            
+            if (inRecipient){
+//            if ( [toAddr isEqual:walletAddress] ){
               title = @"RECEIVED";
             }
             else {

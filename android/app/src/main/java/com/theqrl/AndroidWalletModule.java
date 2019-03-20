@@ -331,14 +331,22 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
                         for (byte txbyte : txHashByte)
                             txHashString.append(String.format("%02x", txbyte));
 
-                        byte[] addrFromByte = getObjectResp.getTransaction().getTx().getTransfer().getAddrsTo(0).toByteArray();
-                        StringBuilder addrFromString = new StringBuilder(addrFromByte.length * 2);
-                        for (byte txbyteAddr : addrFromByte)
-                            addrFromString.append(String.format("%02x", txbyteAddr));
+                        boolean inRecipient = false;
+                        for (int r=0; r < getObjectResp.getTransaction().getTx().getTransfer().getAddrsToCount(); r++ ){
+                            byte[] addrFromByte = getObjectResp.getTransaction().getTx().getTransfer().getAddrsTo(r).toByteArray();
+                            StringBuilder addrFromString = new StringBuilder(addrFromByte.length * 2);
+                            for (byte txbyteAddr : addrFromByte)
+                                addrFromString.append(String.format("%02x", txbyteAddr));
+                            if (addrFromString.toString().equals(walletAddress)){
+                                inRecipient = true;
+                            }
+                        }
+
 
 
                         try {
-                            if (addrFromString.toString().equals(walletAddress)) {
+//                            if (addrFromString.toString().equals(walletAddress)) {
+                            if (inRecipient) {
                                 txJson.put("title", "RECEIVED");
                             } else {
                                 txJson.put("title", "SENT");

@@ -212,7 +212,7 @@ export default class SendReceive extends React.Component {
             // <KeyboardAvoidingView style={{flex:1, paddingTop: this.state.paddingTopCentral, paddingBottom:100, width:330, alignSelf: 'center', borderRadius:10}} behavior="padding">
 
             // View for iOS
-            if (DeviceInfo.getDeviceId().includes("iPhone10")){
+            if (Platform.OS === 'ios'){
                 return (
                     <ScrollView scrollEnabled={false} contentContainerStyle={{flex: 1}} >
                     
@@ -242,15 +242,15 @@ export default class SendReceive extends React.Component {
                         </View>
                         <FlashMessage/> 
 
-                        <View style={{ alignItems:'center', paddingTop:this.state.paddingTopMain }}>
-                            <ImageBackground source={require('../resources/images/fund_bg_small.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:330, justifyContent:'center',alignItems:'center', paddingLeft:10, paddingRight:10}} >
-                                <Text style={{color:'white', fontWeight: "bold", fontSize:12, textAlign:'center'}} selectable={true}>Q{this.state.walletAddress}</Text>
-                                <Text style={{color:'white',fontSize:30}}>{this.state.balance} QRL</Text>
+                        <View style={{ height:130, width:330, borderRadius:10, alignSelf:'center', marginTop: 30}}>
+                            <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage2}>
+                                <View style={{flex:1, alignSelf:'center', width:330, justifyContent:'center', alignItems:'center', padding:10}}>
+                                    <Text style={{color:'white', fontWeight: "bold", fontSize:12, textAlign:'center'}} selectable={true}>Q{this.state.walletAddress}</Text>
+                                    <Text style={{color:'white',fontSize:30}}>{this.state.balance} QRL</Text>
+                                </View>
                             </ImageBackground>
-                            <TouchableOpacity style={styles.SubmitButtonStyle2} activeOpacity = { .5 } onPress={ this.refreshWallet }>
-                                <Image source={require("../resources/images/refresh.png")} style={{height:40, width:40}}/>
-                            </TouchableOpacity>
                         </View>
+
 
                         {this.state.view == "send"?
                             <KeyboardAvoidingView style={{flex:1, paddingTop: this.state.paddingTopCentral, paddingBottom:100, width:330, alignSelf: 'center', borderRadius:10}} behavior="padding">
@@ -349,13 +349,13 @@ export default class SendReceive extends React.Component {
                             <FlashMessage/> 
 
                             <View style={{ alignItems:'center', paddingTop:20}}>
-                                <ImageBackground source={require('../resources/images/fund_bg_small.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:330, justifyContent:'center',alignItems:'center'}} >
+                                <ImageBackground source={require('../resources/images/backup_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:330, justifyContent:'center',alignItems:'center'}} >
                                     <Text style={{color:'white', fontWeight: "bold", fontSize:12, textAlign:'center'}} selectable={true}>Q{this.state.walletAddress}</Text>
                                     <Text style={{color:'white',fontSize:30}}>{this.state.balance} QRL</Text>
                                 </ImageBackground>
-                                <TouchableOpacity style={styles.SubmitButtonStyle2} activeOpacity = { .5 } onPress={ this.refreshWallet }>
+                                {/* <TouchableOpacity style={styles.SubmitButtonStyle2} activeOpacity = { .5 } onPress={ this.refreshWallet }>
                                     <Image source={require("../resources/images/refresh.png")} style={{height:40, width:40}}/>
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
                             </View>
 
                             {this.state.view == "send"?
@@ -504,5 +504,9 @@ const styles = StyleSheet.create({
         textAlign:'center',
         fontSize:18,
         paddingTop:5
+    },
+    backgroundImage2: {
+        alignSelf: 'flex-start',
+        left: 0
     },
 });
