@@ -25,7 +25,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>81</string>
+	<string>83</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -47,8 +47,10 @@
 	<string>Not used</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Allow access to your camera for QRL wallet addresses QR code scanning</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Not used</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Not used</string>
 	<key>NSMotionUsageDescription</key>
 	<string>Not used</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
