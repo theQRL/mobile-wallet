@@ -349,7 +349,7 @@ export default class SendReceive extends React.Component {
                             <FlashMessage/> 
 
                             <View style={{ alignItems:'center', paddingTop:20}}>
-                                <ImageBackground source={require('../resources/images/backup_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:330, justifyContent:'center',alignItems:'center'}} >
+                                <ImageBackground source={require('../resources/images/backup_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:120, width:330, justifyContent:'center',alignItems:'center', padding:10}} >
                                     <Text style={{color:'white', fontWeight: "bold", fontSize:12, textAlign:'center'}} selectable={true}>Q{this.state.walletAddress}</Text>
                                     <Text style={{color:'white',fontSize:30}}>{this.state.balance} QRL</Text>
                                 </ImageBackground>
