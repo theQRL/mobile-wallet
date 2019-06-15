@@ -101,14 +101,14 @@ export default class txDetailsView extends React.Component {
                                     <Text>QUANTA</Text>
                                     <Text>{'\n'}</Text>
                                     <Text style={{fontSize:25}}>From</Text>
-                                    <Text>Q{this.state.fromAddr}</Text>
+                                    <Text selectable={true}>Q{this.state.fromAddr}</Text>
                                     <Text>{'\n'}</Text>
                                     <Text style={{fontSize:25}}>To</Text>
-                                    <Text>Q{this.state.toAddr}</Text>
+                                    <Text selectable={true}>Q{this.state.toAddr}</Text>
                                     <Text>{'\n'}</Text>
                                     <Text style={{fontSize:25}}>Transaction</Text>
                                     <TouchableHighlight onPress={ ()=> Linking.openURL('https://testnet-explorer.theqrl.org/tx/'+this.props.navigation.state.params.txhash) } underlayColor={'white'} >
-                                        <Text style={{color: '#184477'}}>{this.props.navigation.state.params.txhash}</Text>
+                                        <Text style={{color: '#184477'}} selectable={true}>{this.props.navigation.state.params.txhash}</Text>
                                     </TouchableHighlight>
                                     {/*
                                     <Text>Block</Text>

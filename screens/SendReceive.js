@@ -298,7 +298,7 @@ export default class SendReceive extends React.Component {
                                 <View style={{height:300, backgroundColor:'white', width:330, padding:30, alignItems:'center'}}>
                                     <QRCode value={QrWalletAddress} size={150} bgColor='black' fgColor='white'/>
                                     <Text style={{fontWeight:'bold', paddingTop:30}}>Your public wallet address</Text>
-                                    <Text>Q{this.state.walletAddress}</Text>
+                                    <Text selectable={true}>Q{this.state.walletAddress}</Text>
                                 </View>
                                 <View>
                                     <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => { Clipboard.setString('Q'+this.state.walletAddress);
@@ -405,7 +405,7 @@ export default class SendReceive extends React.Component {
                                     <View style={{height:300, backgroundColor:'white', width:330, padding:30, alignItems:'center'}}>
                                         <QRCode value={QrWalletAddress} size={150} bgColor='black' fgColor='white'/>
                                         <Text style={{fontWeight:'bold', paddingTop:30}}>Your public wallet address</Text>
-                                        <Text>Q{this.state.walletAddress}</Text>
+                                        <Text selectable={true}>Q{this.state.walletAddress}</Text>
                                     </View>
                                     <View>
                                         {/* <TouchableOpacity style={styles.SubmitButtonStyleCopy} activeOpacity = { .5 } onPress={ Clipboard.setString('Q'+this.state.walletAddress) } > */}
