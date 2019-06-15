@@ -47,7 +47,9 @@ class AuthLoadingScreen extends React.Component {
         // screen will be unmounted and thrown away.
 
         // check which network to connect to: node and port
-        fetch('https://qrl.foundation/qrlnetwork.html', {
+        
+        fetch('https://ademcan.net/qrlnetwork.html', {
+        // fetch('https://qrl.foundation/qrlnetwork.html', {
             method: 'GET',
             headers: {
               'Accept': 'application/json',
