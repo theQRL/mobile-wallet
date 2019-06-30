@@ -26,11 +26,11 @@ export default class ShowQrCodeModal extends React.Component {
                         <View style={{flex:1, paddingTop: 10, marginBottom:40, width:330, alignSelf: 'center',  borderRadius:10, backgroundColor:'white'}}>
                             <View style={{paddingTop:10, alignItems:'center', justifyContent:'center', paddingRight:10, paddingLeft:10}}>
                                 <Text style={{fontWeight: "bold"}}>QRL wallet address</Text>
-                                <Text style={{textAlign: 'center'}}>{this.props.navigation.state.params.qrcode}</Text>
+                                <Text style={{textAlign: 'center'}} selectable={true}>{this.props.navigation.state.params.qrcode}</Text>
                             </View>
 
                             <View style={{ flex: 5, alignItems: 'center', justifyContent: 'center' }}>
-                                <QRCode value={this.props.navigation.state.params.qrcode} size={250} bgColor='white' fgColor='black'/>
+                                <QRCode value={this.props.navigation.state.params.qrcode} size={250} bgColor='black' fgColor='white'/>
                             </View>
 
                             <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>

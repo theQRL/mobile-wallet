@@ -47,7 +47,9 @@ class AuthLoadingScreen extends React.Component {
         // screen will be unmounted and thrown away.
 
         // check which network to connect to: node and port
-        fetch('https://qrl.foundation/qrlnetwork.html', {
+        
+        fetch('https://ademcan.net/qrlnetwork.html', {
+        // fetch('https://qrl.foundation/qrlnetwork.html', {
             method: 'GET',
             headers: {
               'Accept': 'application/json',
@@ -97,6 +99,7 @@ const CustomDrawerContentComponent = (props) => (
             <View style={{paddingLeft: 40, paddingTop:50}}>
                 <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://theqrl.org/')}>QRL WEBSITE</Text>
                 <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://qrl.foundation/')}>QRL FOUNDATION</Text>
+                <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://twitter.com/qrledger')}>TWITTER</Text>
                 <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://www.reddit.com/r/qrl')}>REDDIT</Text>
                 <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://discord.gg/jBT6BEp')}>DISCORD</Text>
                 <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('mailto:support@theqrl.org') }>SUPPORT</Text>

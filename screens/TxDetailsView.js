@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, Button, Image, ImageBackground, StyleSheet, TouchableHighlight, TouchableOpacity, Platform, ActivityIndicator} from 'react-native';
+import {Text, View, Button, Image, ImageBackground, StyleSheet, TouchableHighlight, TouchableOpacity, Platform, ActivityIndicator, Linking} from 'react-native';
 
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.refreshWallet;
@@ -101,13 +101,15 @@ export default class txDetailsView extends React.Component {
                                     <Text>QUANTA</Text>
                                     <Text>{'\n'}</Text>
                                     <Text style={{fontSize:25}}>From</Text>
-                                    <Text>Q{this.state.fromAddr}</Text>
+                                    <Text selectable={true}>Q{this.state.fromAddr}</Text>
                                     <Text>{'\n'}</Text>
                                     <Text style={{fontSize:25}}>To</Text>
-                                    <Text>Q{this.state.toAddr}</Text>
+                                    <Text selectable={true}>Q{this.state.toAddr}</Text>
                                     <Text>{'\n'}</Text>
                                     <Text style={{fontSize:25}}>Transaction</Text>
-                                    <Text>{this.props.navigation.state.params.txhash}</Text>
+                                    <TouchableHighlight onPress={ ()=> Linking.openURL('https://testnet-explorer.theqrl.org/tx/'+this.props.navigation.state.params.txhash) } underlayColor={'white'} >
+                                        <Text style={{color: '#184477'}} selectable={true}>{this.props.navigation.state.params.txhash}</Text>
+                                    </TouchableHighlight>
                                     {/*
                                     <Text>Block</Text>
                                     <Text>{this.state.blocknumber}</Text>

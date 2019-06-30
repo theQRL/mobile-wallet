@@ -69,6 +69,7 @@ export default class SendReceive extends React.Component {
         isLoading: true,
         amount: "",
         showModal: false,
+        showOtsModal: false,
         recipient: "",
     }
 
@@ -80,6 +81,11 @@ export default class SendReceive extends React.Component {
     // update amount
     _onAmountChange = (text) => {
         this.setState({amount:text});
+    }
+
+    // update amount
+    _onOtsChange = (text) => {
+        this.setState({newOtsIndex:text});
     }
 
     // switch view to SEND tab
@@ -215,6 +221,18 @@ export default class SendReceive extends React.Component {
             if (Platform.OS === 'ios'){
                 return (
                     <ScrollView scrollEnabled={false} contentContainerStyle={{flex: 1}} >
+
+                    <Modal onRequestClose={ console.log("") } animationType="fade" visible={this.state.showOtsModal} transparent={true}>
+                        <View style={{flex:1, backgroundColor:'rgba(0, 0, 0, 0.5)', width:'100%', height:'100%'}}>
+                            <View style={{width:300, height:300, backgroundColor:'white',alignItems:'center', alignSelf:'center', justifyContent:'center', marginTop:200}}>
+                                <Text>Change OTS key index</Text>
+                                <TextInput keyboardType={'numeric'} onChangeText={ (text) => this._onOtsChange(text) } style={{backgroundColor:'#ebe8e8', height:50, width:200}} />
+                                <Button title='Cancel' onPress={() => {this.setState({showOtsModal:false})}}/>
+                                <Button title='Ok' onPress={() => {this.setState({otsIndex: this.state.newOtsIndex, showOtsModal:false})}}/>
+                            </View>
+                        </View>
+                    </Modal>
+
                     
                     <Modal onRequestClose={ console.log("") } animationType="slide" visible={this.state.showModal}>
                         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -271,7 +289,11 @@ export default class SendReceive extends React.Component {
                                         <TextInput keyboardType={'numeric'} onChangeText={ (text) => this._onAmountChange(text) } value={this.state.amount} style={{backgroundColor:'#ebe8e8', height:50}} />
                                         <View style={{flexDirection:'row', paddingTop:10}}>
                                             <View style={{flex:1, alignItems:'flex-start'}}><Text>Fee: <Text style={{color:'red'}}>0.01</Text></Text></View>
-                                            <View style={{flex:1, alignItems:'flex-end'}}><Text>OTS Key Index: <Text style={{color:'red'}}>{this.state.otsIndex}</Text></Text></View>
+                                            <View style={{flex:1, alignItems:'flex-end'}}>
+                                                <TouchableHighlight underlayColor={'white'} onPress={() => {this.setState({showOtsModal:true})}}>
+                                                    <Text>OTS Key Index: <Text style={{color:'red'}}>{this.state.otsIndex}</Text></Text>
+                                                </TouchableHighlight>
+                                            </View>
                                         </View>
 
                                         <TouchableOpacity style={styles.SubmitButtonStyleBig} activeOpacity = { .5 } onPress={ this.checkAddress } >
@@ -298,7 +320,7 @@ export default class SendReceive extends React.Component {
                                 <View style={{height:300, backgroundColor:'white', width:330, padding:30, alignItems:'center'}}>
                                     <QRCode value={QrWalletAddress} size={150} bgColor='black' fgColor='white'/>
                                     <Text style={{fontWeight:'bold', paddingTop:30}}>Your public wallet address</Text>
-                                    <Text>Q{this.state.walletAddress}</Text>
+                                    <Text selectable={true}>Q{this.state.walletAddress}</Text>
                                 </View>
                                 <View>
                                     <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => { Clipboard.setString('Q'+this.state.walletAddress);
@@ -376,7 +398,12 @@ export default class SendReceive extends React.Component {
                                         <TextInput keyboardType={'numeric'} underlineColorAndroid="transparent" onChangeText={ (text) => this._onAmountChange(text) } value={this.state.amount} style={{backgroundColor:'#ebe8e8', height:40}} />
                                         <View style={{flexDirection:'row', paddingTop:10}}>
                                             <View style={{flex:1, alignItems:'flex-start'}}><Text>Fee: <Text style={{color:'red'}}>0.01</Text></Text></View>
-                                            <View style={{flex:1, alignItems:'flex-end'}}><Text>OTS Key Index: <Text style={{color:'red'}}>{this.state.otsIndex}</Text></Text></View>
+                                            <View style={{flex:1, alignItems:'flex-end'}}>
+                                                <TouchableHighlight underlayColor={'white'} onPress={() => {this.setState({showOtsModal:true})}}>
+                                                    <Text>OTS Key Index: <Text style={{color:'red'}}>{this.state.otsIndex}</Text></Text>
+                                                </TouchableHighlight>
+                                            </View>
+
                                         </View>
 
                                         <TouchableOpacity style={styles.SubmitButtonStyleBig} activeOpacity = { .5 } onPress={ this.checkAddress }>
@@ -405,7 +432,7 @@ export default class SendReceive extends React.Component {
                                     <View style={{height:300, backgroundColor:'white', width:330, padding:30, alignItems:'center'}}>
                                         <QRCode value={QrWalletAddress} size={150} bgColor='black' fgColor='white'/>
                                         <Text style={{fontWeight:'bold', paddingTop:30}}>Your public wallet address</Text>
-                                        <Text>Q{this.state.walletAddress}</Text>
+                                        <Text selectable={true}>Q{this.state.walletAddress}</Text>
                                     </View>
                                     <View>
                                         {/* <TouchableOpacity style={styles.SubmitButtonStyleCopy} activeOpacity = { .5 } onPress={ Clipboard.setString('Q'+this.state.walletAddress) } > */}
