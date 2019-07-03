@@ -345,6 +345,19 @@ export default class SendReceive extends React.Component {
                 return (
                     <KeyboardAvoidingView style={{flex:1}} keyboardVerticalOffset={-200} behavior="padding">
 
+
+                        <Modal onRequestClose={ console.log("") } animationType="fade" visible={this.state.showOtsModal} transparent={true}>
+                            <View style={{flex:1, backgroundColor:'rgba(0, 0, 0, 0.5)', width:'100%', height:'100%'}}>
+                                <View style={{width:300, height:300, backgroundColor:'white',alignItems:'center', alignSelf:'center', justifyContent:'center', marginTop:200}}>
+                                    <Text>Change OTS key index</Text>
+                                    <TextInput keyboardType={'numeric'} onChangeText={ (text) => this._onOtsChange(text) } style={{backgroundColor:'#ebe8e8', height:50, width:200}} />
+                                    <Button title='Cancel' onPress={() => {this.setState({showOtsModal:false})}}/>
+                                    <Button title='Ok' onPress={() => {this.setState({otsIndex: this.state.newOtsIndex, showOtsModal:false})}}/>
+                                </View>
+                            </View>
+                        </Modal>
+
+
                         <Modal onRequestClose={ console.log("") } animationType="slide" visible={this.state.showModal}>
                             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                                 <QRCodeScanner onRead={this.qrScanned.bind(this)}

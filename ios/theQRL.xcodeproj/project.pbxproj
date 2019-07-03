@@ -58,8 +58,8 @@
 		69343006212ECD6F00085300 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 69342FDE212ECD6F00085300 /* main.jsbundle */; };
 		694C54B320ADB6F300AC2B3F /* CreateWallet.mm in Sources */ = {isa = PBXBuildFile; fileRef = 694C54B220ADB6F300AC2B3F /* CreateWallet.mm */; };
 		694FC019211D995E005CE984 /* transferCoins.mm in Sources */ = {isa = PBXBuildFile; fileRef = 694FC018211D995E005CE984 /* transferCoins.mm */; };
+		695ACC5022CCD86500325F33 /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 695ACC4E22CCD84100325F33 /* libRNCamera.a */; };
 		69871E27202C7E170097260E /* DilithiumIos.mm in Sources */ = {isa = PBXBuildFile; fileRef = 69871E26202C7E170097260E /* DilithiumIos.mm */; };
-		69A8E4C7215FDE0000823540 /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69A8E4BF215FDDF100823540 /* libRNCamera.a */; };
 		69BF73862028F41200EBD441 /* libgRPC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69BF73852028F41200EBD441 /* libgRPC.a */; };
 		69E3BCCA214B89F40056F1D5 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69E3BCC2214B89D80056F1D5 /* libRNDeviceInfo.a */; };
 		69E3BCCC2153A03C0056F1D5 /* WalletHelperFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 69E3BCCB2153A03C0056F1D5 /* WalletHelperFunctions.mm */; };
@@ -300,9 +300,9 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = TcpSockets;
 		};
-		69A8E4BE215FDDF100823540 /* PBXContainerItemProxy */ = {
+		695ACC4D22CCD84100325F33 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 69A8E494215FDDF100823540 /* RNCamera.xcodeproj */;
+			containerPortal = 695ACC4922CCD84100325F33 /* RNCamera.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
 			remoteInfo = RNCamera;
@@ -488,6 +488,7 @@
 		6959D0482028C8E8009EDBA9 /* libgRPC-ProtoRPC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libgRPC-ProtoRPC.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6959D0492028C8E8009EDBA9 /* libgRPC-RxLibrary.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libgRPC-RxLibrary.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6959D04A2028C8E8009EDBA9 /* libgRPC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libgRPC.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		695ACC4922CCD84100325F33 /* RNCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		6963F24020346E3D00641B1A /* libqrllibd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libqrllibd.a; path = "../../../qrllib/build/Debug-iphonesimulator/libqrllibd.a"; sourceTree = "<group>"; };
 		6964026720ADAF1F0020E054 /* libshasha.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libshasha.a; path = "../../../myforks/qrllib/build/Debug-iphoneos/libshasha.a"; sourceTree = "<group>"; };
 		6964026820ADAF1F0020E054 /* libdilithium.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libdilithium.a; path = "../../../myforks/qrllib/build/Debug-iphoneos/libdilithium.a"; sourceTree = "<group>"; };
@@ -507,7 +508,6 @@
 		69871DFF202C78EA0097260E /* libdilithium.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libdilithium.a; path = "../../../qrllib/build/Debug-iphonesimulator/libdilithium.a"; sourceTree = "<group>"; };
 		69871E26202C7E170097260E /* DilithiumIos.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DilithiumIos.mm; sourceTree = "<group>"; };
 		69871E28202C7E4D0097260E /* DilithiumIos.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DilithiumIos.h; sourceTree = "<group>"; };
-		69A8E494215FDDF100823540 /* RNCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		69AE7629204745FA003EF6FF /* libqrllib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libqrllib.a; path = "../../../qrllib/build/Debug-iphonesimulator/libqrllib.a"; sourceTree = "<group>"; };
 		69AE762B20474886003EF6FF /* libshasha.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libshasha.a; path = "../../../qrllib/build/Debug-iphonesimulator/libshasha.a"; sourceTree = "<group>"; };
 		69BF73842028F1E800EBD441 /* libgRPC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libgRPC.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -557,8 +557,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				69E3BCF22154D7450056F1D5 /* libReactNativePermissions.a in Frameworks */,
-				69A8E4C7215FDE0000823540 /* libRNCamera.a in Frameworks */,
 				69E3BCCA214B89F40056F1D5 /* libRNDeviceInfo.a in Frameworks */,
+				695ACC5022CCD86500325F33 /* libRNCamera.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -833,10 +833,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		69A8E495215FDDF100823540 /* Products */ = {
+		695ACC4A22CCD84100325F33 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				69A8E4BF215FDDF100823540 /* libRNCamera.a */,
+				695ACC4E22CCD84100325F33 /* libRNCamera.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -900,7 +900,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				69A8E494215FDDF100823540 /* RNCamera.xcodeproj */,
+				695ACC4922CCD84100325F33 /* RNCamera.xcodeproj */,
 				69E3BCEC2154D7400056F1D5 /* ReactNativePermissions.xcodeproj */,
 				69E3BC97214B89D70056F1D5 /* RNDeviceInfo.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
@@ -1164,8 +1164,8 @@
 					ProjectRef = 69E3BCEC2154D7400056F1D5 /* ReactNativePermissions.xcodeproj */;
 				},
 				{
-					ProductGroup = 69A8E495215FDDF100823540 /* Products */;
-					ProjectRef = 69A8E494215FDDF100823540 /* RNCamera.xcodeproj */;
+					ProductGroup = 695ACC4A22CCD84100325F33 /* Products */;
+					ProjectRef = 695ACC4922CCD84100325F33 /* RNCamera.xcodeproj */;
 				},
 				{
 					ProductGroup = 69E3BC98214B89D70056F1D5 /* Products */;
@@ -1402,11 +1402,11 @@
 			remoteRef = 69343048212EDA1100085300 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		69A8E4BF215FDDF100823540 /* libRNCamera.a */ = {
+		695ACC4E22CCD84100325F33 /* libRNCamera.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNCamera.a;
-			remoteRef = 69A8E4BE215FDDF100823540 /* PBXContainerItemProxy */;
+			remoteRef = 695ACC4D22CCD84100325F33 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		69E3BCC2214B89D80056F1D5 /* libRNDeviceInfo.a */ = {

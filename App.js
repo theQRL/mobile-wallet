@@ -19,6 +19,7 @@ import TxDetailsView from './screens/TxDetailsView'
 import ProvideWalletPin from './screens/ProvideWalletPin'
 import OpenExistingWalletModal from './screens/OpenExistingWalletModal'
 import ShowQrCodeModal from './screens/ShowQrCodeModal'
+import Settings from './screens/Settings'
 
 
 // Android and Ios native modules
@@ -155,6 +156,10 @@ const MainDrawerMenu = DrawerNavigator(
             path: '/',
             screen: CreateNewWallet
         },
+        Settings : {
+          path: '/',
+          screen: Settings
+      },
         // TxDetailsView : {
         //     path: '/',
         //     screen: TxDetailsView
