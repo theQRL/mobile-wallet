@@ -20,6 +20,7 @@ import ProvideWalletPin from './screens/ProvideWalletPin'
 import OpenExistingWalletModal from './screens/OpenExistingWalletModal'
 import ShowQrCodeModal from './screens/ShowQrCodeModal'
 import Settings from './screens/Settings'
+import Reactotron from 'reactotron-react-native'
 
 
 // Android and Ios native modules
@@ -48,34 +49,56 @@ class AuthLoadingScreen extends React.Component {
         // screen will be unmounted and thrown away.
 
         // check which network to connect to: node and port
-        
-        fetch('https://ademcan.net/qrlnetwork.html', {
-        // fetch('https://qrl.foundation/qrlnetwork.html', {
+        // check if a node URL and port is already defined
+        AsyncStorage.multiGet(["nodeUrl", "nodePort"]).then(storageResponse => {
+
+          // get at each store's key/value so you can work with it
+          let nodeUrl = storageResponse[0][1];
+          let nodePort = storageResponse[1][1]; 
+          Reactotron.log(nodeUrl)
+          // if not yet defined
+          if (nodeUrl === '' | nodeUrl === null){
+            Reactotron.log("SAVING NODE INFGO")
+            fetch('https://ademcan.net/qrlnetwork.html', {
+            // fetch('https://qrl.foundation/qrlnetwork.html', {
             method: 'GET',
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json',
             },
-        })
-        .then((response) => response.json())
-        .then((responseJson) => {
+          })
+          .then((response) => response.json())
+          .then((responseJson) => {
+            
             if (Platform.OS === 'ios'){
                 IosWallet.saveNodeInformation( responseJson.node, responseJson.port, (error, status)=> {
                     if (status == "saved"){
-                        this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
+                      this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
+                      AsyncStorage.setItem("nodeUrl", responseJson.node);
+                      AsyncStorage.setItem("nodePort", responseJson.port);
                     }
                 });    
             }
             else {
                 AndroidWallet.saveNodeInformation(responseJson.node, responseJson.port,  (err) => {console.log(err);}, (status)=> {
                     if (status == "saved"){
-                        this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
+                      this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
+                      AsyncStorage.setItem("nodeUrl", responseJson.node);
+                      AsyncStorage.setItem("nodePort", responseJson.port);
                     }
                 });
             }
             // this.setState({node: responseJson.node, port: responseJson.port })
-        })
-        .catch((error) => { console.error(error); });
+          })
+          .catch((error) => { console.error(error); });
+            }
+          else {
+            this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
+          }
+
+        });
+
+        
 
 		
 	};

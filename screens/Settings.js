@@ -14,66 +14,89 @@ export default class Settings extends React.Component {
         ),
     };
 
+    componentDidMount(){
+
+        AsyncStorage.multiGet(["nodeUrl", "nodePort"]).then(storageResponse => {
+            this.setState({nodeUrl: storageResponse[0][1], nodePort: storageResponse[1][1], loading: false});    
+        });
+
+    }
+
     state={
-        mnemonic: '',
-        hexseed: '',
-        loading: false,
-        showModal: false,
+        loading: true,
     }
 
-    // show modal to select tree height
-    showModal = (bool) => {
-        this.setState({showModal: bool})
+
+    onUrlChange = (text) => {
+        this.setState({nodeUrl: text})
     }
 
-    // Get wallet private info
-    getInfo = () => {
-        this.setState({showModal:false, loading: true});
-        // get the currect walletindex
-        AsyncStorage.getItem("walletindex").then((walletindex) => {
-            // iOS
-            if (Platform.OS === 'ios'){
-                IosWallet.sendWalletPrivateInfo(walletindex, (error, mnemonic, hexseed)=> {
-                    this.setState({loading:false, mnemonic: mnemonic, hexseed: hexseed })
-                });
-            }
-            // Android
-            else {
-                AndroidWallet.sendWalletPrivateInfo(walletindex, (error) => {console.log("ERROR");} , (mnemonic, hexseed)=> {
-                    this.setState({loading:false, mnemonic: mnemonic, hexseed: hexseed })
-                });
-            }
-        }).catch((error) => {console.log(error)});
+    onPortChange = (text) => {
+        this.setState({nodePort: text})
+    }
+
+    // update the node and port information on AsyncStorage as well as Android and iOS native code
+    saveSettings = () => {
+        console.log("")
+        if (Platform.OS === 'ios'){
+            IosWallet.saveNodeInformation( this.state.nodeUrl, this.state.nodePort, (error, status)=> {
+                if (status == "saved"){
+                    // Alert SUCCESS
+                  AsyncStorage.setItem("nodeUrl", this.state.nodeUrl);
+                  AsyncStorage.setItem("nodePort", this.state.nodePort);
+                }
+            });    
+        }
+        else {
+            AndroidWallet.saveNodeInformation(this.state.nodeUrl, this.state.nodePort,  (err) => {console.log(err);}, (status)=> {
+                if (status == "saved"){
+                    // Alert SUCCESS
+                  AsyncStorage.setItem("nodeUrl", this.state.nodeUrl);
+                  AsyncStorage.setItem("nodePort", this.state.nodePort);
+                }
+            });
+        }
     }
 
     // render view
     render() {
-        return (
-            <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>                
-            <View style={{flex:1}}>
+        if (this.state.loading){
+            return(
+                <View></View>
+            )
+        }
+        else {
+            return (
+                <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>                
+                <View style={{flex:1}}>
+    
+                    <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
+                        <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
+                            <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
+                        </TouchableHighlight>
+                    </View>
+                    <View style={{ height:130, width:330, borderRadius:10, alignSelf:'center', marginTop: 30}}>
+                        <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage2}>
+                            <View style={{flex:1, alignSelf:'center', width:330, justifyContent:'center', alignItems:'center'}}>
+                                <Text style={{color:'white', fontSize:20}}>SETTINGS</Text>
+                            </View>
+                        </ImageBackground>
+                    </View>
+                    <View style={{flex:1, paddingTop: 50, paddingBottom:100, width:330, alignSelf: 'center',  borderRadius:10}}>
+                        <Text>NODE URL</Text>
+                        <TextInput onChangeText={ (text) => this.onUrlChange(text) } value={this.state.nodeUrl} style={{backgroundColor:'#ebe8e8', height:50}} />
+                        <Text>{'\n'}PORT</Text>
+                        <TextInput keyboardType={'numeric'} onChangeText={ (text) => this.onPortChange(text) } value={this.state.nodePort} style={{backgroundColor:'#ebe8e8', height:50}} />
 
-                <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
-                    <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
-                        <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
-                    </TouchableHighlight>
-                </View>
-                <View style={{ height:130, width:330, borderRadius:10, alignSelf:'center', marginTop: 30}}>
-                    <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage2}>
-                        <View style={{flex:1, alignSelf:'center', width:330, justifyContent:'center', alignItems:'center'}}>
-                            <Text style={{color:'white', fontSize:20}}>SETTINGS</Text>
-                        </View>
-                    </ImageBackground>
-                </View>
-                <View style={{flex:1, paddingTop: 50, paddingBottom:100, width:330, alignSelf: 'center',  borderRadius:10}}>
 
-                    <Text>NODE URL</Text>
-                    <TextInput onChangeText={ (text) => this._onRecipientChange(text) } value={this.state.recipient} style={{backgroundColor:'#ebe8e8', height:50}} />
-                    <Text>{'\n'}PORT</Text>
-                    <TextInput keyboardType={'numeric'} onChangeText={ (text) => this._onAmountChange(text) } value={this.state.amount} style={{backgroundColor:'#ebe8e8', height:50}} />
+                        <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => { this.saveSettings() }}>
+                            <Text style={styles.TextStyle}> SAVE </Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
-        </ImageBackground>
-        );
+            </ImageBackground>
+            );
+        }
     }
 }
 
