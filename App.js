@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Button, Text, ImageBackground, ActivityIndicator, AsyncStorage, StatusBar, StyleSheet, View, Image, Linking, Platform } from 'react-native';
+import { Button, Text, ImageBackground, ActivityIndicator, AsyncStorage, StatusBar, StyleSheet, View, Image, Linking, Platform, AppState } from 'react-native';
 import { DrawerNavigator , StackNavigator, SwitchNavigator, DrawerItems } from 'react-navigation'; // Version can be specified in package.json
 // Import the different screens
 import BackupWallet from './screens/BackupWallet'
@@ -21,6 +21,7 @@ import OpenExistingWalletModal from './screens/OpenExistingWalletModal'
 import ShowQrCodeModal from './screens/ShowQrCodeModal'
 import Settings from './screens/Settings'
 import DeleteWalletModal from './screens/DeleteWalletModal'
+import UnlockAppModal from './screens/UnlockAppModal'
 import Reactotron from 'reactotron-react-native'
 
 
@@ -35,11 +36,37 @@ var AndroidWallet = NativeModules.AndroidWallet;
 // - if no -> redirects to the CreateWallet view
 class AuthLoadingScreen extends React.Component {
 
-  	constructor(props) {
-      console.log("APPJS_ GLOBALS.ISDEFAULTNODE: ", global.isDefaultNode)
-    	super(props);
-      this._bootstrapAsync();
-  	}
+  constructor(props) {
+    super(props);
+    this._bootstrapAsync();
+  }
+
+
+  // state = {
+  //   appState: AppState.currentState,
+  // };
+
+  // componentDidMount() {
+  //   AppState.addEventListener('change', this._handleAppStateChange);
+  // }
+  // componentWillUnmount() {
+  //   AppState.removeEventListener('change', this._handleAppStateChange);
+  // }
+
+  // _handleAppStateChange = (nextAppState) => {
+  //   if ( this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+  //       console.log('App has come to the foreground!');
+  //       if (global.quitApp){
+  //         this.props.navigation.navigate('App')
+  //       }
+  //   }
+  //   if ( nextAppState.match(/inactive|background/) ){
+  //       global.quitApp = true;
+  //       console.log("HMMMM")
+  //       // this.props.navigation.navigate('TransactionsHistory')
+  //   }
+  //   this.setState({appState: nextAppState});
+  // };
 
 	// Fetch the token from storage then navigate to our appropriate place
 	_bootstrapAsync = async () => {
@@ -87,7 +114,7 @@ class AuthLoadingScreen extends React.Component {
                     AsyncStorage.setItem("nodeUrl", responseJson.node);
                     AsyncStorage.setItem("nodePort", responseJson.port);
                   }
-                });    
+                });  
             }
             else {
                 AndroidWallet.saveNodeInformation(responseJson.node, responseJson.port,  (err) => {console.log(err);}, (status)=> {
@@ -101,11 +128,11 @@ class AuthLoadingScreen extends React.Component {
             // this.setState({node: responseJson.node, port: responseJson.port })
           })
           .catch((error) => { console.error(error); });
-            }
-          else {
-            this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
-          }
-        });
+        }
+        else {
+          this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
+        }
+      });
 	};
 
 	// Render any loading content that you like here
@@ -186,29 +213,8 @@ const MainDrawerMenu = DrawerNavigator(
         },
         Settings : {
           path: '/',
-          screen: Settings,
-        //   navigationOptions: ({navigation}) => ({
-        //     drawerLabel: (
-        //       <View style={{flex:1, height:50, flexDirection: 'row', justifyContent:'center', paddingLeft: 15 }}>
-        //           <View style={{flex:1, justifyContent:'center'}}><Text style={{color:'white', fontSize:14, fontWeight:'bold'}}>SETTINGS</Text></View>
-        //           <View style={{flex:1, alignItems:'flex-end', justifyContent:'center', paddingRight:10}}>
-        //             {isDefaultNode?
-        //               null
-        //               : 
-        //               <Image source={require('./resources/images/warning_icon.png')} resizeMode={Image.resizeMode.contain} style={{width:20, height:20}}/>
-        //             }
-        //           </View>
-        //       </View>
-        //     ),
-        //     drawerIcon: ({ tintColor }) => (
-        //         <Image source={require('./resources/images/icon_settings.png')} resizeMode={Image.resizeMode.contain} style={{width:25, height:25}}/>
-        //     ),
-        // }),
+          screen: Settings
       },
-        // TxDetailsView : {
-        //     path: '/',
-        //     screen: TxDetailsView
-        // },
     },
     {
       // initialRouteName: 'Wallet',
@@ -229,9 +235,6 @@ const RootStack = StackNavigator(
     MainDrawer: {
       screen: MainDrawerMenu,
       params: { test: "blaaa"},
-      // navigationOptions: ({navigation}) => ({
-      //   params: navigation
-      // })
     },
     ProvideWalletPin : {
       screen: ProvideWalletPin
@@ -244,6 +247,9 @@ const RootStack = StackNavigator(
     },
     DeleteWalletModal: {
       screen: DeleteWalletModal
+    },
+    UnlockAppModal: {
+      screen: UnlockAppModal
     },
     // ScanQrModal : {
     //     screen: ScanQrModal

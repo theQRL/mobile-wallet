@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, TextInput, Image, ImageBackground, AsyncStorage, StyleSheet, TouchableHighlight, TouchableOpacity, Platform, ActivityIndicator, Modal} from 'react-native';
+import {Text, View, TextInput, Image, ImageBackground, AsyncStorage, StyleSheet, TouchableHighlight, TouchableOpacity, Platform, ActivityIndicator, Modal, AppState} from 'react-native';
 
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.refreshWallet;
@@ -10,6 +10,7 @@ let isDefaultNode = 'true';
 export default class Settings extends React.Component {
 
     componentWillMount() {
+        AppState.addEventListener('change', this._handleAppStateChange);
         console.log("SETTINGSJS_ GLOBALS.ISDEFAULTNODE: ", global.isDefaultNode)
 
         // AsyncStorage.multiGet(["nodeUrl", "nodePort"]).then(storageResponse => {
@@ -24,6 +25,26 @@ export default class Settings extends React.Component {
         // });
     }
 
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this._handleAppStateChange);
+        console.log("UNMOUNTING SETTINGS...")
+    }
+
+    _handleAppStateChange = (nextAppState) => {
+        if ( this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+            console.log('RESTARTED');
+            // if (global.quitApp){
+            //   this.props.navigation.navigate('App')
+            // }
+        }
+        if ( nextAppState.match(/inactive|background/) ){
+            // global.quitApp = true;
+            console.log("QUIT")
+            // this.props.navigation.navigate('TransactionsHistory')
+        }
+        this.setState({appState: nextAppState});
+      };
+    
 
     static navigationOptions = ({navigation}) => ({
         // AsyncStorage.multiGet(["nodeUrl", "nodePort"]).then(storageResponse => {
@@ -71,7 +92,6 @@ export default class Settings extends React.Component {
     // };
 
     componentDidMount(){
-
         AsyncStorage.multiGet(["nodeUrl", "nodePort"]).then(storageResponse => {
             this.setState({nodeUrl: storageResponse[0][1], nodePort: storageResponse[1][1], loading: false});    
         });
@@ -80,6 +100,7 @@ export default class Settings extends React.Component {
 
     state={
         loading: true,
+        appState: AppState.currentState,
     }
 
 

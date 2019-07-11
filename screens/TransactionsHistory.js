@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, ImageBackground, Text, View, Image, ActionSheetIOS, TextInput, Button, ActivityIndicator, Picker, TouchableOpacity, ScrollView, TouchableHighlight, ListView, AsyncStorage} from 'react-native';
+import { Platform, StyleSheet, ImageBackground, Text, View, Image, ActionSheetIOS, TextInput, Button, ActivityIndicator, Picker, TouchableOpacity, ScrollView, TouchableHighlight, ListView, AsyncStorage, AppState} from 'react-native';
 import Reactotron from 'reactotron-react-native'
 // Android and Ios native modules
 import {NativeModules} from 'react-native';
@@ -17,10 +17,34 @@ export default class Wallet extends React.Component{
     //     ),
     // };
 
+//     componentDidMount() {
+// AppState.addEventListener('change', this._handleAppStateChange);
+//   }
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this._handleAppStateChange);
+    }
+
+
+    _handleAppStateChange = (nextAppState) => {
+        if ( this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+            // console.log(this.props.navigation);
+            // if (global.quitApp){
+            this.props.navigation.navigate('UnlockAppModal');
+            // }
+        }
+        if ( nextAppState.match(/inactive|background/) ){
+            // global.quitApp = true;
+            console.log("QUIT")
+            // this.props.navigation.navigate('TransactionsHistory')
+        }
+        this.setState({appState: nextAppState});
+    };
+
     // every time we open the main page fo the following
     // 1. update cmc related info
     // 2. update list of 10 latest tx
     componentDidMount() {
+        AppState.addEventListener('change', this._handleAppStateChange);
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
         // AsyncStorage.multiGet(["node","port"]).then((connectionDetails) => {
@@ -71,6 +95,7 @@ export default class Wallet extends React.Component{
             processing: false,
             balance : 0,
             refreshBtnTop: Platform.OS === 'ios'? 10: 2,
+            appState: AppState.currentState,
         }
     }
 
