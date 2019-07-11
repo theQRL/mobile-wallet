@@ -71,68 +71,72 @@ class AuthLoadingScreen extends React.Component {
 	// Fetch the token from storage then navigate to our appropriate place
 	_bootstrapAsync = async () => {
 		// check if a wallet was already created
-		const walletCreated = await AsyncStorage.getItem('walletcreated');
-		// This will switch to the App screen or Auth screen and this loading
-        // screen will be unmounted and thrown away.
+    const walletCreated = await AsyncStorage.getItem('walletcreated');
+    const unlockWithPin = await AsyncStorage.getItem('unlockWithPin');
+    console.log("UNLOCK WITH PIN IS...")
+    console.log(unlockWithPin)
+    if (unlockWithPin === null){
+      AsyncStorage.setItem('unlockWithPin', 'false');
+    }
+    // This will switch to the App screen or Auth screen and this loading 
+    // screen will be unmounted and thrown away.
 
-        // check which network to connect to: node and port
-        // check if a node URL and port is already defined
-        AsyncStorage.multiGet(["nodeUrl", "nodePort"]).then(storageResponse => {
-
+    // check which network to connect to: node and port
+    // check if a node URL and port is already defined
+    AsyncStorage.multiGet(["nodeUrl", "nodePort"]).then(storageResponse => {
+      // get at each store's key/value so you can work with it
+      let nodeUrl = storageResponse[0][1];
+      let nodePort = storageResponse[1][1]; 
+      // save defaultNode global value
+      if (nodeUrl != 'testnet-4.automated.theqrl.org'){
+        global.isDefaultNode = false;
+      }
+      else {
+        global.isDefaultNode = true;
+      }
+      
+      Reactotron.log(nodeUrl)
+      // if not yet defined
+      if (nodeUrl === '' | nodeUrl === null){
+        Reactotron.log("SAVING NODE INFO")
+        fetch('https://ademcan.net/qrlnetwork.html', {
+        // fetch('https://qrl.foundation/qrlnetwork.html', {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
         
-          // get at each store's key/value so you can work with it
-          let nodeUrl = storageResponse[0][1];
-          let nodePort = storageResponse[1][1]; 
-          // save defaultNode global value
-          if (nodeUrl != 'testnet-4.automated.theqrl.org'){
-            global.isDefaultNode = false;
-          }
-          else {
-            global.isDefaultNode = true;
-          }
-          
-          Reactotron.log(nodeUrl)
-          // if not yet defined
-          if (nodeUrl === '' | nodeUrl === null){
-            Reactotron.log("SAVING NODE INFO")
-            fetch('https://ademcan.net/qrlnetwork.html', {
-            // fetch('https://qrl.foundation/qrlnetwork.html', {
-            method: 'GET',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-          })
-          .then((response) => response.json())
-          .then((responseJson) => {
-            
-            if (Platform.OS === 'ios'){
-                IosWallet.saveNodeInformation( responseJson.node, responseJson.port, (error, status)=> {
-                  
-                  if (status == "saved"){
-                    this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
-                    AsyncStorage.setItem("nodeUrl", responseJson.node);
-                    AsyncStorage.setItem("nodePort", responseJson.port);
-                  }
-                });  
-            }
-            else {
-                AndroidWallet.saveNodeInformation(responseJson.node, responseJson.port,  (err) => {console.log(err);}, (status)=> {
-                    if (status == "saved"){
-                      this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
-                      AsyncStorage.setItem("nodeUrl", responseJson.node);
-                      AsyncStorage.setItem("nodePort", responseJson.port);
-                    }
-                });
-            }
-            // this.setState({node: responseJson.node, port: responseJson.port })
-          })
-          .catch((error) => { console.error(error); });
+        if (Platform.OS === 'ios'){
+            IosWallet.saveNodeInformation( responseJson.node, responseJson.port, (error, status)=> {
+              
+              if (status == "saved"){
+                this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
+                AsyncStorage.setItem("nodeUrl", responseJson.node);
+                AsyncStorage.setItem("nodePort", responseJson.port);
+              }
+            });  
         }
         else {
-          this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
+            AndroidWallet.saveNodeInformation(responseJson.node, responseJson.port,  (err) => {console.log(err);}, (status)=> {
+                if (status == "saved"){
+                  this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
+                  AsyncStorage.setItem("nodeUrl", responseJson.node);
+                  AsyncStorage.setItem("nodePort", responseJson.port);
+                }
+            });
         }
-      });
+        // this.setState({node: responseJson.node, port: responseJson.port })
+      })
+      .catch((error) => { console.error(error); });
+    }
+    else {
+      this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
+      }
+    });
 	};
 
 	// Render any loading content that you like here

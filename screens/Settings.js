@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, TextInput, Image, ImageBackground, AsyncStorage, StyleSheet, TouchableHighlight, TouchableOpacity, Platform, ActivityIndicator, Modal, AppState} from 'react-native';
+import {Text, View, TextInput, Image, ImageBackground, AsyncStorage, StyleSheet, TouchableHighlight, TouchableOpacity, Platform, ActivityIndicator, Modal, AppState, Switch} from 'react-native';
 
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.refreshWallet;
@@ -101,6 +101,7 @@ export default class Settings extends React.Component {
     state={
         loading: true,
         appState: AppState.currentState,
+        switchValue: true,
     }
 
 
@@ -145,6 +146,11 @@ export default class Settings extends React.Component {
         }
     }
 
+    // toggle PIN required on/off
+    toggleSwitch = (value) => {
+        this.setState({switchValue: value})
+     }
+
     // render view
     render() {
         if (this.state.loading){
@@ -179,6 +185,18 @@ export default class Settings extends React.Component {
                         <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => { this.saveSettings() }}>
                             <Text style={styles.TextStyle}> SAVE </Text>
                         </TouchableOpacity>
+
+                        <View style={{ flexDirection: 'row', justifyContent:'center', height:100 }}>
+                            <View style={{flex:1, justifyContent:'center'}}>
+                                <Text>Lock the app with a PIN</Text>
+                            </View>
+                            <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
+                            <Switch
+                                onValueChange = {this.toggleSwitch}
+                                value = {this.state.switchValue}/>
+                            </View>
+                            
+                        </View>
                     </View>
                 </View>
             </ImageBackground>
