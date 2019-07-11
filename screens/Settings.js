@@ -5,14 +5,70 @@ import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.refreshWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
 
+let isDefaultNode = 'true';
+
 export default class Settings extends React.Component {
 
-    static navigationOptions = {
-        drawerLabel: 'SETTINGS',
-        drawerIcon: ({ tintColor }) => (
-            <Image source={require('../resources/images/icon_settings.png')} resizeMode={Image.resizeMode.contain} style={{width:25, height:25}}/>
-        ),
-    };
+    componentWillMount() {
+        console.log("SETTINGSJS_ GLOBALS.ISDEFAULTNODE: ", global.isDefaultNode)
+
+        // AsyncStorage.multiGet(["nodeUrl", "nodePort"]).then(storageResponse => {
+        //     console.log("............................. SETTINGS *******************************")
+        //     // get at each store's key/value so you can work with it
+        //     let nodeUrl = storageResponse[0][1];
+        //     let nodePort = storageResponse[1][1]; 
+        //     if (nodeUrl != 'testnet-4.automated.theqrl.org'){
+                
+        //         isDefaultNode = 'false';
+        //     }
+        // });
+    }
+
+
+    static navigationOptions = ({navigation}) => ({
+        // AsyncStorage.multiGet(["nodeUrl", "nodePort"]).then(storageResponse => {
+            drawerLabel: (
+            <View style={{flex:1, height:50, flexDirection: 'row', justifyContent:'center', paddingLeft: 15 }}>
+                <View style={{flex:1, justifyContent:'center'}}><Text style={{color:'white', fontSize:14, fontWeight:'bold'}}>SETTINGS</Text></View>
+                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center', paddingRight:10}}>
+                    { global.isDefaultNode ? 
+                    null
+                    : 
+                    <Image source={require('../resources/images/warning_icon.png')} resizeMode={Image.resizeMode.contain} style={{width:20, height:20}}/>
+                    }
+                </View>
+            </View>
+            ),
+            drawerIcon: ({ tintColor }) => (
+                <Image source={require('../resources/images/icon_settings.png')} resizeMode={Image.resizeMode.contain} style={{width:25, height:25}}/>
+            ),
+        // })
+    })
+
+
+    // static navigationOptions = ({ navigation }) => {
+    //     const { state } = navigation;
+    //     console.log("............................................................")
+    //     console.log(navigation)
+    //     return {
+    //         drawerLabel: (
+    //             <View style={{flex:1, height:50, flexDirection: 'row', justifyContent:'center', paddingLeft: 15 }}>
+    //                 <View style={{flex:1, justifyContent:'center'}}><Text style={{color:'white', fontSize:14, fontWeight:'bold'}}>SETTINGS</Text></View>
+    //                 <View style={{flex:1, alignItems:'flex-end', justifyContent:'center', paddingRight:10}}>
+    //                     {state.params.defaultNode ? 
+    //                         null
+    //                     : 
+    //                         <Image source={require('../resources/images/warning_icon.png')} resizeMode={Image.resizeMode.contain} style={{width:20, height:20}}/>
+    //                     }
+                        
+    //                 </View>
+    //             </View>
+    //         ),
+    //         drawerIcon: ({ tintColor }) => (
+    //             <Image source={require('../resources/images/icon_settings.png')} resizeMode={Image.resizeMode.contain} style={{width:25, height:25}}/>
+    //         ),
+    //     }
+    // };
 
     componentDidMount(){
 
@@ -44,6 +100,16 @@ export default class Settings extends React.Component {
                     // Alert SUCCESS
                   AsyncStorage.setItem("nodeUrl", this.state.nodeUrl);
                   AsyncStorage.setItem("nodePort", this.state.nodePort);
+
+                if (this.state.nodeUrl != 'testnet-4.automated.theqrl.org'){
+                    global.isDefaultNode = false;
+                }
+                else {
+                    global.isDefaultNode = true;
+                }
+                this.props.navigation.setParams({otherParam: 'Updated!'})
+                console.log("SETTINGSJS2_ GLOBALS.ISDEFAULTNODE: ", global.isDefaultNode)
+
                 }
             });    
         }

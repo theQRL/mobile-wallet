@@ -20,6 +20,7 @@ import ProvideWalletPin from './screens/ProvideWalletPin'
 import OpenExistingWalletModal from './screens/OpenExistingWalletModal'
 import ShowQrCodeModal from './screens/ShowQrCodeModal'
 import Settings from './screens/Settings'
+import DeleteWalletModal from './screens/DeleteWalletModal'
 import Reactotron from 'reactotron-react-native'
 
 
@@ -29,16 +30,15 @@ var IosWallet = NativeModules.refreshWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
 // import { QRLLIB } from './node_modules/qrllib/build/web-libjsqrl.js'
 
-
-
 // AuthLoadingScreen checks if a wallet already exists
 // - if yes -> redirects to the app main view
 // - if no -> redirects to the CreateWallet view
 class AuthLoadingScreen extends React.Component {
 
   	constructor(props) {
+      console.log("APPJS_ GLOBALS.ISDEFAULTNODE: ", global.isDefaultNode)
     	super(props);
-    	this._bootstrapAsync();
+      this._bootstrapAsync();
   	}
 
 	// Fetch the token from storage then navigate to our appropriate place
@@ -52,13 +52,22 @@ class AuthLoadingScreen extends React.Component {
         // check if a node URL and port is already defined
         AsyncStorage.multiGet(["nodeUrl", "nodePort"]).then(storageResponse => {
 
+        
           // get at each store's key/value so you can work with it
           let nodeUrl = storageResponse[0][1];
           let nodePort = storageResponse[1][1]; 
+          // save defaultNode global value
+          if (nodeUrl != 'testnet-4.automated.theqrl.org'){
+            global.isDefaultNode = false;
+          }
+          else {
+            global.isDefaultNode = true;
+          }
+          
           Reactotron.log(nodeUrl)
           // if not yet defined
           if (nodeUrl === '' | nodeUrl === null){
-            Reactotron.log("SAVING NODE INFGO")
+            Reactotron.log("SAVING NODE INFO")
             fetch('https://ademcan.net/qrlnetwork.html', {
             // fetch('https://qrl.foundation/qrlnetwork.html', {
             method: 'GET',
@@ -72,11 +81,12 @@ class AuthLoadingScreen extends React.Component {
             
             if (Platform.OS === 'ios'){
                 IosWallet.saveNodeInformation( responseJson.node, responseJson.port, (error, status)=> {
-                    if (status == "saved"){
-                      this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
-                      AsyncStorage.setItem("nodeUrl", responseJson.node);
-                      AsyncStorage.setItem("nodePort", responseJson.port);
-                    }
+                  
+                  if (status == "saved"){
+                    this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
+                    AsyncStorage.setItem("nodeUrl", responseJson.node);
+                    AsyncStorage.setItem("nodePort", responseJson.port);
+                  }
                 });    
             }
             else {
@@ -95,12 +105,7 @@ class AuthLoadingScreen extends React.Component {
           else {
             this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
           }
-
         });
-
-        
-
-		
 	};
 
 	// Render any loading content that you like here
@@ -143,7 +148,7 @@ const TxStack = StackNavigator(
     TxDetailsView : {
       path: '/',
       screen: TxDetailsView
-  },
+    },
   },
   {
     headerMode: 'none',
@@ -181,7 +186,24 @@ const MainDrawerMenu = DrawerNavigator(
         },
         Settings : {
           path: '/',
-          screen: Settings
+          screen: Settings,
+        //   navigationOptions: ({navigation}) => ({
+        //     drawerLabel: (
+        //       <View style={{flex:1, height:50, flexDirection: 'row', justifyContent:'center', paddingLeft: 15 }}>
+        //           <View style={{flex:1, justifyContent:'center'}}><Text style={{color:'white', fontSize:14, fontWeight:'bold'}}>SETTINGS</Text></View>
+        //           <View style={{flex:1, alignItems:'flex-end', justifyContent:'center', paddingRight:10}}>
+        //             {isDefaultNode?
+        //               null
+        //               : 
+        //               <Image source={require('./resources/images/warning_icon.png')} resizeMode={Image.resizeMode.contain} style={{width:20, height:20}}/>
+        //             }
+        //           </View>
+        //       </View>
+        //     ),
+        //     drawerIcon: ({ tintColor }) => (
+        //         <Image source={require('./resources/images/icon_settings.png')} resizeMode={Image.resizeMode.contain} style={{width:25, height:25}}/>
+        //     ),
+        // }),
       },
         // TxDetailsView : {
         //     path: '/',
@@ -189,15 +211,15 @@ const MainDrawerMenu = DrawerNavigator(
         // },
     },
     {
-        // initialRouteName: 'Wallet',
-        initialRouteName: 'TransactionsHistory',
-        drawerPosition: 'left',
-        contentComponent: CustomDrawerContentComponent,
-        contentOptions: {
-            labelStyle: {
-                color: 'white',
-            }
+      // initialRouteName: 'Wallet',
+      initialRouteName: 'TransactionsHistory',
+      drawerPosition: 'left',
+      contentComponent: CustomDrawerContentComponent,
+      contentOptions: {
+        labelStyle: {
+          color: 'white',
         }
+      }
     }
 );
 
@@ -206,21 +228,28 @@ const RootStack = StackNavigator(
   {
     MainDrawer: {
       screen: MainDrawerMenu,
+      params: { test: "blaaa"},
+      // navigationOptions: ({navigation}) => ({
+      //   params: navigation
+      // })
     },
     ProvideWalletPin : {
-        screen: ProvideWalletPin
+      screen: ProvideWalletPin
     },
     OpenExistingWalletModal : {
-        screen: OpenExistingWalletModal
+      screen: OpenExistingWalletModal
     },
     ConfirmTxModal : {
-        screen: ConfirmTxModal
+      screen: ConfirmTxModal
+    },
+    DeleteWalletModal: {
+      screen: DeleteWalletModal
     },
     // ScanQrModal : {
     //     screen: ScanQrModal
     // },
     ShowQrCodeModal : {
-        screen: ShowQrCodeModal
+      screen: ShowQrCodeModal
     },
   },
   {

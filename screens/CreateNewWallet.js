@@ -3,6 +3,7 @@ import {Platform, Text, View, Alert, Button, Image, StyleSheet, Modal, ImageBack
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.CreateWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
+import PINCode from '@haskkor/react-native-pincode'
 
 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 export default class CreateNewWallet extends React.Component {
@@ -34,7 +35,23 @@ export default class CreateNewWallet extends React.Component {
         hexseed: '',
         isLoading: true,
         modalVisible: false,
-        walletIndexToOpen: null
+        walletIndexToOpen: null,
+        deleteModalVisible: false
+    }
+
+    // popup to confirm wallet removal
+    removeWalletPopup = (walletid) => {
+        Alert.alert( "REMOVE WALLET"  , "Do you really want to remove this wallet from the app?" , [
+            {
+                text: "Cancel", 
+                onPress: () => {console.log("Canceled")}
+            }, 
+            {
+                text: "Remove",
+                onPress: () => this.openDeleteModal(walletid)
+                // onPress: () => this.removeWallet(walletid, this.state.walletlist) 
+            }
+        ])
     }
 
     // remove wallet from the app
@@ -77,14 +94,15 @@ export default class CreateNewWallet extends React.Component {
         }
     }
 
-    // popup to confirm wallet removal
-    removeWalletPopup = (walletid) => {
-        Alert.alert( "REMOVE WALLET"  , "Do you really want to remove this wallet from the app?" , [{text: "Cancel", onPress: () => {console.log("Canceled")}}, {text: "Remove", onPress: () => this.removeWallet(walletid, this.state.walletlist) } ] )
-    }
-
     openHexseedModal = (walletindexToOpen) => {
         // this.setState({modalVisible: true, walletIndexToOpen: walletindexToOpen })
         this.props.navigation.navigate('OpenExistingWalletModal',{onGoBack: () => this.refreshWalletIndex(), walletIndexToOpen: walletindexToOpen})
+    }
+
+
+    openDeleteModal = (walletindexToDelete) => {
+        // this.setState({modalVisible: true, walletIndexToOpen: walletindexToOpen })
+        this.props.navigation.navigate('DeleteWalletModal',{onGoBack: () => this.removeWallet(walletindexToDelete, this.state.walletlist), walletIndexToDelete: walletindexToDelete })
     }
 
     // Launch wallet creation process
@@ -186,6 +204,7 @@ export default class CreateNewWallet extends React.Component {
       else {
           return (
               <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
+
                 <View style={{flex:1}}>
                     <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
                         <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
