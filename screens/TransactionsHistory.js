@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, ImageBackground, Text, View, Image, ActionSheetIOS, TextInput, Button, ActivityIndicator, Picker, TouchableOpacity, ScrollView, TouchableHighlight, ListView, AsyncStorage} from 'react-native';
+import { Platform, StyleSheet, ImageBackground, Text, View, Image, ActionSheetIOS, TextInput, Button, ActivityIndicator, Picker, TouchableOpacity, ScrollView, TouchableHighlight, ListView, AsyncStorage, AppState} from 'react-native';
 import Reactotron from 'reactotron-react-native'
 // Android and Ios native modules
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.refreshWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
+import BackgroundTimer from 'react-native-background-timer';
+import DeviceInfo from 'react-native-device-info';
+const moment = require('moment');
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
@@ -17,12 +20,52 @@ export default class Wallet extends React.Component{
     //     ),
     // };
 
+//     componentDidMount() {
+// AppState.addEventListener('change', this._handleAppStateChange);
+//   }
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this._handleAppStateChange);
+    }
+
+    _handleAppStateChange = (nextAppState) => {
+
+        if ( this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+            // stop the timeout
+            const timeoutId = this.state.backgroundTimer;
+            BackgroundTimer.clearTimeout(timeoutId);
+            // if unlockWithPin OR needPinTimeout is true, then show PIN view
+            AsyncStorage.multiGet(["unlockWithPin", "needPinTimeout"]).then(storageResponse => {
+                unlockWithPin = storageResponse[0][1];
+                needPinTimeout = storageResponse[1][1];
+                if (unlockWithPin === 'true' || needPinTimeout === 'true'){
+                    // reset needPinTimeout to false
+                    AsyncStorage.setItem('needPinTimeout', 'false');
+                    // show PIN view
+                    this.props.navigation.navigate('UnlockAppModal');
+                }
+            }).catch((error) => {console.log(error)});
+        }
+        // if ( nextAppState.match(/inactive|background/) ){
+        if ( nextAppState === 'background' ){
+            // start timer to check if user left the app for more than 15 seconds
+            const timeoutId = BackgroundTimer.setTimeout(() => {
+                AsyncStorage.setItem('needPinTimeout', 'true')
+            }, 10000);
+            // save the timeoutID to the state to check/stop it when app is back to active state
+            this.setState({ backgroundTimer: timeoutId });
+        }
+        this.setState({appState: nextAppState});
+    };
+
+
     // every time we open the main page fo the following
     // 1. update cmc related info
     // 2. update list of 10 latest tx
     componentDidMount() {
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        AppState.addEventListener('change', this._handleAppStateChange);
 
+        this.setState({is24h: DeviceInfo.is24Hour(), deviceLocale: DeviceInfo.getDeviceLocale() })
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
         // AsyncStorage.multiGet(["node","port"]).then((connectionDetails) => {
         //     node = connectionDetails[0][1]
@@ -37,7 +80,7 @@ export default class Wallet extends React.Component{
             }).then((response) => response.json())
             .then((responseJson) => {
                 this.setState({marketcap: Number((parseFloat(responseJson.market_cap)).toFixed()), price: Number((parseFloat(responseJson.price)).toFixed(2)) , change24: Number((parseFloat(responseJson.change_24hr)).toFixed(2)) })
-
+                
                 if (responseJson.change_24hr.includes("-")){this.setState({changeup: false})}
                 else {this.setState({changeup: true})}
 
@@ -54,7 +97,7 @@ export default class Wallet extends React.Component{
                     }
                     // Android
                     else {
-                        AndroidWallet.refreshWallet(walletindex,  (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
+                        AndroidWallet.refreshWallet(walletindex,  (err) => { Reactotron.log("WEEOEEEEE....."); }, (walletAddress, otsIndex, balance, keys)=> {
                             this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys)), tx_count: JSON.parse(keys).length })
                         });
                     }
@@ -72,6 +115,7 @@ export default class Wallet extends React.Component{
             processing: false,
             balance : 0,
             refreshBtnTop: Platform.OS === 'ios'? 10: 2,
+            appState: AppState.currentState,
         }
     }
 
@@ -221,10 +265,20 @@ export default class Wallet extends React.Component{
 
         else {
             // formatting minutes and address to user interface
+            console.log(this.state.deviceLocale)
             minutes = this.state.updatedDate.getMinutes();
+            if (this.state.is24h){
+                hours = this.state.updatedDate.getHours()
+            }
+            else {
+                hours = this.state.updatedDate.getHours() > 12 ? this.state.updatedDate.getHours() - 12 : this.state.updatedDate.getHours();
+            }
             minutes < 10 ? minUI = "0" + minutes : minUI = minutes;
             addressBegin = this.state.walletAddress.substring(1, 10);
             addressEnd = this.state.walletAddress.substring(58, 79);
+            moment.locale(this.state.deviceLocale);
+            momentDate = moment(this.state.updatedDate);
+            formattedDate = momentDate.format('LL');
 
             return (
                 <ImageBackground source={require('../resources/images/main_bg_half.png')} style={styles.backgroundImage}>
@@ -239,7 +293,8 @@ export default class Wallet extends React.Component{
                         <ScrollView style={{flex:2}}>
                             <View style={{ alignItems:'center',paddingTop:10, flex:0.5}}>
                                 <Image source={require('../resources/images/qrl_logo_wallet.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:100}} />
-                                <Text style={{color:'white'}}>LAST UPDATE: {this.state.updatedDate.getDate()}.{this.state.updatedDate.getMonth() + 1}.{this.state.updatedDate.getFullYear()} {this.state.updatedDate.getHours()}:{minUI}</Text>
+                                {/* <Text style={{color:'white'}}>LAST UPDATE: {this.state.updatedDate.getDate()}.{this.state.updatedDate.getMonth() + 1}.{this.state.updatedDate.getFullYear()} {hours}:{minUI}</Text> */}
+                                <Text style={{color:'white'}}>LAST UPDATE: {formattedDate} {hours}:{minUI}</Text>
                             </View>
 
                             <View style={{ alignItems:'center',flex:1}}>

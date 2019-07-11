@@ -233,7 +233,7 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
                 // loop through unconfirmed tx and add to JSON array
                 for (int i=0; i<response.transactionsUnconfirmedArray_Count; i++){
                   NSString *tx_address = [WalletHelperFunctions  nsDataHex2string:response.transactionsUnconfirmedArray[i].addrFrom];
-                  NSString *stringFromDate = [WalletHelperFunctions formatDate:(NSTimeInterval)response.transactionsUnconfirmedArray[i].timestampSeconds];
+//                  NSString *stringFromDate = [WalletHelperFunctions formatDate:(NSTimeInterval)response.transactionsUnconfirmedArray[i].timestampSeconds];
                   NSString *txHash = [WalletHelperFunctions nsDataHex2string:response.transactionsUnconfirmedArray[i].tx.transactionHash];
                   NSString *amountStr = [NSString stringWithFormat:@"%llu", [response.transactionsUnconfirmedArray[i].tx.transfer.amountsArray valueAtIndex:0]];
                   
@@ -248,7 +248,7 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
                   NSDictionary *txJsonDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
                                                     unconfirmed_title, @"title",
                                                     amountStr, @"desc",
-                                                    stringFromDate, @"date",
+                                                    @"", @"date",
                                                     txHash, @"txhash",
                                                     @"true", @"unconfirmed",
                                                     nil];
@@ -269,7 +269,6 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
       }
     }
   }];
-
 }
 
 

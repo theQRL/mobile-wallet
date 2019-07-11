@@ -1873,6 +1873,93 @@ typedef struct SlaveTxnReq__storage_ {
 
 @end
 
+#pragma mark - LatticePublicKeyTxnReq
+
+@implementation LatticePublicKeyTxnReq
+
+@dynamic masterAddr;
+@dynamic kyberPk;
+@dynamic dilithiumPk;
+@dynamic fee;
+@dynamic xmssPk;
+
+typedef struct LatticePublicKeyTxnReq__storage_ {
+  uint32_t _has_storage_[1];
+  NSData *masterAddr;
+  NSData *kyberPk;
+  NSData *dilithiumPk;
+  NSData *xmssPk;
+  uint64_t fee;
+} LatticePublicKeyTxnReq__storage_;
+
+// This method is threadsafe because it is initially called
+// in +initialize for each subclass.
++ (GPBDescriptor *)descriptor {
+  static GPBDescriptor *descriptor = nil;
+  if (!descriptor) {
+    static GPBMessageFieldDescription fields[] = {
+      {
+        .name = "masterAddr",
+        .dataTypeSpecific.className = NULL,
+        .number = LatticePublicKeyTxnReq_FieldNumber_MasterAddr,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(LatticePublicKeyTxnReq__storage_, masterAddr),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeBytes,
+      },
+      {
+        .name = "kyberPk",
+        .dataTypeSpecific.className = NULL,
+        .number = LatticePublicKeyTxnReq_FieldNumber_KyberPk,
+        .hasIndex = 1,
+        .offset = (uint32_t)offsetof(LatticePublicKeyTxnReq__storage_, kyberPk),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeBytes,
+      },
+      {
+        .name = "dilithiumPk",
+        .dataTypeSpecific.className = NULL,
+        .number = LatticePublicKeyTxnReq_FieldNumber_DilithiumPk,
+        .hasIndex = 2,
+        .offset = (uint32_t)offsetof(LatticePublicKeyTxnReq__storage_, dilithiumPk),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeBytes,
+      },
+      {
+        .name = "fee",
+        .dataTypeSpecific.className = NULL,
+        .number = LatticePublicKeyTxnReq_FieldNumber_Fee,
+        .hasIndex = 3,
+        .offset = (uint32_t)offsetof(LatticePublicKeyTxnReq__storage_, fee),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeUInt64,
+      },
+      {
+        .name = "xmssPk",
+        .dataTypeSpecific.className = NULL,
+        .number = LatticePublicKeyTxnReq_FieldNumber_XmssPk,
+        .hasIndex = 4,
+        .offset = (uint32_t)offsetof(LatticePublicKeyTxnReq__storage_, xmssPk),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeBytes,
+      },
+    };
+    GPBDescriptor *localDescriptor =
+        [GPBDescriptor allocDescriptorForClass:[LatticePublicKeyTxnReq class]
+                                     rootClass:[QrlRoot class]
+                                          file:QrlRoot_FileDescriptor()
+                                        fields:fields
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
+                                   storageSize:sizeof(LatticePublicKeyTxnReq__storage_)
+                                         flags:GPBDescriptorInitializationFlag_None];
+    NSAssert(descriptor == nil, @"Startup recursed!");
+    descriptor = localDescriptor;
+  }
+  return descriptor;
+}
+
+@end
+
 #pragma mark - GetLocalAddressesReq
 
 @implementation GetLocalAddressesReq
@@ -2696,7 +2783,6 @@ typedef struct TransactionCount__storage_ {
 @dynamic hasTx, tx;
 @dynamic addrFrom;
 @dynamic size;
-@dynamic timestampSeconds;
 
 typedef struct TransactionExtended__storage_ {
   uint32_t _has_storage_[1];
@@ -2704,7 +2790,6 @@ typedef struct TransactionExtended__storage_ {
   Transaction *tx;
   NSData *addrFrom;
   uint64_t size;
-  uint64_t timestampSeconds;
 } TransactionExtended__storage_;
 
 // This method is threadsafe because it is initially called
@@ -2746,15 +2831,6 @@ typedef struct TransactionExtended__storage_ {
         .number = TransactionExtended_FieldNumber_Size,
         .hasIndex = 3,
         .offset = (uint32_t)offsetof(TransactionExtended__storage_, size),
-        .flags = GPBFieldOptional,
-        .dataType = GPBDataTypeUInt64,
-      },
-      {
-        .name = "timestampSeconds",
-        .dataTypeSpecific.className = NULL,
-        .number = TransactionExtended_FieldNumber_TimestampSeconds,
-        .hasIndex = 4,
-        .offset = (uint32_t)offsetof(TransactionExtended__storage_, timestampSeconds),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeUInt64,
       },
@@ -3720,6 +3796,135 @@ typedef struct TokenMetadata__storage_ {
 
 @end
 
+#pragma mark - CollectEphemeralMessageReq
+
+@implementation CollectEphemeralMessageReq
+
+@dynamic msgId;
+
+typedef struct CollectEphemeralMessageReq__storage_ {
+  uint32_t _has_storage_[1];
+  NSData *msgId;
+} CollectEphemeralMessageReq__storage_;
+
+// This method is threadsafe because it is initially called
+// in +initialize for each subclass.
++ (GPBDescriptor *)descriptor {
+  static GPBDescriptor *descriptor = nil;
+  if (!descriptor) {
+    static GPBMessageFieldDescription fields[] = {
+      {
+        .name = "msgId",
+        .dataTypeSpecific.className = NULL,
+        .number = CollectEphemeralMessageReq_FieldNumber_MsgId,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(CollectEphemeralMessageReq__storage_, msgId),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeBytes,
+      },
+    };
+    GPBDescriptor *localDescriptor =
+        [GPBDescriptor allocDescriptorForClass:[CollectEphemeralMessageReq class]
+                                     rootClass:[QrlRoot class]
+                                          file:QrlRoot_FileDescriptor()
+                                        fields:fields
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
+                                   storageSize:sizeof(CollectEphemeralMessageReq__storage_)
+                                         flags:GPBDescriptorInitializationFlag_None];
+    NSAssert(descriptor == nil, @"Startup recursed!");
+    descriptor = localDescriptor;
+  }
+  return descriptor;
+}
+
+@end
+
+#pragma mark - CollectEphemeralMessageResp
+
+@implementation CollectEphemeralMessageResp
+
+@dynamic hasEphemeralMetadata, ephemeralMetadata;
+
+typedef struct CollectEphemeralMessageResp__storage_ {
+  uint32_t _has_storage_[1];
+  EphemeralMetadata *ephemeralMetadata;
+} CollectEphemeralMessageResp__storage_;
+
+// This method is threadsafe because it is initially called
+// in +initialize for each subclass.
++ (GPBDescriptor *)descriptor {
+  static GPBDescriptor *descriptor = nil;
+  if (!descriptor) {
+    static GPBMessageFieldDescription fields[] = {
+      {
+        .name = "ephemeralMetadata",
+        .dataTypeSpecific.className = GPBStringifySymbol(EphemeralMetadata),
+        .number = CollectEphemeralMessageResp_FieldNumber_EphemeralMetadata,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(CollectEphemeralMessageResp__storage_, ephemeralMetadata),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeMessage,
+      },
+    };
+    GPBDescriptor *localDescriptor =
+        [GPBDescriptor allocDescriptorForClass:[CollectEphemeralMessageResp class]
+                                     rootClass:[QrlRoot class]
+                                          file:QrlRoot_FileDescriptor()
+                                        fields:fields
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
+                                   storageSize:sizeof(CollectEphemeralMessageResp__storage_)
+                                         flags:GPBDescriptorInitializationFlag_None];
+    NSAssert(descriptor == nil, @"Startup recursed!");
+    descriptor = localDescriptor;
+  }
+  return descriptor;
+}
+
+@end
+
+#pragma mark - PushEphemeralMessageReq
+
+@implementation PushEphemeralMessageReq
+
+@dynamic hasEphemeralMessage, ephemeralMessage;
+
+typedef struct PushEphemeralMessageReq__storage_ {
+  uint32_t _has_storage_[1];
+  EncryptedEphemeralMessage *ephemeralMessage;
+} PushEphemeralMessageReq__storage_;
+
+// This method is threadsafe because it is initially called
+// in +initialize for each subclass.
++ (GPBDescriptor *)descriptor {
+  static GPBDescriptor *descriptor = nil;
+  if (!descriptor) {
+    static GPBMessageFieldDescription fields[] = {
+      {
+        .name = "ephemeralMessage",
+        .dataTypeSpecific.className = GPBStringifySymbol(EncryptedEphemeralMessage),
+        .number = PushEphemeralMessageReq_FieldNumber_EphemeralMessage,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(PushEphemeralMessageReq__storage_, ephemeralMessage),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeMessage,
+      },
+    };
+    GPBDescriptor *localDescriptor =
+        [GPBDescriptor allocDescriptorForClass:[PushEphemeralMessageReq class]
+                                     rootClass:[QrlRoot class]
+                                          file:QrlRoot_FileDescriptor()
+                                        fields:fields
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
+                                   storageSize:sizeof(PushEphemeralMessageReq__storage_)
+                                         flags:GPBDescriptorInitializationFlag_None];
+    NSAssert(descriptor == nil, @"Startup recursed!");
+    descriptor = localDescriptor;
+  }
+  return descriptor;
+}
+
+@end
+
 #pragma mark - EncryptedEphemeralMessage
 
 @implementation EncryptedEphemeralMessage
@@ -3862,6 +4067,222 @@ typedef struct EncryptedEphemeralMessage_Channel__storage_ {
 
 @end
 
+#pragma mark - EphemeralChannelPayload
+
+@implementation EphemeralChannelPayload
+
+@dynamic prf512Seed;
+@dynamic dilithiumSignature;
+@dynamic addrFrom;
+@dynamic data_p;
+
+typedef struct EphemeralChannelPayload__storage_ {
+  uint32_t _has_storage_[1];
+  NSData *prf512Seed;
+  NSData *dilithiumSignature;
+  NSData *addrFrom;
+  NSData *data_p;
+} EphemeralChannelPayload__storage_;
+
+// This method is threadsafe because it is initially called
+// in +initialize for each subclass.
++ (GPBDescriptor *)descriptor {
+  static GPBDescriptor *descriptor = nil;
+  if (!descriptor) {
+    static GPBMessageFieldDescription fields[] = {
+      {
+        .name = "prf512Seed",
+        .dataTypeSpecific.className = NULL,
+        .number = EphemeralChannelPayload_FieldNumber_Prf512Seed,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(EphemeralChannelPayload__storage_, prf512Seed),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeBytes,
+      },
+      {
+        .name = "dilithiumSignature",
+        .dataTypeSpecific.className = NULL,
+        .number = EphemeralChannelPayload_FieldNumber_DilithiumSignature,
+        .hasIndex = 1,
+        .offset = (uint32_t)offsetof(EphemeralChannelPayload__storage_, dilithiumSignature),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeBytes,
+      },
+      {
+        .name = "addrFrom",
+        .dataTypeSpecific.className = NULL,
+        .number = EphemeralChannelPayload_FieldNumber_AddrFrom,
+        .hasIndex = 2,
+        .offset = (uint32_t)offsetof(EphemeralChannelPayload__storage_, addrFrom),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeBytes,
+      },
+      {
+        .name = "data_p",
+        .dataTypeSpecific.className = NULL,
+        .number = EphemeralChannelPayload_FieldNumber_Data_p,
+        .hasIndex = 3,
+        .offset = (uint32_t)offsetof(EphemeralChannelPayload__storage_, data_p),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeBytes,
+      },
+    };
+    GPBDescriptor *localDescriptor =
+        [GPBDescriptor allocDescriptorForClass:[EphemeralChannelPayload class]
+                                     rootClass:[QrlRoot class]
+                                          file:QrlRoot_FileDescriptor()
+                                        fields:fields
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
+                                   storageSize:sizeof(EphemeralChannelPayload__storage_)
+                                         flags:GPBDescriptorInitializationFlag_None];
+    NSAssert(descriptor == nil, @"Startup recursed!");
+    descriptor = localDescriptor;
+  }
+  return descriptor;
+}
+
+@end
+
+#pragma mark - EphemeralMessagePayload
+
+@implementation EphemeralMessagePayload
+
+@dynamic addrFrom;
+@dynamic data_p;
+
+typedef struct EphemeralMessagePayload__storage_ {
+  uint32_t _has_storage_[1];
+  NSData *addrFrom;
+  NSData *data_p;
+} EphemeralMessagePayload__storage_;
+
+// This method is threadsafe because it is initially called
+// in +initialize for each subclass.
++ (GPBDescriptor *)descriptor {
+  static GPBDescriptor *descriptor = nil;
+  if (!descriptor) {
+    static GPBMessageFieldDescription fields[] = {
+      {
+        .name = "addrFrom",
+        .dataTypeSpecific.className = NULL,
+        .number = EphemeralMessagePayload_FieldNumber_AddrFrom,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(EphemeralMessagePayload__storage_, addrFrom),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeBytes,
+      },
+      {
+        .name = "data_p",
+        .dataTypeSpecific.className = NULL,
+        .number = EphemeralMessagePayload_FieldNumber_Data_p,
+        .hasIndex = 1,
+        .offset = (uint32_t)offsetof(EphemeralMessagePayload__storage_, data_p),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeBytes,
+      },
+    };
+    GPBDescriptor *localDescriptor =
+        [GPBDescriptor allocDescriptorForClass:[EphemeralMessagePayload class]
+                                     rootClass:[QrlRoot class]
+                                          file:QrlRoot_FileDescriptor()
+                                        fields:fields
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
+                                   storageSize:sizeof(EphemeralMessagePayload__storage_)
+                                         flags:GPBDescriptorInitializationFlag_None];
+    NSAssert(descriptor == nil, @"Startup recursed!");
+    descriptor = localDescriptor;
+  }
+  return descriptor;
+}
+
+@end
+
+#pragma mark - LatticePublicKeys
+
+@implementation LatticePublicKeys
+
+@dynamic latticeKeysArray, latticeKeysArray_Count;
+
+typedef struct LatticePublicKeys__storage_ {
+  uint32_t _has_storage_[1];
+  NSMutableArray *latticeKeysArray;
+} LatticePublicKeys__storage_;
+
+// This method is threadsafe because it is initially called
+// in +initialize for each subclass.
++ (GPBDescriptor *)descriptor {
+  static GPBDescriptor *descriptor = nil;
+  if (!descriptor) {
+    static GPBMessageFieldDescription fields[] = {
+      {
+        .name = "latticeKeysArray",
+        .dataTypeSpecific.className = GPBStringifySymbol(Transaction),
+        .number = LatticePublicKeys_FieldNumber_LatticeKeysArray,
+        .hasIndex = GPBNoHasBit,
+        .offset = (uint32_t)offsetof(LatticePublicKeys__storage_, latticeKeysArray),
+        .flags = GPBFieldRepeated,
+        .dataType = GPBDataTypeMessage,
+      },
+    };
+    GPBDescriptor *localDescriptor =
+        [GPBDescriptor allocDescriptorForClass:[LatticePublicKeys class]
+                                     rootClass:[QrlRoot class]
+                                          file:QrlRoot_FileDescriptor()
+                                        fields:fields
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
+                                   storageSize:sizeof(LatticePublicKeys__storage_)
+                                         flags:GPBDescriptorInitializationFlag_None];
+    NSAssert(descriptor == nil, @"Startup recursed!");
+    descriptor = localDescriptor;
+  }
+  return descriptor;
+}
+
+@end
+
+#pragma mark - EphemeralMetadata
+
+@implementation EphemeralMetadata
+
+@dynamic encryptedEphemeralMessageListArray, encryptedEphemeralMessageListArray_Count;
+
+typedef struct EphemeralMetadata__storage_ {
+  uint32_t _has_storage_[1];
+  NSMutableArray *encryptedEphemeralMessageListArray;
+} EphemeralMetadata__storage_;
+
+// This method is threadsafe because it is initially called
+// in +initialize for each subclass.
++ (GPBDescriptor *)descriptor {
+  static GPBDescriptor *descriptor = nil;
+  if (!descriptor) {
+    static GPBMessageFieldDescription fields[] = {
+      {
+        .name = "encryptedEphemeralMessageListArray",
+        .dataTypeSpecific.className = GPBStringifySymbol(EncryptedEphemeralMessage),
+        .number = EphemeralMetadata_FieldNumber_EncryptedEphemeralMessageListArray,
+        .hasIndex = GPBNoHasBit,
+        .offset = (uint32_t)offsetof(EphemeralMetadata__storage_, encryptedEphemeralMessageListArray),
+        .flags = GPBFieldRepeated,
+        .dataType = GPBDataTypeMessage,
+      },
+    };
+    GPBDescriptor *localDescriptor =
+        [GPBDescriptor allocDescriptorForClass:[EphemeralMetadata class]
+                                     rootClass:[QrlRoot class]
+                                          file:QrlRoot_FileDescriptor()
+                                        fields:fields
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
+                                   storageSize:sizeof(EphemeralMetadata__storage_)
+                                         flags:GPBDescriptorInitializationFlag_None];
+    NSAssert(descriptor == nil, @"Startup recursed!");
+    descriptor = localDescriptor;
+  }
+  return descriptor;
+}
+
+@end
+
 #pragma mark - AddressList
 
 @implementation AddressList
@@ -3974,6 +4395,7 @@ typedef struct BlockHeightData__storage_ {
 
 @implementation BlockMetaData
 
+@dynamic isOrphan;
 @dynamic blockDifficulty;
 @dynamic cumulativeDifficulty;
 @dynamic childHeaderhashesArray, childHeaderhashesArray_Count;
@@ -3994,10 +4416,19 @@ typedef struct BlockMetaData__storage_ {
   if (!descriptor) {
     static GPBMessageFieldDescription fields[] = {
       {
+        .name = "isOrphan",
+        .dataTypeSpecific.className = NULL,
+        .number = BlockMetaData_FieldNumber_IsOrphan,
+        .hasIndex = 0,
+        .offset = 1,  // Stored in _has_storage_ to save space.
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeBool,
+      },
+      {
         .name = "blockDifficulty",
         .dataTypeSpecific.className = NULL,
         .number = BlockMetaData_FieldNumber_BlockDifficulty,
-        .hasIndex = 0,
+        .hasIndex = 2,
         .offset = (uint32_t)offsetof(BlockMetaData__storage_, blockDifficulty),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeBytes,
@@ -4006,7 +4437,7 @@ typedef struct BlockMetaData__storage_ {
         .name = "cumulativeDifficulty",
         .dataTypeSpecific.className = NULL,
         .number = BlockMetaData_FieldNumber_CumulativeDifficulty,
-        .hasIndex = 1,
+        .hasIndex = 3,
         .offset = (uint32_t)offsetof(BlockMetaData__storage_, cumulativeDifficulty),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeBytes,
@@ -4040,7 +4471,7 @@ typedef struct BlockMetaData__storage_ {
                                          flags:GPBDescriptorInitializationFlag_None];
 #if !GPBOBJC_SKIP_MESSAGE_TEXTFORMAT_EXTRAS
     static const char *extraTextFormatInfo =
-        "\001\004\000last_N_headerhashes\000";
+        "\001\005\000last_N_headerhashes\000";
     [localDescriptor setupExtraTextInfo:extraTextFormatInfo];
 #endif  // !GPBOBJC_SKIP_MESSAGE_TEXTFORMAT_EXTRAS
     NSAssert(descriptor == nil, @"Startup recursed!");
@@ -4326,14 +4757,12 @@ typedef struct PeerStat__storage_ {
 @dynamic blockNumber;
 @dynamic headerHash;
 @dynamic cumulativeDifficulty;
-@dynamic version;
 @dynamic timestamp;
 
 typedef struct NodeChainState__storage_ {
   uint32_t _has_storage_[1];
   NSData *headerHash;
   NSData *cumulativeDifficulty;
-  NSString *version;
   uint64_t blockNumber;
   uint64_t timestamp;
 } NodeChainState__storage_;
@@ -4372,19 +4801,10 @@ typedef struct NodeChainState__storage_ {
         .dataType = GPBDataTypeBytes,
       },
       {
-        .name = "version",
-        .dataTypeSpecific.className = NULL,
-        .number = NodeChainState_FieldNumber_Version,
-        .hasIndex = 3,
-        .offset = (uint32_t)offsetof(NodeChainState__storage_, version),
-        .flags = GPBFieldOptional,
-        .dataType = GPBDataTypeString,
-      },
-      {
         .name = "timestamp",
         .dataTypeSpecific.className = NULL,
         .number = NodeChainState_FieldNumber_Timestamp,
-        .hasIndex = 4,
+        .hasIndex = 3,
         .offset = (uint32_t)offsetof(NodeChainState__storage_, timestamp),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeUInt64,

@@ -1,8 +1,10 @@
 import React from 'react';
-import {Platform, Text, View, Alert, Button, Image, StyleSheet, Modal, ImageBackground, TouchableOpacity, TouchableHighlight, AsyncStorage, ListView, ScrollView} from 'react-native';
+import {Platform, Text, View, Alert, Button, Image, StyleSheet, Modal, ImageBackground, TouchableOpacity, TouchableHighlight, AsyncStorage, ListView, ScrollView, AppState} from 'react-native';
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.CreateWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
+import PINCode from '@haskkor/react-native-pincode'
+import BackgroundTimer from 'react-native-background-timer';
 
 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 export default class CreateNewWallet extends React.Component {
@@ -19,6 +21,7 @@ export default class CreateNewWallet extends React.Component {
 
     // get the required information from asyncStorage
     componentWillMount(){
+        AppState.addEventListener('change', this._handleAppStateChange);
         // get walletlist JSON
         console.log("MOUNTING WALLETS")
         AsyncStorage.getItem("walletlist").then((walletlist) => {
@@ -29,12 +32,62 @@ export default class CreateNewWallet extends React.Component {
         }).catch((error) => {console.log(error)});
     }
 
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this._handleAppStateChange);
+    }
+
+    _handleAppStateChange = (nextAppState) => {
+
+        if ( this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+            // stop the timeout
+            const timeoutId = this.state.backgroundTimer;
+            BackgroundTimer.clearTimeout(timeoutId);
+            // if unlockWithPin OR needPinTimeout is true, then show PIN view
+            AsyncStorage.multiGet(["unlockWithPin", "needPinTimeout"]).then(storageResponse => {
+                unlockWithPin = storageResponse[0][1];
+                needPinTimeout = storageResponse[1][1];
+                if (unlockWithPin === 'true' || needPinTimeout === 'true'){
+                    // reset needPinTimeout to false
+                    AsyncStorage.setItem('needPinTimeout', 'false');
+                    // show PIN view
+                    this.props.navigation.navigate('UnlockAppModal');
+                }
+            }).catch((error) => {console.log(error)});
+        }
+        // if ( nextAppState.match(/inactive|background/) ){
+        if ( nextAppState === 'background' ){
+            // start timer to check if user left the app for more than 15 seconds
+            const timeoutId = BackgroundTimer.setTimeout(() => {
+                AsyncStorage.setItem('needPinTimeout', 'true')
+            }, 10000);
+            // save the timeoutID to the state to check/stop it when app is back to active state
+            this.setState({ backgroundTimer: timeoutId });
+        }
+        this.setState({appState: nextAppState});
+    };
+
     state={
         mnemonic: '',
         hexseed: '',
         isLoading: true,
         modalVisible: false,
-        walletIndexToOpen: null
+        walletIndexToOpen: null,
+        deleteModalVisible: false,
+        appState: AppState.currentState,
+    }
+
+    // popup to confirm wallet removal
+    removeWalletPopup = (walletid) => {
+        Alert.alert( "REMOVE WALLET"  , "Do you really want to remove this wallet from the app?" , [
+            {
+                text: "Cancel", 
+                onPress: () => {console.log("Canceled")}
+            }, 
+            {
+                text: "Remove",
+                onPress: () => this.openDeleteModal(walletid)
+            }
+        ])
     }
 
     // remove wallet from the app
@@ -77,14 +130,15 @@ export default class CreateNewWallet extends React.Component {
         }
     }
 
-    // popup to confirm wallet removal
-    removeWalletPopup = (walletid) => {
-        Alert.alert( "REMOVE WALLET"  , "Do you really want to remove this wallet from the app?" , [{text: "Cancel", onPress: () => {console.log("Canceled")}}, {text: "Remove", onPress: () => this.removeWallet(walletid, this.state.walletlist) } ] )
-    }
-
     openHexseedModal = (walletindexToOpen) => {
         // this.setState({modalVisible: true, walletIndexToOpen: walletindexToOpen })
         this.props.navigation.navigate('OpenExistingWalletModal',{onGoBack: () => this.refreshWalletIndex(), walletIndexToOpen: walletindexToOpen})
+    }
+
+
+    openDeleteModal = (walletindexToDelete) => {
+        // this.setState({modalVisible: true, walletIndexToOpen: walletindexToOpen })
+        this.props.navigation.navigate('DeleteWalletModal',{onGoBack: () => this.removeWallet(walletindexToDelete, this.state.walletlist), walletIndexToDelete: walletindexToDelete })
     }
 
     // Launch wallet creation process
@@ -186,6 +240,7 @@ export default class CreateNewWallet extends React.Component {
       else {
           return (
               <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
+
                 <View style={{flex:1}}>
                     <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
                         <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>

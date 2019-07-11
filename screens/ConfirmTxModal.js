@@ -59,10 +59,11 @@ export default class ConfirmTxModal extends React.Component {
             // Ios
             if (Platform.OS === 'ios'){
                 // recheck the otsIndex in case
-                IosWallet.refreshWallet(walletindex, (error, walletAddress, otsIndex, balance, keys)=> {
+                IosWallet.refreshWallet(walletindex, (error, walletAddress, otsIndexFromNode, balance, keys)=> {
                     amountShor = this.props.navigation.state.params.amount * 1000000000
                     feeShor = this.props.navigation.state.params.fee * 1000000000
-                    IosTransferCoins.sendCoins(this.props.navigation.state.params.recipient, amountShor, otsIndex, feeShor, walletindex, (error, status)=> {
+                    otsIndex = this.props.navigation.state.params.otsIndex * 1
+                    IosTransferCoins.sendCoins(this.props.navigation.state.params.recipient, amountShor, otsIndex , feeShor, walletindex, (error, status)=> {
                         // if tx is successfull, back to main
                         if (status == "success"){
                             setTimeout( () => {this.props.navigation.navigate("TransactionsHistory") } , 10000)
@@ -75,9 +76,10 @@ export default class ConfirmTxModal extends React.Component {
             }
             // Android
             else {
-                AndroidWallet.refreshWallet(walletindex,  (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
+                AndroidWallet.refreshWallet(walletindex,  (err) => {console.log(err);}, (walletAddress, otsIndexFromNode, balance, keys)=> {
                     amountShor = this.props.navigation.state.params.amount 
                     feeShor = this.props.navigation.state.params.fee * 1000000000
+                    otsIndex = this.props.navigation.state.params.otsIndex * 1
                     AndroidWallet.transferCoins(walletindex, this.props.navigation.state.params.recipient, amountShor.toString(), otsIndex, feeShor,  
                     (err) => {
                         // Show the error message from the node, the split function removes the "INVALID_ARGUMENT:"" string from the error message

@@ -267,18 +267,22 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
         int port = PreferenceHelper.getInt("port");
         // get the list of the latest 10 tx
         int completed = 0;
-        try {
-            ManagedChannel channel = OkHttpChannelBuilder.forAddress(server , port).usePlaintext(true).build();
-            PublicAPIGrpc.PublicAPIBlockingStub blockingStub = PublicAPIGrpc.newBlockingStub(channel);
 
-            int len = walletAddress.length();
-            byte[] data = new byte[len / 2];
-            for (int i = 0; i < len; i += 2) {
-                data[i / 2] = (byte) ((Character.digit(walletAddress.charAt(i), 16) << 4)
-                        + Character.digit(walletAddress.charAt(i+1), 16));
-            }
+
+
+        ManagedChannel channel = OkHttpChannelBuilder.forAddress(server , port).usePlaintext(true).build();
+        PublicAPIGrpc.PublicAPIBlockingStub blockingStub = PublicAPIGrpc.newBlockingStub(channel);
+
+        int len = walletAddress.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(walletAddress.charAt(i), 16) << 4)
+                    + Character.digit(walletAddress.charAt(i+1), 16));
+        }
+        try {
             Qrl.GetAddressStateReq getAddressStateReq = Qrl.GetAddressStateReq.newBuilder().setAddress(ByteString.copyFrom(data)).build();
             Qrl.GetAddressStateResp getAddressStateResp = blockingStub.getAddressState(getAddressStateReq);
+
 
             // number of tx of the wallet
             int tx_count = getAddressStateResp.getState().getTransactionHashesCount();
@@ -457,7 +461,11 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
                 }
             }
         } catch (IllegalViewOperationException e) {
+            System.out.println("NODE CONNECTION ERROR.........");
             errorCallback.invoke(e.getMessage());
+        } catch (RuntimeException err){
+            System.out.println("RUNTIME ERROR.........");
+            errorCallback.invoke(err.getMessage());
         }
     }
 

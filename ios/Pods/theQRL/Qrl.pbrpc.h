@@ -9,6 +9,8 @@
 #import <RxLibrary/GRXWriter.h>
 #endif
 
+@class CollectEphemeralMessageReq;
+@class CollectEphemeralMessageResp;
 @class GetAddressFromPKReq;
 @class GetAddressFromPKResp;
 @class GetAddressStateReq;
@@ -25,7 +27,9 @@
 @class GetPeersStatResp;
 @class GetStatsReq;
 @class GetStatsResp;
+@class LatticePublicKeyTxnReq;
 @class MessageTxnReq;
+@class PushEphemeralMessageReq;
 @class PushTransactionReq;
 @class PushTransactionResp;
 @class SlaveTxnReq;
@@ -93,13 +97,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (GRPCProtoCall *)RPCToGetLatestDataWithRequest:(GetLatestDataReq *)request handler:(void(^)(GetLatestDataResp *_Nullable response, NSError *_Nullable error))handler;
 
 
-#pragma mark PushTransaction(PushTransactionReq) returns (PushTransactionResp)
-
-- (void)pushTransactionWithRequest:(PushTransactionReq *)request handler:(void(^)(PushTransactionResp *_Nullable response, NSError *_Nullable error))handler;
-
-- (GRPCProtoCall *)RPCToPushTransactionWithRequest:(PushTransactionReq *)request handler:(void(^)(PushTransactionResp *_Nullable response, NSError *_Nullable error))handler;
-
-
 #pragma mark TransferCoins(TransferCoinsReq) returns (TransferCoinsResp)
 
 - (void)transferCoinsWithRequest:(TransferCoinsReq *)request handler:(void(^)(TransferCoinsResp *_Nullable response, NSError *_Nullable error))handler;
@@ -107,11 +104,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (GRPCProtoCall *)RPCToTransferCoinsWithRequest:(TransferCoinsReq *)request handler:(void(^)(TransferCoinsResp *_Nullable response, NSError *_Nullable error))handler;
 
 
-#pragma mark GetAddressFromPK(GetAddressFromPKReq) returns (GetAddressFromPKResp)
+#pragma mark PushTransaction(PushTransactionReq) returns (PushTransactionResp)
 
-- (void)getAddressFromPKWithRequest:(GetAddressFromPKReq *)request handler:(void(^)(GetAddressFromPKResp *_Nullable response, NSError *_Nullable error))handler;
+- (void)pushTransactionWithRequest:(PushTransactionReq *)request handler:(void(^)(PushTransactionResp *_Nullable response, NSError *_Nullable error))handler;
 
-- (GRPCProtoCall *)RPCToGetAddressFromPKWithRequest:(GetAddressFromPKReq *)request handler:(void(^)(GetAddressFromPKResp *_Nullable response, NSError *_Nullable error))handler;
+- (GRPCProtoCall *)RPCToPushTransactionWithRequest:(PushTransactionReq *)request handler:(void(^)(PushTransactionResp *_Nullable response, NSError *_Nullable error))handler;
 
 
 #pragma mark GetMessageTxn(MessageTxnReq) returns (TransferCoinsResp)
@@ -140,6 +137,46 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)getSlaveTxnWithRequest:(SlaveTxnReq *)request handler:(void(^)(TransferCoinsResp *_Nullable response, NSError *_Nullable error))handler;
 
 - (GRPCProtoCall *)RPCToGetSlaveTxnWithRequest:(SlaveTxnReq *)request handler:(void(^)(TransferCoinsResp *_Nullable response, NSError *_Nullable error))handler;
+
+
+#pragma mark GetLatticePublicKeyTxn(LatticePublicKeyTxnReq) returns (TransferCoinsResp)
+
+- (void)getLatticePublicKeyTxnWithRequest:(LatticePublicKeyTxnReq *)request handler:(void(^)(TransferCoinsResp *_Nullable response, NSError *_Nullable error))handler;
+
+- (GRPCProtoCall *)RPCToGetLatticePublicKeyTxnWithRequest:(LatticePublicKeyTxnReq *)request handler:(void(^)(TransferCoinsResp *_Nullable response, NSError *_Nullable error))handler;
+
+
+#pragma mark GetAddressFromPK(GetAddressFromPKReq) returns (GetAddressFromPKResp)
+
+- (void)getAddressFromPKWithRequest:(GetAddressFromPKReq *)request handler:(void(^)(GetAddressFromPKResp *_Nullable response, NSError *_Nullable error))handler;
+
+- (GRPCProtoCall *)RPCToGetAddressFromPKWithRequest:(GetAddressFromPKReq *)request handler:(void(^)(GetAddressFromPKResp *_Nullable response, NSError *_Nullable error))handler;
+
+
+#pragma mark PushEphemeralMessage(PushEphemeralMessageReq) returns (PushTransactionResp)
+
+/**
+ * ------- Ephemeral API -------
+ */
+- (void)pushEphemeralMessageWithRequest:(PushEphemeralMessageReq *)request handler:(void(^)(PushTransactionResp *_Nullable response, NSError *_Nullable error))handler;
+
+/**
+ * ------- Ephemeral API -------
+ */
+- (GRPCProtoCall *)RPCToPushEphemeralMessageWithRequest:(PushEphemeralMessageReq *)request handler:(void(^)(PushTransactionResp *_Nullable response, NSError *_Nullable error))handler;
+
+
+#pragma mark CollectEphemeralMessage(CollectEphemeralMessageReq) returns (CollectEphemeralMessageResp)
+
+/**
+ * ------------------------------
+ */
+- (void)collectEphemeralMessageWithRequest:(CollectEphemeralMessageReq *)request handler:(void(^)(CollectEphemeralMessageResp *_Nullable response, NSError *_Nullable error))handler;
+
+/**
+ * ------------------------------
+ */
+- (GRPCProtoCall *)RPCToCollectEphemeralMessageWithRequest:(CollectEphemeralMessageReq *)request handler:(void(^)(CollectEphemeralMessageResp *_Nullable response, NSError *_Nullable error))handler;
 
 
 @end

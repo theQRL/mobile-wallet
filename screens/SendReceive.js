@@ -1,10 +1,11 @@
 import React from 'react';
-import {Picker, Text, View, Button, Image, ScrollView, ImageBackground, AsyncStorage, Clipboard, StyleSheet, TouchableHighlight, Modal, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Alert} from 'react-native';
+import {Picker, Text, View, Button, Image, ScrollView, ImageBackground, AsyncStorage, Clipboard, StyleSheet, TouchableHighlight, Modal, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Alert, AppState} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import { Header } from 'react-navigation';
 import FlashMessage from "react-native-flash-message";
 import { showMessage, hideMessage } from "react-native-flash-message";
 var validate = require('@theqrl/validate-qrl-address');
+import BackgroundTimer from 'react-native-background-timer';
 
 // Android and Ios native modules
 import {NativeModules} from 'react-native';
@@ -25,8 +26,42 @@ export default class SendReceive extends React.Component {
         ),
     };
 
-    componentDidMount() {
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this._handleAppStateChange);
+    }
 
+    _handleAppStateChange = (nextAppState) => {
+
+        if ( this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+            // stop the timeout
+            const timeoutId = this.state.backgroundTimer;
+            BackgroundTimer.clearTimeout(timeoutId);
+            // if unlockWithPin OR needPinTimeout is true, then show PIN view
+            AsyncStorage.multiGet(["unlockWithPin", "needPinTimeout"]).then(storageResponse => {
+                unlockWithPin = storageResponse[0][1];
+                needPinTimeout = storageResponse[1][1];
+                if (unlockWithPin === 'true' || needPinTimeout === 'true'){
+                    // reset needPinTimeout to false
+                    AsyncStorage.setItem('needPinTimeout', 'false');
+                    // show PIN view
+                    this.props.navigation.navigate('UnlockAppModal');
+                }
+            }).catch((error) => {console.log(error)});
+        }
+        // if ( nextAppState.match(/inactive|background/) ){
+        if ( nextAppState === 'background' ){
+            // start timer to check if user left the app for more than 15 seconds
+            const timeoutId = BackgroundTimer.setTimeout(() => {
+                AsyncStorage.setItem('needPinTimeout', 'true')
+            }, 10000);
+            // save the timeoutID to the state to check/stop it when app is back to active state
+            this.setState({ backgroundTimer: timeoutId });
+        }
+        this.setState({appState: nextAppState});
+    };
+
+    componentDidMount() {
+        AppState.addEventListener('change', this._handleAppStateChange);
         // Update the wallet each time the user switch to this view
         this.setState({isLoading:true})
 
@@ -71,6 +106,7 @@ export default class SendReceive extends React.Component {
         showModal: false,
         showOtsModal: false,
         recipient: "",
+        appState: AppState.currentState,
     }
 
     // update recipient
@@ -344,6 +380,19 @@ export default class SendReceive extends React.Component {
             else {
                 return (
                     <KeyboardAvoidingView style={{flex:1}} keyboardVerticalOffset={-200} behavior="padding">
+
+
+                        <Modal onRequestClose={ console.log("") } animationType="fade" visible={this.state.showOtsModal} transparent={true}>
+                            <View style={{flex:1, backgroundColor:'rgba(0, 0, 0, 0.5)', width:'100%', height:'100%'}}>
+                                <View style={{width:300, height:300, backgroundColor:'white',alignItems:'center', alignSelf:'center', justifyContent:'center', marginTop:200}}>
+                                    <Text>Change OTS key index</Text>
+                                    <TextInput keyboardType={'numeric'} onChangeText={ (text) => this._onOtsChange(text) } style={{backgroundColor:'#ebe8e8', height:50, width:200}} />
+                                    <Button title='Cancel' onPress={() => {this.setState({showOtsModal:false})}}/>
+                                    <Button title='Ok' onPress={() => {this.setState({otsIndex: this.state.newOtsIndex, showOtsModal:false})}}/>
+                                </View>
+                            </View>
+                        </Modal>
+
 
                         <Modal onRequestClose={ console.log("") } animationType="slide" visible={this.state.showModal}>
                             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
