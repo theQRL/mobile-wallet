@@ -5,6 +5,8 @@ import Reactotron from 'reactotron-react-native'
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.refreshWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
+import BackgroundTimer from 'react-native-background-timer';
+import BackgroundTask from 'react-native-background-task'
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
@@ -24,21 +26,36 @@ export default class Wallet extends React.Component{
         AppState.removeEventListener('change', this._handleAppStateChange);
     }
 
-
     _handleAppStateChange = (nextAppState) => {
+
         if ( this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-            // console.log(this.props.navigation);
-            // if (global.quitApp){
-            this.props.navigation.navigate('UnlockAppModal');
-            // }
+            // stop the timeout
+            const timeoutId = this.state.backgroundTimer;
+            BackgroundTimer.clearTimeout(timeoutId);
+            // if unlockWithPin OR needPinTimeout is true, then show PIN view
+            AsyncStorage.multiGet(["unlockWithPin", "needPinTimeout"]).then(storageResponse => {
+                unlockWithPin = storageResponse[0][1];
+                needPinTimeout = storageResponse[1][1];
+                if (unlockWithPin === 'true' || needPinTimeout === 'true'){
+                    // reset needPinTimeout to false
+                    AsyncStorage.setItem('needPinTimeout', 'false');
+                    // show PIN view
+                    this.props.navigation.navigate('UnlockAppModal');
+                }
+            }).catch((error) => {console.log(error)});
         }
-        if ( nextAppState.match(/inactive|background/) ){
-            // global.quitApp = true;
-            console.log("QUIT")
-            // this.props.navigation.navigate('TransactionsHistory')
+        // if ( nextAppState.match(/inactive|background/) ){
+        if ( nextAppState === 'background' ){
+            // start timer to check if user left the app for more than 15 seconds
+            const timeoutId = BackgroundTimer.setTimeout(() => {
+                AsyncStorage.setItem('needPinTimeout', 'true')
+            }, 10000);
+            // save the timeoutID to the state to check/stop it when app is back to active state
+            this.setState({ backgroundTimer: timeoutId });
         }
         this.setState({appState: nextAppState});
     };
+
 
     // every time we open the main page fo the following
     // 1. update cmc related info

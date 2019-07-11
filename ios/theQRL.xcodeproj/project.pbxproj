@@ -44,6 +44,7 @@
 		4DB46B66E94145B28EE8E8E5 /* libRNRandomBytes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F90CC962F89479998AF0188 /* libRNRandomBytes.a */; };
 		4DF4F5A870EE406FA4D5F9E2 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A0512F140D7405794870336 /* SimpleLineIcons.ttf */; };
 		5104C23380AF41AD924CCA91 /* libTcpSockets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77C48A5C47B546A1A0345CE1 /* libTcpSockets.a */; };
+		512D072A5301430ABE3E7E62 /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9EE5DB0A494259BADEA346 /* RNBackgroundFetch+AppDelegate.m */; };
 		5B43FFB002AC499A98ED2756 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6649BA2E68BA45F393E33061 /* AntDesign.ttf */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		69090ABD20EE481000DF14FA /* refreshWallet.mm in Sources */ = {isa = PBXBuildFile; fileRef = 69090ABC20EE481000DF14FA /* refreshWallet.mm */; };
@@ -60,6 +61,10 @@
 		694FC019211D995E005CE984 /* transferCoins.mm in Sources */ = {isa = PBXBuildFile; fileRef = 694FC018211D995E005CE984 /* transferCoins.mm */; };
 		695ACC5022CCD86500325F33 /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 695ACC4E22CCD84100325F33 /* libRNCamera.a */; };
 		69871E27202C7E170097260E /* DilithiumIos.mm in Sources */ = {isa = PBXBuildFile; fileRef = 69871E26202C7E170097260E /* DilithiumIos.mm */; };
+		69B8522022D766CC0006BC64 /* libRNBackgroundFetch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69B8521F22D766BC0006BC64 /* libRNBackgroundFetch.a */; };
+		69B8522222D766EF0006BC64 /* TSBackgroundFetch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69B8522122D766EE0006BC64 /* TSBackgroundFetch.framework */; };
+		69B8522422D7673A0006BC64 /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 69B8522322D7673A0006BC64 /* RNBackgroundFetch+AppDelegate.m */; };
+		69B8522E22D768B60006BC64 /* libRNBackgroundTimer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69B8522B22D768AA0006BC64 /* libRNBackgroundTimer.a */; };
 		69BF73862028F41200EBD441 /* libgRPC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69BF73852028F41200EBD441 /* libgRPC.a */; };
 		69E3BCCA214B89F40056F1D5 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69E3BCC2214B89D80056F1D5 /* libRNDeviceInfo.a */; };
 		69E3BCCC2153A03C0056F1D5 /* WalletHelperFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 69E3BCCB2153A03C0056F1D5 /* WalletHelperFunctions.mm */; };
@@ -307,6 +312,27 @@
 			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
 			remoteInfo = RNCamera;
 		};
+		69B8521E22D766BC0006BC64 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69B8521922D766BC0006BC64 /* RNBackgroundFetch.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 835318541D52293F005738CD;
+			remoteInfo = RNBackgroundFetch;
+		};
+		69B8522A22D768AA0006BC64 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69B8522522D768AA0006BC64 /* RNBackgroundTimer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNBackgroundTimer;
+		};
+		69B8522C22D768AA0006BC64 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69B8522522D768AA0006BC64 /* RNBackgroundTimer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 641926921ECB4257009CF731;
+			remoteInfo = "RNBackgroundTimer-tvOS";
+		};
 		69E3BCC1214B89D80056F1D5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 69E3BC97214B89D70056F1D5 /* RNDeviceInfo.xcodeproj */;
@@ -510,6 +536,10 @@
 		69871E28202C7E4D0097260E /* DilithiumIos.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DilithiumIos.h; sourceTree = "<group>"; };
 		69AE7629204745FA003EF6FF /* libqrllib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libqrllib.a; path = "../../../qrllib/build/Debug-iphonesimulator/libqrllib.a"; sourceTree = "<group>"; };
 		69AE762B20474886003EF6FF /* libshasha.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libshasha.a; path = "../../../qrllib/build/Debug-iphonesimulator/libshasha.a"; sourceTree = "<group>"; };
+		69B8521922D766BC0006BC64 /* RNBackgroundFetch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNBackgroundFetch.xcodeproj; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch.xcodeproj"; sourceTree = "<group>"; };
+		69B8522122D766EE0006BC64 /* TSBackgroundFetch.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TSBackgroundFetch.framework; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/TSBackgroundFetch.framework"; sourceTree = "<group>"; };
+		69B8522322D7673A0006BC64 /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RNBackgroundFetch+AppDelegate.m"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; };
+		69B8522522D768AA0006BC64 /* RNBackgroundTimer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNBackgroundTimer.xcodeproj; path = "../node_modules/react-native-background-timer/ios/RNBackgroundTimer.xcodeproj"; sourceTree = "<group>"; };
 		69BF73842028F1E800EBD441 /* libgRPC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libgRPC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		69BF73852028F41200EBD441 /* libgRPC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgRPC.a; path = "../../../../../../../Library/Developer/Xcode/DerivedData/theQRL-hfkrbuurrphymlgztgnrhxspyxcl/Build/Products/Debug-iphonesimulator/gRPC/libgRPC.a"; sourceTree = "<group>"; };
 		69E3BC97214B89D70056F1D5 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
@@ -528,6 +558,7 @@
 		77C48A5C47B546A1A0345CE1 /* libTcpSockets.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libTcpSockets.a; sourceTree = "<group>"; };
 		783B4CCE114D184EC6AED597 /* Pods-theQRL.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-theQRL.debug.xcconfig"; path = "Pods/Target Support Files/Pods-theQRL/Pods-theQRL.debug.xcconfig"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
+		7A9EE5DB0A494259BADEA346 /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.objc; name = "RNBackgroundFetch+AppDelegate.m"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; };
 		7C7FF3A3CEB3425CA0DFAFE7 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		84D8C976817A406F9B179849 /* libUdpSockets.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libUdpSockets.a; sourceTree = "<group>"; };
@@ -540,6 +571,7 @@
 		D246F9BA27C64840BF4CE3E7 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		D821910C57ED49C18AFA6FF2 /* TcpSockets.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = TcpSockets.xcodeproj; path = "../node_modules/react-native-tcp/ios/TcpSockets.xcodeproj"; sourceTree = "<group>"; };
 		DC2DD099F5D8465E9E415292 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
+		EDD4C183B88C426F93BC9753 /* TSBackgroundFetch.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = TSBackgroundFetch.framework; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/TSBackgroundFetch.framework"; sourceTree = SDKROOT; };
 		FE79D3DAC7BA4B57B300ED04 /* libRNRandomBytes-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNRandomBytes-tvOS.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -586,6 +618,9 @@
 				691A4E6A21397E7F0089FB95 /* libkyber.a in Frameworks */,
 				691A4E6721397E7B0089FB95 /* libqrllib.a in Frameworks */,
 				691A4E6B21397E7F0089FB95 /* libqrllib.a in Frameworks */,
+				69B8522222D766EF0006BC64 /* TSBackgroundFetch.framework in Frameworks */,
+				69B8522022D766CC0006BC64 /* libRNBackgroundFetch.a in Frameworks */,
+				69B8522E22D768B60006BC64 /* libRNBackgroundTimer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -712,6 +747,7 @@
 				69FA3DC22023265300348496 /* KyberIos.mm */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+				69B8522322D7673A0006BC64 /* RNBackgroundFetch+AppDelegate.m */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				69E76B7E20C13385000153D3 /* qrl_wallet_logo_splashscreen.png */,
@@ -719,6 +755,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				7A9EE5DB0A494259BADEA346 /* RNBackgroundFetch+AppDelegate.m */,
 			);
 			name = theQRL;
 			sourceTree = "<group>";
@@ -749,6 +786,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				69B8522122D766EE0006BC64 /* TSBackgroundFetch.framework */,
 				6964026820ADAF1F0020E054 /* libdilithium.a */,
 				6950013F2139638A00EB3513 /* libdilithium.a */,
 				691A4E5721397D5C0089FB95 /* libdilithium.a */,
@@ -796,6 +834,7 @@
 				48A70C585515DDA1AA9583E8 /* libPods-theQRL.a */,
 				AE1F12E445716F723A62063C /* libPods-theQRL-tvOSTests.a */,
 				9FC5B17081FC41EC1E666112 /* libPods-theQRLTests.a */,
+				EDD4C183B88C426F93BC9753 /* TSBackgroundFetch.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -837,6 +876,23 @@
 			isa = PBXGroup;
 			children = (
 				695ACC4E22CCD84100325F33 /* libRNCamera.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		69B8521A22D766BC0006BC64 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				69B8521F22D766BC0006BC64 /* libRNBackgroundFetch.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		69B8522622D768AA0006BC64 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				69B8522B22D768AA0006BC64 /* libRNBackgroundTimer.a */,
+				69B8522D22D768AA0006BC64 /* libRNBackgroundTimer.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -900,6 +956,8 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				69B8522522D768AA0006BC64 /* RNBackgroundTimer.xcodeproj */,
+				69B8521922D766BC0006BC64 /* RNBackgroundFetch.xcodeproj */,
 				695ACC4922CCD84100325F33 /* RNCamera.xcodeproj */,
 				69E3BCEC2154D7400056F1D5 /* ReactNativePermissions.xcodeproj */,
 				69E3BC97214B89D70056F1D5 /* RNDeviceInfo.xcodeproj */,
@@ -1087,6 +1145,11 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = YW659Z368Y;
 						ProvisioningStyle = Manual;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = true;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1162,6 +1225,14 @@
 				{
 					ProductGroup = 69E3BCED2154D7400056F1D5 /* Products */;
 					ProjectRef = 69E3BCEC2154D7400056F1D5 /* ReactNativePermissions.xcodeproj */;
+				},
+				{
+					ProductGroup = 69B8521A22D766BC0006BC64 /* Products */;
+					ProjectRef = 69B8521922D766BC0006BC64 /* RNBackgroundFetch.xcodeproj */;
+				},
+				{
+					ProductGroup = 69B8522622D768AA0006BC64 /* Products */;
+					ProjectRef = 69B8522522D768AA0006BC64 /* RNBackgroundTimer.xcodeproj */;
 				},
 				{
 					ProductGroup = 695ACC4A22CCD84100325F33 /* Products */;
@@ -1409,6 +1480,27 @@
 			remoteRef = 695ACC4D22CCD84100325F33 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		69B8521F22D766BC0006BC64 /* libRNBackgroundFetch.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNBackgroundFetch.a;
+			remoteRef = 69B8521E22D766BC0006BC64 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		69B8522B22D768AA0006BC64 /* libRNBackgroundTimer.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNBackgroundTimer.a;
+			remoteRef = 69B8522A22D768AA0006BC64 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		69B8522D22D768AA0006BC64 /* libRNBackgroundTimer.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNBackgroundTimer.a;
+			remoteRef = 69B8522C22D768AA0006BC64 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		69E3BCC2214B89D80056F1D5 /* libRNDeviceInfo.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1611,7 +1703,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-theQRL/Pods-theQRL-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-theQRL/Pods-theQRL-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/gRPC/gRPCCertificates.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -1620,7 +1712,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-theQRL/Pods-theQRL-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-theQRL/Pods-theQRL-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		81E7B9D4ECEA2DB7865018C5 /* [CP] Check Pods Manifest.lock */ = {
@@ -1659,11 +1751,13 @@
 				694C54B320ADB6F300AC2B3F /* CreateWallet.mm in Sources */,
 				69FA3DC32023265300348496 /* KyberIos.mm in Sources */,
 				69871E27202C7E170097260E /* DilithiumIos.mm in Sources */,
+				69B8522422D7673A0006BC64 /* RNBackgroundFetch+AppDelegate.m in Sources */,
 				694FC019211D995E005CE984 /* transferCoins.mm in Sources */,
 				69E3BCCC2153A03C0056F1D5 /* WalletHelperFunctions.mm in Sources */,
 				69090ABD20EE481000DF14FA /* refreshWallet.mm in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				512D072A5301430ABE3E7E62 /* RNBackgroundFetch+AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1719,6 +1813,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = YU3GP553RA;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../node_modules/react-native-background-fetch/ios/**";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1751,6 +1846,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = YU3GP553RA;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../node_modules/react-native-background-fetch/ios/**";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-randombytes",
@@ -1783,6 +1879,7 @@
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = YW659Z368Y;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../node_modules/react-native-background-fetch/ios/**";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/abilican/Documents/projects/perso/theqrl,
@@ -1859,6 +1956,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YW659Z368Y;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../node_modules/react-native-background-fetch/ios/**";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/abilican/Documents/projects/perso/theqrl,
@@ -1936,6 +2034,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../node_modules/react-native-background-fetch/ios/**";
 				GCC_NO_COMMON_BLOCKS = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1970,6 +2069,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../node_modules/react-native-background-fetch/ios/**";
 				GCC_NO_COMMON_BLOCKS = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",

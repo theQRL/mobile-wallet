@@ -1,9 +1,10 @@
 import React from 'react';
-import {Text, View, Image, ImageBackground, AsyncStorage, StyleSheet, TouchableHighlight, TouchableOpacity, Platform, ActivityIndicator, Modal} from 'react-native';
+import {Text, View, Image, ImageBackground, AsyncStorage, StyleSheet, TouchableHighlight, TouchableOpacity, Platform, ActivityIndicator, Modal, AppState} from 'react-native';
 
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.refreshWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
+import BackgroundTimer from 'react-native-background-timer';
 
 export default class BackupWallet extends React.Component {
 
@@ -14,11 +15,51 @@ export default class BackupWallet extends React.Component {
         ),
     };
 
+
+    componentDidMount() {
+        AppState.addEventListener('change', this._handleAppStateChange);
+    }
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this._handleAppStateChange);
+    }
+
+
+    _handleAppStateChange = (nextAppState) => {
+
+        if ( this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+            // stop the timeout
+            const timeoutId = this.state.backgroundTimer;
+            BackgroundTimer.clearTimeout(timeoutId);
+            // if unlockWithPin OR needPinTimeout is true, then show PIN view
+            AsyncStorage.multiGet(["unlockWithPin", "needPinTimeout"]).then(storageResponse => {
+                unlockWithPin = storageResponse[0][1];
+                needPinTimeout = storageResponse[1][1];
+                if (unlockWithPin === 'true' || needPinTimeout === 'true'){
+                    // reset needPinTimeout to false
+                    AsyncStorage.setItem('needPinTimeout', 'false');
+                    // show PIN view
+                    this.props.navigation.navigate('UnlockAppModal');
+                }
+            }).catch((error) => {console.log(error)});
+        }
+        // if ( nextAppState.match(/inactive|background/) ){
+        if ( nextAppState === 'background' ){
+            // start timer to check if user left the app for more than 15 seconds
+            const timeoutId = BackgroundTimer.setTimeout(() => {
+                AsyncStorage.setItem('needPinTimeout', 'true')
+            }, 10000);
+            // save the timeoutID to the state to check/stop it when app is back to active state
+            this.setState({ backgroundTimer: timeoutId });
+        }
+        this.setState({appState: nextAppState});
+    };
+
     state={
         mnemonic: '',
         hexseed: '',
         loading: false,
         showModal: false,
+        appState: AppState.currentState,
     }
 
     // show modal to select tree height

@@ -3,6 +3,8 @@ package com.theqrl;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.jamesisaac.rnbackgroundtask.BackgroundTaskPackage;
+import com.ocetnik.timer.BackgroundTimerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import org.reactnative.camera.RNCameraPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -29,6 +31,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new BackgroundTaskPackage(),
+            new BackgroundTimerPackage(),
             new VectorIconsPackage(),
           new RNCameraPackage(),
           new RNDeviceInfo(),

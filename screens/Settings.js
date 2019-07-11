@@ -4,15 +4,22 @@ import {Text, View, TextInput, Image, ImageBackground, AsyncStorage, StyleSheet,
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.refreshWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
-
+import BackgroundTimer from 'react-native-background-timer';
 let isDefaultNode = 'true';
 
 export default class Settings extends React.Component {
 
     componentWillMount() {
         AppState.addEventListener('change', this._handleAppStateChange);
-        console.log("SETTINGSJS_ GLOBALS.ISDEFAULTNODE: ", global.isDefaultNode)
-
+        AsyncStorage.getItem("unlockWithPin").then((unlockWithPin) => {
+            console.log("WALLETPIN IN SETTINGS IS ", unlockWithPin)
+            if (unlockWithPin === 'false'){
+                this.setState({switchValue: false})    
+            }
+            else {
+                this.setState({switchValue: true})
+            }
+        }).catch((error) => {console.log(error)});
         // AsyncStorage.multiGet(["nodeUrl", "nodePort"]).then(storageResponse => {
         //     console.log("............................. SETTINGS *******************************")
         //     // get at each store's key/value so you can work with it
@@ -27,24 +34,38 @@ export default class Settings extends React.Component {
 
     componentWillUnmount() {
         AppState.removeEventListener('change', this._handleAppStateChange);
-        console.log("UNMOUNTING SETTINGS...")
     }
 
     _handleAppStateChange = (nextAppState) => {
+
         if ( this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-            console.log('RESTARTED');
-            // if (global.quitApp){
-            //   this.props.navigation.navigate('App')
-            // }
+            // stop the timeout
+            const timeoutId = this.state.backgroundTimer;
+            BackgroundTimer.clearTimeout(timeoutId);
+            // if unlockWithPin OR needPinTimeout is true, then show PIN view
+            AsyncStorage.multiGet(["unlockWithPin", "needPinTimeout"]).then(storageResponse => {
+                unlockWithPin = storageResponse[0][1];
+                needPinTimeout = storageResponse[1][1];
+                if (unlockWithPin === 'true' || needPinTimeout === 'true'){
+                    // reset needPinTimeout to false
+                    AsyncStorage.setItem('needPinTimeout', 'false');
+                    // show PIN view
+                    this.props.navigation.navigate('UnlockAppModal');
+                }
+            }).catch((error) => {console.log(error)});
         }
-        if ( nextAppState.match(/inactive|background/) ){
-            // global.quitApp = true;
-            console.log("QUIT")
-            // this.props.navigation.navigate('TransactionsHistory')
+        // if ( nextAppState.match(/inactive|background/) ){
+        if ( nextAppState === 'background' ){
+            // start timer to check if user left the app for more than 15 seconds
+            const timeoutId = BackgroundTimer.setTimeout(() => {
+                AsyncStorage.setItem('needPinTimeout', 'true')
+            }, 10000);
+            // save the timeoutID to the state to check/stop it when app is back to active state
+            this.setState({ backgroundTimer: timeoutId });
         }
         this.setState({appState: nextAppState});
-      };
-    
+    };
+
 
     static navigationOptions = ({navigation}) => ({
         // AsyncStorage.multiGet(["nodeUrl", "nodePort"]).then(storageResponse => {
@@ -101,7 +122,6 @@ export default class Settings extends React.Component {
     state={
         loading: true,
         appState: AppState.currentState,
-        switchValue: true,
     }
 
 
@@ -149,6 +169,13 @@ export default class Settings extends React.Component {
     // toggle PIN required on/off
     toggleSwitch = (value) => {
         this.setState({switchValue: value})
+        if (value){
+            AsyncStorage.setItem('unlockWithPin', 'true');
+        }
+        else {
+            AsyncStorage.setItem('unlockWithPin', 'false');
+        }
+        
      }
 
     // render view
