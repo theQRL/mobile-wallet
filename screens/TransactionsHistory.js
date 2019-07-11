@@ -7,6 +7,7 @@ var IosWallet = NativeModules.refreshWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
 import BackgroundTimer from 'react-native-background-timer';
 import DeviceInfo from 'react-native-device-info';
+const moment = require('moment');
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
@@ -63,8 +64,7 @@ export default class Wallet extends React.Component{
     componentDidMount() {
         AppState.addEventListener('change', this._handleAppStateChange);
 
-        this.setState({is24h: DeviceInfo.is24Hour() })
-
+        this.setState({is24h: DeviceInfo.is24Hour(), deviceLocale: DeviceInfo.getDeviceLocale() })
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
         // AsyncStorage.multiGet(["node","port"]).then((connectionDetails) => {
@@ -265,6 +265,7 @@ export default class Wallet extends React.Component{
 
         else {
             // formatting minutes and address to user interface
+            console.log(this.state.deviceLocale)
             minutes = this.state.updatedDate.getMinutes();
             if (this.state.is24h){
                 hours = this.state.updatedDate.getHours()
@@ -275,6 +276,9 @@ export default class Wallet extends React.Component{
             minutes < 10 ? minUI = "0" + minutes : minUI = minutes;
             addressBegin = this.state.walletAddress.substring(1, 10);
             addressEnd = this.state.walletAddress.substring(58, 79);
+            moment.locale(this.state.deviceLocale);
+            momentDate = moment(this.state.updatedDate);
+            formattedDate = momentDate.format('LL');
 
             return (
                 <ImageBackground source={require('../resources/images/main_bg_half.png')} style={styles.backgroundImage}>
@@ -289,7 +293,8 @@ export default class Wallet extends React.Component{
                         <ScrollView style={{flex:2}}>
                             <View style={{ alignItems:'center',paddingTop:10, flex:0.5}}>
                                 <Image source={require('../resources/images/qrl_logo_wallet.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:100}} />
-                                <Text style={{color:'white'}}>LAST UPDATE: {this.state.updatedDate.getDate()}.{this.state.updatedDate.getMonth() + 1}.{this.state.updatedDate.getFullYear()} {hours}:{minUI}</Text>
+                                {/* <Text style={{color:'white'}}>LAST UPDATE: {this.state.updatedDate.getDate()}.{this.state.updatedDate.getMonth() + 1}.{this.state.updatedDate.getFullYear()} {hours}:{minUI}</Text> */}
+                                <Text style={{color:'white'}}>LAST UPDATE: {formattedDate} {hours}:{minUI}</Text>
                             </View>
 
                             <View style={{ alignItems:'center',flex:1}}>
