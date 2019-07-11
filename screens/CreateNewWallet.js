@@ -49,7 +49,6 @@ export default class CreateNewWallet extends React.Component {
             {
                 text: "Remove",
                 onPress: () => this.openDeleteModal(walletid)
-                // onPress: () => this.removeWallet(walletid, this.state.walletlist) 
             }
         ])
     }
