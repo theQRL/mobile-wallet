@@ -132,16 +132,19 @@ RCT_EXPORT_METHOD(createWallet:(NSNumber* _Nonnull)treeHeight withIndex:(NSStrin
 
 
 
-
-// save the user's entered hexseed to keychain
-RCT_EXPORT_METHOD(openWalletWithHexseed:(NSString* )hexseed withIndex:(NSString*)walletindex withPin:(NSString*)walletpin callback:(RCTResponseSenderBlock)callback){
+RCT_EXPORT_METHOD(openWalletWithMnemonic:(NSString* )mnemonicNSString withIndex:(NSString*)walletindex withPin:(NSString*)walletpin callback:(RCTResponseSenderBlock)callback){
+  // check whether user is using hexseed or mnemonic
+  // mnemonic
+  NSLog(@"IT IS A MNEMONIC");
+  std::string mnemonic = std::string([mnemonicNSString UTF8String]);
+  std::vector<unsigned char> mnemonicUchar = mnemonic2bin(mnemonic);
+  std::string hexseedStdStrind = bin2hstr(mnemonicUchar);
   
-  // Remove all previous data from the keychain
-//  NSDictionary *spec = @{(__bridge id)kSecClass:(__bridge id)kSecClassGenericPassword};
-//  SecItemDelete((__bridge CFDictionaryRef)spec);
-    
+  NSString *hexseed = [NSString stringWithCString:hexseedStdStrind.c_str() encoding:[NSString defaultCStringEncoding]];
+  
   // convert hexseed NSString to a vector of uint8_t
   std::vector<uint8_t> hexSeed= {};
+  
   // Opening XMSS object with hexseed
   for (int i=0; i < [hexseed length]; i+=2) {
     NSString* subs = [hexseed substringWithRange:NSMakeRange(i, 2)];
@@ -152,10 +155,98 @@ RCT_EXPORT_METHOD(openWalletWithHexseed:(NSString* )hexseed withIndex:(NSString*
     // adding to hex
     hexSeed.push_back(result);
   }
-  // try to open the wallet
   
+  // try to open the wallet
   try{
+    QRLDescriptor desc = QRLDescriptor::fromExtendedSeed(hexSeed);
+    //    [NSString stringWithFormat:@"%@%@%@", three, two, one];
+    //    OSStatus sts = [WalletHelperFunctions saveToKeychain:@"hexseed" withValue:hexseed];
+    OSStatus sts = [WalletHelperFunctions saveToKeychain:[NSString stringWithFormat:@"%@%@", @"hexseed", walletindex] withValue:hexseed];
     
+    // send callback to RN
+    if( (int)sts == 0 ){
+      // hexseed successfuly saved to the keychain
+      hexSeed.erase(hexSeed.begin(), hexSeed.begin() + 3);
+      XmssFast xmss = XmssFast( hexSeed, desc.getHeight(), desc.getHashFunction(), eAddrFormatType::SHA256_2X);
+      NSString *wallet_address = [NSString stringWithCString:bin2hstr(xmss.getAddress()).c_str() encoding:[NSString defaultCStringEncoding]];
+      //save wallet address to the keychain
+      OSStatus sts2 = [WalletHelperFunctions saveToKeychain:[NSString stringWithFormat:@"%@%@", @"address", walletindex] withValue:wallet_address];
+      if( (int)sts2 == 0 ){
+        NSString *xmss_pk = [NSString stringWithCString:bin2hstr(xmss.getPK()).c_str() encoding:[NSString defaultCStringEncoding]];
+        //save wallet address to the keychain
+        OSStatus sts3 = [WalletHelperFunctions saveToKeychain:[NSString stringWithFormat:@"%@%@", @"xmsspk", walletindex] withValue:xmss_pk];
+        if( (int)sts3 == 0 ){
+          NSNumber *tree_height_nb = [NSNumber numberWithInt:xmss.getHeight()];
+          NSString *tree_height = [tree_height_nb stringValue];
+          //save wallet address to the keychain
+          OSStatus sts4 = [WalletHelperFunctions saveToKeychain:[NSString stringWithFormat:@"%@%@", @"treeheight", walletindex] withValue:tree_height];
+          if( (int)sts4 == 0 ){
+            //            callback(@[[NSNull null], @"success", wallet_address ]);
+            
+            OSStatus sts5 = [WalletHelperFunctions saveToKeychain:[NSString stringWithFormat:@"%@%@", @"pin", walletindex] withValue:walletpin];
+            if( (int)sts5 == 0 ){
+              callback(@[[NSNull null], @"success",  wallet_address ]);
+            }
+            else {
+              NSLog(@"ERROR saving pin to keychain: %d",(int)sts5);
+              callback(@[[NSNull null], @"error" ]);
+            }
+            
+          }
+          else {
+            NSLog(@"ERROR saving treeheight to keychain: %d",(int)sts4);
+            callback(@[[NSNull null], @"error" ]);
+          }
+        }
+        else {
+          NSLog(@"ERROR saving xmsspk to keychain: %d",(int)sts3);
+          callback(@[[NSNull null], @"error" ]);
+        }
+      }
+      else {
+        NSLog(@"ERROR saving address to keychain: %d",(int)sts2);
+        callback(@[[NSNull null], @"error" ]);
+      }
+    }
+    else {
+      NSLog(@"ERROR saving hexseed to keychain: %d",(int)sts);
+      callback(@[[NSNull null], @"error" ]);
+    }
+  }
+  // error in hexseed
+  catch (...){
+    callback(@[[NSNull null], @"error" ]);
+  }
+  
+}
+
+
+
+
+// save the user's entered hexseed to keychain
+RCT_EXPORT_METHOD(openWalletWithHexseed:(NSString* )hexseed withIndex:(NSString*)walletindex withPin:(NSString*)walletpin callback:(RCTResponseSenderBlock)callback){
+  
+  // Remove all previous data from the keychain
+//  NSDictionary *spec = @{(__bridge id)kSecClass:(__bridge id)kSecClassGenericPassword};
+//  SecItemDelete((__bridge CFDictionaryRef)spec);
+    
+  // convert hexseed NSString to a vector of uint8_t
+  std::vector<uint8_t> hexSeed= {};
+  
+  // Opening XMSS object with hexseed
+  for (int i=0; i < [hexseed length]; i+=2) {
+    NSString* subs = [hexseed substringWithRange:NSMakeRange(i, 2)];
+    // converting hex to corresponding decimal
+    unsigned result = 0;
+    NSScanner* scanner = [NSScanner scannerWithString:subs];
+    [scanner scanHexInt:&result];
+    // adding to hex
+    hexSeed.push_back(result);
+  }
+  
+  
+  // try to open the wallet
+  try{
     QRLDescriptor desc = QRLDescriptor::fromExtendedSeed(hexSeed);
 //    [NSString stringWithFormat:@"%@%@%@", three, two, one];
 //    OSStatus sts = [WalletHelperFunctions saveToKeychain:@"hexseed" withValue:hexseed];
