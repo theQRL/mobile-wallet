@@ -52,6 +52,7 @@ import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -423,15 +424,36 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
 
                                     // found an unconfirmed tx
                                     if (getLatestDataResp.getTransactionsUnconfirmedCount() != 0) {
+                                        boolean inUnconfirmedTx = false;
                                         System.out.println("UNCONFIRMED TX FOUND");
                                         for (int u = 0; u < getLatestDataResp.getTransactionsUnconfirmedCount(); u++) {
                                             System.out.println("ENTERED FOR LOOP");
+
+                                            List<ByteString> addrToList = getLatestDataResp.getTransactionsUnconfirmed(u).getTx().getTransfer().getAddrsToList();
+
+                                            for (int r = 0; r < addrToList.size(); r++) {
+                                                if(ByteString.copyFrom(data).equals(addrToList.get(r))){
+                                                    inUnconfirmedTx = true;
+                                                }
+                                            }
+                                            if ( ByteString.copyFrom(data).equals(getLatestDataResp.getTransactionsUnconfirmed(u).getAddrFrom()) ){
+                                                inUnconfirmedTx = true;
+                                            }
+
+
                                             // check if there is a pending tx for the given wallet address
-                                            if (ByteString.copyFrom(data).equals(getLatestDataResp.getTransactionsUnconfirmed(u).getAddrFrom())) {
+//                                            if (ByteString.copyFrom(data).equals(getLatestDataResp.getTransactionsUnconfirmed(u).getAddrFrom()) ) {
+                                            if ( inUnconfirmedTx ) {
                                                 System.out.println("FOUND UNCONFIRMED TX FROM CURRENT WALLET");
                                                 JSONObject txJsonUnconfirmed = new JSONObject();
                                                 try {
-                                                    txJsonUnconfirmed.put("title", "SENT");
+                                                    if ( ByteString.copyFrom(data).equals(getLatestDataResp.getTransactionsUnconfirmed(u).getAddrFrom()) ){
+                                                        txJsonUnconfirmed.put("title", "SENT");
+                                                    }
+                                                    else {
+                                                        txJsonUnconfirmed.put("title", "RECEIVE");
+                                                    }
+
                                                     txJsonUnconfirmed.put("desc", getLatestDataResp.getTransactionsUnconfirmed(u).getTx().getTransfer().getAmounts(0));
                                                     Date dateUnconfirmed = new Date(getLatestDataResp.getTransactionsUnconfirmed(u).getTimestampSeconds() * 1000);
                                                     SimpleDateFormat dt = new SimpleDateFormat("h:mm a, MMM d yyyy");

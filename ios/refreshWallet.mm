@@ -230,40 +230,61 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
               }
               // Unconfirmed tx found
               else {
+                bool inUnconfirmedTx = false;
                 // loop through unconfirmed tx and add to JSON array
                 for (int i=0; i<response.transactionsUnconfirmedArray_Count; i++){
+                  // origin address of the tx
                   NSString *tx_address = [WalletHelperFunctions  nsDataHex2string:response.transactionsUnconfirmedArray[i].addrFrom];
+                  
 //                  NSString *stringFromDate = [WalletHelperFunctions formatDate:(NSTimeInterval)response.transactionsUnconfirmedArray[i].timestampSeconds];
                   NSString *txHash = [WalletHelperFunctions nsDataHex2string:response.transactionsUnconfirmedArray[i].tx.transactionHash];
                   NSString *amountStr = [NSString stringWithFormat:@"%llu", [response.transactionsUnconfirmedArray[i].tx.transfer.amountsArray valueAtIndex:0]];
                   
                   NSString *unconfirmed_title = [[NSString alloc] init];
+                  
+                  
+                  // check if the current wallet is in the recipient list of the unconfirmed tx
+                  for (int r = 0; r < response.transactionsUnconfirmedArray[i].tx.transfer.addrsToArray_Count; r++ ){
+                    NSString * toAddr = [WalletHelperFunctions nsDataHex2string:response.transactionsUnconfirmedArray[i].tx.transfer.addrsToArray[r]];
+                    if ([toAddr isEqual:walletAddress]){
+                      inUnconfirmedTx = true;
+                      unconfirmed_title= @"RECEIVED";
+                    }
+                  }
+                  // check if the current wallet is sending a tx
                   if ([tx_address isEqualToString:walletAddress]){
+                    inUnconfirmedTx = true;
                     unconfirmed_title= @"SENT";
                   }
-                  else {
-                    unconfirmed_title= @"RECEIVED";
+                  
+                  
+//                  if ([tx_address isEqualToString:walletAddress]){
+//                    unconfirmed_title= @"SENT";
+//                  }
+//                  else {
+//                    unconfirmed_title= @"RECEIVED";
+//                  }
+                  
+                  // only show Unconfirmed tx if the current wallet is part of it
+                  if (inUnconfirmedTx){
+                    NSDictionary *txJsonDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                      unconfirmed_title, @"title",
+                                                      amountStr, @"desc",
+                                                      @"", @"date",
+                                                      txHash, @"txhash",
+                                                      @"true", @"unconfirmed",
+                                                      nil];
+                    [txResponseArray insertObject:txJsonDictionary atIndex:0];
                   }
                   
-                  NSDictionary *txJsonDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                                                    unconfirmed_title, @"title",
-                                                    amountStr, @"desc",
-                                                    @"", @"date",
-                                                    txHash, @"txhash",
-                                                    @"true", @"unconfirmed",
-                                                    nil];
-                  [txResponseArray insertObject:txJsonDictionary atIndex:0];
-
                   NSData *txJsonData = [NSJSONSerialization dataWithJSONObject:txResponseArray options:NSJSONWritingPrettyPrinted error:&error];
                   NSString *txJsonString = [[NSString alloc] initWithData:txJsonData encoding:NSUTF8StringEncoding];
                   //NSLog(@"jsonData as string:\n%@", txJsonString);
+                  
                   callback(@[[NSNull null], walletAddress, @(otsIndex), @(response2.state.balance), txJsonString ]);
                 }
               }
             }];
-            
-            
-
           }
         }];
       }
