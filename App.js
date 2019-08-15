@@ -6,9 +6,11 @@ import { DrawerNavigator , StackNavigator, SwitchNavigator, DrawerItems } from '
 import BackupWallet from './screens/BackupWallet'
 import SendReceive from './screens/SendReceive'
 import TransactionsHistory from './screens/TransactionsHistory'
-import CreateNewWallet from './screens/CreateNewWallet'
+import Wallets from './screens/Wallets'
 import CompleteSetup from './screens/CompleteSetup'
-import OpenExistingWallet from './screens/OpenExistingWallet'
+import OpenExistingWalletWithHexseed from './screens/OpenExistingWalletWithHexseed'
+import OpenExistingWalletWithMnemonic from './screens/OpenExistingWalletWithMnemonic'
+import OpenExistingWalletOptions from './screens/OpenExistingWalletOptions'
 import SignIn from './screens/SignIn'
 import CreateWalletTreeHeight from './screens/CreateWalletTreeHeight'
 import CreateWalletHashFunction from './screens/CreateWalletHashFunction'
@@ -211,9 +213,9 @@ const MainDrawerMenu = DrawerNavigator(
             path: '/',
             screen: BackupWallet,
         },
-        CreateNewWallet : {
+        Wallets : {
             path: '/',
-            screen: CreateNewWallet
+            screen: Wallets
         },
         Settings : {
           path: '/',
@@ -285,8 +287,14 @@ const AuthStack = StackNavigator(
     CompleteSetup: {
       screen: CompleteSetup,
     },
-    OpenExistingWallet: {
-      screen: OpenExistingWallet,
+    OpenExistingWalletWithHexseed: {
+      screen: OpenExistingWalletWithHexseed,
+    },
+    OpenExistingWalletOptions: {
+      screen: OpenExistingWalletOptions,
+    },
+    OpenExistingWalletWithMnemonic: {
+      screen: OpenExistingWalletWithMnemonic,
     },
   },
   {

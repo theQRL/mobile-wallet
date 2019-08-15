@@ -17,7 +17,7 @@ export default class SignIn extends React.Component {
                         <Text style={styles.TextStyle}> CREATE ADVANCED WALLET </Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={ () => this.props.navigation.push('OpenExistingWallet') }>
+                    <TouchableOpacity style={styles.SubmitButtonStyleDark} activeOpacity = { .5 } onPress={ () => this.props.navigation.push('OpenExistingWalletOptions') }>
                         <Text style={styles.TextStyleWhite}> OPEN EXISTING WALLET </Text>
                     </TouchableOpacity>
 

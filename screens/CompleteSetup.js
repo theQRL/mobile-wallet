@@ -24,12 +24,17 @@ export default class CompleteSetup extends React.Component {
         showModal: false,
         selectText : undefined,
         modalVisible: false,
-        disableButton: false
+        disableButton: false,
+        name: ''
     }
 
     // update the wallet counter
     _updateWalletcounter = (walletcounterUpdate) => {
         AsyncStorage.setItem("walletcounter", walletcounterUpdate);
+    }
+
+    _onNameChange = (text) => {
+        this.setState({name: text})
     }
 
     // update the index of the opened wallet
@@ -40,13 +45,13 @@ export default class CompleteSetup extends React.Component {
         // update the walletlist JSON
         // if first wallet create, just instantiate the walletlist JSON
         if (walletIndexToCreate == "1"){
-            AsyncStorage.setItem("walletlist", JSON.stringify( [{"index":walletIndexToCreate, "address": "Q"+address}] ) );
+            AsyncStorage.setItem("walletlist", JSON.stringify( [{"index":walletIndexToCreate, "address": "Q"+address, "name": this.state.name}] ) );
         }
         else {
             // update walletlist JSON
             AsyncStorage.getItem("walletlist").then((walletlist) => {
                 walletlist = JSON.parse(walletlist)
-                walletlist.push({"index":walletIndexToCreate, "address": "Q"+address})
+                walletlist.push({"index":walletIndexToCreate, "address": "Q"+address, "name": this.state.name})
                 AsyncStorage.setItem("walletlist", JSON.stringify( walletlist ));
             });
         }
@@ -70,7 +75,7 @@ export default class CompleteSetup extends React.Component {
             }
             // Ios
             if (Platform.OS === 'ios'){
-                IosWallet.createWallet(this.props.navigation.state.params.treeHeight, walletIndexToCreate, this.state.pin, this.props.navigation.state.params.hashFunctionId,  (err, status, address)=> {
+                IosWallet.createWallet(this.props.navigation.state.params.treeHeight, walletIndexToCreate, this.state.name, this.state.pin, this.props.navigation.state.params.hashFunctionId,  (err, status, address)=> {
                     this.setState({loading:false})
                     // if success -> open the main view of the app
                     if (status =="success"){
@@ -83,7 +88,7 @@ export default class CompleteSetup extends React.Component {
             }
             // Android
             else {
-                AndroidWallet.createWallet(this.props.navigation.state.params.treeHeight, walletIndexToCreate, this.state.pin, this.props.navigation.state.params.hashFunctionId, (err) => {console.log(err); }, (status, address) => {
+                AndroidWallet.createWallet(this.props.navigation.state.params.treeHeight, walletIndexToCreate, this.state.name, this.state.pin, this.props.navigation.state.params.hashFunctionId, (err) => {console.log(err); }, (status, address) => {
                     // if success -> open the main view of the app
                     if (status =="success"){
                         this._updateWalletIndex(walletIndexToCreate, address)
@@ -103,29 +108,29 @@ export default class CompleteSetup extends React.Component {
 
 
     showButtons = () => {
-        if (this.state.pin != null){
+        return(
+            <View style={{alignItems:'center'}}>
+                <Text style={{color:'white', fontSize: 18, marginTop:10}}>1. Choose a 4-digit PIN </Text>
+                <TouchableOpacity accessibilityLabel="create4digitPinButton" style={styles.SubmitButtonStyle} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => {this.launchModal(true, null)}}  >
+                    <Text style={styles.TextStyle}> CREATE 4-DIGIT PIN </Text>
+                </TouchableOpacity>
+                <Text style={{color:'white', fontSize: 18, marginTop:10}}>2. Give your wallet a name</Text>
+                <TextInput onChangeText={ (text) => this._onNameChange(text) } editable={!this.state.isLoading}  underlineColorAndroid="transparent" style={styles.hexInput} value={this.state.name} />
+                <TouchableOpacity accessibilityLabel="cancelButtonBeforePin" style={styles.SubmitButtonStyleRed} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => {this.props.navigation.popToTop()} }>
+                <Text style={styles.TextStyleWhite}> BACK </Text>
+                </TouchableOpacity>
+            </View>
+        );
+    }
+
+    showCreateButton = () => {
+        if (this.state.pin != null && this.state.name != ''){
             return(
                 <View>
                     <TouchableOpacity accessibilityLabel="createWalletButton" style={styles.SubmitButtonStyle} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={this.createWallet} >
                         <Text style={styles.TextStyle}> CREATE WALLET </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity accessibilityLabel="cancelButtonAfterPin" style={styles.SubmitButtonStyleRed} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => {this.props.navigation.popToTop()} }>
-                    <Text style={styles.TextStyleWhite}> CANCEL </Text>
-                    </TouchableOpacity>
                 </View>
-            );
-        }
-        else {
-            return(
-                <View>
-                    <TouchableOpacity accessibilityLabel="create4digitPinButton" style={styles.SubmitButtonStyle} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => {this.launchModal(true, null)}}  >
-                        <Text style={styles.TextStyle}> CREATE 4-DIGIT PIN </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity accessibilityLabel="cancelButtonBeforePin" style={styles.SubmitButtonStyleRed} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => {this.props.navigation.popToTop()} }>
-                    <Text style={styles.TextStyleWhite}> CANCEL </Text>
-                    </TouchableOpacity>
-                </View>
-
             );
         }
     }
@@ -161,7 +166,7 @@ export default class CompleteSetup extends React.Component {
 
                 <View style={{flex:1}}>
                 </View>
-                <View style={{flex:1, alignItems:'center'}} ref='Marker2' onLayout={({nativeEvent}) => { this.refs.Marker2.measure((x, y, width, height, pageX, pageY) => {this.setState({y1:y});}) }}>
+                <View style={{flex:3, alignItems:'center'}} ref='Marker2' onLayout={({nativeEvent}) => { this.refs.Marker2.measure((x, y, width, height, pageX, pageY) => {this.setState({y1:y});}) }}>
                     <Text style={styles.bigTitle}>COMPLETE SETUP</Text>
                     <View style={{width:100, height:1, backgroundColor:'white', marginTop:30,marginBottom:20}}></View>
                     <Text style={{color:'white'}}>{'\n'}Height: {this.props.navigation.state.params.treeHeight}</Text>
@@ -173,6 +178,7 @@ export default class CompleteSetup extends React.Component {
                         :
                         <View>
                             {this.showButtons()}
+                            {this.showCreateButton()}
                         </View>
                     }
                 </View>
@@ -210,6 +216,13 @@ const styles = StyleSheet.create({
         borderRadius:10,
         borderWidth: 1,
         borderColor: '#D72E61'
+    },
+    hexInput:{
+        backgroundColor:'#ebe8e8',
+        height:50,
+        width:300,
+        borderRadius:10,
+        marginTop:15
     },
     TextStyle:{
         color:'#1e79cb',

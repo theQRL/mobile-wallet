@@ -10,7 +10,7 @@ var GLOBALS = require('./globals');
 import PINCode from '@haskkor/react-native-pincode'
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
-export default class OpenExistingWallet extends React.Component {
+export default class OpenExistingWalletOptions extends React.Component {
 
     componentDidMount(){
         const hexseed = this.props.navigation.getParam('hexseed', 'nohexseed');
@@ -81,7 +81,6 @@ export default class OpenExistingWallet extends React.Component {
                     walletIndexToCreate = "1"
                     this._updateWalletcounter("1");
                 }
-
                 // Ios
                 if (Platform.OS === 'ios'){
                     IosWallet.openWalletWithHexseed(this.state.hexseed, walletIndexToCreate, this.state.pin, (error, status, address)=> {
@@ -147,77 +146,22 @@ export default class OpenExistingWallet extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
-
-                <Modal onRequestClose={ console.log("") } animationType="slide" visible={this.state.modalVisible}>
-                    <ImageBackground source={require('../resources/images/complete_setup_bg.png')} style={styles.backgroundImage}>
-                        <PINCode
-                            status={'choose'}
-                            storePin={(pin: string) => {
-                                this.setState({pin:pin})
-                            }}
-                            bottomLeftComponent = {
-                                <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-                                    <TouchableHighlight onPress={() => this.launchModal(false, null) } >
-                                        <Text style={{color:'white'}}>Cancel</Text>
-                                    </TouchableHighlight>
-                                </View>
-                            }
-                            subtitleChoose = "to keep your QRL wallet secure"
-                            stylePinCodeColorSubtitle ="white"
-                            stylePinCodeColorTitle="white"
-                            colorPassword="white"
-                            numbersButtonOverlayColor="white"
-                            finishProcess = {() => this.launchModal(false, this.state.pin) }
-                        />
-                    </ImageBackground>
-                </Modal>
-
-                <Modal animationType="slide" visible={this.state.hexModalVisible}>
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                        <QRCodeScanner onRead={ this.updateHexseed.bind(this) }
-                            topContent={
-                                <Text style={styles.centerText}>
-                                    Scan hexseed QR code
-                                </Text>
-                            }
-                            bottomContent={
-                                <TouchableOpacity onPress={() => this.launchHexModal(false) } >
-                                    <Text style={styles.CancelTextStyle}>Dismiss</Text>
-                                </TouchableOpacity>
-                            }
-                        />
-                    </View>
-                </Modal>
-
                 <ImageBackground source={require('../resources/images/signin_process_bg.png')} style={styles.backgroundImage}>
                     <View style={{flex:1}}></View>
                     <View style={{flex:1.5, alignItems:'center'}}>
                         <Text style={styles.bigTitle}>OPEN EXISTING WALLET</Text>
                         <View style={{width:100, height:1, backgroundColor:'white', marginTop:30,marginBottom:20}}></View>
-                        <Text style={{color:'white'}}>Enter your hexseed below</Text>
-
-                        <TextInput onChangeText={ (text) => this._onHexSeedChange(text) } editable={!this.state.isLoading}  underlineColorAndroid="transparent" style={styles.hexInput} value={this.state.hexseed} />
-
-                        {this.state.isLoading ?
-                            <View style={{alignSelf:'center', paddingTop:10}}>
-                                <ActivityIndicator size={'large'}></ActivityIndicator>
-                                <Text style={{color:'white'}}>This may take a while.</Text>
-                                <Text style={{color:'white'}}>Please be patient...</Text>
-                            </View>
-                            :
-                            <View>
-                                <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => {this.launchHexModal(true)} } >
-                                    <Text style={styles.TextStyle}> SCAN HEXSEED QR CODE </Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => {this.launchModal(true, null)} }>
-                                    <Text style={styles.TextStyle}> CREATE 4-DIGIT PIN </Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.SubmitButtonStyleRed} activeOpacity = { .5 } onPress={ () => this.props.navigation.navigate('SignIn') }>
-                                    <Text style={styles.TextStyleWhite}> CANCEL </Text>
-                                </TouchableOpacity>
-                                {this.openButton()}
-                            </View>
-                        }
+                        <View>
+                            <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => { this.props.navigation.navigate('OpenExistingWalletWithMnemonic') } } >
+                                <Text style={styles.TextStyle}> OPEN WITH MNEMONIC </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => { this.props.navigation.navigate('OpenExistingWalletWithHexseed') } }>
+                                <Text style={styles.TextStyle}> OPEN WITH HEXSEED </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.SubmitButtonStyleRed} activeOpacity = { .5 } onPress={ () => this.props.navigation.navigate('SignIn') }>
+                                <Text style={styles.TextStyleWhite}> BACK </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </ImageBackground>
             </KeyboardAvoidingView>

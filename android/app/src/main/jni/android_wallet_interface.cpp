@@ -50,6 +50,25 @@ JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_openWalletWithHexs
 }
 
 
+// open existing wallet with mnemonic
+JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_openWalletWithMnemonic(JNIEnv* pEnv, jobject pThis, jstring mnemonic)
+{
+    AndroidWallet androidWallet;
+    // convert jstring to string
+    const jclass stringClass = pEnv->GetObjectClass(mnemonic);
+    const jmethodID getBytes = pEnv->GetMethodID(stringClass, "getBytes", "(Ljava/lang/String;)[B");
+    const jbyteArray stringJbytes = (jbyteArray) pEnv->CallObjectMethod(mnemonic, getBytes, pEnv->NewStringUTF("UTF-8"));
+    size_t length = (size_t) pEnv->GetArrayLength(stringJbytes);
+    jbyte* pBytes = pEnv->GetByteArrayElements(stringJbytes, NULL);
+    std::string ret = std::string((char *)pBytes, length);
+    pEnv->ReleaseByteArrayElements(stringJbytes, pBytes, JNI_ABORT);
+    pEnv->DeleteLocalRef(stringJbytes);
+    pEnv->DeleteLocalRef(stringClass);
+
+    return pEnv-> NewStringUTF(androidWallet.openWalletWithMnemonic(ret).c_str());
+}
+
+
 
 
 

@@ -108,6 +108,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
     // Declaration of native method
     public native String createWallet(int treeHeight, int hashFunction);
     public native String openWalletWithHexseed(String hexseed);
+    public native String openWalletWithMnemonic(String mnemonic);
     public native String transferCoins(String address, String amount, int fee, String hexseed, int otsIndex);
     public native String getMnemonic(String hexseed);
     private ManagedChannel channel;
@@ -140,10 +141,11 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
 
     // Create a QRL wallet from scratch
     @ReactMethod
-    public void createWallet(int treeHeight, String walletindex, String walletpin, int hashFunction, Callback errorCallback, Callback successCallback) {
+    public void createWallet(int treeHeight, String walletindex, String walletname, String walletpin, int hashFunction, Callback errorCallback, Callback successCallback) {
         try {
             String hexSeed = createWallet(treeHeight, hashFunction);
             // save the required information to Shared Preferences
+            saveEncrypted("name".concat(walletindex), walletname);
             saveEncrypted("hexseed".concat(walletindex), hexSeed.split(" ")[0]);
             saveEncrypted("address".concat(walletindex), hexSeed.split(" ")[1]);
             saveEncrypted("xmsspk".concat(walletindex), hexSeed.split(" ")[2]);
@@ -157,9 +159,27 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
 
     // Open an  existingQRL wallet with hexseed
     @ReactMethod
-    public void openWalletWithHexseed(String hexseed, String walletindex, String walletpin,  Callback errorCallback, Callback successCallback) {
+    public void openWalletWithHexseed(String hexseed, String walletindex, String walletname, String walletpin,  Callback errorCallback, Callback successCallback) {
         try {
             String hexSeed = openWalletWithHexseed(hexseed);
+            saveEncrypted("name".concat(walletindex) , walletname);
+            saveEncrypted("hexseed".concat(walletindex), hexSeed.split(" ")[0]);
+            saveEncrypted("address".concat(walletindex), hexSeed.split(" ")[1]);
+            saveEncrypted("xmsspk".concat(walletindex), hexSeed.split(" ")[2]);
+            saveEncrypted("pin".concat(walletindex), walletpin);
+            successCallback.invoke("success", hexSeed.split(" ")[1]);
+        } catch (IllegalViewOperationException e) {
+            errorCallback.invoke(e.getMessage());
+        }
+    }
+
+
+    // Open an  existingQRL wallet with mnemonic
+    @ReactMethod
+    public void openWalletWithMnemonic(String mnemonic, String walletindex, String walletname, String walletpin,  Callback errorCallback, Callback successCallback) {
+        try {
+            String hexSeed = openWalletWithMnemonic(mnemonic);
+            saveEncrypted("name".concat(walletindex) , walletname);
             saveEncrypted("hexseed".concat(walletindex), hexSeed.split(" ")[0]);
             saveEncrypted("address".concat(walletindex), hexSeed.split(" ")[1]);
             saveEncrypted("xmsspk".concat(walletindex), hexSeed.split(" ")[2]);
@@ -574,6 +594,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
         PreferenceHelper.removeFromPreferences("address"+walletindex+"enc");
         PreferenceHelper.removeFromPreferences("hexseed"+walletindex+"iv");
         PreferenceHelper.removeFromPreferences("hexseed"+walletindex+"enc");
+        PreferenceHelper.removeFromPreferences("name"+walletindex);
         successCallback.invoke("success");
     }
 

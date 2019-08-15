@@ -30,7 +30,7 @@ RCT_EXPORT_MODULE();
 
 // Create wallet function that returns the wallet address as a callback
 //RCT_EXPORT_METHOD(createWallet:(NSString*)hashFunction (RCTResponseSenderBlock)callback )
-RCT_EXPORT_METHOD(createWallet:(NSNumber* _Nonnull)treeHeight withIndex:(NSString*)walletindex withPin:(NSString*)walletpin hashFunction:(NSNumber* _Nonnull)hashFunction callback:(RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(createWallet:(NSNumber* _Nonnull)treeHeight withIndex:(NSString*)walletindex withName:(NSString*)walletname withPin:(NSString*)walletpin hashFunction:(NSNumber* _Nonnull)hashFunction callback:(RCTResponseSenderBlock)callback)
 {
   // Remove all previous data from the keychain
 //  NSDictionary *spec = @{(__bridge id)kSecClass:(__bridge id)kSecClassGenericPassword};
@@ -95,12 +95,18 @@ RCT_EXPORT_METHOD(createWallet:(NSNumber* _Nonnull)treeHeight withIndex:(NSStrin
         //save wallet address to the keychain
         OSStatus sts4 = [WalletHelperFunctions saveToKeychain:[NSString stringWithFormat:@"%@%@", @"treeheight", walletindex] withValue:tree_height];
         if( (int)sts4 == 0 ){
-
 //          callback(@[[NSNull null], @"success",  wallet_address ]);
-          
           OSStatus sts5 = [WalletHelperFunctions saveToKeychain:[NSString stringWithFormat:@"%@%@", @"pin", walletindex] withValue:walletpin];
           if( (int)sts5 == 0 ){
-            callback(@[[NSNull null], @"success",  wallet_address ]);
+            
+            OSStatus sts6 = [WalletHelperFunctions saveToKeychain:[NSString stringWithFormat:@"%@%@", @"name", walletindex] withValue:walletname];
+            if( (int)sts6 == 0 ){
+                callback(@[[NSNull null], @"success",  wallet_address ]);
+            }
+            else {
+              NSLog(@"ERROR saving wallet name to keychain: %d",(int)sts6);
+              callback(@[[NSNull null], @"error" ]);
+            }
           }
           else {
             NSLog(@"ERROR saving pin to keychain: %d",(int)sts5);
@@ -132,7 +138,7 @@ RCT_EXPORT_METHOD(createWallet:(NSNumber* _Nonnull)treeHeight withIndex:(NSStrin
 
 
 
-RCT_EXPORT_METHOD(openWalletWithMnemonic:(NSString* )mnemonicNSString withIndex:(NSString*)walletindex withPin:(NSString*)walletpin callback:(RCTResponseSenderBlock)callback){
+RCT_EXPORT_METHOD(openWalletWithMnemonic:(NSString* )mnemonicNSString withIndex:(NSString*)walletindex withName:(NSString*)walletname withPin:(NSString*)walletpin callback:(RCTResponseSenderBlock)callback){
   // check whether user is using hexseed or mnemonic
   // mnemonic
   NSLog(@"IT IS A MNEMONIC");
@@ -181,11 +187,19 @@ RCT_EXPORT_METHOD(openWalletWithMnemonic:(NSString* )mnemonicNSString withIndex:
           //save wallet address to the keychain
           OSStatus sts4 = [WalletHelperFunctions saveToKeychain:[NSString stringWithFormat:@"%@%@", @"treeheight", walletindex] withValue:tree_height];
           if( (int)sts4 == 0 ){
-            //            callback(@[[NSNull null], @"success", wallet_address ]);
-            
+            // callback(@[[NSNull null], @"success", wallet_address ]);
             OSStatus sts5 = [WalletHelperFunctions saveToKeychain:[NSString stringWithFormat:@"%@%@", @"pin", walletindex] withValue:walletpin];
             if( (int)sts5 == 0 ){
-              callback(@[[NSNull null], @"success",  wallet_address ]);
+              
+              OSStatus sts6 = [WalletHelperFunctions saveToKeychain:[NSString stringWithFormat:@"%@%@", @"name", walletindex] withValue:walletname];
+              if( (int)sts6 == 0 ){
+                callback(@[[NSNull null], @"success",  wallet_address ]);
+              }
+              else {
+                NSLog(@"ERROR saving wallet name to keychain: %d",(int)sts6);
+                callback(@[[NSNull null], @"error" ]);
+              }
+              
             }
             else {
               NSLog(@"ERROR saving pin to keychain: %d",(int)sts5);
@@ -224,7 +238,7 @@ RCT_EXPORT_METHOD(openWalletWithMnemonic:(NSString* )mnemonicNSString withIndex:
 
 
 // save the user's entered hexseed to keychain
-RCT_EXPORT_METHOD(openWalletWithHexseed:(NSString* )hexseed withIndex:(NSString*)walletindex withPin:(NSString*)walletpin callback:(RCTResponseSenderBlock)callback){
+RCT_EXPORT_METHOD(openWalletWithHexseed:(NSString* )hexseed withIndex:(NSString*)walletindex withName:(NSString*)walletname withPin:(NSString*)walletpin callback:(RCTResponseSenderBlock)callback){
   
   // Remove all previous data from the keychain
 //  NSDictionary *spec = @{(__bridge id)kSecClass:(__bridge id)kSecClassGenericPassword};
@@ -274,7 +288,16 @@ RCT_EXPORT_METHOD(openWalletWithHexseed:(NSString* )hexseed withIndex:(NSString*
             
             OSStatus sts5 = [WalletHelperFunctions saveToKeychain:[NSString stringWithFormat:@"%@%@", @"pin", walletindex] withValue:walletpin];
             if( (int)sts5 == 0 ){
-              callback(@[[NSNull null], @"success",  wallet_address ]);
+              
+              OSStatus sts6 = [WalletHelperFunctions saveToKeychain:[NSString stringWithFormat:@"%@%@", @"name", walletindex] withValue:walletname];
+              if( (int)sts6 == 0 ){
+                callback(@[[NSNull null], @"success",  wallet_address ]);
+              }
+              else {
+                NSLog(@"ERROR saving wallet name to keychain: %d",(int)sts6);
+                callback(@[[NSNull null], @"error" ]);
+              }
+              
             }
             else {
               NSLog(@"ERROR saving pin to keychain: %d",(int)sts5);
@@ -326,8 +349,18 @@ RCT_EXPORT_METHOD(closeWallet:(NSString* )walletindex  callback:(RCTResponseSend
           
           OSStatus sts5 = [WalletHelperFunctions removeFromKeychain:[NSString stringWithFormat:@"%@%@", @"treeheight", walletindex]];
           if( (int)sts5 == 0 ){
-            NSLog(@"Wallet removed from Keychain");
-            callback(@[[NSNull null], @"success" ]);
+          
+            OSStatus sts6 = [WalletHelperFunctions removeFromKeychain:[NSString stringWithFormat:@"%@%@", @"name", walletindex]];
+            if( (int)sts6 == 0 ){
+              NSLog(@"Wallet removed from Keychain");
+              callback(@[[NSNull null], @"success" ]);
+            }
+            else {
+              NSLog(@"ERROR removing name from keychain: %d",(int)sts5);
+              callback(@[[NSNull null], @"error" ]);
+            }
+//            NSLog(@"Wallet removed from Keychain");
+//            callback(@[[NSNull null], @"success" ]);
           }
           else {
             NSLog(@"ERROR removing treeheight from keychain: %d",(int)sts5);

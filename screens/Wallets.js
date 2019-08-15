@@ -7,7 +7,7 @@ import PINCode from '@haskkor/react-native-pincode'
 import BackgroundTimer from 'react-native-background-timer';
 
 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-export default class CreateNewWallet extends React.Component {
+export default class Wallets extends React.Component {
 
     // seetings for react-native navigation
     static navigationOptions = {
@@ -162,6 +162,7 @@ export default class CreateNewWallet extends React.Component {
                         <Image source={require('../resources/images/wallet_unlocked.png')} resizeMode={Image.resizeMode.contain} style={{height:35, width:35}} />
                     </View>
                     <View style={{flex:5, justifyContent:'center'}}>
+                        <Text style={{fontWeight:'bold'}}>{rowData.name}</Text>
                         <Text>Q{addressBegin}...{addressEnd}</Text>
                     </View>
                     <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
@@ -196,6 +197,7 @@ export default class CreateNewWallet extends React.Component {
                                         <Image source={require('../resources/images/wallet_locked.png')} resizeMode={Image.resizeMode.contain} style={{height:35, width:35}} />
                                     </View>
                                     <View style={{flex:5, justifyContent:'center', paddingLeft:5}}>
+                                        <Text>{rowData.name}</Text>
                                         <Text>Q{addressBegin}...{addressEnd} </Text>
                                     </View>
                                 </View>

@@ -91,6 +91,22 @@ string AndroidWallet::openWalletWithHexseed(string hexseed)
     return hexSeed.c_str();
 }
 
+
+// create QRL wallet from mnemonic
+string AndroidWallet::openWalletWithMnemonic(string mnemonic)
+{
+    QRLDescriptor desc = QRLDescriptor::fromExtendedSeed( mnemonic2bin(mnemonic) );
+    XmssFast xmss = XmssFast( hstr2bin( bin2hstr(mnemonic2bin(mnemonic)).substr(6) ), desc.getHeight(), desc.getHashFunction(), eAddrFormatType::SHA256_2X);
+    std::string hexSeed = bin2hstr(xmss.getExtendedSeed());
+    hexSeed.append(" ");
+    std::string address = bin2hstr(xmss.getAddress() );
+    hexSeed.append(address);
+    hexSeed.append(" ");
+    std::string xmsspk = bin2hstr(xmss.getPK() );
+    hexSeed.append(xmsspk);
+    return hexSeed.c_str();
+}
+
 // return mnemonic to user
 string AndroidWallet::getMnemonic(string hexseed) {
     QRLDescriptor desc = QRLDescriptor::fromExtendedSeed(hstr2bin( hexseed ));

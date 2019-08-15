@@ -25,12 +25,12 @@ export default class SignIn extends React.Component {
                     <TouchableOpacity testID="createAdvancedWalletButton" style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={() => this.props.navigation.navigate('CreateWalletTreeHeight',{treeHeight: 10, signatureCounts: "1024",  hashFunctionName: "SHAKE_128", hashFunctionId:1 }) }>
                         <Text style={styles.TextStyle}> CREATE ADVANCED WALLET </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity testID="openExistingWalletButton" style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => this.props.navigation.push('OpenExistingWallet') }>
+                    <TouchableOpacity testID="openExistingWalletButton" style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => this.props.navigation.push('OpenExistingWalletOptions') }>
                         <Text style={styles.TextStyle}> OPEN EXISTING WALLET </Text>
                     </TouchableOpacity>
 
                     {closable?
-                        <TouchableOpacity style={styles.SubmitButtonStyleRed} activeOpacity = { .5 } onPress={ () => this.props.navigation.navigate('CreateNewWallet') }>
+                        <TouchableOpacity style={styles.SubmitButtonStyleRed} activeOpacity = { .5 } onPress={ () => this.props.navigation.navigate('Wallets') }>
                             <Text style={styles.TextStyleWhite}> CANCEL </Text>
                         </TouchableOpacity>
                     :
