@@ -16,6 +16,7 @@ var AndroidWallet = NativeModules.AndroidWallet;
 import QRCode from 'react-native-qrcode';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 var GLOBALS = require('./globals');
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default class SendReceive extends React.Component {
 
@@ -289,16 +290,16 @@ export default class SendReceive extends React.Component {
 
 
                     <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
-                        <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
+                        <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:hp(8), paddingLeft:30}}>
                             <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
                                 <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
                             </TouchableHighlight>
                         </View>
                         <FlashMessage/> 
 
-                        <View style={{ height:130, width:330, borderRadius:10, alignSelf:'center', marginTop: 30}}>
+                        <View style={{ height: hp(20), marginTop: hp(3), borderRadius:10, alignSelf:'center'}}>
                             <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage2}>
-                                <View style={{flex:1, alignSelf:'center', width:330, justifyContent:'center', alignItems:'center', padding:10}}>
+                                <View style={{flex:1, alignSelf:'center', width:wp(96), justifyContent:'center', alignItems:'center', padding:10}}>
                                     <Text style={{color:'white', fontWeight: "bold", fontSize:12, textAlign:'center'}} selectable={true}>Q{this.state.walletAddress}</Text>
                                     <Text style={{color:'white',fontSize:30}}>{this.state.balance} QRL</Text>
                                 </View>
@@ -307,18 +308,18 @@ export default class SendReceive extends React.Component {
 
 
                         {this.state.view == "send"?
-                            <KeyboardAvoidingView style={{flex:1, paddingTop: this.state.paddingTopCentral, paddingBottom:100, width:330, alignSelf: 'center', borderRadius:10}} behavior="padding">
+                            <KeyboardAvoidingView style={{flex:1, paddingBottom:100, width:wp(93), alignSelf: 'center'}} behavior="padding">
                                 <ScrollView style={{flex:1}}>
-                                    <View style={{ height:this.state.menuHeight, backgroundColor:'white', flexDirection:'row'}}>
-                                        <TouchableOpacity onPress={ this.switchSend } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'white'}}>
+                                    <View style={{ height:this.state.menuHeight, backgroundColor:'white', flexDirection:'row', borderTopLeftRadius:10, borderTopRightRadius:10}}>
+                                        <TouchableOpacity onPress={ this.switchSend } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'white', borderTopLeftRadius:10}}>
                                             <Text>SEND</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={ this.switchReceive } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fafafa'}}>
+                                        <TouchableOpacity onPress={ this.switchReceive } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fafafa', borderTopRightRadius:10}}>
                                             <Text>RECEIVE</Text>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={{width:'50%',height:1, backgroundColor:'red'}}></View>
-                                    <View style={{height:300, backgroundColor:'white', width:330, padding:30}}>
+                                    <View style={{height:300, backgroundColor:'white', width:wp(93), padding:30, borderBottomRightRadius:10, borderBottomLeftRadius:10}}>
                                         <Text>RECIPIENT</Text>
                                         <TextInput onChangeText={ (text) => this._onRecipientChange(text) } value={this.state.recipient} style={{backgroundColor:'#ebe8e8', height:50}} />
                                         <Text>{'\n'}AMOUNT</Text>
@@ -343,17 +344,17 @@ export default class SendReceive extends React.Component {
                                 </ScrollView>
                             </KeyboardAvoidingView>
                             :
-                            <View style={{flex:1, paddingTop: this.state.paddingTopCentral, paddingBottom:100, width:330, alignSelf: 'center', borderRadius:10}}>
-                                <View style={{height:this.state.menuHeight, backgroundColor:'white', flexDirection:'row'}}>
-                                    <TouchableOpacity onPress={ this.switchSend } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fafafa'}}>
+                            <View style={{flex:1, paddingBottom:100, width:wp(93), alignSelf: 'center'}}>
+                                <View style={{height:this.state.menuHeight, backgroundColor:'white', flexDirection:'row',  borderTopLeftRadius:10, borderTopRightRadius:10}}>
+                                    <TouchableOpacity onPress={ this.switchSend } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fafafa', borderTopLeftRadius:10}}>
                                         <Text>SEND</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={ this.switchReceive } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'white'}}>
+                                    <TouchableOpacity onPress={ this.switchReceive } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'white', borderTopRightRadius:10}}>
                                         <Text>RECEIVE</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={{width:'50%',height:1, backgroundColor:'red', alignSelf:'flex-end'}}></View>
-                                <View style={{height:300, backgroundColor:'white', width:330, padding:30, alignItems:'center'}}>
+                                <View style={{height:300, backgroundColor:'white', width:wp(93), padding:30, alignItems:'center', borderBottomRightRadius:10, borderBottomLeftRadius:10}}>
                                     <QRCode value={QrWalletAddress} size={150} bgColor='black' fgColor='white'/>
                                     <Text style={{fontWeight:'bold', paddingTop:30}}>Your public wallet address</Text>
                                     <Text selectable={true}>Q{this.state.walletAddress}</Text>

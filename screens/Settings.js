@@ -6,13 +6,16 @@ var IosWallet = NativeModules.refreshWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
 import BackgroundTimer from 'react-native-background-timer';
 let isDefaultNode = 'true';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default class Settings extends React.Component {
 
     componentWillMount() {
+        console.log(wp(50) )
+        console.log(hp)
         AppState.addEventListener('change', this._handleAppStateChange);
         AsyncStorage.getItem("unlockWithPin").then((unlockWithPin) => {
-            console.log("WALLETPIN IN SETTINGS IS ", unlockWithPin)
+            // console.log("WALLETPIN IN SETTINGS IS ", unlockWithPin)
             if (unlockWithPin === 'false'){
                 this.setState({switchValue: false})    
             }
@@ -188,45 +191,47 @@ export default class Settings extends React.Component {
         else {
             return (
                 <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>                
-                <View style={{flex:1}}>
-    
-                    <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
-                        <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
-                            <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
-                        </TouchableHighlight>
-                    </View>
-                    <View style={{ height:130, width:330, borderRadius:10, alignSelf:'center', marginTop: 30}}>
-                        <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage2}>
-                            <View style={{flex:1, alignSelf:'center', width:330, justifyContent:'center', alignItems:'center'}}>
-                                <Text style={{color:'white', fontSize:20}}>SETTINGS</Text>
-                            </View>
-                        </ImageBackground>
-                    </View>
-                    <View style={{flex:1, paddingTop: 50, paddingBottom:100, width:330, alignSelf: 'center',  borderRadius:10}}>
-                        <Text>NODE URL</Text>
-                        <TextInput onChangeText={ (text) => this.onUrlChange(text) } value={this.state.nodeUrl} style={{backgroundColor:'#ebe8e8', height:50}} />
-                        <Text>{'\n'}PORT</Text>
-                        <TextInput keyboardType={'numeric'} onChangeText={ (text) => this.onPortChange(text) } value={this.state.nodePort} style={{backgroundColor:'#ebe8e8', height:50}} />
 
+                    <View style={{flex:1}}>
+                        <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:hp(8), paddingLeft:30}}>
+                            <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
+                                <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
+                            </TouchableHighlight>
+                        </View>
 
-                        <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => { this.saveSettings() }}>
-                            <Text style={styles.TextStyle}> SAVE </Text>
-                        </TouchableOpacity>
+                        <View style={{height: hp(20), marginTop: hp(3)}}>
+                            <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage2}>
+                                <View style={{flex:1, alignSelf:'center', width: wp(96), justifyContent:'center', alignItems:'center'}}>
+                                    <Text style={{color:'white', fontSize:20}}>SETTINGS</Text>
+                                </View>
+                            </ImageBackground>
+                        </View>
 
-                        <View style={{ flexDirection: 'row', justifyContent:'center', height:100 }}>
-                            <View style={{flex:1, justifyContent:'center'}}>
-                                <Text>Lock the app with a PIN</Text>
+                        <View style={{ width:wp(93), height:hp(60), paddingBottom:100, alignSelf: 'center',  borderRadius:10, backgroundColor:'white', padding: 30}}>
+                            <Text>NODE URL</Text>
+                            <TextInput onChangeText={ (text) => this.onUrlChange(text) } value={this.state.nodeUrl} style={{backgroundColor:'#ebe8e8', height:50}} />
+                            <Text>{'\n'}PORT</Text>
+                            <TextInput keyboardType={'numeric'} onChangeText={ (text) => this.onPortChange(text) } value={this.state.nodePort} style={{backgroundColor:'#ebe8e8', height:50}} />
+
+                            <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => { this.saveSettings() }}>
+                                <Text style={styles.TextStyle}> SAVE </Text>
+                            </TouchableOpacity>
+
+                            <View style={{width:'100%',height:1, backgroundColor:'lightgray', alignSelf:'flex-end', marginTop: 10}}></View>
+                            <View style={{ flexDirection: 'row', justifyContent:'center', height:70 }}>
+                                <View style={{flex:1, justifyContent:'center'}}>
+                                    <Text>Lock app with PIN</Text>
+                                </View>
+                                <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
+                                <Switch
+                                    onValueChange = {this.toggleSwitch}
+                                    value = {this.state.switchValue}/>
+                                </View>
                             </View>
-                            <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
-                            <Switch
-                                onValueChange = {this.toggleSwitch}
-                                value = {this.state.switchValue}/>
-                            </View>
-                            
                         </View>
                     </View>
-                </View>
-            </ImageBackground>
+
+                </ImageBackground>
             );
         }
     }
@@ -274,11 +279,10 @@ const styles = StyleSheet.create({
     },
     backgroundImage: {
         flex: 1,
-        width: null,
-        height: null,
+        width: wp(100),
+        height: hp(100),
     },
     backgroundImage2: {
-        alignSelf: 'flex-start',
-        left: 0
+        alignSelf: 'center',
     },
 });

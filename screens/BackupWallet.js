@@ -1,10 +1,11 @@
 import React from 'react';
-import {Text, View, Image, ImageBackground, AsyncStorage, StyleSheet, TouchableHighlight, TouchableOpacity, Platform, ActivityIndicator, Modal, AppState} from 'react-native';
+import {Text, View, Image, ImageBackground, AsyncStorage, StyleSheet, TouchableHighlight, TouchableOpacity, Platform, ActivityIndicator, ScrollView, Modal, AppState} from 'react-native';
 
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.refreshWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
 import BackgroundTimer from 'react-native-background-timer';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default class BackupWallet extends React.Component {
 
@@ -140,33 +141,35 @@ export default class BackupWallet extends React.Component {
                 
             <View style={{flex:1}}>
 
-                <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
+                <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:hp(8), paddingLeft:30}}>
                     <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
                         <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
                     </TouchableHighlight>
                 </View>
-                <View style={{ height:130, width:330, borderRadius:10, alignSelf:'center', marginTop: 30}}>
+
+                <View style={{ height: hp(20), marginTop: hp(3)}}>
                     <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage2}>
-                        <View style={{flex:1, alignSelf:'center', width:330, justifyContent:'center', alignItems:'center'}}>
+                        <View style={{flex:1, alignSelf:'center', width:wp(96), justifyContent:'center', alignItems:'center'}}>
                             <Text style={{color:'white', fontSize:20}}>BACK UP YOUR WALLET</Text>
                         </View>
                     </ImageBackground>
                 </View>
-                <View style={{flex:1, paddingTop: 50, paddingBottom:100, width:330, alignSelf: 'center',  borderRadius:10}}>
-                    <View style={{height:50, backgroundColor:'white'}}>
+                
+                <View style={{ width:wp(93), height:hp(70), paddingBottom:100, alignSelf: 'center'}}>
+                    <View style={{height:50, backgroundColor:'white', padding:30, borderTopRightRadius:10, borderTopLeftRadius: 10 }}>
                         <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fafafa'}}>
                             <Text>View Recovery Seed</Text>
                         </View>
                     </View>
                     <View style={{width:'100%',height:1, backgroundColor:'red', alignSelf:'flex-end'}}></View>
-                    <View style={{flex:2, backgroundColor:'white', width:330, padding:30, alignItems:'center'}}>
+                    <View style={{ backgroundColor:'white', width:wp(93), padding:30, alignItems:'center', borderBottomRightRadius:10, borderBottomLeftRadius: 10}}>
                         {this.state.mnemonic != '' ?
-                            <View>
+                            <ScrollView>
                                 <Text style={{fontWeight: "bold"}}>MNEMONIC</Text>
                                 <Text selectable={true}>{this.state.mnemonic}</Text>
                                 <Text style={{fontWeight: "bold"}}>{'\n'}HEXSEED</Text>
                                 <Text selectable={true}>{this.state.hexseed}</Text>
-                            </View>
+                            </ScrollView>
                             :
                             <View>
                                 {this.showLoading()}
@@ -222,11 +225,11 @@ const styles = StyleSheet.create({
     },
     backgroundImage: {
         flex: 1,
-        width: null,
-        height: null,
+        width: wp(100),
+        height: hp(100),
+        
     },
     backgroundImage2: {
-        alignSelf: 'flex-start',
-        left: 0
+        alignSelf: 'center',
     },
 });
