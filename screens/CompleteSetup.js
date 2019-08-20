@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Platform, StyleSheet, ImageBackground, Text, View, Image, ActionSheetIOS, TextInput, Modal, Button, ActivityIndicator, Picker, AsyncStorage, TouchableOpacity, TouchableHighlight } from 'react-native';
+import styles from './styles.js';
 
 // Android and Ios native modules
 import {NativeModules} from 'react-native';
@@ -110,11 +111,11 @@ export default class CompleteSetup extends React.Component {
     showButtons = () => {
         return(
             <View style={{alignItems:'center'}}>
-                <Text style={{color:'white', fontSize: 18, marginTop:10}}>1. Choose a 4-digit PIN </Text>
+                <Text style={styles.smallTitle}>1. Choose a 4-digit PIN </Text>
                 <TouchableOpacity accessibilityLabel="create4digitPinButton" style={styles.SubmitButtonStyle} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => {this.launchModal(true, null)}}  >
                     <Text style={styles.TextStyle}> CREATE 4-DIGIT PIN </Text>
                 </TouchableOpacity>
-                <Text style={{color:'white', fontSize: 18, marginTop:10}}>2. Give your wallet a name</Text>
+                <Text style={styles.smallTitle}>2. Give your wallet a name</Text>
                 <TextInput onChangeText={ (text) => this._onNameChange(text) } editable={!this.state.isLoading}  underlineColorAndroid="transparent" style={styles.hexInput} value={this.state.name} />
                 <TouchableOpacity accessibilityLabel="cancelButtonBeforePin" style={styles.SubmitButtonStyleRed} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => {this.props.navigation.popToTop()} }>
                 <Text style={styles.TextStyleWhite}> BACK </Text>
@@ -134,7 +135,6 @@ export default class CompleteSetup extends React.Component {
             );
         }
     }
-
 
     render() {
         return (
@@ -169,9 +169,9 @@ export default class CompleteSetup extends React.Component {
                 <View style={{flex:3, alignItems:'center'}} ref='Marker2' onLayout={({nativeEvent}) => { this.refs.Marker2.measure((x, y, width, height, pageX, pageY) => {this.setState({y1:y});}) }}>
                     <Text style={styles.bigTitle}>COMPLETE SETUP</Text>
                     <View style={{width:100, height:1, backgroundColor:'white', marginTop:30,marginBottom:20}}></View>
-                    <Text style={{color:'white'}}>{'\n'}Height: {this.props.navigation.state.params.treeHeight}</Text>
-                    <Text style={{color:'white'}}>Signatures: {this.props.navigation.state.params.signatureCounts}</Text>
-                    <Text style={{color:'white'}}>Hash function: {this.props.navigation.state.params.hashFunctionName}</Text>
+                    <Text style={styles.descriptionText}>{'\n'}Height: {this.props.navigation.state.params.treeHeight}</Text>
+                    <Text style={styles.descriptionText}>Signatures: {this.props.navigation.state.params.signatureCounts}</Text>
+                    <Text style={styles.descriptionText}>Hash function: {this.props.navigation.state.params.hashFunctionName}</Text>
 
                     {this.state.loading ?
                         <View style={{alignItems:'center'}}><ActivityIndicator style={{paddingTop:20}} size={'large'}></ActivityIndicator><Text style={{color:'white'}}>This may take a while.</Text><Text style={{color:'white'}}>Please be patient...</Text></View>
@@ -186,55 +186,3 @@ export default class CompleteSetup extends React.Component {
         );
     }
 }
-
-// styling
-const styles = StyleSheet.create({
-    bigTitle:{
-        color:'white',
-        fontSize: 25,
-    },
-    SubmitButtonStyle: {
-        width: 300,
-        marginTop:10,
-        paddingTop:10,
-        paddingBottom:10,
-        marginLeft:30,
-        marginRight:30,
-        backgroundColor:'white',
-        borderRadius:10,
-        borderWidth: 1,
-        borderColor: '#fff'
-    },
-    SubmitButtonStyleRed: {
-        width: 300,
-        marginTop:10,
-        paddingTop:10,
-        paddingBottom:10,
-        marginLeft:30,
-        marginRight:30,
-        backgroundColor:'#D72E61',
-        borderRadius:10,
-        borderWidth: 1,
-        borderColor: '#D72E61'
-    },
-    hexInput:{
-        backgroundColor:'#ebe8e8',
-        height:50,
-        width:300,
-        borderRadius:10,
-        marginTop:15
-    },
-    TextStyle:{
-        color:'#1e79cb',
-        textAlign:'center',
-    },
-    TextStyleWhite:{
-        color:'white',
-        textAlign:'center',
-    },
-    backgroundImage: {
-        flex: 1,
-        width: null,
-        height: null,
-    },
-});

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Platform,StyleSheet,ImageBackground,Text,View,TouchableOpacity,Button} from 'react-native'
+import styles from './styles.js';
 
 export default class SignIn extends React.Component {
 
@@ -28,47 +29,47 @@ export default class SignIn extends React.Component {
     }
 }
 
-// styling
-const styles = StyleSheet.create({
-    bigTitle:{
-        color:'white',
-        fontSize: 25,
-    },
-    SubmitButtonStyle: {
-        width: 300,
-        marginTop:10,
-        paddingTop:15,
-        paddingBottom:15,
-        marginLeft:30,
-        marginRight:30,
-        backgroundColor:'white',
-        borderRadius:10,
-        borderWidth: 1,
-        borderColor: '#fff'
-    },
-    SubmitButtonStyleDark: {
-        width: 300,
-        marginTop:10,
-        paddingTop:15,
-        paddingBottom:15,
-        marginLeft:30,
-        marginRight:30,
-        backgroundColor:'#144b82',
-        borderRadius:10,
-        borderWidth: 1,
-        borderColor: '#144b82'
-    },
-    TextStyle:{
-        color:'#1e79cb',
-        textAlign:'center',
-    },
-    TextStyleWhite:{
-        color:'white',
-        textAlign:'center',
-    },
-    backgroundImage: {
-        flex: 1,
-        width: null,
-        height: null,
-    },
-});
+// // styling
+// const styles = StyleSheet.create({
+//     bigTitle:{
+//         color:'white',
+//         fontSize: 25,
+//     },
+//     SubmitButtonStyle: {
+//         width: 300,
+//         marginTop:10,
+//         paddingTop:15,
+//         paddingBottom:15,
+//         marginLeft:30,
+//         marginRight:30,
+//         backgroundColor:'white',
+//         borderRadius:10,
+//         borderWidth: 1,
+//         borderColor: '#fff'
+//     },
+//     SubmitButtonStyleDark: {
+//         width: 300,
+//         marginTop:10,
+//         paddingTop:15,
+//         paddingBottom:15,
+//         marginLeft:30,
+//         marginRight:30,
+//         backgroundColor:'#144b82',
+//         borderRadius:10,
+//         borderWidth: 1,
+//         borderColor: '#144b82'
+//     },
+//     TextStyle:{
+//         color:'#1e79cb',
+//         textAlign:'center',
+//     },
+//     TextStyleWhite:{
+//         color:'white',
+//         textAlign:'center',
+//     },
+//     backgroundImage: {
+//         flex: 1,
+//         width: null,
+//         height: null,
+//     },
+// });

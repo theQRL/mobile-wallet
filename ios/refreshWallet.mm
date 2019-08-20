@@ -36,7 +36,7 @@ RCT_EXPORT_METHOD(saveNodeInformation:(NSString*)node withPort:(NSString*) port 
 // Refresh the wallet balance and last transactions list
 RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSenderBlock)callback)
 {
-
+  NSLog(@"REFRESHING WALLET XCODE..." );
   // get the node url to connect to
   NSString* kHostAddress = [WalletHelperFunctions getNodeUrl];
   

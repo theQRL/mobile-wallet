@@ -110,7 +110,9 @@ export default class Wallet extends React.Component{
                     }
                     // Android
                     else {
+                        console.log("LOADING ANDROID .....")
                         AndroidWallet.refreshWallet(walletindex,  (err) => { Reactotron.log("WEEOEEEEE....."); }, (walletAddress, otsIndex, balance, keys)=> {
+                            console.log("GOT DATA....")
                             this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys)), tx_count: JSON.parse(keys).length })
                         });
                     }
@@ -153,7 +155,7 @@ export default class Wallet extends React.Component{
             this.setState({isLoading:true})
             // get the currect walletindex
             AsyncStorage.getItem("walletindex").then((walletindex) => {
-
+                console.log("REFRESHING WALLET....")
                 if (Platform.OS === 'ios'){
                     IosWallet.refreshWallet(walletindex, (error, walletAddress, otsIndex, balance, keys)=> {
                         this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys)), tx_count: JSON.parse(keys).length})
@@ -161,7 +163,7 @@ export default class Wallet extends React.Component{
                 }
                 // Android
                 else {
-                    AndroidWallet.refreshWallet(walletindex, (err) => {console.log(err);}, (walletAddress, otsIndex, balance, keys)=> {
+                    AndroidWallet.refreshWallet(walletindex, (err) => {console.log( "ERROR FROM JAVA :", err);}, (walletAddress, otsIndex, balance, keys)=> {
                         this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys)), tx_count: JSON.parse(keys).length})
                     });
                 }
@@ -238,7 +240,7 @@ export default class Wallet extends React.Component{
                 this.state.spinAnim,
               {
                 toValue: 1,
-                duration: 5000,
+                duration: 1000,
                 easing: Easing.linear
               }
             )).start();

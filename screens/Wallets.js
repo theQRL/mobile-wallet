@@ -6,6 +6,7 @@ var AndroidWallet = NativeModules.AndroidWallet;
 import PINCode from '@haskkor/react-native-pincode'
 import BackgroundTimer from 'react-native-background-timer';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import styles from './styles.js';
 
 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 export default class Wallets extends React.Component {
@@ -158,9 +159,9 @@ export default class Wallets extends React.Component {
         // only return information related to current wallet
         if (this.state.walletindex == rowData.index){
             return (
-                <View  style={{flex: 1, flexDirection:'row', alignSelf:'center', height:80, width:300}}>
+                <View  style={{flex: 1, flexDirection:'row', alignSelf:'center', height:80, width:wp(85)}}>
                     <View style={{flex:1, justifyContent:'center'}}>
-                        <Image source={require('../resources/images/wallet_unlocked.png')} resizeMode={Image.resizeMode.contain} style={{height:35, width:35}} />
+                        <Image source={require('../resources/images/wallet_unlocked.png')} resizeMode={Image.resizeMode.contain} style={styles.icon} />
                     </View>
                     <View style={{flex:5, justifyContent:'center'}}>
                         <Text style={{fontWeight:'bold'}}>{rowData.name}</Text>
@@ -168,7 +169,7 @@ export default class Wallets extends React.Component {
                     </View>
                     <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
                         <TouchableHighlight onPress={()=> this.props.navigation.navigate( "ShowQrCodeModal", {qrcode:rowData.address} )} underlayColor='white'>
-                            <Image source={require('../resources/images/qr_code_icon.png')} resizeMode={Image.resizeMode.contain} style={{height:35, width:35}} />
+                            <Image source={require('../resources/images/qr_code_icon.png')} resizeMode={Image.resizeMode.contain} style={styles.icon} />
                         </TouchableHighlight>
                     </View>
                 </View>
@@ -190,12 +191,12 @@ export default class Wallets extends React.Component {
 
             return (
                 <View>
-                    <View  style={{flex: 1, flexDirection:'row', alignSelf:'center', height:80, width:300}} onPress={()=> this.props.navigation.navigate('TxDetailsView', {txhash: txhash})} underlayColor='white'>
+                    <View  style={{flex: 1, flexDirection:'row', alignSelf:'center', height:80, width:wp(85)}} onPress={()=> this.props.navigation.navigate('TxDetailsView', {txhash: txhash})} underlayColor='white'>
                         <View style={{flex:6, flexDirection:'row'}}>
                             <TouchableHighlight onPress={() => this.openHexseedModal(rowData.index)  } underlayColor='white' style={{flex:1, justifyContent:'center'}}>    
                                 <View style={{flex:1, flexDirection:'row'}}>
                                     <View style={{flex:1, justifyContent:'center'}}>
-                                        <Image source={require('../resources/images/wallet_locked.png')} resizeMode={Image.resizeMode.contain} style={{height:35, width:35}} />
+                                        <Image source={require('../resources/images/wallet_locked.png')} resizeMode={Image.resizeMode.contain} style={styles.icon} />
                                     </View>
                                     <View style={{flex:5, justifyContent:'center', paddingLeft:5}}>
                                         <Text>{rowData.name}</Text>
@@ -206,12 +207,12 @@ export default class Wallets extends React.Component {
                         </View>
                         <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
                             <TouchableHighlight onPress={()=> this.props.navigation.navigate( "ShowQrCodeModal", {qrcode:rowData.address} )} underlayColor='white'>
-                                <Image source={require('../resources/images/qr_code_icon.png')} resizeMode={Image.resizeMode.contain} style={{height:35, width:35}} />
+                                <Image source={require('../resources/images/qr_code_icon.png')} resizeMode={Image.resizeMode.contain} style={styles.icon} />
                             </TouchableHighlight>
                         </View>
                         <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
                             <TouchableHighlight onPress={() => this.removeWalletPopup(rowData.index)  }  underlayColor='white'>
-                                <Image source={require('../resources/images/trash_solid.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
+                                <Image source={require('../resources/images/trash_solid.png')} resizeMode={Image.resizeMode.contain} style={styles.icon} />
                             </TouchableHighlight>                    
                         </View>
                     </View>
@@ -253,16 +254,16 @@ export default class Wallets extends React.Component {
 
                     <ScrollView style={{flex:2}}>
                         <View style={{height: hp(20), marginTop: hp(3), borderRadius:10, alignSelf:'center'}}>
-                            <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage2}>
+                            <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage}>
                                 <View style={{flex:1, alignSelf:'center', width:wp(96), justifyContent:'center', alignItems:'center'}}>
-                                    <Text style={{color:'white', fontSize:20}}>WALLETS</Text>
+                                    <Text style={styles.sectionTitle}>WALLETS</Text>
                                 </View>
                             </ImageBackground>
                         </View>
 
                         <View style={{flex:1, paddingTop: 10, marginBottom:40, width:wp(93), alignSelf: 'center',  borderRadius:10, backgroundColor:'white'}}>
                             <View style={{alignItems:'center'}}>
-                                <Text>CURRENT WALLET</Text>
+                                <Text style={styles.TextStyleBlack}>CURRENT WALLET</Text>
                                 <ListView automaticallyAdjustContentInsets={false} dataSource={this.state.dataSource} renderRow={this.renderCurrentWalletRow.bind(this)} enableEmptySections={true} />
                             </View>
                             <View style={{width:'100%', height:8, backgroundColor:'green', borderBottomWidth :1,borderBottomColor: 'green', borderBottomLeftRadius: 10, borderBottomRightRadius: 10}}></View>
@@ -271,7 +272,7 @@ export default class Wallets extends React.Component {
                         {this.state.walletlist.length > 1 ? 
                             <View style={{flex:1, paddingTop: 10, width: wp(93), alignSelf: 'center',  borderRadius:10, backgroundColor:'white'}}>
                                 <View style={{alignItems:'center'}}>
-                                    <Text>EXISTING WALLETS</Text>
+                                    <Text style={styles.TextStyleBlack}>EXISTING WALLETS</Text>
                                     <ListView automaticallyAdjustContentInsets={false} dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)} enableEmptySections={true} />
                                 </View>
                             </View>
@@ -294,30 +295,30 @@ export default class Wallets extends React.Component {
 }
 
 
-const styles = StyleSheet.create({
-    SubmitButtonStyle: {
-        alignSelf:'flex-end',
-        width: 150,
-        marginTop:30,
-        paddingTop:15,
-        paddingBottom:15,
-        backgroundColor:'#f33160',
-        borderWidth: 1,
-        borderColor: '#fff'
-    },
-    TextStyle:{
-        color:'#fff',
-        textAlign:'center',
-    },
-    backgroundImage: {
-        flex: 1,
-        width: null,
-        height: null,
-    },
-    backgroundImage2: {
-        alignSelf: 'flex-start',
-        left: 0
-    },
+// const styles = StyleSheet.create({
+//     SubmitButtonStyle: {
+//         alignSelf:'flex-end',
+//         width: 150,
+//         marginTop:30,
+//         paddingTop:15,
+//         paddingBottom:15,
+//         backgroundColor:'#f33160',
+//         borderWidth: 1,
+//         borderColor: '#fff'
+//     },
+//     TextStyle:{
+//         color:'#fff',
+//         textAlign:'center',
+//     },
+//     backgroundImage: {
+//         flex: 1,
+//         width: null,
+//         height: null,
+//     },
+//     backgroundImage2: {
+//         alignSelf: 'flex-start',
+//         left: 0
+//     },
 
 
-});
+// });

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import {Platform,StyleSheet,ImageBackground,Text,View,Modal,TouchableOpacity,TouchableHighlight} from 'react-native';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import styles from './styles.js';
 
 export default class CreateWalletTreeHeight extends React.Component {
 
@@ -46,41 +48,42 @@ export default class CreateWalletTreeHeight extends React.Component {
                 
                 <Modal visible={this.state.showModal} transparent={false}>
                     <ImageBackground source={require('../resources/images/signin_process_treeheight_bg.png')} style={styles.backgroundImage}>
-                        <View style={{flex:0.5}}></View>
+                        <View style={{flex:0.6}}></View>
                         <View style={{flex:1, alignItems:'center'}}>
-                            <Text>SET UP YOUR WALLET</Text>
+                            <Text style={styles.bigTitleBlack}>SET UP YOUR WALLET</Text>
                             <Text style={styles.bigTitle}>TREE HEIGHT</Text>
                             <View style={{width:100, height:1, backgroundColor:'white', marginTop:30,marginBottom:20}}></View>
-                        </View>
-                        <View style={{borderRadius:10, alignItems:'center', alignSelf:'center', justifyContent:'center',backgroundColor:'white', top:this.state.y3, left:this.state.modalx, width:300, position:'absolute'}}>
-                            <TouchableHighlight style={styles.selection} onPress={() => this.updateHeight(8)}>
-                                <Text style={styles.selectionText}>HEIGHT 8: SIGNATURES 256</Text>
-                            </TouchableHighlight>
-                            <TouchableHighlight style={styles.selection2} onPress={() => this.updateHeight(10)}>
-                                <Text style={styles.selectionText}>HEIGHT 10: SIGNATURES 1,024</Text>
-                            </TouchableHighlight>
-                            <TouchableHighlight style={styles.selection} onPress={() => this.updateHeight(12)}>
-                                <Text style={styles.selectionText}>HEIGHT 12: SIGNATURES 4,096</Text>
-                            </TouchableHighlight>
-                            <TouchableHighlight style={styles.selection2} onPress={() => this.updateHeight(14)}>
-                                <Text style={styles.selectionText}>HEIGHT 14: SIGNATURES 16,384</Text>
-                            </TouchableHighlight>
-                            <TouchableHighlight style={styles.selection} onPress={() => this.updateHeight(16)}>
-                                <Text style={styles.selectionText}>HEIGHT 16: SIGNATURES 262,144</Text>
-                            </TouchableHighlight>
+                        
+                            <View style={{height: hp(30) ,borderRadius:10, alignItems:'center', alignSelf:'center', justifyContent:'center',backgroundColor:'white', width:wp(85)}}>
+                                <TouchableHighlight style={styles.selection} onPress={() => this.updateHeight(8)}>
+                                    <Text style={styles.selectionText}>HEIGHT 8: SIGNATURES 256</Text>
+                                </TouchableHighlight>
+                                <TouchableHighlight style={styles.selection2} onPress={() => this.updateHeight(10)}>
+                                    <Text style={styles.selectionText}>HEIGHT 10: SIGNATURES 1,024</Text>
+                                </TouchableHighlight>
+                                <TouchableHighlight style={styles.selection} onPress={() => this.updateHeight(12)}>
+                                    <Text style={styles.selectionText}>HEIGHT 12: SIGNATURES 4,096</Text>
+                                </TouchableHighlight>
+                                <TouchableHighlight style={styles.selection2} onPress={() => this.updateHeight(14)}>
+                                    <Text style={styles.selectionText}>HEIGHT 14: SIGNATURES 16,384</Text>
+                                </TouchableHighlight>
+                                <TouchableHighlight style={styles.selection} onPress={() => this.updateHeight(16)}>
+                                    <Text style={styles.selectionText}>HEIGHT 16: SIGNATURES 262,144</Text>
+                                </TouchableHighlight>
+                            </View>
                         </View>
                     </ImageBackground>
                 </Modal>
 
                 <View style={{flex:0.6}}></View>
                 <View style={{flex:1, alignItems:'center'}} ref='Marker2' onLayout={({nativeEvent}) => {this.refs.Marker2.measure((x, y, width, height, pageX, pageY) => {this.setState({y1:y, y1_android:height});}) }}>
-                    <Text>SET UP YOUR WALLET</Text>
+                    <Text style={styles.bigTitleBlack}>SET UP YOUR WALLET</Text>
                     <Text style={styles.bigTitle}>TREE HEIGHT</Text>
                     <View style={{width:100, height:1, backgroundColor:'white', marginTop:30,marginBottom:20}}></View>
-                    <Text style={{color:'white'}}><Text style={{textDecorationLine:'underline'}}>Important:</Text> Once you run out of signatures you</Text>
-                    <Text style={{color:'white'}}>will need to create a new wallet.</Text>
-                    <Text style={{color:'white'}}>Be aware that wallet creation time increases</Text>
-                    <Text style={{color:'white'}}>with wallet height.</Text>
+                    <Text style={styles.descriptionText}><Text style={{textDecorationLine:'underline'}}>Important:</Text> Once you run out of signatures you</Text>
+                    <Text style={styles.descriptionText}>will need to create a new wallet.</Text>
+                    <Text style={styles.descriptionText}>Be aware that wallet creation time increases</Text>
+                    <Text style={styles.descriptionText}>with wallet height.</Text>
 
                     {Platform.OS === 'ios' ?
                         <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={this.showModal} ref='Marker' onLayout={({nativeEvent}) => {
@@ -102,7 +105,7 @@ export default class CreateWalletTreeHeight extends React.Component {
                         </TouchableOpacity>
                     }
                     <TouchableOpacity style={styles.SubmitButtonStyleRed} disabled={this.state.disableButton} activeOpacity = { .5 } onPress={ () => this.props.navigation.navigate('SignIn') }>
-                        <Text style={styles.TextStyleWhite}> CANCEL </Text>
+                        <Text style={styles.TextStyleWhite}> BACK </Text>
                     </TouchableOpacity>
                     {this.state.selectText ?  
                         <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={() => this.props.navigation.navigate('CreateWalletHashFunction',{treeHeight: this.state.treeHeight, signatureCounts: this.state.signatureCounts}) } >
@@ -116,83 +119,3 @@ export default class CreateWalletTreeHeight extends React.Component {
         );
     }
 }
-
-// styling
-const styles = StyleSheet.create({
-    selectionText:{
-        color: '#1e79cb',
-    },
-    selection: {
-        width:300,
-        marginTop:10,
-        marginBottom: 10,
-        alignSelf:'center',
-        justifyContent:'center',
-        paddingLeft:50,
-    },
-    selection2: {
-        backgroundColor:'#f6f6f6',
-        width:300,
-        
-        paddingTop:10,
-        paddingBottom:10,
-        
-        alignSelf:'center',
-        justifyContent:'center',
-        paddingLeft:50,
-    },
-    bigTitle:{
-        color:'white',
-        fontSize: 25,
-    },
-    SubmitButtonStyle: {
-        width: 300,
-
-        marginTop:10,
-        paddingTop:10,
-        paddingBottom:10,
-        marginLeft:30,
-        marginRight:30,
-        backgroundColor:'white',
-        borderRadius:10,
-        borderWidth: 1,
-        borderColor: '#fff'
-    },
-    SubmitButtonStyleDark: {
-        width: 300,
-        marginTop:10,
-        paddingTop:15,
-        paddingBottom:15,
-        marginLeft:30,
-        marginRight:30,
-        backgroundColor:'#144b82',
-        borderRadius:10,
-        borderWidth: 1,
-        borderColor: '#144b82'
-    },
-    SubmitButtonStyleRed: {
-        width: 300,
-        marginTop:10,
-        paddingTop:10,
-        paddingBottom:10,
-        marginLeft:30,
-        marginRight:30,
-        backgroundColor:'#D72E61',
-        borderRadius:10,
-        borderWidth: 1,
-        borderColor: '#D72E61'
-    },
-    TextStyle:{
-        color:'#1e79cb',
-        textAlign:'center',
-    },
-    TextStyleWhite:{
-        color:'white',
-        textAlign:'center',
-    },
-    backgroundImage: {
-        flex: 1,
-        width: null,
-        height: null,
-    },
-});

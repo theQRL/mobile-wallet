@@ -25,7 +25,8 @@ import Settings from './screens/Settings'
 import DeleteWalletModal from './screens/DeleteWalletModal'
 import UnlockAppModal from './screens/UnlockAppModal'
 import Reactotron from 'reactotron-react-native'
-
+import styles from './screens/styles.js';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 // Android and Ios native modules
 import {NativeModules} from 'react-native';
@@ -154,17 +155,17 @@ class AuthLoadingScreen extends React.Component {
 const CustomDrawerContentComponent = (props) => (
     <View style={{flex:1, backgroundColor:'#164278', paddingTop:50}}>
         <Image style={{height:80, width:80, alignSelf:'center'}} resizeMode={Image.resizeMode.contain}  source={require('./resources/images/qrl_logo_wallet.png')} />
-        <View style={{paddingTop:50}}>
+        <View style={{paddingTop:hp(5)}}>
             <DrawerItems {...props}/>
         </View>
         <ImageBackground source={require('./resources/images/lower_drawer_bg.png')} style={{flex:1, height:null, width:null}}>
-            <View style={{paddingLeft: 40, paddingTop:50}}>
-                <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://theqrl.org/')}>QRL WEBSITE</Text>
-                <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://qrl.foundation/')}>QRL FOUNDATION</Text>
-                <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://twitter.com/qrledger')}>TWITTER</Text>
-                <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://www.reddit.com/r/qrl')}>REDDIT</Text>
-                <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://discord.gg/jBT6BEp')}>DISCORD</Text>
-                <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('mailto:support@theqrl.org') }>SUPPORT</Text>
+            <View style={styles.secondMenu}>
+                <Text style={styles.secondMenuItems} onPress={() => Linking.openURL('https://theqrl.org/')}>QRL WEBSITE</Text>
+                <Text style={styles.secondMenuItems} onPress={() => Linking.openURL('https://qrl.foundation/')}>QRL FOUNDATION</Text>
+                <Text style={styles.secondMenuItems} onPress={() => Linking.openURL('https://twitter.com/qrledger')}>TWITTER</Text>
+                <Text style={styles.secondMenuItems} onPress={() => Linking.openURL('https://www.reddit.com/r/qrl')}>REDDIT</Text>
+                <Text style={styles.secondMenuItems} onPress={() => Linking.openURL('https://discord.gg/jBT6BEp')}>DISCORD</Text>
+                <Text style={styles.secondMenuItems} onPress={() => Linking.openURL('mailto:support@theqrl.org') }>SUPPORT</Text>
             </View>
     	</ImageBackground>
     </View>
@@ -198,7 +199,7 @@ const MainDrawerMenu = DrawerNavigator(
         navigationOptions: {
           drawerLabel: 'BALANCE',
           drawerIcon: ({ tintColor }) => (
-            <Image source={require('./resources/images/transaction_history_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain}  style={{width:25, height:25}}/>
+            <Image source={require('./resources/images/transaction_history_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain}  style={styles.icon}/>
           ),
           // drawerLabel: 'Settings',
           // drawerIcon: ({ tintColor }) => <Icon name="cog" size={17} />,
@@ -230,6 +231,10 @@ const MainDrawerMenu = DrawerNavigator(
       contentOptions: {
         labelStyle: {
           color: 'white',
+          fontSize: wp(3.3)
+        },
+        itemStyle:{
+          height: hp(6)
         }
       }
     }

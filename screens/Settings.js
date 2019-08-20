@@ -7,6 +7,7 @@ var AndroidWallet = NativeModules.AndroidWallet;
 import BackgroundTimer from 'react-native-background-timer';
 let isDefaultNode = 'true';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import styles from './styles.js';
 
 export default class Settings extends React.Component {
 
@@ -74,7 +75,7 @@ export default class Settings extends React.Component {
         // AsyncStorage.multiGet(["nodeUrl", "nodePort"]).then(storageResponse => {
             drawerLabel: (
             <View style={{flex:1, height:50, flexDirection: 'row', justifyContent:'center', paddingLeft: 15 }}>
-                <View style={{flex:1, justifyContent:'center'}}><Text style={{color:'white', fontSize:14, fontWeight:'bold'}}>SETTINGS</Text></View>
+                <View style={{flex:1, justifyContent:'center'}}><Text style={{color:'white', fontSize:wp(3.3), fontWeight:'bold'}}>SETTINGS</Text></View>
                 <View style={{flex:1, alignItems:'flex-end', justifyContent:'center', paddingRight:10}}>
                     { global.isDefaultNode ? 
                     null
@@ -199,23 +200,25 @@ export default class Settings extends React.Component {
                             </TouchableHighlight>
                         </View>
 
-                        <View style={{height: hp(20), marginTop: hp(3)}}>
-                            <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage2}>
+                        <View style={{height: hp(20), marginTop: hp(3) , borderRadius:10, alignSelf:'center'}}>
+                            <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage}>
                                 <View style={{flex:1, alignSelf:'center', width: wp(96), justifyContent:'center', alignItems:'center'}}>
-                                    <Text style={{color:'white', fontSize:20}}>SETTINGS</Text>
+                                    <Text style={styles.sectionTitle}>SETTINGS</Text>
                                 </View>
                             </ImageBackground>
                         </View>
 
-                        <View style={{ width:wp(93), height:hp(60), paddingBottom:100, alignSelf: 'center',  borderRadius:10, backgroundColor:'white', padding: 30}}>
+                        <View style={{ width:wp(93), height:hp(60), paddingBottom:100, alignSelf:'center',  borderRadius:10, backgroundColor:'white', padding: 30}}>
                             <Text>NODE URL</Text>
-                            <TextInput onChangeText={ (text) => this.onUrlChange(text) } value={this.state.nodeUrl} style={{backgroundColor:'#ebe8e8', height:50}} />
+                            <TextInput underlineColorAndroid="transparent" onChangeText={ (text) => this.onUrlChange(text) } value={this.state.nodeUrl} style={{ borderRadius: 10, backgroundColor:'#ebe8e8', height:hp(6)}} />
                             <Text>{'\n'}PORT</Text>
-                            <TextInput keyboardType={'numeric'} onChangeText={ (text) => this.onPortChange(text) } value={this.state.nodePort} style={{backgroundColor:'#ebe8e8', height:50}} />
+                            <TextInput underlineColorAndroid="transparent" keyboardType={'numeric'} onChangeText={ (text) => this.onPortChange(text) } value={this.state.nodePort} style={{borderRadius: 10, backgroundColor:'#ebe8e8', height:hp(6) }} />
 
-                            <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => { this.saveSettings() }}>
-                                <Text style={styles.TextStyle}> SAVE </Text>
-                            </TouchableOpacity>
+                            <View style={{alignItems: 'center', marginTop: hp(4)}}>
+                                <TouchableOpacity style={styles.SubmitButtonStyleRedSmall} activeOpacity = { .5 } onPress={ () => { this.saveSettings() }}>
+                                    <Text style={styles.TextStyleWhite}> SAVE </Text>
+                                </TouchableOpacity>
+                            </View>
 
                             <View style={{width:'100%',height:1, backgroundColor:'lightgray', alignSelf:'flex-end', marginTop: 10}}></View>
                             <View style={{ flexDirection: 'row', justifyContent:'center', height:70 }}>
@@ -236,53 +239,3 @@ export default class Settings extends React.Component {
         }
     }
 }
-
-// styling
-const styles = StyleSheet.create({
-    SubmitButtonStyle: {
-        alignSelf:'center',
-        width: 150,
-        marginTop:30,
-        paddingTop:15,
-        paddingBottom:15,
-        backgroundColor:'#f33160',
-        borderWidth: 1,
-        borderColor: '#fff'
-    },
-    SubmitButtonStyleSmall: {
-        alignSelf:'center',
-        width: 130,
-        marginTop:30,
-        paddingTop:15,
-        paddingBottom:15,
-        backgroundColor:'#f33160',
-        borderWidth: 1,
-        borderColor: '#fff',
-        marginRight: 10,
-        marginLeft: 10
-    },
-    SubmitButtonStyleSmallBlue: {
-        alignSelf:'center',
-        width: 130,
-        marginTop:30,
-        paddingTop:15,
-        paddingBottom:15,
-        backgroundColor:'#144b82',
-        borderWidth: 1,
-        borderColor: '#fff',
-        marginRight: 10,
-        marginLeft: 10
-    },
-    TextStyle:{
-        color:'#fff',
-        textAlign:'center',
-    },
-    backgroundImage: {
-        flex: 1,
-        width: wp(100),
-        height: hp(100),
-    },
-    backgroundImage2: {
-        alignSelf: 'center',
-    },
-});

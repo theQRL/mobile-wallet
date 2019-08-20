@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Platform, StyleSheet, ImageBackground, Text, View, Image, ActionSheetIOS, TextInput, Button, ActivityIndicator, Picker, AsyncStorage, TouchableOpacity, Alert, Modal, TouchableHighlight, KeyboardAvoidingView} from 'react-native';
+import styles from './styles.js';
 
 // Android and Ios native modules
 import {NativeModules} from 'react-native';
@@ -9,6 +10,7 @@ var AndroidWallet = NativeModules.AndroidWallet;
 var GLOBALS = require('./globals');
 import PINCode from '@haskkor/react-native-pincode'
 import QRCodeScanner from 'react-native-qrcode-scanner';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default class OpenExistingWalletWithHexseed extends React.Component {
 
@@ -208,17 +210,17 @@ export default class OpenExistingWalletWithHexseed extends React.Component {
                             </View>
                             :
                             <View style={{alignItems:'center'}}>
-                                <Text style={{color:'white', fontSize: 18}}>1. Enter your hexseed below</Text>
+                                <Text style={styles.smallTitle}>1. Enter your hexseed below</Text>
                                 <TextInput onChangeText={ (text) => this._onHexSeedChange(text) } editable={!this.state.isLoading}  underlineColorAndroid="transparent" style={styles.hexInput} value={this.state.hexseed} />
-                                <Text style={{color:'white', fontSize: 12, marginTop:10}}> OR </Text>
+                                <Text style={{color:'white', fontSize: hp(1.5), marginTop:10}}> OR </Text>
                                 <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => {this.launchHexModal(true)} } >
                                     <Text style={styles.TextStyle}> SCAN HEXSEED QR CODE </Text>
                                 </TouchableOpacity>
-                                <Text style={{color:'white', fontSize: 18, marginTop:10}}>2. Choose a 4-digit PIN </Text>
+                                <Text style={styles.smallTitle}>2. Choose a 4-digit PIN </Text>
                                 <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => {this.launchModal(true, null)} }>
                                     <Text style={styles.TextStyle}> CREATE 4-DIGIT PIN </Text>
                                 </TouchableOpacity>
-                                <Text style={{color:'white', fontSize: 18, marginTop:10}}>3. Give your wallet a name</Text>
+                                <Text style={styles.smallTitle}>3. Give your wallet a name</Text>
                                 <TextInput onChangeText={ (text) => this._onNameChange(text) } editable={!this.state.isLoading}  underlineColorAndroid="transparent" style={styles.hexInput} value={this.state.name} />
                                 <TouchableOpacity style={styles.SubmitButtonStyleRed} activeOpacity = { .5 } onPress={ () => this.props.navigation.navigate('OpenExistingWalletOptions') }>
                                     <Text style={styles.TextStyleWhite}> BACK </Text>
@@ -232,84 +234,3 @@ export default class OpenExistingWalletWithHexseed extends React.Component {
         );
     }
 }
-
-// styling
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    bigTitle:{
-        color:'white',
-        fontSize: 25,
-    },
-    SubmitButtonStyle: {
-        width: 300,
-        marginTop:10,
-        paddingTop:10,
-        paddingBottom:10,
-        marginLeft:30,
-        marginRight:30,
-        backgroundColor:'white',
-        borderRadius:10,
-        borderWidth: 1,
-        borderColor: '#fff'
-    },
-    SubmitButtonStyleRed: {
-        width: 300,
-        marginTop:10,
-        paddingTop:10,
-        paddingBottom:10,
-        marginLeft:30,
-        marginRight:30,
-        backgroundColor:'#D72E61',
-        borderRadius:10,
-        borderWidth: 1,
-        borderColor: '#D72E61'
-    },
-    TextStyle:{
-        color:'#1e79cb',
-        textAlign:'center',
-    },
-    TextStyleWhite:{
-        color:'white',
-        textAlign:'center',
-    },
-    backgroundImage: {
-        flex: 1,
-        width: null,
-        height: null,
-    },
-    hexInput:{
-        backgroundColor:'#ebe8e8',
-        height:50,
-        width:300,
-        borderRadius:10,
-        marginTop:15
-    },
-    centerText: {
-        flex: 1,
-        fontSize: 18,
-        paddingTop: 80,
-        color: '#777',
-    },
-    textBold: {
-        fontWeight: '500',
-        color: '#000',
-    },
-    buttonText: {
-        fontSize: 21,
-        color: 'rgb(0,122,255)',
-    },
-    buttonTouchable: {
-        padding: 16,
-  },
-  CancelTextStyle:{
-      alignSelf:'center',
-      color: 'red',
-      textAlign:'center',
-      fontSize:18,
-      paddingTop:5
-  },
-});

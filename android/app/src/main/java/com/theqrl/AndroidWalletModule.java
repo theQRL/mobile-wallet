@@ -290,6 +290,8 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
         int completed = 0;
 
 
+        System.out.println("CONNECTING TO NODE.........");
+        System.out.println(server);
 
         ManagedChannel channel = OkHttpChannelBuilder.forAddress(server , port).usePlaintext(true).build();
         PublicAPIGrpc.PublicAPIBlockingStub blockingStub = PublicAPIGrpc.newBlockingStub(channel);
@@ -301,9 +303,10 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
                     + Character.digit(walletAddress.charAt(i+1), 16));
         }
         try {
+            System.out.println("NODE CONNECTED SUCCESS.........");
             Qrl.GetAddressStateReq getAddressStateReq = Qrl.GetAddressStateReq.newBuilder().setAddress(ByteString.copyFrom(data)).build();
             Qrl.GetAddressStateResp getAddressStateResp = blockingStub.getAddressState(getAddressStateReq);
-
+            System.out.println("GOT ADDRESS STATE.........");
 
             // number of tx of the wallet
             int tx_count = getAddressStateResp.getState().getTransactionHashesCount();
@@ -507,6 +510,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
             errorCallback.invoke(e.getMessage());
         } catch (RuntimeException err){
             System.out.println("RUNTIME ERROR.........");
+            System.out.println(err.getMessage());
             errorCallback.invoke(err.getMessage());
         }
     }
