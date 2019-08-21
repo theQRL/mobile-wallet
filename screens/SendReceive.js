@@ -16,13 +16,15 @@ var AndroidWallet = NativeModules.AndroidWallet;
 import QRCode from 'react-native-qrcode';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 var GLOBALS = require('./globals');
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import styles from './styles.js';
 
 export default class SendReceive extends React.Component {
 
     static navigationOptions = {
         drawerLabel: 'SEND & RECEIVE',
         drawerIcon: ({ tintColor }) => (
-            <Image source={require('../resources/images/send_receive_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain}  style={{width:25, height:25}} />
+            <Image source={require('../resources/images/send_receive_drawer_icon_light.png')} resizeMode={'contain'}  style={{width:25, height:25}} />
         ),
     };
 
@@ -70,19 +72,19 @@ export default class SendReceive extends React.Component {
             // Ios
             if (Platform.OS === 'ios'){
                 // iPhone Plus
-                if (DeviceInfo.getModel().includes("Plus")){
-                    this.setState({paddingTopMain:40, paddingTopCentral: 10, menuHeight:80})
-                }
-                // iPhoneX
-                else {
-                    if (DeviceInfo.getModel().includes("X")){
-                        this.setState({paddingTopMain:70, paddingTopCentral: 10, menuHeight:80})
-                    }
-                    // other iPhones
-                    else {
-                        this.setState({paddingTopMain:15, paddingTopCentral:0, menuHeight:50})
-                    }
-                }
+                // if (DeviceInfo.getModel().includes("Plus")){
+                //     this.setState({paddingTopMain:40, paddingTopCentral: 10, menuHeight:80})
+                // }
+                // // iPhoneX
+                // else {
+                //     if (DeviceInfo.getModel().includes("X")){
+                //         this.setState({paddingTopMain:70, paddingTopCentral: 10, menuHeight:80})
+                //     }
+                //     // other iPhones
+                //     else {
+                //         this.setState({paddingTopMain:15, paddingTopCentral:0, menuHeight:50})
+                //     }
+                // }
                 IosWallet.refreshWallet(walletindex, (error, walletAddress, otsIndex, balance, keys)=> {
                     this.setState({walletAddress: walletAddress, balance: balance/ 1000000000, otsIndex: otsIndex, isLoading:false})
                 });
@@ -254,17 +256,32 @@ export default class SendReceive extends React.Component {
             // <KeyboardAvoidingView style={{flex:1, paddingTop: this.state.paddingTopCentral, paddingBottom:100, width:330, alignSelf: 'center', borderRadius:10}} behavior="padding">
 
             // View for iOS
-            if (Platform.OS === 'ios'){
+            // if (Platform.OS === 'ios'){
                 return (
                     <ScrollView scrollEnabled={false} contentContainerStyle={{flex: 1}} >
 
                     <Modal onRequestClose={ console.log("") } animationType="fade" visible={this.state.showOtsModal} transparent={true}>
-                        <View style={{flex:1, backgroundColor:'rgba(0, 0, 0, 0.5)', width:'100%', height:'100%'}}>
-                            <View style={{width:300, height:300, backgroundColor:'white',alignItems:'center', alignSelf:'center', justifyContent:'center', marginTop:200}}>
-                                <Text>Change OTS key index</Text>
-                                <TextInput keyboardType={'numeric'} onChangeText={ (text) => this._onOtsChange(text) } style={{backgroundColor:'#ebe8e8', height:50, width:200}} />
-                                <Button title='Cancel' onPress={() => {this.setState({showOtsModal:false})}}/>
-                                <Button title='Ok' onPress={() => {this.setState({otsIndex: this.state.newOtsIndex, showOtsModal:false})}}/>
+                        <View
+                            style={{
+                            position: 'absolute',
+                            width: '100%',
+                            height: '100%',
+                            justifyContent: 'center',
+                            backgroundColor: 'rgba(100,100,100, 0.5)',
+                            padding: 20,
+                        }}
+                        >
+                            <View style={{borderRadius: 10, width:wp(85), height:hp(30), backgroundColor:'white',alignItems:'center', alignSelf:'center', justifyContent:'center', top:hp(10), position: 'absolute'}}>
+                                <Text style={styles.descriptionTextBlack}>Change OTS key index</Text>
+                                <TextInput autoFocus={true} underlineColorAndroid="transparent" keyboardType={'numeric'} onChangeText={ (text) => this._onOtsChange(text) } style={{borderRadius: 10, backgroundColor:'#ebe8e8', height:hp(6), width:wp(65), marginBottom: hp(3)}} />
+                                <View>
+                                    <TouchableOpacity style={styles.SubmitButtonStyleRedSmall} activeOpacity = { .5 } onPress={() => {this.setState({showOtsModal:false})}}>
+                                        <Text style={styles.TextStyleWhite}> CANCEL </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.SubmitButtonStyleBlueSmall} activeOpacity = { .5 } onPress={() => {this.setState({otsIndex: this.state.newOtsIndex, showOtsModal:false})}}>
+                                        <Text style={styles.TextStyleWhite}> CONFIRM </Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
                     </Modal>
@@ -274,14 +291,31 @@ export default class SendReceive extends React.Component {
                         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                             <QRCodeScanner onRead={this.qrScanned.bind(this)}
                                 topContent={
-                                    <Text style={styles.centerText}>
-                                        Scan QRL wallet QR code
-                                    </Text>
+                                    <View style={{flex:1, width: wp(100), backgroundColor: '#16447B'}}>
+                                        {Platform.OS === 'ios' ?
+                                        <View style={{height: hp(15), marginTop: hp(6) , borderRadius:10, alignSelf:'center'}}>
+                                        <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage}>
+                                            <View style={{flex:1, alignSelf:'center', width: wp(96), height: wp(10), justifyContent:'center', alignItems:'center'}}>
+                                                <Text style={styles.sectionTitle}>SCAN WALLET QR CODE</Text>
+                                            </View>
+                                        </ImageBackground>
+                                    </View>
+                                        :
+                                        <View style={{height: hp(15), marginTop: hp(2) , borderRadius:10, alignSelf:'center'}}>
+                                            <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage}>
+                                                <View style={{flex:1, alignSelf:'center', width: wp(96), height: wp(10), justifyContent:'center', alignItems:'center'}}>
+                                                    <Text style={styles.sectionTitle}>SCAN WALLET QR CODE</Text>
+                                                </View>
+                                            </ImageBackground>
+                                        </View>
+                                    }
+                                        
+                                    </View>
                                 }
                                 bottomContent={
-                                    <TouchableOpacity onPress={() => this.showModal(false)} >
-                                        <Text style={styles.CancelTextStyle}>Dismiss</Text>
-                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.SubmitButtonStyleRedSmall} activeOpacity = { .5 } onPress={() => this.showModal(false)} >
+                                        <Text style={styles.TextStyleWhite}> DISMISS </Text>
+                                    </TouchableOpacity> 
                                 }
                             />
                         </View>
@@ -289,16 +323,16 @@ export default class SendReceive extends React.Component {
 
 
                     <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
-                        <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
+                        <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:hp(8), paddingLeft:30}}>
                             <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
-                                <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
+                                <Image source={require('../resources/images/sandwich.png')} resizeMode={'contain'} style={{height:25, width:25}} />
                             </TouchableHighlight>
                         </View>
                         <FlashMessage/> 
 
-                        <View style={{ height:130, width:330, borderRadius:10, alignSelf:'center', marginTop: 30}}>
-                            <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage2}>
-                                <View style={{flex:1, alignSelf:'center', width:330, justifyContent:'center', alignItems:'center', padding:10}}>
+                        <View style={{ height: hp(20), marginTop: hp(3), borderRadius:10, alignSelf:'center'}}>
+                            <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage}>
+                                <View style={{flex:1, alignSelf:'center', width:wp(96), justifyContent:'center', alignItems:'center', padding:10}}>
                                     <Text style={{color:'white', fontWeight: "bold", fontSize:12, textAlign:'center'}} selectable={true}>Q{this.state.walletAddress}</Text>
                                     <Text style={{color:'white',fontSize:30}}>{this.state.balance} QRL</Text>
                                 </View>
@@ -307,22 +341,33 @@ export default class SendReceive extends React.Component {
 
 
                         {this.state.view == "send"?
-                            <KeyboardAvoidingView style={{flex:1, paddingTop: this.state.paddingTopCentral, paddingBottom:100, width:330, alignSelf: 'center', borderRadius:10}} behavior="padding">
+                            <KeyboardAvoidingView style={{flex:1, paddingBottom:100, width:wp(93), alignSelf: 'center'}} behavior="padding">
                                 <ScrollView style={{flex:1}}>
-                                    <View style={{ height:this.state.menuHeight, backgroundColor:'white', flexDirection:'row'}}>
-                                        <TouchableOpacity onPress={ this.switchSend } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'white'}}>
+                                    <View style={{ height:hp(8), backgroundColor:'white', flexDirection:'row', borderTopLeftRadius:10, borderTopRightRadius:10}}>
+                                        <TouchableOpacity onPress={ this.switchSend } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'white', borderTopLeftRadius:10}}>
                                             <Text>SEND</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={ this.switchReceive } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fafafa'}}>
+                                        <TouchableOpacity onPress={ this.switchReceive } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fafafa', borderTopRightRadius:10}}>
                                             <Text>RECEIVE</Text>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={{width:'50%',height:1, backgroundColor:'red'}}></View>
-                                    <View style={{height:300, backgroundColor:'white', width:330, padding:30}}>
+                                    
+                                    <View style={{height:hp(50), backgroundColor:'white', width:wp(93), padding:30, borderBottomRightRadius:10, borderBottomLeftRadius:10}}>
                                         <Text>RECIPIENT</Text>
-                                        <TextInput onChangeText={ (text) => this._onRecipientChange(text) } value={this.state.recipient} style={{backgroundColor:'#ebe8e8', height:50}} />
+
+                                        <View style={styles.SectionStyle}>
+                                            <TextInput underlineColorAndroid="transparent" onChangeText={ (text) => this._onRecipientChange(text) } value={this.state.recipient} style={{backgroundColor:'#ebe8e8', height:hp(6), flex:1, borderRadius: 10}} />
+                                            <TouchableOpacity style={styles.SubmitButtonStyle3} activeOpacity = { .5 } onPress={() => this.showModal(true)} >
+                                                <Image source={require('../resources/images/scanQrCode.png')} style={styles.ImageStyle}/>
+                                            </TouchableOpacity>
+                                        </View>
+
+
                                         <Text>{'\n'}AMOUNT</Text>
-                                        <TextInput keyboardType={'numeric'} onChangeText={ (text) => this._onAmountChange(text) } value={this.state.amount} style={{backgroundColor:'#ebe8e8', height:50}} />
+                                        <View style={styles.SectionStyle}>
+                                            <TextInput underlineColorAndroid="transparent" keyboardType={'numeric'} onChangeText={ (text) => this._onAmountChange(text) } value={this.state.amount} style={{backgroundColor:'#ebe8e8', height:hp(6), flex:1, borderRadius: 10}} />
+                                        </View>
                                         <View style={{flexDirection:'row', paddingTop:10}}>
                                             <View style={{flex:1, alignItems:'flex-start'}}><Text>Fee: <Text style={{color:'red'}}>0.01</Text></Text></View>
                                             <View style={{flex:1, alignItems:'flex-end'}}>
@@ -332,257 +377,54 @@ export default class SendReceive extends React.Component {
                                             </View>
                                         </View>
 
-                                        <TouchableOpacity style={styles.SubmitButtonStyleBig} activeOpacity = { .5 } onPress={ this.checkAddress } >
-                                            <Text style={styles.TextStyle}> REVIEW AND CONFIRM</Text>
-                                        </TouchableOpacity>
-
-                                        <TouchableOpacity style={styles.SubmitButtonStyle3} activeOpacity = { .5 } onPress={() => this.showModal(true)} >
-                                            <Image source={require('../resources/images/scan.png')} resizeMode={Image.resizeMode.contain} style={{height:80, width:80}} />
-                                        </TouchableOpacity>
+                                        <View style={{alignSelf:'center', marginTop: hp(5)}}>
+                                            <TouchableOpacity style={styles.SubmitButtonStyleRedSmall} activeOpacity = { .5 } onPress={ this.checkAddress } >
+                                                <Text style={styles.TextStyleWhite}> REVIEW AND CONFIRM</Text>
+                                            </TouchableOpacity>
+                                        </View>
                                     </View>
                                 </ScrollView>
                             </KeyboardAvoidingView>
                             :
-                            <View style={{flex:1, paddingTop: this.state.paddingTopCentral, paddingBottom:100, width:330, alignSelf: 'center', borderRadius:10}}>
-                                <View style={{height:this.state.menuHeight, backgroundColor:'white', flexDirection:'row'}}>
-                                    <TouchableOpacity onPress={ this.switchSend } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fafafa'}}>
+                            <View style={{flex:1, paddingBottom:100, width:wp(93), alignSelf: 'center'}}>
+                                <View style={{height: hp(8), backgroundColor:'white', flexDirection:'row',  borderTopLeftRadius:10, borderTopRightRadius:10}}>
+                                    <TouchableOpacity onPress={ this.switchSend } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fafafa', borderTopLeftRadius:10}}>
                                         <Text>SEND</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={ this.switchReceive } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'white'}}>
+                                    <TouchableOpacity onPress={ this.switchReceive } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'white', borderTopRightRadius:10}}>
                                         <Text>RECEIVE</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={{width:'50%',height:1, backgroundColor:'red', alignSelf:'flex-end'}}></View>
-                                <View style={{height:300, backgroundColor:'white', width:330, padding:30, alignItems:'center'}}>
-                                    <QRCode value={QrWalletAddress} size={150} bgColor='black' fgColor='white'/>
+
+                                <View style={{height:hp(50), backgroundColor:'white', width:wp(93), padding:10, alignItems:'center', borderBottomRightRadius:10, borderBottomLeftRadius:10}}>
+                                    <QRCode value={QrWalletAddress} size={hp(20)} bgColor='black' fgColor='white'/>
                                     <Text style={{fontWeight:'bold', paddingTop:30}}>Your public wallet address</Text>
-                                    <Text selectable={true}>Q{this.state.walletAddress}</Text>
-                                </View>
-                                <View>
-                                    <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => { Clipboard.setString('Q'+this.state.walletAddress);
+                                    <Text selectable={true} style={styles.smallTextBlack}>Q{this.state.walletAddress}</Text>
+
+                                    <View style={{alignSelf:'center', marginTop: hp(3)}}>
+                                    <TouchableOpacity style={styles.SubmitButtonStyleRedSmall} activeOpacity = { .5 }  onPress={ () => { Clipboard.setString('Q'+this.state.walletAddress);
                                         showMessage({
                                             message: "QRL address copied to clipboard",
                                             type: "info",
                                             backgroundColor: "#EB2E42"
                                         });
                                     }}>
-                                    <Text style={styles.TextStyle}> COPY </Text>
+                                        <Text style={styles.TextStyleWhite}> COPY </Text>
                                     </TouchableOpacity>
                                 </View>
+
+
+                                </View>
+
+                                
+                               
                             </View>
                         }
                     </ImageBackground>
                     
                     </ScrollView>
                 );
-            }
-            // View for Android
-            else {
-                return (
-                    <KeyboardAvoidingView style={{flex:1}} keyboardVerticalOffset={-200} behavior="padding">
-
-
-                        <Modal onRequestClose={ console.log("") } animationType="fade" visible={this.state.showOtsModal} transparent={true}>
-                            <View style={{flex:1, backgroundColor:'rgba(0, 0, 0, 0.5)', width:'100%', height:'100%'}}>
-                                <View style={{width:300, height:300, backgroundColor:'white',alignItems:'center', alignSelf:'center', justifyContent:'center', marginTop:200}}>
-                                    <Text>Change OTS key index</Text>
-                                    <TextInput keyboardType={'numeric'} onChangeText={ (text) => this._onOtsChange(text) } style={{backgroundColor:'#ebe8e8', height:50, width:200}} />
-                                    <Button title='Cancel' onPress={() => {this.setState({showOtsModal:false})}}/>
-                                    <Button title='Ok' onPress={() => {this.setState({otsIndex: this.state.newOtsIndex, showOtsModal:false})}}/>
-                                </View>
-                            </View>
-                        </Modal>
-
-
-                        <Modal onRequestClose={ console.log("") } animationType="slide" visible={this.state.showModal}>
-                            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                                <QRCodeScanner onRead={this.qrScanned.bind(this)}
-                                    topContent={
-                                        <Text style={styles.centerText}>
-                                            Scan QRL wallet QR code
-                                        </Text>
-                                    }
-                                    bottomContent={
-                                        <TouchableOpacity onPress={() => this.showModal(false)} >
-                                            <Text style={styles.CancelTextStyle}>Dismiss</Text>
-                                        </TouchableOpacity>
-                                    }
-                                />
-                            </View>
-                        </Modal>
-
-                        <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
-                            <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
-                                <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
-                                <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
-                                </TouchableHighlight>
-                            </View>
-                            <FlashMessage/> 
-
-                            <View style={{ alignItems:'center', paddingTop:20}}>
-                                <ImageBackground source={require('../resources/images/backup_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:120, width:330, justifyContent:'center',alignItems:'center', padding:10}} >
-                                    <Text style={{color:'white', fontWeight: "bold", fontSize:12, textAlign:'center'}} selectable={true}>Q{this.state.walletAddress}</Text>
-                                    <Text style={{color:'white',fontSize:30}}>{this.state.balance} QRL</Text>
-                                </ImageBackground>
-                                {/* <TouchableOpacity style={styles.SubmitButtonStyle2} activeOpacity = { .5 } onPress={ this.refreshWallet }>
-                                    <Image source={require("../resources/images/refresh.png")} style={{height:40, width:40}}/>
-                                </TouchableOpacity> */}
-                            </View>
-
-                            {this.state.view == "send"?
-                                <View style={{flex:1, paddingTop: this.state.paddingTopCentral, paddingBottom:100, width:330, alignSelf: 'center', borderRadius:10}} >
-                                    <View style={{height:50, backgroundColor:'white', flexDirection:'row'}}>
-                                        <TouchableOpacity onPress={ this.switchSend } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'white'}}>
-                                            <Text>SEND</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={ this.switchReceive } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fafafa'}}>
-                                            <Text>RECEIVE</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View style={{width:'50%',height:1, backgroundColor:'red'}}></View>
-                                    <View style={{height: 290, backgroundColor:'white', width:330, padding:30}}>
-                                        <Text>RECIPIENT</Text>
-                                        <TextInput onChangeText={ (text) => this._onRecipientChange(text) } underlineColorAndroid="transparent" value={this.state.recipient} style={{backgroundColor:'#ebe8e8', height:40}} />
-                                        <Text>{'\n'}AMOUNT</Text>
-                                        <TextInput keyboardType={'numeric'} underlineColorAndroid="transparent" onChangeText={ (text) => this._onAmountChange(text) } value={this.state.amount} style={{backgroundColor:'#ebe8e8', height:40}} />
-                                        <View style={{flexDirection:'row', paddingTop:10}}>
-                                            <View style={{flex:1, alignItems:'flex-start'}}><Text>Fee: <Text style={{color:'red'}}>0.01</Text></Text></View>
-                                            <View style={{flex:1, alignItems:'flex-end'}}>
-                                                <TouchableHighlight underlayColor={'white'} onPress={() => {this.setState({showOtsModal:true})}}>
-                                                    <Text>OTS Key Index: <Text style={{color:'red'}}>{this.state.otsIndex}</Text></Text>
-                                                </TouchableHighlight>
-                                            </View>
-
-                                        </View>
-
-                                        <TouchableOpacity style={styles.SubmitButtonStyleBig} activeOpacity = { .5 } onPress={ this.checkAddress }>
-                                            <Text style={styles.TextStyle}> REVIEW AND CONFIRM </Text>
-                                        </TouchableOpacity>
-                                    </View>
-
-                                    <View style={{flex:0.1}}>
-                                        <TouchableOpacity style={styles.SubmitButtonStyle3} activeOpacity = { .5 } onPress={() => this.showModal(true)} >
-                                            <Image source={require('../resources/images/scan.png')} resizeMode={Image.resizeMode.contain} style={{height:70, width:70}} />
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                                :
-                                <View style={{flex:1, paddingTop: this.state.paddingTopCentral, paddingBottom:100, width:330, alignSelf: 'center', borderRadius:10}}>
-                                    <View style={{height:50, backgroundColor:'white', flexDirection:'row'}}>
-
-                                        <TouchableOpacity onPress={ this.switchSend } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fafafa'}}>
-                                            <Text>SEND</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={ this.switchReceive } style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'white'}}>
-                                            <Text>RECEIVE</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View style={{width:'50%',height:1, backgroundColor:'red', alignSelf:'flex-end'}}></View>
-                                    <View style={{height:300, backgroundColor:'white', width:330, padding:30, alignItems:'center'}}>
-                                        <QRCode value={QrWalletAddress} size={150} bgColor='black' fgColor='white'/>
-                                        <Text style={{fontWeight:'bold', paddingTop:30}}>Your public wallet address</Text>
-                                        <Text selectable={true}>Q{this.state.walletAddress}</Text>
-                                    </View>
-                                    <View>
-                                        {/* <TouchableOpacity style={styles.SubmitButtonStyleCopy} activeOpacity = { .5 } onPress={ Clipboard.setString('Q'+this.state.walletAddress) } > */}
-                                        
-                                        <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => { Clipboard.setString('Q'+this.state.walletAddress);
-                                            showMessage({
-                                                message: "QRL address copied to clipboard",
-                                                backgroundColor: "#EB2E42"
-                                            });
-                                        }}>
-                                            <Text style={styles.TextStyle}> COPY </Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            }
-                        </ImageBackground>
-                    </KeyboardAvoidingView>
-                );
-            }
         }
     }
 }
-
-// styling
-const styles = StyleSheet.create({
-    SubmitButtonStyle: {
-        alignSelf:'flex-end',
-        width: 150,
-        marginTop:30,
-        paddingTop:15,
-        paddingBottom:15,
-        backgroundColor:'#f33160',
-    },
-    SubmitButtonStyleBig: {
-        alignSelf:'center',
-        width: 250,
-        marginTop:30,
-        paddingTop:15,
-        paddingBottom:15,
-        backgroundColor:'#f33160',
-        borderWidth: 1,
-        borderColor: '#fff'
-    },
-    SubmitButtonStyleCopy: {
-        alignSelf:'flex-end',
-        width: 150,
-        marginTop:10,
-        paddingTop:15,
-        paddingBottom:15,
-        backgroundColor:'#f33160',
-        borderWidth: 1,
-        borderColor: '#fff'
-    },
-    SubmitButtonStyle3: {
-        flex:1,
-        alignSelf:'center',
-        paddingTop:15,
-        paddingBottom:85,
-    },
-    SubmitButtonStyle2: {
-        alignItems:'center',
-        justifyContent:'center',
-        alignSelf:'center',
-        top:-15,
-        left: -1,
-    },
-    TextStyle:{
-        color:'#fff',
-        textAlign:'center',
-    },
-    backgroundImage: {
-        flex: 1,
-        width: null,
-        height: null,
-    },
-    centerText: {
-        flex: 1,
-        fontSize: 18,
-        paddingTop: 80,
-        color: '#777',
-    },
-    textBold: {
-        fontWeight: '500',
-        color: '#000',
-    },
-    buttonText: {
-        fontSize: 21,
-        color: 'rgb(0,122,255)',
-    },
-    buttonTouchable: {
-        padding: 16,
-    },
-    CancelTextStyle:{
-        alignSelf:'center',
-        color: 'red',
-        textAlign:'center',
-        fontSize:18,
-        paddingTop:5
-    },
-    backgroundImage2: {
-        alignSelf: 'flex-start',
-        left: 0
-    },
-});

@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { Button, Text, ImageBackground, ActivityIndicator, AsyncStorage, StatusBar, StyleSheet, View, Image, Linking, Platform, AppState } from 'react-native';
 import { DrawerNavigator , StackNavigator, SwitchNavigator, DrawerItems } from 'react-navigation'; // Version can be specified in package.json
@@ -6,9 +5,11 @@ import { DrawerNavigator , StackNavigator, SwitchNavigator, DrawerItems } from '
 import BackupWallet from './screens/BackupWallet'
 import SendReceive from './screens/SendReceive'
 import TransactionsHistory from './screens/TransactionsHistory'
-import CreateNewWallet from './screens/CreateNewWallet'
+import Wallets from './screens/Wallets'
 import CompleteSetup from './screens/CompleteSetup'
-import OpenExistingWallet from './screens/OpenExistingWallet'
+import OpenExistingWalletWithHexseed from './screens/OpenExistingWalletWithHexseed'
+import OpenExistingWalletWithMnemonic from './screens/OpenExistingWalletWithMnemonic'
+import OpenExistingWalletOptions from './screens/OpenExistingWalletOptions'
 import SignIn from './screens/SignIn'
 import CreateWalletTreeHeight from './screens/CreateWalletTreeHeight'
 import CreateWalletHashFunction from './screens/CreateWalletHashFunction'
@@ -22,8 +23,9 @@ import ShowQrCodeModal from './screens/ShowQrCodeModal'
 import Settings from './screens/Settings'
 import DeleteWalletModal from './screens/DeleteWalletModal'
 import UnlockAppModal from './screens/UnlockAppModal'
-import Reactotron from 'reactotron-react-native'
-
+// import Reactotron from 'reactotron-react-native'
+import styles from './screens/styles.js';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 // Android and Ios native modules
 import {NativeModules} from 'react-native';
@@ -95,10 +97,10 @@ class AuthLoadingScreen extends React.Component {
         global.isDefaultNode = true;
       }
       
-      Reactotron.log(nodeUrl)
+      // Reactotron.log(nodeUrl)
       // if not yet defined
       if (nodeUrl === '' | nodeUrl === null){
-        Reactotron.log("SAVING NODE INFO")
+        // Reactotron.log("SAVING NODE INFO")
         fetch('https://ademcan.net/qrlnetwork.html', {
         // fetch('https://qrl.foundation/qrlnetwork.html', {
         method: 'GET',
@@ -151,18 +153,18 @@ class AuthLoadingScreen extends React.Component {
 
 const CustomDrawerContentComponent = (props) => (
     <View style={{flex:1, backgroundColor:'#164278', paddingTop:50}}>
-        <Image style={{height:80, width:80, alignSelf:'center'}} resizeMode={Image.resizeMode.contain}  source={require('./resources/images/qrl_logo_wallet.png')} />
-        <View style={{paddingTop:50}}>
+        <Image style={{height:80, width:80, alignSelf:'center'}} resizeMode={'contain'}  source={require('./resources/images/qrl_logo_wallet.png')} />
+        <View style={{paddingTop:hp(5)}}>
             <DrawerItems {...props}/>
         </View>
         <ImageBackground source={require('./resources/images/lower_drawer_bg.png')} style={{flex:1, height:null, width:null}}>
-            <View style={{paddingLeft: 40, paddingTop:50}}>
-                <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://theqrl.org/')}>QRL WEBSITE</Text>
-                <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://qrl.foundation/')}>QRL FOUNDATION</Text>
-                <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://twitter.com/qrledger')}>TWITTER</Text>
-                <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://www.reddit.com/r/qrl')}>REDDIT</Text>
-                <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('https://discord.gg/jBT6BEp')}>DISCORD</Text>
-                <Text style={{color:'white',paddingTop:20}} onPress={() => Linking.openURL('mailto:support@theqrl.org') }>SUPPORT</Text>
+            <View style={styles.secondMenu}>
+                <Text style={styles.secondMenuItems} onPress={() => Linking.openURL('https://theqrl.org/')}>QRL WEBSITE</Text>
+                <Text style={styles.secondMenuItems} onPress={() => Linking.openURL('https://qrl.foundation/')}>QRL FOUNDATION</Text>
+                <Text style={styles.secondMenuItems} onPress={() => Linking.openURL('https://twitter.com/qrledger')}>TWITTER</Text>
+                <Text style={styles.secondMenuItems} onPress={() => Linking.openURL('https://www.reddit.com/r/qrl')}>REDDIT</Text>
+                <Text style={styles.secondMenuItems} onPress={() => Linking.openURL('https://discord.gg/jBT6BEp')}>DISCORD</Text>
+                <Text style={styles.secondMenuItems} onPress={() => Linking.openURL('mailto:support@theqrl.org') }>SUPPORT</Text>
             </View>
     	</ImageBackground>
     </View>
@@ -196,7 +198,7 @@ const MainDrawerMenu = DrawerNavigator(
         navigationOptions: {
           drawerLabel: 'BALANCE',
           drawerIcon: ({ tintColor }) => (
-            <Image source={require('./resources/images/transaction_history_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain}  style={{width:25, height:25}}/>
+            <Image source={require('./resources/images/transaction_history_drawer_icon_light.png')} resizeMode={'contain'}  style={styles.icon}/>
           ),
           // drawerLabel: 'Settings',
           // drawerIcon: ({ tintColor }) => <Icon name="cog" size={17} />,
@@ -211,9 +213,9 @@ const MainDrawerMenu = DrawerNavigator(
             path: '/',
             screen: BackupWallet,
         },
-        CreateNewWallet : {
+        Wallets : {
             path: '/',
-            screen: CreateNewWallet
+            screen: Wallets
         },
         Settings : {
           path: '/',
@@ -228,6 +230,10 @@ const MainDrawerMenu = DrawerNavigator(
       contentOptions: {
         labelStyle: {
           color: 'white',
+          fontSize: wp(3.3)
+        },
+        itemStyle:{
+          height: hp(6)
         }
       }
     }
@@ -285,8 +291,14 @@ const AuthStack = StackNavigator(
     CompleteSetup: {
       screen: CompleteSetup,
     },
-    OpenExistingWallet: {
-      screen: OpenExistingWallet,
+    OpenExistingWalletWithHexseed: {
+      screen: OpenExistingWalletWithHexseed,
+    },
+    OpenExistingWalletOptions: {
+      screen: OpenExistingWalletOptions,
+    },
+    OpenExistingWalletWithMnemonic: {
+      screen: OpenExistingWalletWithMnemonic,
     },
   },
   {

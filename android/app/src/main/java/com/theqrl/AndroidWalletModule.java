@@ -52,6 +52,7 @@ import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -108,6 +109,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
     // Declaration of native method
     public native String createWallet(int treeHeight, int hashFunction);
     public native String openWalletWithHexseed(String hexseed);
+    public native String openWalletWithMnemonic(String mnemonic);
     public native String transferCoins(String address, String amount, int fee, String hexseed, int otsIndex);
     public native String getMnemonic(String hexseed);
     private ManagedChannel channel;
@@ -140,10 +142,11 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
 
     // Create a QRL wallet from scratch
     @ReactMethod
-    public void createWallet(int treeHeight, String walletindex, String walletpin, int hashFunction, Callback errorCallback, Callback successCallback) {
+    public void createWallet(int treeHeight, String walletindex, String walletname, String walletpin, int hashFunction, Callback errorCallback, Callback successCallback) {
         try {
             String hexSeed = createWallet(treeHeight, hashFunction);
             // save the required information to Shared Preferences
+            saveEncrypted("name".concat(walletindex), walletname);
             saveEncrypted("hexseed".concat(walletindex), hexSeed.split(" ")[0]);
             saveEncrypted("address".concat(walletindex), hexSeed.split(" ")[1]);
             saveEncrypted("xmsspk".concat(walletindex), hexSeed.split(" ")[2]);
@@ -157,9 +160,27 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
 
     // Open an  existingQRL wallet with hexseed
     @ReactMethod
-    public void openWalletWithHexseed(String hexseed, String walletindex, String walletpin,  Callback errorCallback, Callback successCallback) {
+    public void openWalletWithHexseed(String hexseed, String walletindex, String walletname, String walletpin,  Callback errorCallback, Callback successCallback) {
         try {
             String hexSeed = openWalletWithHexseed(hexseed);
+            saveEncrypted("name".concat(walletindex) , walletname);
+            saveEncrypted("hexseed".concat(walletindex), hexSeed.split(" ")[0]);
+            saveEncrypted("address".concat(walletindex), hexSeed.split(" ")[1]);
+            saveEncrypted("xmsspk".concat(walletindex), hexSeed.split(" ")[2]);
+            saveEncrypted("pin".concat(walletindex), walletpin);
+            successCallback.invoke("success", hexSeed.split(" ")[1]);
+        } catch (IllegalViewOperationException e) {
+            errorCallback.invoke(e.getMessage());
+        }
+    }
+
+
+    // Open an  existingQRL wallet with mnemonic
+    @ReactMethod
+    public void openWalletWithMnemonic(String mnemonic, String walletindex, String walletname, String walletpin,  Callback errorCallback, Callback successCallback) {
+        try {
+            String hexSeed = openWalletWithMnemonic(mnemonic);
+            saveEncrypted("name".concat(walletindex) , walletname);
             saveEncrypted("hexseed".concat(walletindex), hexSeed.split(" ")[0]);
             saveEncrypted("address".concat(walletindex), hexSeed.split(" ")[1]);
             saveEncrypted("xmsspk".concat(walletindex), hexSeed.split(" ")[2]);
@@ -269,6 +290,8 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
         int completed = 0;
 
 
+        System.out.println("CONNECTING TO NODE.........");
+        System.out.println(server);
 
         ManagedChannel channel = OkHttpChannelBuilder.forAddress(server , port).usePlaintext(true).build();
         PublicAPIGrpc.PublicAPIBlockingStub blockingStub = PublicAPIGrpc.newBlockingStub(channel);
@@ -280,9 +303,10 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
                     + Character.digit(walletAddress.charAt(i+1), 16));
         }
         try {
+            System.out.println("NODE CONNECTED SUCCESS.........");
             Qrl.GetAddressStateReq getAddressStateReq = Qrl.GetAddressStateReq.newBuilder().setAddress(ByteString.copyFrom(data)).build();
             Qrl.GetAddressStateResp getAddressStateResp = blockingStub.getAddressState(getAddressStateReq);
-
+            System.out.println("GOT ADDRESS STATE.........");
 
             // number of tx of the wallet
             int tx_count = getAddressStateResp.getState().getTransactionHashesCount();
@@ -403,15 +427,36 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
 
                                     // found an unconfirmed tx
                                     if (getLatestDataResp.getTransactionsUnconfirmedCount() != 0) {
+                                        boolean inUnconfirmedTx = false;
                                         System.out.println("UNCONFIRMED TX FOUND");
                                         for (int u = 0; u < getLatestDataResp.getTransactionsUnconfirmedCount(); u++) {
                                             System.out.println("ENTERED FOR LOOP");
+
+                                            List<ByteString> addrToList = getLatestDataResp.getTransactionsUnconfirmed(u).getTx().getTransfer().getAddrsToList();
+
+                                            for (int r = 0; r < addrToList.size(); r++) {
+                                                if(ByteString.copyFrom(data).equals(addrToList.get(r))){
+                                                    inUnconfirmedTx = true;
+                                                }
+                                            }
+                                            if ( ByteString.copyFrom(data).equals(getLatestDataResp.getTransactionsUnconfirmed(u).getAddrFrom()) ){
+                                                inUnconfirmedTx = true;
+                                            }
+
+
                                             // check if there is a pending tx for the given wallet address
-                                            if (ByteString.copyFrom(data).equals(getLatestDataResp.getTransactionsUnconfirmed(u).getAddrFrom())) {
+//                                            if (ByteString.copyFrom(data).equals(getLatestDataResp.getTransactionsUnconfirmed(u).getAddrFrom()) ) {
+                                            if ( inUnconfirmedTx ) {
                                                 System.out.println("FOUND UNCONFIRMED TX FROM CURRENT WALLET");
                                                 JSONObject txJsonUnconfirmed = new JSONObject();
                                                 try {
-                                                    txJsonUnconfirmed.put("title", "SENT");
+                                                    if ( ByteString.copyFrom(data).equals(getLatestDataResp.getTransactionsUnconfirmed(u).getAddrFrom()) ){
+                                                        txJsonUnconfirmed.put("title", "SENT");
+                                                    }
+                                                    else {
+                                                        txJsonUnconfirmed.put("title", "RECEIVE");
+                                                    }
+
                                                     txJsonUnconfirmed.put("desc", getLatestDataResp.getTransactionsUnconfirmed(u).getTx().getTransfer().getAmounts(0));
                                                     Date dateUnconfirmed = new Date(getLatestDataResp.getTransactionsUnconfirmed(u).getTimestampSeconds() * 1000);
                                                     SimpleDateFormat dt = new SimpleDateFormat("h:mm a, MMM d yyyy");
@@ -465,6 +510,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
             errorCallback.invoke(e.getMessage());
         } catch (RuntimeException err){
             System.out.println("RUNTIME ERROR.........");
+            System.out.println(err.getMessage());
             errorCallback.invoke(err.getMessage());
         }
     }
@@ -574,6 +620,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
         PreferenceHelper.removeFromPreferences("address"+walletindex+"enc");
         PreferenceHelper.removeFromPreferences("hexseed"+walletindex+"iv");
         PreferenceHelper.removeFromPreferences("hexseed"+walletindex+"enc");
+        PreferenceHelper.removeFromPreferences("name"+walletindex);
         successCallback.invoke("success");
     }
 

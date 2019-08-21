@@ -14,6 +14,7 @@ extern "C" {
 JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_createWallet(JNIEnv *, jobject, jint, jint);
 JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_transferCoins(JNIEnv *, jobject, jstring, jstring, jint, jstring, jint);
 JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_openWalletWithHexseed(JNIEnv* , jobject, jstring);
+JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_openWalletWithMnemonic(JNIEnv* , jobject, jstring);
 JNIEXPORT jstring JNICALL Java_com_theqrl_AndroidWalletModule_getMnemonic(JNIEnv* , jobject, jstring);
 #ifdef __cplusplus
 }

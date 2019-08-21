@@ -107,7 +107,7 @@ export default class ConfirmTxModal extends React.Component {
                 <View style={{height:130, width:330, flex: 1, alignSelf: 'center', justifyContent:'center', paddingTop:this.state.paddingTop}}>
                     <ImageBackground source={require('../resources/images/confirmTxModal_window.png')} style={{width:null, height:"85%", flex:1}} >
                         <View style={{ flex:1, alignSelf:'center', paddingTop: this.state.paddingTopBelow, alignItems:'center'}}>
-                            <Image source={require('../resources/images/confirmTxModal_check.png')} resizeMode={Image.resizeMode.contain} style={{height:75, width:75, marginBottom:10}} />
+                            <Image source={require('../resources/images/confirmTxModal_check.png')} resizeMode={'contain'} style={{height:75, width:75, marginBottom:10}} />
                             <Text style={{color:'white'}}>PLEASE CONFIRM</Text>
                             <Text style={{color:'white'}}>YOUR TRANSACTION</Text>
                         </View> 

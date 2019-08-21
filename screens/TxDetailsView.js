@@ -45,7 +45,7 @@ export default class txDetailsView extends React.Component {
                     <View style={{flex:1}}>
                         <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
                             <TouchableHighlight onPress={()=> this.props.navigation.navigate("TransactionsHistory")} underlayColor='white'>
-                                <Image source={require('../resources/images/whiteArrowLeft.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
+                                <Image source={require('../resources/images/whiteArrowLeft.png')} resizeMode={'contain'} style={{height:25, width:25}} />
                             </TouchableHighlight>
                         </View>
                         <View style={{ height:130, width:360, borderRadius:10, alignSelf:'center', marginTop: 30}}>
@@ -81,7 +81,7 @@ export default class txDetailsView extends React.Component {
 
                         <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:this.state.paddingTop, paddingLeft:30}}>
                             <TouchableHighlight onPress={()=> this.props.navigation.navigate("TransactionsHistory")} underlayColor='#184477'>
-                                <Image source={require('../resources/images/whiteArrowLeft.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
+                                <Image source={require('../resources/images/whiteArrowLeft.png')} resizeMode={'contain'} style={{height:25, width:25}} />
                             </TouchableHighlight>
                         </View>
 

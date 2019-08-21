@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Platform, StyleSheet, ImageBackground, Text, View, Image, ActionSheetIOS, TextInput, Button, ActivityIndicator, Picker, AsyncStorage, TouchableOpacity, Alert, Modal, TouchableHighlight, KeyboardAvoidingView} from 'react-native';
+import styles from './styles.js';
 
 // Android and Ios native modules
 import {NativeModules} from 'react-native';
@@ -10,16 +11,16 @@ var GLOBALS = require('./globals');
 import PINCode from '@haskkor/react-native-pincode'
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
-export default class OpenExistingWallet extends React.Component {
+export default class OpenExistingWalletWithMnemonic extends React.Component {
 
     componentDidMount(){
-        const hexseed = this.props.navigation.getParam('hexseed', 'nohexseed');
-        if (hexseed == "nohexseed"){
-            this.setState({hexseed: "" })
-            // this.setState({ hexseed: GLOBALS.hexseed1 })
+        const mnemonic = this.props.navigation.getParam('mnemonic', 'nomnemonic');
+        if (mnemonic == "nomnemonic"){
+            // this.setState({hexseed: "" })
+            this.setState({ mnemonic: GLOBALS.mnemonic })
         }
         else {
-            this.setState({hexseed: hexseed})
+            this.setState({mnemonic: mnemonic})
         }
     }
 
@@ -27,12 +28,16 @@ export default class OpenExistingWallet extends React.Component {
         isLoading: false,
         pin: null,
         modalVisible:false,
-        hexModalVisible: false
+        name: ''
     }
 
-    // udpate hexseed
-    _onHexSeedChange = (text) => {
-        this.setState({hexseed:text});
+    // udpate mnemonic
+    _onMnemonicChange = (text) => {
+        this.setState({mnemonic:text});
+    }
+
+    _onNameChange = (text) => {
+        this.setState({name: text})
     }
 
     // update walletcounter
@@ -48,13 +53,13 @@ export default class OpenExistingWallet extends React.Component {
         // update the walletlist JSON
         // if first wallet create, just instantiate the walletlist JSON
         if (walletIndexToCreate == "1"){
-            AsyncStorage.setItem("walletlist", JSON.stringify( [{"index":walletIndexToCreate, "address": "Q"+address}] ) );
+            AsyncStorage.setItem("walletlist", JSON.stringify( [{"index":walletIndexToCreate, "address": "Q"+address, "name": this.state.name}] ) );
         }
         else {
             // update walletlist JSON
             AsyncStorage.getItem("walletlist").then((walletlist) => {
                 walletlist = JSON.parse(walletlist)
-                walletlist.push({"index":walletIndexToCreate, "address": "Q"+address})
+                walletlist.push({"index":walletIndexToCreate, "address": "Q"+address, "name": this.state.name})
                 AsyncStorage.setItem("walletlist", JSON.stringify( walletlist ));
             });
         }
@@ -65,8 +70,9 @@ export default class OpenExistingWallet extends React.Component {
     // open QRL wallet
     openWallet = () => {
         this.setState({isLoading: true})
-        if (this.state.hexseed.length != 102){
-            Alert.alert( "INVALID SEED"  , "The hexseed you provided is incorrect" , [{text: "OK", onPress: () => console.log('OK Pressed')} ] );
+
+        if (this.state.mnemonic.split(' ').length != 34){
+            Alert.alert( "INVALID MNEMONIC"  , "The mnemonic you provided is incorrect" , [{text: "OK", onPress: () => console.log('OK Pressed')} ] );
             this.setState({isLoading: false})
         }
         else {
@@ -81,30 +87,29 @@ export default class OpenExistingWallet extends React.Component {
                     walletIndexToCreate = "1"
                     this._updateWalletcounter("1");
                 }
-
                 // Ios
                 if (Platform.OS === 'ios'){
-                    IosWallet.openWalletWithHexseed(this.state.hexseed, walletIndexToCreate, this.state.pin, (error, status, address)=> {
+                    IosWallet.openWalletWithMnemonic(this.state.mnemonic, walletIndexToCreate, this.state.name, this.state.pin, (error, status, address)=> {
                         this.setState({isLoading:false})
                         // if success -> open the main view of the app
                         if (status =="success"){
                             this._updateWalletIndex(walletIndexToCreate, address)
                         }
                         else {
-                            Alert.alert( "INVALID SEED"  , "The hexseed you provided is incorrect" , [{text: "OK", onPress: () => console.log('OK Pressed')} ] )
+                            Alert.alert( "INVALID MNEMONIC"  , "The mnemonic you provided is incorrect" , [{text: "OK", onPress: () => console.log('OK Pressed')} ] )
                         }
                     })
                 }
                 // Android
                 else {
-                  AndroidWallet.openWalletWithHexseed(this.state.hexseed, walletIndexToCreate, this.state.pin, (err) => {console.log(err); } , (status, address)=> {
+                  AndroidWallet.openWalletWithMnemonic(this.state.mnemonic, walletIndexToCreate, this.state.name, this.state.pin, (err) => {console.log(err); } , (status, address)=> {
                       this.setState({isLoading:false})
                       // if success -> open the main view of the app
                       if (status =="success"){
                           this._updateWalletIndex(walletIndexToCreate, address)
                       }
                       else {
-                          Alert.alert( "INVALID SEED"  , "The hexseed you provided is incorrect" , [{text: "OK", onPress: () => console.log('OK Pressed')} ] )
+                          Alert.alert( "INVALID MNEMONIC"  , "The mnemonic you provided is incorrect" , [{text: "OK", onPress: () => console.log('OK Pressed')} ] )
                       }
                   })
                 }
@@ -113,9 +118,9 @@ export default class OpenExistingWallet extends React.Component {
         }
     }
 
-    // show Open wallet button when PIN and Hexseed are provided
+    // show Open wallet button when PIN and Mnemonic are provided
     openButton = () => {
-        if (this.state.pin != null){
+        if (this.state.pin != null && this.state.name != ''){
             return(
                 <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={this.openWallet}>
                     <Text style={styles.TextStyle}> OPEN WALLET </Text>
@@ -136,12 +141,7 @@ export default class OpenExistingWallet extends React.Component {
 
     // update hexseed on successful QR scan
     updateHexseed(e){
-        this.setState({hexModalVisible: false, hexseed: e.data})
-    }
-
-    // show/hide the PIN view
-    launchHexModal(bool) {
-        this.setState({hexModalVisible: bool})
+        this.setState({ mnemonic: e.data})
     }
 
     render() {
@@ -172,48 +172,32 @@ export default class OpenExistingWallet extends React.Component {
                     </ImageBackground>
                 </Modal>
 
-                <Modal animationType="slide" visible={this.state.hexModalVisible}>
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                        <QRCodeScanner onRead={ this.updateHexseed.bind(this) }
-                            topContent={
-                                <Text style={styles.centerText}>
-                                    Scan hexseed QR code
-                                </Text>
-                            }
-                            bottomContent={
-                                <TouchableOpacity onPress={() => this.launchHexModal(false) } >
-                                    <Text style={styles.CancelTextStyle}>Dismiss</Text>
-                                </TouchableOpacity>
-                            }
-                        />
-                    </View>
-                </Modal>
-
                 <ImageBackground source={require('../resources/images/signin_process_bg.png')} style={styles.backgroundImage}>
                     <View style={{flex:1}}></View>
-                    <View style={{flex:1.5, alignItems:'center'}}>
+                    <View style={{flex:3, alignItems:'center'}}>
                         <Text style={styles.bigTitle}>OPEN EXISTING WALLET</Text>
+                        <Text style={styles.bigTitle}>WITH MNEMONIC</Text>
                         <View style={{width:100, height:1, backgroundColor:'white', marginTop:30,marginBottom:20}}></View>
-                        <Text style={{color:'white'}}>Enter your hexseed below</Text>
-
-                        <TextInput onChangeText={ (text) => this._onHexSeedChange(text) } editable={!this.state.isLoading}  underlineColorAndroid="transparent" style={styles.hexInput} value={this.state.hexseed} />
 
                         {this.state.isLoading ?
-                            <View style={{alignSelf:'center', paddingTop:10}}>
+                            <View style={{alignSelf:'center', alignItems:'center', paddingTop:10}}>
                                 <ActivityIndicator size={'large'}></ActivityIndicator>
                                 <Text style={{color:'white'}}>This may take a while.</Text>
                                 <Text style={{color:'white'}}>Please be patient...</Text>
                             </View>
                             :
-                            <View>
-                                <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => {this.launchHexModal(true)} } >
-                                    <Text style={styles.TextStyle}> SCAN HEXSEED QR CODE </Text>
-                                </TouchableOpacity>
+                            <View style={{alignItems:'center'}}>
+                                <Text style={styles.smallTitle}>1. Enter your mnemonic below</Text>
+                                <TextInput onChangeText={ (text) => this._onMnemonicChange(text) } editable={!this.state.isLoading}  underlineColorAndroid="transparent" style={styles.hexInput} value={this.state.mnemonic} />
+
+                                <Text style={styles.smallTitle}>2. Choose a 4-digit PIN </Text>
                                 <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => {this.launchModal(true, null)} }>
                                     <Text style={styles.TextStyle}> CREATE 4-DIGIT PIN </Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.SubmitButtonStyleRed} activeOpacity = { .5 } onPress={ () => this.props.navigation.navigate('SignIn') }>
-                                    <Text style={styles.TextStyleWhite}> CANCEL </Text>
+                                <Text style={styles.smallTitle}>3. Give your wallet a name</Text>
+                                <TextInput onChangeText={ (text) => this._onNameChange(text) } editable={!this.state.isLoading}  underlineColorAndroid="transparent" style={styles.hexInput} value={this.state.name} />
+                                <TouchableOpacity style={styles.SubmitButtonStyleRed} activeOpacity = { .5 } onPress={ () => this.props.navigation.navigate('OpenExistingWalletOptions') }>
+                                    <Text style={styles.TextStyleWhite}> BACK </Text>
                                 </TouchableOpacity>
                                 {this.openButton()}
                             </View>
@@ -225,83 +209,3 @@ export default class OpenExistingWallet extends React.Component {
     }
 }
 
-// styling
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    bigTitle:{
-        color:'white',
-        fontSize: 25,
-    },
-    SubmitButtonStyle: {
-        width: 300,
-        marginTop:10,
-        paddingTop:10,
-        paddingBottom:10,
-        marginLeft:30,
-        marginRight:30,
-        backgroundColor:'white',
-        borderRadius:10,
-        borderWidth: 1,
-        borderColor: '#fff'
-    },
-    SubmitButtonStyleRed: {
-        width: 300,
-        marginTop:10,
-        paddingTop:10,
-        paddingBottom:10,
-        marginLeft:30,
-        marginRight:30,
-        backgroundColor:'#D72E61',
-        borderRadius:10,
-        borderWidth: 1,
-        borderColor: '#D72E61'
-    },
-    TextStyle:{
-        color:'#1e79cb',
-        textAlign:'center',
-    },
-    TextStyleWhite:{
-        color:'white',
-        textAlign:'center',
-    },
-    backgroundImage: {
-        flex: 1,
-        width: null,
-        height: null,
-    },
-    hexInput:{
-        backgroundColor:'#ebe8e8',
-        height:50,
-        width:300,
-        borderRadius:10,
-        marginTop:15
-    },
-    centerText: {
-        flex: 1,
-        fontSize: 18,
-        paddingTop: 80,
-        color: '#777',
-    },
-    textBold: {
-        fontWeight: '500',
-        color: '#000',
-    },
-    buttonText: {
-        fontSize: 21,
-        color: 'rgb(0,122,255)',
-    },
-    buttonTouchable: {
-        padding: 16,
-  },
-  CancelTextStyle:{
-      alignSelf:'center',
-      color: 'red',
-      textAlign:'center',
-      fontSize:18,
-      paddingTop:5
-  },
-});
