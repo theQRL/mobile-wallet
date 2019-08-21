@@ -1,4 +1,4 @@
-
+/* @lint-ignore-every XPLATJSCOPYRIGHT1 */
 import React, { Component } from 'react';
 import { Button, Text, ImageBackground, ActivityIndicator, AsyncStorage, StatusBar, StyleSheet, View, Image, Linking, Platform, AppState } from 'react-native';
 import { DrawerNavigator , StackNavigator, SwitchNavigator, DrawerItems } from 'react-navigation'; // Version can be specified in package.json
