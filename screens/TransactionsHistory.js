@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, ImageBackground, Text, View, Image, ActionSheetIOS, TextInput, Button, ActivityIndicator, Picker, TouchableOpacity, ScrollView, TouchableHighlight, ListView, AsyncStorage, AppState, Animated, Easing} from 'react-native';
-import Reactotron from 'reactotron-react-native'
+// import Reactotron from 'reactotron-react-native'
 // Android and Ios native modules
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.refreshWallet;
@@ -10,6 +10,8 @@ import DeviceInfo from 'react-native-device-info';
 const moment = require('moment');
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+// import 'moment/locale/*.js'
+import 'moment/min/locales';
 
 export default class Wallet extends React.Component{
 
@@ -77,7 +79,15 @@ export default class Wallet extends React.Component{
 
         AppState.addEventListener('change', this._handleAppStateChange);
 
-        this.setState({is24h: DeviceInfo.is24Hour(), deviceLocale: DeviceInfo.getDeviceLocale() })
+        console.log("LOCALES.....")
+        console.log(DeviceInfo.getDeviceLocale())
+        if (DeviceInfo.getDeviceLocale().includes('locale')){
+            this.setState({is24h: DeviceInfo.is24Hour(), deviceLocale: DeviceInfo.getDeviceLocale().split('/')[2] })
+        }
+        else {
+            this.setState({is24h: DeviceInfo.is24Hour(), deviceLocale: DeviceInfo.getDeviceLocale() })
+        }
+        
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
         // AsyncStorage.multiGet(["node","port"]).then((connectionDetails) => {
@@ -111,7 +121,7 @@ export default class Wallet extends React.Component{
                     // Android
                     else {
                         console.log("LOADING ANDROID .....")
-                        AndroidWallet.refreshWallet(walletindex,  (err) => { Reactotron.log("WEEOEEEEE....."); }, (walletAddress, otsIndex, balance, keys)=> {
+                        AndroidWallet.refreshWallet(walletindex,  (err) => { console.log("WEEOEEEEE....."); }, (walletAddress, otsIndex, balance, keys)=> {
                             console.log("GOT DATA....")
                             this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys)), tx_count: JSON.parse(keys).length })
                         });
@@ -227,7 +237,7 @@ export default class Wallet extends React.Component{
     }
 
     render() {
-        Reactotron.log('Reactotron connected')
+        // Reactotron.log('Reactotron connected')
 
         const spin = this.state.spinAnim.interpolate({
             inputRange: [0, 1],
@@ -329,9 +339,8 @@ export default class Wallet extends React.Component{
             minutes < 10 ? minUI = "0" + minutes : minUI = minutes;
             addressBegin = this.state.walletAddress.substring(1, 10);
             addressEnd = this.state.walletAddress.substring(58, 79);
-            moment.locale(this.state.deviceLocale);
-            momentDate = moment(this.state.updatedDate);
-            formattedDate = momentDate.format('LL');
+            // moment.locale(this.state.deviceLocale);
+            formattedDate = moment(this.state.updatedDate).locale( this.state.deviceLocale.indexOf("-") === -1 ? this.state.deviceLocale : this.state.deviceLocale.substr(0, this.state.deviceLocale.indexOf('-')) ).format('LL');
 
             return (
                 <ImageBackground source={require('../resources/images/main_bg_half.png')} style={styles.backgroundImage}>

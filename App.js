@@ -1,4 +1,3 @@
-/* @lint-ignore-every XPLATJSCOPYRIGHT1 */
 import React, { Component } from 'react';
 import { Button, Text, ImageBackground, ActivityIndicator, AsyncStorage, StatusBar, StyleSheet, View, Image, Linking, Platform, AppState } from 'react-native';
 import { DrawerNavigator , StackNavigator, SwitchNavigator, DrawerItems } from 'react-navigation'; // Version can be specified in package.json
@@ -24,7 +23,7 @@ import ShowQrCodeModal from './screens/ShowQrCodeModal'
 import Settings from './screens/Settings'
 import DeleteWalletModal from './screens/DeleteWalletModal'
 import UnlockAppModal from './screens/UnlockAppModal'
-import Reactotron from 'reactotron-react-native'
+// import Reactotron from 'reactotron-react-native'
 import styles from './screens/styles.js';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
@@ -98,10 +97,10 @@ class AuthLoadingScreen extends React.Component {
         global.isDefaultNode = true;
       }
       
-      Reactotron.log(nodeUrl)
+      // Reactotron.log(nodeUrl)
       // if not yet defined
       if (nodeUrl === '' | nodeUrl === null){
-        Reactotron.log("SAVING NODE INFO")
+        // Reactotron.log("SAVING NODE INFO")
         fetch('https://ademcan.net/qrlnetwork.html', {
         // fetch('https://qrl.foundation/qrlnetwork.html', {
         method: 'GET',
