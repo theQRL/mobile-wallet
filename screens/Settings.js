@@ -80,13 +80,13 @@ export default class Settings extends React.Component {
                     { global.isDefaultNode ? 
                     null
                     : 
-                    <Image source={require('../resources/images/warning_icon.png')} resizeMode={Image.resizeMode.contain} style={{width:20, height:20}}/>
+                    <Image source={require('../resources/images/warning_icon.png')} resizeMode={'contain'} style={{width:20, height:20}}/>
                     }
                 </View>
             </View>
             ),
             drawerIcon: ({ tintColor }) => (
-                <Image source={require('../resources/images/icon_settings.png')} resizeMode={Image.resizeMode.contain} style={{width:25, height:25}}/>
+                <Image source={require('../resources/images/icon_settings.png')} resizeMode={'contain'} style={{width:25, height:25}}/>
             ),
         // })
     })
@@ -196,7 +196,7 @@ export default class Settings extends React.Component {
                     <View style={{flex:1}}>
                         <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:hp(8), paddingLeft:30}}>
                             <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
-                                <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
+                                <Image source={require('../resources/images/sandwich.png')} resizeMode={'contain'} style={{height:25, width:25}} />
                             </TouchableHighlight>
                         </View>
 

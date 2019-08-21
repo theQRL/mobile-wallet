@@ -154,7 +154,7 @@ class AuthLoadingScreen extends React.Component {
 
 const CustomDrawerContentComponent = (props) => (
     <View style={{flex:1, backgroundColor:'#164278', paddingTop:50}}>
-        <Image style={{height:80, width:80, alignSelf:'center'}} resizeMode={Image.resizeMode.contain}  source={require('./resources/images/qrl_logo_wallet.png')} />
+        <Image style={{height:80, width:80, alignSelf:'center'}} resizeMode={'contain'}  source={require('./resources/images/qrl_logo_wallet.png')} />
         <View style={{paddingTop:hp(5)}}>
             <DrawerItems {...props}/>
         </View>
@@ -199,7 +199,7 @@ const MainDrawerMenu = DrawerNavigator(
         navigationOptions: {
           drawerLabel: 'BALANCE',
           drawerIcon: ({ tintColor }) => (
-            <Image source={require('./resources/images/transaction_history_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain}  style={styles.icon}/>
+            <Image source={require('./resources/images/transaction_history_drawer_icon_light.png')} resizeMode={'contain'}  style={styles.icon}/>
           ),
           // drawerLabel: 'Settings',
           // drawerIcon: ({ tintColor }) => <Icon name="cog" size={17} />,

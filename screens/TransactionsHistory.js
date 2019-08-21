@@ -191,11 +191,11 @@ export default class Wallet extends React.Component{
 
                     {rowData.title == "RECEIVED"?
                         <View>
-                            <Image source={require('../resources/images/received.png')} resizeMode={Image.resizeMode.contain} style={{height:40, width:40,marginLeft:20, marginRight:10}} />
+                            <Image source={require('../resources/images/received.png')} resizeMode={'contain'} style={{height:40, width:40,marginLeft:20, marginRight:10}} />
                         </View>
                     :
                         <View>
-                            <Image source={require('../resources/images/sent.png')} resizeMode={Image.resizeMode.contain} style={{height:40, width:40,marginLeft:20, marginRight:10}} />
+                            <Image source={require('../resources/images/sent.png')} resizeMode={'contain'} style={{height:40, width:40,marginLeft:20, marginRight:10}} />
                         </View>
                     }
                     <View style={{flex:1, flexDirection:'row'}}>
@@ -250,17 +250,17 @@ export default class Wallet extends React.Component{
                     <View  accessibilityLabel="TransactionsHistory" style={{flex:1}}>
                         <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
                             <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
-                                <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
+                                <Image source={require('../resources/images/sandwich.png')} resizeMode={'contain'} style={{height:25, width:25}} />
                             </TouchableHighlight>
                         </View>
                         <ScrollView style={{flex:2}}>
                             <View style={{ alignItems:'center',paddingTop:10, flex:0.5}}>
-                                <Image source={require('../resources/images/qrl_logo_wallet.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:100}} />
+                                <Image source={require('../resources/images/qrl_logo_wallet.png')} resizeMode={'contain'} style={{height:100, width:100}} />
                                 <Text style={{color:'white'}}>LAST UPDATE: ...</Text>
                             </View>
 
                             <View style={{ alignItems:'center',flex:1}}>
-                                <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:240, width: wp(96), justifyContent:'center',alignItems:'center', paddingTop: 30, paddingLeft:10, paddingRight:10}} >
+                                <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={'contain'} style={{height:240, width: wp(96), justifyContent:'center',alignItems:'center', paddingTop: 30, paddingLeft:10, paddingRight:10}} >
                                 <Text style={{color:'white', fontWeight: "bold", fontSize:12, textAlign:'center'}} selectable={true}>Q{this.state.walletAddress}</Text>
                                     <Text style={{color:'white',fontSize:30}}>{this.state.balance / 1000000000 } QRL</Text>
                                     <Text style={{color:'white',fontSize:13}}>USD ${ ((this.state.balance / 1000000000 ) * this.state.price).toFixed(2) }</Text>
@@ -279,14 +279,14 @@ export default class Wallet extends React.Component{
                                         { this.state.changeup ?
                                             <View style={{flex:1, justifyContent:'center'}}>
                                                 <View style={{flexDirection:'row', justifyContent:'center'}}>
-                                                    <Image source={require('../resources/images/arrow_up.png')} resizeMode={Image.resizeMode.contain} style={{height:10, width:10}} />
+                                                    <Image source={require('../resources/images/arrow_up.png')} resizeMode={'contain'} style={{height:10, width:10}} />
                                                     <Text style={{fontSize:12, color:"white"}}>({this.state.change24} %)</Text>
                                                 </View>
                                             </View>
                                             :
                                             <View style={{flex:1, justifyContent:'center'}}>
                                                 <View style={{flexDirection:'row', justifyContent:'center'}}>
-                                                    <Image source={require('../resources/images/arrow_down.png')} resizeMode={Image.resizeMode.contain} style={{height:10, width:10}} />
+                                                    <Image source={require('../resources/images/arrow_down.png')} resizeMode={'contain'} style={{height:10, width:10}} />
                                                     <Text style={{fontSize:12, color:"white"}}>({this.state.change24} %)</Text>
                                                 </View>
                                             </View>
@@ -339,19 +339,19 @@ export default class Wallet extends React.Component{
 
                         <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
                             <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
-                                <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
+                                <Image source={require('../resources/images/sandwich.png')} resizeMode={'contain'} style={{height:25, width:25}} />
                             </TouchableHighlight>
                         </View>
 
                         <ScrollView style={{flex:2}}>
                             <View style={{ alignItems:'center',paddingTop:10, flex:0.5}}>
-                                <Image source={require('../resources/images/qrl_logo_wallet.png')} resizeMode={Image.resizeMode.contain} style={{height:100, width:100}} />
+                                <Image source={require('../resources/images/qrl_logo_wallet.png')} resizeMode={'contain'} style={{height:100, width:100}} />
                                 {/* <Text style={{color:'white'}}>LAST UPDATE: {this.state.updatedDate.getDate()}.{this.state.updatedDate.getMonth() + 1}.{this.state.updatedDate.getFullYear()} {hours}:{minUI}</Text> */}
                                 <Text style={{color:'white'}}>LAST UPDATE: {formattedDate} {hours}:{minUI}</Text>
                             </View>
 
                             <View style={{ alignItems:'center',flex:1}}>
-                                <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={Image.resizeMode.contain} style={{height:240, width:wp(96), justifyContent:'center',alignItems:'center', paddingTop: 30, paddingLeft:10, paddingRight:10}} >
+                                <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={'contain'} style={{height:240, width:wp(96), justifyContent:'center',alignItems:'center', paddingTop: 30, paddingLeft:10, paddingRight:10}} >
                                     {/* <Text style={{color:'white'}}>QRL BALANCE</Text> */}
                                     {/* <Text style={{color:'white', fontWeight: "bold"}} selectable={true}>Q{addressBegin}...{addressEnd}</Text> */}
                                     <Text style={{color:'white', fontWeight: "bold", fontSize:12, textAlign:'center'}} selectable={true}>Q{this.state.walletAddress}</Text>
@@ -372,14 +372,14 @@ export default class Wallet extends React.Component{
                                         { this.state.changeup ?
                                             <View style={{flex:1, justifyContent:'center'}}>
                                                 <View style={{flexDirection:'row', justifyContent:'center'}}>
-                                                    <Image source={require('../resources/images/arrow_up.png')} resizeMode={Image.resizeMode.contain} style={{height:10, width:10}} />
+                                                    <Image source={require('../resources/images/arrow_up.png')} resizeMode={'contain'} style={{height:10, width:10}} />
                                                     <Text style={{fontSize:12, color:"white"}}>({this.state.change24} %)</Text>
                                                 </View>
                                             </View>
                                             :
                                             <View style={{flex:1, justifyContent:'center'}}>
                                                 <View style={{flexDirection:'row', justifyContent:'center'}}>
-                                                    <Image source={require('../resources/images/arrow_down.png')} resizeMode={Image.resizeMode.contain} style={{height:10, width:10}} />
+                                                    <Image source={require('../resources/images/arrow_down.png')} resizeMode={'contain'} style={{height:10, width:10}} />
                                                     <Text style={{fontSize:12, color:"white"}}>({this.state.change24} %)</Text>
                                                 </View>
                                             </View>

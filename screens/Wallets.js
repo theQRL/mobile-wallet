@@ -16,7 +16,7 @@ export default class Wallets extends React.Component {
         drawerLabel: 'WALLETS',
         drawerIcon: ({ tintColor }) => (
             <Image
-            source={require('../resources/images/wallet_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain} style={{width:25, height:25}}
+            source={require('../resources/images/wallet_drawer_icon_light.png')} resizeMode={'contain'} style={{width:25, height:25}}
             />
         ),
     };
@@ -161,7 +161,7 @@ export default class Wallets extends React.Component {
             return (
                 <View  style={{flex: 1, flexDirection:'row', alignSelf:'center', height:80, width:wp(85)}}>
                     <View style={{flex:1, justifyContent:'center'}}>
-                        <Image source={require('../resources/images/wallet_unlocked.png')} resizeMode={Image.resizeMode.contain} style={styles.icon} />
+                        <Image source={require('../resources/images/wallet_unlocked.png')} resizeMode={'contain'} style={styles.icon} />
                     </View>
                     <View style={{flex:5, justifyContent:'center'}}>
                         <Text style={{fontWeight:'bold'}}>{rowData.name}</Text>
@@ -169,7 +169,7 @@ export default class Wallets extends React.Component {
                     </View>
                     <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
                         <TouchableHighlight onPress={()=> this.props.navigation.navigate( "ShowQrCodeModal", {qrcode:rowData.address} )} underlayColor='white'>
-                            <Image source={require('../resources/images/qr_code_icon.png')} resizeMode={Image.resizeMode.contain} style={styles.icon} />
+                            <Image source={require('../resources/images/qr_code_icon.png')} resizeMode={'contain'} style={styles.icon} />
                         </TouchableHighlight>
                     </View>
                 </View>
@@ -196,7 +196,7 @@ export default class Wallets extends React.Component {
                             <TouchableHighlight onPress={() => this.openHexseedModal(rowData.index)  } underlayColor='white' style={{flex:1, justifyContent:'center'}}>    
                                 <View style={{flex:1, flexDirection:'row'}}>
                                     <View style={{flex:1, justifyContent:'center'}}>
-                                        <Image source={require('../resources/images/wallet_locked.png')} resizeMode={Image.resizeMode.contain} style={styles.icon} />
+                                        <Image source={require('../resources/images/wallet_locked.png')} resizeMode={'contain'} style={styles.icon} />
                                     </View>
                                     <View style={{flex:5, justifyContent:'center', paddingLeft:5}}>
                                         <Text>{rowData.name}</Text>
@@ -207,12 +207,12 @@ export default class Wallets extends React.Component {
                         </View>
                         <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
                             <TouchableHighlight onPress={()=> this.props.navigation.navigate( "ShowQrCodeModal", {qrcode:rowData.address} )} underlayColor='white'>
-                                <Image source={require('../resources/images/qr_code_icon.png')} resizeMode={Image.resizeMode.contain} style={styles.icon} />
+                                <Image source={require('../resources/images/qr_code_icon.png')} resizeMode={'contain'} style={styles.icon} />
                             </TouchableHighlight>
                         </View>
                         <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
                             <TouchableHighlight onPress={() => this.removeWalletPopup(rowData.index)  }  underlayColor='white'>
-                                <Image source={require('../resources/images/trash_solid.png')} resizeMode={Image.resizeMode.contain} style={styles.icon} />
+                                <Image source={require('../resources/images/trash_solid.png')} resizeMode={'contain'} style={styles.icon} />
                             </TouchableHighlight>                    
                         </View>
                     </View>
@@ -248,7 +248,7 @@ export default class Wallets extends React.Component {
                 <View style={{flex:1}}>
                     <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:hp(8), paddingLeft:30}}>
                         <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
-                          <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
+                          <Image source={require('../resources/images/sandwich.png')} resizeMode={'contain'} style={{height:25, width:25}} />
                         </TouchableHighlight>
                     </View>
 
@@ -282,7 +282,7 @@ export default class Wallets extends React.Component {
 
                         <View style={{paddingTop:50, paddingRight:20, alignSelf:'flex-end'}}>
                             <TouchableOpacity onPress={ this.closeWallet } >
-                                <Image source={require('../resources/images/icon_plus.png')} resizeMode={Image.resizeMode.contain} style={{height:65, width:65}} />
+                                <Image source={require('../resources/images/icon_plus.png')} resizeMode={'contain'} style={{height:65, width:65}} />
                             </TouchableOpacity>
                         </View>
                     </ScrollView>

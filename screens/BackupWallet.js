@@ -13,7 +13,7 @@ export default class BackupWallet extends React.Component {
     static navigationOptions = {
         drawerLabel: 'BACK UP YOUR WALLET',
         drawerIcon: ({ tintColor }) => (
-            <Image source={require('../resources/images/backup_wallet_drawer_icon_light.png')} resizeMode={Image.resizeMode.contain} style={{width:25, height:25}}/>
+            <Image source={require('../resources/images/backup_wallet_drawer_icon_light.png')} resizeMode={'contain'} style={{width:25, height:25}}/>
         ),
     };
 
@@ -144,7 +144,7 @@ export default class BackupWallet extends React.Component {
 
                 <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:hp(8), paddingLeft:30}}>
                     <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
-                        <Image source={require('../resources/images/sandwich.png')} resizeMode={Image.resizeMode.contain} style={{height:25, width:25}} />
+                        <Image source={require('../resources/images/sandwich.png')} resizeMode={'contain'} style={{height:25, width:25}} />
                     </TouchableHighlight>
                 </View>
 
