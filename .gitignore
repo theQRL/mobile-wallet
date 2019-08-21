@@ -57,3 +57,6 @@ buck-out/
 */fastlane/screenshots
 
 screens/globals.js
+
+# Bundle artifact
+*.jsbundle
