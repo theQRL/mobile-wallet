@@ -8,6 +8,8 @@ import BackgroundTimer from 'react-native-background-timer';
 let isDefaultNode = 'true';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import styles from './styles.js';
+import FlashMessage from "react-native-flash-message";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 export default class Settings extends React.Component {
 
@@ -191,6 +193,7 @@ export default class Settings extends React.Component {
         }
         else {
             return (
+                <View style={{flex:1}}>
                 <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>                
 
                     <View style={{flex:1}}>
@@ -199,6 +202,7 @@ export default class Settings extends React.Component {
                                 <Image source={require('../resources/images/sandwich.png')} resizeMode={'contain'} style={{height:25, width:25}} />
                             </TouchableHighlight>
                         </View>
+                        <FlashMessage/> 
 
                         <View style={{height: hp(20), marginTop: hp(3) , borderRadius:10, alignSelf:'center'}}>
                             <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage}>
@@ -222,9 +226,17 @@ export default class Settings extends React.Component {
                             </View>
 
                             <View style={{alignItems: 'center', marginTop: hp(4)}}>
-                                <TouchableOpacity style={styles.SubmitButtonStyleRedSmall} activeOpacity = { .5 } onPress={ () => { this.saveSettings() }}>
+
+                                <TouchableOpacity style={styles.SubmitButtonStyleRedSmall} activeOpacity = { .5 }  onPress={ () => {  this.saveSettings();
+                                    showMessage({
+                                        message: "Server settings updated",
+                                        type: "info",
+                                        backgroundColor: "#EB2E42"
+                                    });
+                                }}>
                                     <Text style={styles.TextStyleWhite}> SAVE </Text>
                                 </TouchableOpacity>
+
                             </View>
 
                             <View style={{width:'100%',height:1, backgroundColor:'lightgray', alignSelf:'flex-end', marginTop: 10}}></View>
@@ -242,6 +254,7 @@ export default class Settings extends React.Component {
                     </View>
 
                 </ImageBackground>
+                </View>
             );
         }
     }

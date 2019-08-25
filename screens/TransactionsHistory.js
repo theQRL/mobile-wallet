@@ -95,7 +95,7 @@ export default class Wallet extends React.Component{
         //     port = connectionDetails[1][1]
             // update QRL market data
             console.log("STARTING FETCH")
-            fetch('https://market-data.automated.theqrl.org/', {
+            fetch('http://market-data.automated.theqrl.org/', {
                 method: 'GET',
                 headers: {
                 'Accept': 'application/json',
@@ -149,7 +149,7 @@ export default class Wallet extends React.Component{
 
     // Refresh wallet balance
     refreshWallet = () => {
-        fetch('https://market-data.automated.theqrl.org/', {
+        fetch('http://market-data.automated.theqrl.org/', {
             method: 'GET',
             headers: {
             'Accept': 'application/json',
