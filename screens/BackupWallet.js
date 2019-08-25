@@ -17,7 +17,6 @@ export default class BackupWallet extends React.Component {
         ),
     };
 
-
     componentDidMount() {
         AppState.addEventListener('change', this._handleAppStateChange);
     }
@@ -55,6 +54,15 @@ export default class BackupWallet extends React.Component {
         }
         this.setState({appState: nextAppState});
     };
+
+    openHexseedModal = (walletindexToOpen) => {
+        this.setState({showModal: false})
+        // this.setState({modalVisible: true, walletIndexToOpen: walletindexToOpen })
+        AsyncStorage.getItem("walletindex").then((walletindex) => {
+            this.props.navigation.navigate('ValidatePinForBackup', {onGoBack: () => this.getInfo(), walletIndexToOpen: walletindex})
+        }).catch((error) => {console.log(error)});
+        
+    }
 
     state={
         mnemonic: '',
@@ -132,7 +140,7 @@ export default class BackupWallet extends React.Component {
                             <TouchableOpacity style={styles.SubmitButtonStyleRedSmall} activeOpacity = { .5 } onPress={ () => {this.showModal(false)} }>
                                 <Text style={styles.TextStyleWhite}> CANCEL </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.SubmitButtonStyleBlueSmall} activeOpacity = { .5 } onPress={this.getInfo}>
+                            <TouchableOpacity style={styles.SubmitButtonStyleBlueSmall} activeOpacity = { .5 } onPress={this.openHexseedModal}>
                                 <Text style={styles.TextStyleWhite}> SHOW </Text>
                             </TouchableOpacity>
                         </View>

@@ -23,6 +23,7 @@ import ShowQrCodeModal from './screens/ShowQrCodeModal'
 import Settings from './screens/Settings'
 import DeleteWalletModal from './screens/DeleteWalletModal'
 import UnlockAppModal from './screens/UnlockAppModal'
+import ValidatePinForBackup from './screens/ValidatePinForBackup'
 // import Reactotron from 'reactotron-react-native'
 import styles from './screens/styles.js';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -271,6 +272,9 @@ const RootStack = StackNavigator(
     },
     OpenExistingWalletModal : {
       screen: OpenExistingWalletModal
+    },
+    ValidatePinForBackup: {
+      screen: ValidatePinForBackup
     },
     ConfirmTxModal : {
       screen: ConfirmTxModal
