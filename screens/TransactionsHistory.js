@@ -12,6 +12,7 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 // import 'moment/locale/*.js'
 import 'moment/min/locales';
+import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 
 export default class Wallet extends React.Component{
 
@@ -79,7 +80,6 @@ export default class Wallet extends React.Component{
 
         AppState.addEventListener('change', this._handleAppStateChange);
 
-        console.log("LOCALES.....")
         console.log(DeviceInfo.getDeviceLocale())
         if (DeviceInfo.getDeviceLocale().includes('locale')){
             this.setState({is24h: DeviceInfo.is24Hour(), deviceLocale: DeviceInfo.getDeviceLocale().split('/')[2] })
@@ -94,6 +94,7 @@ export default class Wallet extends React.Component{
         //     node = connectionDetails[0][1]
         //     port = connectionDetails[1][1]
             // update QRL market data
+            console.log("STARTING FETCH")
             fetch('https://market-data.automated.theqrl.org/', {
                 method: 'GET',
                 headers: {
@@ -102,6 +103,7 @@ export default class Wallet extends React.Component{
                 },
             }).then((response) => response.json())
             .then((responseJson) => {
+                console.log("FETCHED DATA...")
                 this.setState({marketcap: Number((parseFloat(responseJson.market_cap)).toFixed()), price: Number((parseFloat(responseJson.price)).toFixed(2)) , change24: Number((parseFloat(responseJson.change_24hr)).toFixed(2)) })
                 
                 if (responseJson.change_24hr.includes("-")){this.setState({changeup: false})}
@@ -109,7 +111,7 @@ export default class Wallet extends React.Component{
 
                 // Update the wallet each time the user switch to this view
                 // Ios
-                this.setState({isLoading:true})
+                // this.setState({isLoading:true})
 
                 // get the currect walletindex
                 AsyncStorage.getItem("walletindex").then((walletindex) => {
@@ -140,7 +142,7 @@ export default class Wallet extends React.Component{
             passphrase : '',
             processing: false,
             balance : 0,
-            refreshBtnTop: Platform.OS === 'ios'? 10: 2,
+            refreshBtnTop: Platform.OS === 'ios'? 10: 8,
             appState: AppState.currentState,
         }
     }
@@ -244,8 +246,8 @@ export default class Wallet extends React.Component{
             outputRange: ['0deg', '360deg']
           });
 
-        if (this.state.isLoading) {
 
+        if (this.state.isLoading) {
             Animated.loop(Animated.timing(
                 this.state.spinAnim,
               {
@@ -254,93 +256,100 @@ export default class Wallet extends React.Component{
                 easing: Easing.linear
               }
             )).start();
-
-            return (
-                <ImageBackground source={require('../resources/images/main_bg_half.png')} style={styles.backgroundImage}>
-                    <View  accessibilityLabel="TransactionsHistory" style={{flex:1}}>
-                        <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
-                            <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
-                                <Image source={require('../resources/images/sandwich.png')} resizeMode={'contain'} style={{height:25, width:25}} />
-                            </TouchableHighlight>
-                        </View>
-                        <ScrollView style={{flex:2}}>
-                            <View style={{ alignItems:'center',paddingTop:10, flex:0.5}}>
-                                <Image source={require('../resources/images/qrl_logo_wallet.png')} resizeMode={'contain'} style={{height:100, width:100}} />
-                                <Text style={{color:'white'}}>LAST UPDATE: ...</Text>
-                            </View>
-
-                            <View style={{ alignItems:'center',flex:1}}>
-                                <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={'contain'} style={{height:240, width: wp(96), justifyContent:'center',alignItems:'center', paddingTop: 30, paddingLeft:10, paddingRight:10}} >
-                                <Text style={{color:'white', fontWeight: "bold", fontSize:12, textAlign:'center'}} selectable={true}>Q{this.state.walletAddress}</Text>
-                                    <Text style={{color:'white',fontSize:30}}>{this.state.balance / 1000000000 } QRL</Text>
-                                    <Text style={{color:'white',fontSize:13}}>USD ${ ((this.state.balance / 1000000000 ) * this.state.price).toFixed(2) }</Text>
-                                    <View style={{width:"80%", borderRadius:10, flexDirection:'row', paddingTop:15,paddingBottom:5}}>
-                                        <View style={{flex:1}}><Text style={{fontSize:12, color:"white"}}>MARKET CAP</Text></View>
-                                        <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text style={{fontSize:12, color:"white"}}>PRICE</Text></View>
-                                        <View style={{flex:1}}><Text style={{fontSize:12, color:"white",  right:-10}}>24H CHANGE</Text></View>
-                                    </View>
-
-                                    <View style={{backgroundColor:"#d12835", height:40, flexDirection:'row', width:"90%", borderRadius:10, paddingLeft:15}}>
-                                        <View style={{flex:1, justifyContent:'center'}}><Text style={{fontSize:12, color:"white", fontWeight: "bold"}}>${ (this.state.marketcap / 1000000).toFixed(2) }M <Text style={{fontSize:8, color:"white"}}>USD</Text></Text></View>
-
-                                        <View style={{flex:1, alignItems:'center', justifyContent:'center'}}><Text style={{fontSize:12, color:"white",fontWeight: "bold"}}>${this.state.price}<Text style={{fontSize:8, color:"white"}}> USD</Text></Text></View>
-
-
-                                        { this.state.changeup ?
-                                            <View style={{flex:1, justifyContent:'center'}}>
-                                                <View style={{flexDirection:'row', justifyContent:'center'}}>
-                                                    <Image source={require('../resources/images/arrow_up.png')} resizeMode={'contain'} style={{height:10, width:10}} />
-                                                    <Text style={{fontSize:12, color:"white"}}>({this.state.change24} %)</Text>
-                                                </View>
-                                            </View>
-                                            :
-                                            <View style={{flex:1, justifyContent:'center'}}>
-                                                <View style={{flexDirection:'row', justifyContent:'center'}}>
-                                                    <Image source={require('../resources/images/arrow_down.png')} resizeMode={'contain'} style={{height:10, width:10}} />
-                                                    <Text style={{fontSize:12, color:"white"}}>({this.state.change24} %)</Text>
-                                                </View>
-                                            </View>
-                                        }
-
-                                        {/* <View style={{flex:1, justifyContent:'center'}}><Text style={{fontSize:12, color:"white"}}>... %</Text></View> */}
-                                    </View>
-
-                                    <View style={{alignSelf:'flex-end', right:23}}>
-                                        <Text style={{color:'white',fontSize:10}}>Powered by COINLIB</Text>
-                                    </View>
-
-                                    <TouchableOpacity style={{alignItems:'center',justifyContent:'center',alignSelf:'center',top:this.state.refreshBtnTop,right:2}} activeOpacity = { .5 } onPress={ this.refreshWallet }>
-                                    <Animated.Image style={{height:30, width: 30, transform: [{rotate: spin}] }} source={require("../resources/images/refresh.png")}/>
-                                        {/* <Image source={require("../resources/images/refresh.png")} style={{height:40, width:40}}/> */}
-                                    </TouchableOpacity>
-                                </ImageBackground>
-                            </View>
-
-                            <View style={{backgroundColor:'white', flex:2, width:wp(93), alignSelf:'center', borderRadius:10, marginTop:10}}>
-                                <Text style={{alignItems:'center', alignSelf:'center', paddingTop:20, marginBottom:20}}>TRANSACTION HISTORY</Text>
-                                <ActivityIndicator size={'large'}></ActivityIndicator>
-                            </View>
-                        </ScrollView>
-                    </View>
-                </ImageBackground>
-            );
         }
+    
+    
 
-        else {
+
+        //     return (
+        //         <ImageBackground source={require('../resources/images/main_bg_half.png')} style={styles.backgroundImage}>
+        //             <View  accessibilityLabel="TransactionsHistory" style={{flex:1}}>
+        //                 <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
+        //                     <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
+        //                         <Image source={require('../resources/images/sandwich.png')} resizeMode={'contain'} style={{height:25, width:25}} />
+        //                     </TouchableHighlight>
+        //                 </View>
+        //                 <ScrollView style={{flex:2}}>
+        //                     <View style={{ alignItems:'center',paddingTop:10, flex:0.5}}>
+        //                         <Image source={require('../resources/images/qrl_logo_wallet.png')} resizeMode={'contain'} style={{height:100, width:100}} />
+        //                         <Text style={{color:'white'}}>LAST UPDATE: ...</Text>
+        //                     </View>
+
+        //                     <View style={{ alignItems:'center',flex:1}}>
+        //                         <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={'contain'} style={{height:240, width: wp(96), justifyContent:'center',alignItems:'center', paddingTop: 30, paddingLeft:10, paddingRight:10}} >
+        //                         <Text style={{color:'white', fontWeight: "bold", fontSize:12, textAlign:'center'}} selectable={true}>Q{this.state.walletAddress}</Text>
+        //                             <Text style={{color:'white',fontSize:30}}>{this.state.balance / 1000000000 } QRL</Text>
+        //                             <Text style={{color:'white',fontSize:13}}>USD ${ ((this.state.balance / 1000000000 ) * this.state.price).toFixed(2) }</Text>
+        //                             <View style={{width:"80%", borderRadius:10, flexDirection:'row', paddingTop:15,paddingBottom:5}}>
+        //                                 <View style={{flex:1}}><Text style={{fontSize:12, color:"white"}}>MARKET CAP</Text></View>
+        //                                 <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text style={{fontSize:12, color:"white"}}>PRICE</Text></View>
+        //                                 <View style={{flex:1}}><Text style={{fontSize:12, color:"white",  right:-10}}>24H CHANGE</Text></View>
+        //                             </View>
+
+        //                             <View style={{backgroundColor:"#d12835", height:40, flexDirection:'row', width:"90%", borderRadius:10, paddingLeft:15}}>
+        //                                 <View style={{flex:1, justifyContent:'center'}}><Text style={{fontSize:12, color:"white", fontWeight: "bold"}}>${ (this.state.marketcap / 1000000).toFixed(2) }M <Text style={{fontSize:8, color:"white"}}>USD</Text></Text></View>
+
+        //                                 <View style={{flex:1, alignItems:'center', justifyContent:'center'}}><Text style={{fontSize:12, color:"white",fontWeight: "bold"}}>${this.state.price}<Text style={{fontSize:8, color:"white"}}> USD</Text></Text></View>
+
+
+        //                                 { this.state.changeup ?
+        //                                     <View style={{flex:1, justifyContent:'center'}}>
+        //                                         <View style={{flexDirection:'row', justifyContent:'center'}}>
+        //                                             <Image source={require('../resources/images/arrow_up.png')} resizeMode={'contain'} style={{height:10, width:10}} />
+        //                                             <Text style={{fontSize:12, color:"white"}}>({this.state.change24} %)</Text>
+        //                                         </View>
+        //                                     </View>
+        //                                     :
+        //                                     <View style={{flex:1, justifyContent:'center'}}>
+        //                                         <View style={{flexDirection:'row', justifyContent:'center'}}>
+        //                                             <Image source={require('../resources/images/arrow_down.png')} resizeMode={'contain'} style={{height:10, width:10}} />
+        //                                             <Text style={{fontSize:12, color:"white"}}>({this.state.change24} %)</Text>
+        //                                         </View>
+        //                                     </View>
+        //                                 }
+
+        //                                 {/* <View style={{flex:1, justifyContent:'center'}}><Text style={{fontSize:12, color:"white"}}>... %</Text></View> */}
+        //                             </View>
+
+        //                             <View style={{alignSelf:'flex-end', right:23}}>
+        //                                 <Text style={{color:'white',fontSize:10}}>Powered by COINLIB</Text>
+        //                             </View>
+
+        //                             <TouchableOpacity style={{alignItems:'center',justifyContent:'center',alignSelf:'center',top:this.state.refreshBtnTop,right:2}} activeOpacity = { .5 } onPress={ this.refreshWallet }>
+        //                             <Animated.Image style={{height:30, width: 30, transform: [{rotate: spin}] }} source={require("../resources/images/refresh.png")}/>
+        //                                 {/* <Image source={require("../resources/images/refresh.png")} style={{height:40, width:40}}/> */}
+        //                             </TouchableOpacity>
+        //                         </ImageBackground>
+        //                     </View>
+
+        //                     <View style={{backgroundColor:'white', flex:2, width:wp(93), alignSelf:'center', borderRadius:10, marginTop:10}}>
+        //                         <Text style={{alignItems:'center', alignSelf:'center', paddingTop:20, marginBottom:20}}>TRANSACTION HISTORY</Text>
+        //                         <ActivityIndicator size={'large'}></ActivityIndicator>
+        //                     </View>
+        //                 </ScrollView>
+        //             </View>
+        //         </ImageBackground>
+        //     );
+        // }
+
+        // else {
             // formatting minutes and address to user interface
-            console.log(this.state.deviceLocale)
-            minutes = this.state.updatedDate.getMinutes();
-            if (this.state.is24h){
-                hours = this.state.updatedDate.getHours()
-            }
+            
             else {
-                hours = this.state.updatedDate.getHours() > 12 ? this.state.updatedDate.getHours() - 12 : this.state.updatedDate.getHours();
+                Animated.timing(this.state.spinAnim).stop();
+                minutes = this.state.updatedDate.getMinutes();
+                if (this.state.is24h){
+                    hours = this.state.updatedDate.getHours()
+                }
+                else {
+                    hours = this.state.updatedDate.getHours() > 12 ? this.state.updatedDate.getHours() - 12 : this.state.updatedDate.getHours();
+                }
+                minutes < 10 ? minUI = "0" + minutes : minUI = minutes;
+                // addressBegin = this.state.walletAddress.substring(1, 10);
+                // addressEnd = this.state.walletAddress.substring(58, 79);
+                // moment.locale(this.state.deviceLocale);
+                formattedDate = moment(this.state.updatedDate).locale( this.state.deviceLocale.indexOf("-") === -1 ? this.state.deviceLocale : this.state.deviceLocale.substr(0, this.state.deviceLocale.indexOf('-')) ).format('LL');
             }
-            minutes < 10 ? minUI = "0" + minutes : minUI = minutes;
-            addressBegin = this.state.walletAddress.substring(1, 10);
-            addressEnd = this.state.walletAddress.substring(58, 79);
-            // moment.locale(this.state.deviceLocale);
-            formattedDate = moment(this.state.updatedDate).locale( this.state.deviceLocale.indexOf("-") === -1 ? this.state.deviceLocale : this.state.deviceLocale.substr(0, this.state.deviceLocale.indexOf('-')) ).format('LL');
 
             return (
                 <ImageBackground source={require('../resources/images/main_bg_half.png')} style={styles.backgroundImage}>
@@ -351,23 +360,48 @@ export default class Wallet extends React.Component{
                                 <Image source={require('../resources/images/sandwich.png')} resizeMode={'contain'} style={{height:25, width:25}} />
                             </TouchableHighlight>
                         </View>
-
+                    
                         <ScrollView style={{flex:2}}>
                             <View style={{ alignItems:'center',paddingTop:10, flex:0.5}}>
                                 <Image source={require('../resources/images/qrl_logo_wallet.png')} resizeMode={'contain'} style={{height:100, width:100}} />
                                 {/* <Text style={{color:'white'}}>LAST UPDATE: {this.state.updatedDate.getDate()}.{this.state.updatedDate.getMonth() + 1}.{this.state.updatedDate.getFullYear()} {hours}:{minUI}</Text> */}
-                                <Text style={{color:'white'}}>LAST UPDATE: {formattedDate} {hours}:{minUI}</Text>
+
+                                {this.state.isLoading? 
+                                    <View style={{height:15}}>
+                                        <ShimmerPlaceHolder autoRun={true} height={12} width={wp(50)} colorShimmer={['#184477', '#c5c5c5', '#184477']} />
+                                    </View>
+                                    : 
+                                    <View style={{height:15}}>
+                                        <Text style={{color:'white', fontSize:12}}>Last update: {formattedDate} {hours}:{minUI}</Text> 
+                                    </View>
+                                } 
                             </View>
 
-                            <View style={{ alignItems:'center',flex:1}}>
-                                <ImageBackground source={require('../resources/images/fund_bg.png')} resizeMode={'contain'} style={{height:240, width:wp(96), justifyContent:'center',alignItems:'center', paddingTop: 30, paddingLeft:10, paddingRight:10}} >
-                                    {/* <Text style={{color:'white'}}>QRL BALANCE</Text> */}
-                                    {/* <Text style={{color:'white', fontWeight: "bold"}} selectable={true}>Q{addressBegin}...{addressEnd}</Text> */}
-                                    <Text style={{color:'white', fontWeight: "bold", fontSize:12, textAlign:'center'}} selectable={true}>Q{this.state.walletAddress}</Text>
-                                    <Text style={{color:'white',fontSize:30}}>{this.state.balance / 1000000000 } QRL</Text>
+                            <View style={{height:250,  alignItems:'center',flex:1, borderRadius:10}}>
+                                <ImageBackground source={require('../resources/images/fund_bg.png')} imageStyle={{resizeMode: 'contain'}} style={{height:240, width:wp(96), justifyContent:'center',alignItems:'center', paddingTop: 30, paddingLeft:10, paddingRight:10}} >
+                                    {this.state.isLoading ? 
+                                        <View style={{height: 30}}>
+                                            <ShimmerPlaceHolder autoRun={true} height={12} width={wp(90)} colorShimmer={['#f33160', '#c5c5c5', '#f33160']} />
+                                            <ShimmerPlaceHolder autoRun={true} height={12} width={wp(90)} colorShimmer={['#f33160', '#c5c5c5', '#f33160']} />
+                                        </View>
+                                        : 
+                                        <View  style={{height: 30}}>
+                                            <Text style={{color:'white', fontWeight: "bold", fontSize:12,textAlign:'center'}} selectable={true}>Q{this.state.walletAddress}</Text>
+                                        </View>
+                                    }
+                                    {this.state.isLoading ? 
+                                        <View style={{height: 30}}>
+                                            <ShimmerPlaceHolder autoRun={true} height={30} colorShimmer={['#f33160', '#c5c5c5', '#f33160']} />
+                                        </View>
+                                        :
+                                        <View style={{height: 30}}>
+                                            <Text style={{color:'white',fontSize:30}}>{this.state.balance / 1000000000 } QRL</Text>
+                                        </View>
+                                    }
+                                    
                                     <Text style={{color:'white',fontSize:13}}>USD ${ ((this.state.balance / 1000000000 ) * this.state.price).toFixed(2) }</Text>
 
-                                    <View style={{width:"80%", borderRadius:10, flexDirection:'row', paddingTop:15,paddingBottom:5}}>
+                                    <View style={{width:"80%", height:40, borderRadius:10, flexDirection:'row', paddingTop:15,paddingBottom:5}}>
                                         <View style={{flex:1}}><Text style={{fontSize:12, color:"white"}}>MARKET CAP</Text></View>
                                         <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text style={{fontSize:12, color:"white"}}>PRICE</Text></View>
                                         <View style={{flex:1}}><Text style={{fontSize:12, color:"white", right:-10}}>24H CHANGE</Text></View>
@@ -399,15 +433,17 @@ export default class Wallet extends React.Component{
                                         <Text style={{color:'white',fontSize:10}}>Powered by COINLIB</Text>
                                     </View>
 
-                                    <TouchableOpacity style={{alignItems:'center',justifyContent:'center',alignSelf:'center',top:this.state.refreshBtnTop,right:2}} activeOpacity = { .5 } onPress={ this.refreshWallet }>
-                                        <Image source={require("../resources/images/refresh.png")} style={{height:30, width:30}}/>
+                                    <TouchableOpacity style={{ alignItems:'center',justifyContent:'center',alignSelf:'center',top:hp(1), right:2}} activeOpacity = { .5 } onPress={ this.refreshWallet }>
+                                        <Animated.Image style={{height:30, width: 30, transform: [{rotate: spin}] }} source={require("../resources/images/refresh.png")}/>
+                                        {/* <Image source={require("../resources/images/refresh.png")} style={{height:30, width:30}}/> */}
                                     </TouchableOpacity>
+
                                 </ImageBackground>
                             </View>
 
-                            <View style={{backgroundColor:'white', flex:2, width:wp(93), alignSelf:'center', borderRadius:10, marginTop:10}}>
+                            <View style={{backgroundColor:'white', flex:2, width:wp(93), alignSelf:'center', borderRadius:10, marginTop:10, marginBottom:20}}>
                                 <Text style={{alignItems:'center', alignSelf:'center', paddingTop:20, marginBottom:20}}>TRANSACTION HISTORY</Text>
-                                    <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
+                                <View style={{height: .5,width: "90%",backgroundColor: "#000",alignSelf:'center'}}/>
                                 {this.state.tx_count == 0 || this.state.tx_count == undefined ?
                                     <Text style={{alignSelf:'center'}}>No Transaction yet</Text>
                                     :
@@ -415,12 +451,12 @@ export default class Wallet extends React.Component{
                                 }
                             </View>
                         </ScrollView>
-                        <View style={{height:30}}></View>
+                        {/* <View style={{height:30}}></View> */}
                     </View>
                 </ImageBackground>
             );
         }
-    }
+    // }
 }
 
 // styling

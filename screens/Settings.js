@@ -209,10 +209,17 @@ export default class Settings extends React.Component {
                         </View>
 
                         <View style={{ width:wp(93), height:hp(60), paddingBottom:100, alignSelf:'center',  borderRadius:10, backgroundColor:'white', padding: 30}}>
-                            <Text>NODE URL</Text>
-                            <TextInput underlineColorAndroid="transparent" onChangeText={ (text) => this.onUrlChange(text) } value={this.state.nodeUrl} style={{ borderRadius: 10, backgroundColor:'#ebe8e8', height:hp(6)}} />
+                            <Text style={styles.descriptionTextBlack}>Warning: Change the information below at your own risk! </Text>
+
+                            <Text style={{paddingTop: wp(7)}}>NODE URL</Text>
+                            <View style={styles.SectionStyle}>
+                                <TextInput underlineColorAndroid="transparent" onChangeText={ (text) => this.onUrlChange(text) } value={this.state.nodeUrl} style={{backgroundColor:'#ebe8e8', height:hp(6), flex:1, borderRadius: 10}} />
+                            </View>
+
                             <Text>{'\n'}PORT</Text>
-                            <TextInput underlineColorAndroid="transparent" keyboardType={'numeric'} onChangeText={ (text) => this.onPortChange(text) } value={this.state.nodePort} style={{borderRadius: 10, backgroundColor:'#ebe8e8', height:hp(6) }} />
+                            <View style={styles.SectionStyle}>
+                                <TextInput underlineColorAndroid="transparent" onChangeText={ (text) => this.onPortChange(text)  } value={this.state.nodePort} style={{backgroundColor:'#ebe8e8', height:hp(6), flex:1, borderRadius: 10}} />
+                            </View>
 
                             <View style={{alignItems: 'center', marginTop: hp(4)}}>
                                 <TouchableOpacity style={styles.SubmitButtonStyleRedSmall} activeOpacity = { .5 } onPress={ () => { this.saveSettings() }}>

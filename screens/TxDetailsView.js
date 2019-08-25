@@ -4,6 +4,8 @@ import {Text, View, Button, Image, ImageBackground, StyleSheet, TouchableHighlig
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.refreshWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import styles from './styles.js';
 
 export default class txDetailsView extends React.Component {
 
@@ -39,41 +41,41 @@ export default class txDetailsView extends React.Component {
 
     // render view
     render() {
-        if (this.state.isLoading){
-            return (
-                <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
-                    <View style={{flex:1}}>
-                        <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
-                            <TouchableHighlight onPress={()=> this.props.navigation.navigate("TransactionsHistory")} underlayColor='white'>
-                                <Image source={require('../resources/images/whiteArrowLeft.png')} resizeMode={'contain'} style={{height:25, width:25}} />
-                            </TouchableHighlight>
-                        </View>
-                        <View style={{ height:130, width:360, borderRadius:10, alignSelf:'center', marginTop: 30}}>
-                            <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage2}>
-                                <View style={{flex:1, alignSelf:'center', width:360, justifyContent:'center', alignItems:'center'}}>
-                                    <Text style={{color:'white', fontSize:20}}>TRANSACTION DETAILS</Text>
-                                </View>
-                            </ImageBackground>
-                        </View>
-                        <View style={{flex:1, paddingTop: 50, paddingBottom:100, width:360, alignSelf: 'center',  borderRadius:10}}>
-                            <View style={{height:50, backgroundColor:'white'}}>
-                                <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fafafa'}}>
-                                    <Text style={{justifyContent:'center'}}>{this.props.navigation.state.params.txhash}</Text>
-                                </View>
-                            </View>
-                            <View style={{width:'100%',height:1, backgroundColor:'red', alignSelf:'flex-end'}}></View>
-                            <View style={{flex:2, backgroundColor:'white', width:360, padding:30, alignItems:'center'}}>
-                                <View>
-                                    <Text>{this.props.navigation.state.params.txhash}</Text>
-                                    <Text>Loading...</Text>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                </ImageBackground>
-            );
-        }
-        else {
+        // if (this.state.isLoading){
+        //     return (
+        //         <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
+        //             <View style={{flex:1}}>
+        //                 <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
+        //                     <TouchableHighlight onPress={()=> this.props.navigation.navigate("TransactionsHistory")} underlayColor='white'>
+        //                         <Image source={require('../resources/images/whiteArrowLeft.png')} resizeMode={'contain'} style={{height:25, width:25}} />
+        //                     </TouchableHighlight>
+        //                 </View>
+        //                 <View style={{ height:130, width:360, borderRadius:10, alignSelf:'center', marginTop: 30}}>
+        //                     <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage2}>
+        //                         <View style={{flex:1, alignSelf:'center', width:360, justifyContent:'center', alignItems:'center'}}>
+        //                             <Text style={{color:'white', fontSize:20}}>TRANSACTION DETAILS</Text>
+        //                         </View>
+        //                     </ImageBackground>
+        //                 </View>
+        //                 <View style={{flex:1, paddingTop: 50, paddingBottom:100, width:360, alignSelf: 'center',  borderRadius:10}}>
+        //                     <View style={{height:50, backgroundColor:'white'}}>
+        //                         <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fafafa'}}>
+        //                             <Text style={{justifyContent:'center'}}>{this.props.navigation.state.params.txhash}</Text>
+        //                         </View>
+        //                     </View>
+        //                     <View style={{width:'100%',height:1, backgroundColor:'red', alignSelf:'flex-end'}}></View>
+        //                     <View style={{flex:2, backgroundColor:'white', width:360, padding:30, alignItems:'center'}}>
+        //                         <View>
+        //                             <Text>{this.props.navigation.state.params.txhash}</Text>
+        //                             <Text>Loading...</Text>
+        //                         </View>
+        //                     </View>
+        //                 </View>
+        //             </View>
+        //         </ImageBackground>
+        //     );
+        // }
+        // else {
             amount = this.state.amount / 1000000000
             return (
                 <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
@@ -85,70 +87,74 @@ export default class txDetailsView extends React.Component {
                             </TouchableHighlight>
                         </View>
 
-                        <View style={{ height:130, width:360, borderRadius:10, alignSelf:'center', marginTop: this.state.marginTop}}>
-                            <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage2}>
-                                <View style={{flex:1, alignSelf:'center', width:360, justifyContent:'center', alignItems:'center'}}>
-                                    <Text style={{color:'white', fontSize:20}}>TRANSACTION DETAILS</Text>
+
+                        <View style={{height: hp(20), marginTop: hp(3) , borderRadius:10, alignSelf:'center'}}>
+                            <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage}>
+                                <View style={{flex:1, alignSelf:'center', width: wp(96), justifyContent:'center', alignItems:'center'}}>
+                                    <Text style={styles.sectionTitle}>TRANSACTION DETAILS</Text>
                                 </View>
                             </ImageBackground>
                         </View>
+                        
+                        <View style={{ width:wp(93), height:hp(60), paddingBottom:100, alignSelf:'center',  borderRadius:10, backgroundColor:'white', padding: 20}}>
+                            <View style={{flex:1, alignItems:'center'}}>
+                                
+                                <View style={styles.txDetailsBlock}>
+                                    <Text style={styles.descriptionTextBlackBig}>Transfer</Text>
+                                    <Text style={{color: '#184477',textAlign: 'center',fontSize: wp(5.5), fontWeight: 'bold'}}>{amount.toString()}</Text>
+                                    <Text style={styles.descriptionTextBlack}>QUANTA</Text>
+                                </View>
 
-                        <View style={{flex:1, paddingTop: 10, paddingBottom:this.state.paddingBottom, width:360, alignSelf: 'center',  borderRadius:10}}>
-                            <View style={{flex:3, backgroundColor:'white', width:360, padding:30, alignItems:'center'}}>
-                                <View style={{alignItems:'center'}}>
-                                    <Text style={{fontSize:25}}>Transfer</Text>
-                                    <Text style={{fontSize:25}}>{amount.toString()}</Text>
-                                    <Text>QUANTA</Text>
-                                    <Text>{'\n'}</Text>
-                                    <Text style={{fontSize:25}}>From</Text>
-                                    <Text selectable={true}>Q{this.state.fromAddr}</Text>
-                                    <Text>{'\n'}</Text>
-                                    <Text style={{fontSize:25}}>To</Text>
-                                    <Text selectable={true}>Q{this.state.toAddr}</Text>
-                                    <Text>{'\n'}</Text>
-                                    <Text style={{fontSize:25}}>Transaction</Text>
-                                    <TouchableHighlight onPress={ ()=> Linking.openURL('https://testnet-explorer.theqrl.org/tx/'+this.props.navigation.state.params.txhash) } underlayColor={'white'} >
-                                        <Text style={{color: '#184477'}} selectable={true}>{this.props.navigation.state.params.txhash}</Text>
+                                <View style={[styles.txDetailsBlock ,{paddingTop: wp(10)}] }>
+                                    <Text style={styles.descriptionTextBlackBig}>From</Text>
+                                    <Text selectable={true} style={styles.mediumTextBlack}>Q{this.state.fromAddr}</Text>
+                                </View>
+
+                                <View style={styles.txDetailsBlock}>
+                                    <Text style={styles.descriptionTextBlackBig}>To</Text>
+                                    <Text selectable={true} style={styles.mediumTextBlack}>Q{this.state.toAddr}</Text>
+                                </View>
+
+                                <View style={styles.txDetailsBlock}>
+                                    <Text style={styles.descriptionTextBlackBig}>Transaction</Text>
+                                    <Text style={styles.mediumTextBlack} selectable={true}>{this.props.navigation.state.params.txhash}</Text>
+                                    <TouchableHighlight style={{padding: wp(3)}} onPress={ ()=> Linking.openURL('https://testnet-explorer.theqrl.org/tx/'+this.props.navigation.state.params.txhash) } underlayColor={'white'} >
+                                        <Text style={{color: '#184477',textAlign: 'center',fontSize: wp(4), fontWeight: 'bold'}}>See on explorer</Text>
                                     </TouchableHighlight>
-                                    {/*
-                                    <Text>Block</Text>
-                                    <Text>{this.state.blocknumber}</Text>
-                                    <Text>Nonce</Text>
-                                    <Text>{this.state.nonce}</Text>
-                                    */}
                                 </View>
                             </View>
+
                         </View>
                     </View>
                 </ImageBackground>
             );
-        }
+        // }
     }
 }
 
 // styling
-const styles = StyleSheet.create({
-    SubmitButtonStyle: {
-        alignSelf:'center',
-        width: 150,
-        marginTop:30,
-        paddingTop:15,
-        paddingBottom:15,
-        backgroundColor:'#f33160',
-        borderWidth: 1,
-        borderColor: '#fff'
-    },
-    TextStyle:{
-        color:'#fff',
-        textAlign:'center',
-    },
-    backgroundImage: {
-        flex: 1,
-        width: null,
-        height: null,
-    },
-    backgroundImage2: {
-        alignSelf: 'flex-start',
-        left: 0
-    },
-});
+// const styles = StyleSheet.create({
+//     SubmitButtonStyle: {
+//         alignSelf:'center',
+//         width: 150,
+//         marginTop:30,
+//         paddingTop:15,
+//         paddingBottom:15,
+//         backgroundColor:'#f33160',
+//         borderWidth: 1,
+//         borderColor: '#fff'
+//     },
+//     TextStyle:{
+//         color:'#fff',
+//         textAlign:'center',
+//     },
+//     backgroundImage: {
+//         flex: 1,
+//         width: null,
+//         height: null,
+//     },
+//     backgroundImage2: {
+//         alignSelf: 'flex-start',
+//         left: 0
+//     },
+// });

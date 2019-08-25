@@ -157,10 +157,8 @@ export default class BackupWallet extends React.Component {
                 </View>
                 
                 <View style={{ width:wp(93), height:hp(70), paddingBottom:100, alignSelf: 'center'}}>
-                    <View style={{height:50, backgroundColor:'white', padding:30, borderTopRightRadius:10, borderTopLeftRadius: 10 }}>
-                        <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fafafa'}}>
-                            <Text style={styles.bigTitleBlack}>View Recovery Seed</Text>
-                        </View>
+                    <View style={{ height: hp(7), backgroundColor:'white',  alignItems:'center', justifyContent: 'center', borderTopRightRadius:10, borderTopLeftRadius: 10 }}>
+                        <Text style={styles.bigTitleBlack}>View Recovery Seed</Text>    
                     </View>
                     <View style={{width:'100%',height:1, backgroundColor:'red', alignSelf:'flex-end'}}></View>
                     <View style={{ backgroundColor:'white', width:wp(93), padding:30, alignItems:'center', borderBottomRightRadius:10, borderBottomLeftRadius: 10}}>

@@ -21,6 +21,11 @@ target 'theQRL' do
 
   pod 'RNBackgroundFetch', :path => '../node_modules/react-native-background-fetch'
 
+  pod 'react-native-shimmer', :path => '../node_modules/react-native-shimmer'
+
+
+  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+
   # target 'theQRLTests' do
   #   inherit! :search_paths
   #   # Pods for testing

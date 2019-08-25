@@ -14,18 +14,19 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 
 export default class OpenExistingWalletWithHexseed extends React.Component {
 
-    componentDidMount(){
-        const hexseed = this.props.navigation.getParam('hexseed', 'nohexseed');
-        if (hexseed == "nohexseed"){
-            // this.setState({hexseed: "" })
-            this.setState({ hexseed: GLOBALS.hexseed2 })
-        }
-        else {
-            this.setState({hexseed: hexseed})
-        }
-    }
+    // componentDidMount(){
+    //     const hexseed = this.props.navigation.getParam('hexseed', 'nohexseed');
+    //     if (hexseed == "nohexseed"){
+    //         // this.setState({hexseed: "" })
+    //         this.setState({ hexseed: GLOBALS.hexseed2 })
+    //     }
+    //     else {
+    //         this.setState({hexseed: hexseed})
+    //     }
+    // }
 
     state={
+        hexseed: '',
         isLoading: false,
         pin: null,
         modalVisible:false,
@@ -152,7 +153,7 @@ export default class OpenExistingWalletWithHexseed extends React.Component {
 
     render() {
         return (
-            <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
+            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : null} style={{flex:1}} enabled>
 
                 <Modal onRequestClose={ console.log("") } animationType="slide" visible={this.state.modalVisible}>
                     <ImageBackground source={require('../resources/images/complete_setup_bg.png')} style={styles.backgroundImage}>
@@ -178,18 +179,35 @@ export default class OpenExistingWalletWithHexseed extends React.Component {
                     </ImageBackground>
                 </Modal>
 
-                <Modal animationType="slide" visible={this.state.hexModalVisible}>
+                <Modal onRequestClose={ console.log("") } animationType="slide" visible={this.state.hexModalVisible}>
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                        <QRCodeScanner onRead={ this.updateHexseed.bind(this) }
+                        <QRCodeScanner 
+                            onRead={ this.updateHexseed.bind(this) }
                             topContent={
-                                <Text style={styles.centerText}>
-                                    Scan hexseed QR code
-                                </Text>
+                                <View style={{flex:1, width: wp(100), backgroundColor: '#16447B'}}>
+                                    {Platform.OS === 'ios' ?
+                                        <View style={{height: hp(15), marginTop: hp(6) , borderRadius:10, alignSelf:'center'}}>
+                                            <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage}>
+                                                <View style={{flex:1, alignSelf:'center', width: wp(96), height: wp(10), justifyContent:'center', alignItems:'center'}}>
+                                                    <Text style={styles.sectionTitle}>SCAN HEXSEED QR CODE</Text>
+                                                </View>
+                                            </ImageBackground>
+                                        </View>
+                                    :
+                                        <View style={{height: hp(15), marginTop: hp(2) , borderRadius:10, alignSelf:'center'}}>
+                                            <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage}>
+                                                <View style={{flex:1, alignSelf:'center', width: wp(96), height: wp(10), justifyContent:'center', alignItems:'center'}}>
+                                                    <Text style={styles.sectionTitle}>SCAN HEXSEED QR CODE</Text>
+                                                </View>
+                                            </ImageBackground>
+                                        </View>
+                                    }
+                                </View>
                             }
                             bottomContent={
-                                <TouchableOpacity onPress={() => this.launchHexModal(false) } >
-                                    <Text style={styles.CancelTextStyle}>Dismiss</Text>
-                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.SubmitButtonStyleRedSmall} activeOpacity = { .5 } onPress={() => this.launchHexModal(false) }>
+                                    <Text style={styles.TextStyleWhite}> DISMISS </Text>
+                                </TouchableOpacity> 
                             }
                         />
                     </View>
@@ -211,11 +229,14 @@ export default class OpenExistingWalletWithHexseed extends React.Component {
                             :
                             <View style={{alignItems:'center'}}>
                                 <Text style={styles.smallTitle}>1. Enter your hexseed below</Text>
-                                <TextInput onChangeText={ (text) => this._onHexSeedChange(text) } editable={!this.state.isLoading}  underlineColorAndroid="transparent" style={styles.hexInput} value={this.state.hexseed} />
-                                <Text style={{color:'white', fontSize: hp(1.5), marginTop:10}}> OR </Text>
-                                <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => {this.launchHexModal(true)} } >
-                                    <Text style={styles.TextStyle}> SCAN HEXSEED QR CODE </Text>
-                                </TouchableOpacity>
+
+                                <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center',backgroundColor: '#ebe8e8',height: hp(6),borderRadius: 10,width: wp(85), marginTop: 15}}>
+                                    <TextInput underlineColorAndroid="transparent" onChangeText={ (text) => this._onHexSeedChange(text) } value={this.state.hexseed} style={{backgroundColor:'#ebe8e8', height:hp(6),width: wp(85), flex:1, borderRadius: 10}} />
+                                    <TouchableOpacity style={styles.SubmitButtonStyle3} activeOpacity = { .5 } onPress={() => this.launchHexModal(true)} >
+                                        <Image source={require('../resources/images/scanQrCode.png')} style={styles.ImageStyle}/>
+                                    </TouchableOpacity>
+                                </View>
+
                                 <Text style={styles.smallTitle}>2. Choose a 4-digit PIN </Text>
                                 <TouchableOpacity style={styles.SubmitButtonStyle} activeOpacity = { .5 } onPress={ () => {this.launchModal(true, null)} }>
                                     <Text style={styles.TextStyle}> CREATE 4-DIGIT PIN </Text>

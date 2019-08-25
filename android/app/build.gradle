@@ -296,6 +296,8 @@ protobuf {
 
 
 dependencies {
+    implementation project(':react-native-linear-gradient')
+    implementation project(':react-native-shimmer')
     compile project(':react-native-background-task')
     compile project(':react-native-background-timer')
     compile project(':react-native-vector-icons')

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Button, Text, ImageBackground, ActivityIndicator, AsyncStorage, StatusBar, StyleSheet, View, Image, Linking, Platform, AppState } from 'react-native';
-import { DrawerNavigator , StackNavigator, SwitchNavigator, DrawerItems } from 'react-navigation'; // Version can be specified in package.json
+import { Button, Text, Animated, ImageBackground, ActivityIndicator, AsyncStorage, StatusBar, StyleSheet, View, Image, Linking, Platform, Easing, AppState } from 'react-native';
+import { DrawerNavigator, StackNavigator, SwitchNavigator, DrawerItems } from 'react-navigation'; // Version can be specified in package.json
 // Import the different screens
 import BackupWallet from './screens/BackupWallet'
 import SendReceive from './screens/SendReceive'
@@ -44,9 +44,10 @@ class AuthLoadingScreen extends React.Component {
   }
 
 
-  // state = {
-  //   appState: AppState.currentState,
-  // };
+  state = {
+    // appState: AppState.currentState,
+    spinAnim: new Animated.Value(0)
+  };
 
   // componentDidMount() {
   //   AppState.addEventListener('change', this._handleAppStateChange);
@@ -69,6 +70,7 @@ class AuthLoadingScreen extends React.Component {
   //   }
   //   this.setState({appState: nextAppState});
   // };
+
 
 	// Fetch the token from storage then navigate to our appropriate place
 	_bootstrapAsync = async () => {
@@ -143,10 +145,28 @@ class AuthLoadingScreen extends React.Component {
 
 	// Render any loading content that you like here
 	render() {
+
+    // const spin = this.state.spinAnim.interpolate({
+    //   inputRange: [0, 1],
+    //   outputRange: ['0deg', '360deg']
+    // });
+
+    // Animated.loop(Animated.timing(
+    //   this.state.spinAnim,
+    //   {
+    //     toValue: 1,
+    //     duration: 4000,
+    //     easing: Easing.linear
+    //   }
+    // )).start();
+
 		return (
-			<View accessibilityLabel="AppJS">
-				<ActivityIndicator />
-			</View>
+      <ImageBackground source={require('./resources/images/signin_process_hashfunction_bg.png')} style={ [styles.backgroundImage, {justifyContent: 'center'}] }>
+        
+        {/* <Animated.Image style={{height:wp(50), width: wp(50), alignSelf:'center', transform: [{rotate: spin}]}} resizeMode={'contain'}  source={require('./resources/images/QRL_logo_qrlblue.png')} /> */}
+        <Image style={{height:wp(50), width: wp(50), alignSelf:'center'}} resizeMode={'contain'}  source={require('./resources/images/QRL_logo_qrlblue.png')} />
+
+      </ImageBackground>
 		);
 	}
 }

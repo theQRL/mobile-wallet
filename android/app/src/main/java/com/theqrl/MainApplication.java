@@ -3,6 +3,8 @@ package com.theqrl;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.BV.LinearGradient.LinearGradientPackage;
+import com.oblador.shimmer.RNShimmerPackage;
 import com.jamesisaac.rnbackgroundtask.BackgroundTaskPackage;
 import com.ocetnik.timer.BackgroundTimerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -31,6 +33,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new LinearGradientPackage(),
+            new RNShimmerPackage(),
             new BackgroundTaskPackage(),
             new BackgroundTimerPackage(),
             new VectorIconsPackage(),
