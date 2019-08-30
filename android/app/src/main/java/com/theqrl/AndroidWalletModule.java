@@ -146,7 +146,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
         try {
             String hexSeed = createWallet(treeHeight, hashFunction);
             // save the required information to Shared Preferences
-            saveEncrypted("name".concat(walletindex), walletname);
+//            saveEncrypted("name".concat(walletindex), walletname);
             saveEncrypted("hexseed".concat(walletindex), hexSeed.split(" ")[0]);
             saveEncrypted("address".concat(walletindex), hexSeed.split(" ")[1]);
             saveEncrypted("xmsspk".concat(walletindex), hexSeed.split(" ")[2]);
@@ -163,7 +163,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
     public void openWalletWithHexseed(String hexseed, String walletindex, String walletname, String walletpin,  Callback errorCallback, Callback successCallback) {
         try {
             String hexSeed = openWalletWithHexseed(hexseed);
-            saveEncrypted("name".concat(walletindex) , walletname);
+//            saveEncrypted("name".concat(walletindex) , walletname);
             saveEncrypted("hexseed".concat(walletindex), hexSeed.split(" ")[0]);
             saveEncrypted("address".concat(walletindex), hexSeed.split(" ")[1]);
             saveEncrypted("xmsspk".concat(walletindex), hexSeed.split(" ")[2]);
@@ -180,7 +180,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
     public void openWalletWithMnemonic(String mnemonic, String walletindex, String walletname, String walletpin,  Callback errorCallback, Callback successCallback) {
         try {
             String hexSeed = openWalletWithMnemonic(mnemonic);
-            saveEncrypted("name".concat(walletindex) , walletname);
+//            saveEncrypted("name".concat(walletindex) , walletname);
             saveEncrypted("hexseed".concat(walletindex), hexSeed.split(" ")[0]);
             saveEncrypted("address".concat(walletindex), hexSeed.split(" ")[1]);
             saveEncrypted("xmsspk".concat(walletindex), hexSeed.split(" ")[2]);
@@ -620,7 +620,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
         PreferenceHelper.removeFromPreferences("address"+walletindex+"enc");
         PreferenceHelper.removeFromPreferences("hexseed"+walletindex+"iv");
         PreferenceHelper.removeFromPreferences("hexseed"+walletindex+"enc");
-        PreferenceHelper.removeFromPreferences("name"+walletindex);
+//        PreferenceHelper.removeFromPreferences("name"+walletindex);
         successCallback.invoke("success");
     }
 

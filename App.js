@@ -34,6 +34,8 @@ var IosWallet = NativeModules.refreshWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
 // import { QRLLIB } from './node_modules/qrllib/build/web-libjsqrl.js'
 
+console.disableYellowBox = true;
+
 // AuthLoadingScreen checks if a wallet already exists
 // - if yes -> redirects to the app main view
 // - if no -> redirects to the CreateWallet view

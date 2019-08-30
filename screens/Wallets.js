@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, Text, View, Alert, Button, Image, StyleSheet, Modal, ImageBackground, TouchableOpacity, TouchableHighlight, AsyncStorage, ListView, ScrollView, AppState} from 'react-native';
+import {Platform, Text, View, Alert, Button, Image, TextInput, StyleSheet, Modal, ImageBackground, TouchableOpacity, TouchableHighlight, AsyncStorage, ListView, ScrollView, AppState} from 'react-native';
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.CreateWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
@@ -27,6 +27,7 @@ export default class Wallets extends React.Component {
         // get walletlist JSON
         console.log("MOUNTING WALLETS")
         AsyncStorage.getItem("walletlist").then((walletlist) => {
+            console.log(walletlist)
             // get walletindex (index of the opened wallet)
             AsyncStorage.getItem("walletindex").then((walletindex) => {
                 this.setState({isLoading:false, walletindex: walletindex, dataSource: ds.cloneWithRows(JSON.parse(walletlist)), walletlist: JSON.parse(walletlist) })
@@ -76,6 +77,9 @@ export default class Wallets extends React.Component {
         walletIndexToOpen: null,
         deleteModalVisible: false,
         appState: AppState.currentState,
+        showNameModal: false,
+        updateWalletName: '',
+        walletToChangeName: ''
     }
 
     // popup to confirm wallet removal
@@ -137,7 +141,6 @@ export default class Wallets extends React.Component {
         this.props.navigation.navigate('OpenExistingWalletModal',{onGoBack: () => this.refreshWalletIndex(), walletIndexToOpen: walletindexToOpen})
     }
 
-
     openDeleteModal = (walletindexToDelete) => {
         // this.setState({modalVisible: true, walletIndexToOpen: walletindexToOpen })
         this.props.navigation.navigate('DeleteWalletModal',{onGoBack: () => this.removeWallet(walletindexToDelete, this.state.walletlist), walletIndexToDelete: walletindexToDelete })
@@ -148,6 +151,40 @@ export default class Wallets extends React.Component {
         this.setState({isLoading: true});
         this.props.navigation.navigate( 'SignIn', { closable: true});
         // AsyncStorage.removeItem("walletcreated");
+    }
+
+    // update wallet name
+    _onNameChange = (text) => {
+        this.setState({updateWalletName:text});
+    }
+
+    openChangeNameModal = (walletindexToUpdate, name) => {
+        this.setState({showNameModal: true, walletIndexToUpdate: walletindexToUpdate, walletToChangeName: name})
+    }
+
+    // update name of a wallet
+    updateWalletNameFn = (walletIndex, walletlist) => {
+        var c, found=false;
+        for(c in walletlist) {
+            if(walletlist[c]["index"] == walletIndex) {
+                found=true;
+                break;
+            }
+        }
+        if (found){
+            walletlist[c]["name"] = this.state.updateWalletName
+            AsyncStorage.setItem("walletlist",  JSON.stringify( walletlist ))
+            this.setState({ showNameModal:false, dataSource: ds.cloneWithRows(JSON.parse(JSON.stringify( walletlist ))) })
+        }
+    }
+
+    // refresh wallet index on switch
+    refreshWalletIndex(){
+        // get walletindex (index of the opened wallet)
+        this.setState({isLoading:true});
+        AsyncStorage.getItem("walletindex").then((walletindex) => {
+            this.setState({isLoading:false, walletindex: walletindex})
+        }).catch((error) => {console.log(error)});
     }
 
     // View for current wallet
@@ -191,19 +228,22 @@ export default class Wallets extends React.Component {
 
             return (
                 <View>
-                    <View  style={{flex: 1, flexDirection:'row', alignSelf:'center', height:80, width:wp(85)}} onPress={()=> this.props.navigation.navigate('TxDetailsView', {txhash: txhash})} underlayColor='white'>
+                    <View  style={{flex: 1, flexDirection:'row', alignSelf:'center', height:80, width:wp(85)}} underlayColor='white'>
                         <View style={{flex:6, flexDirection:'row'}}>
-                            <TouchableHighlight onPress={() => this.openHexseedModal(rowData.index)  } underlayColor='white' style={{flex:1, justifyContent:'center'}}>    
-                                <View style={{flex:1, flexDirection:'row'}}>
+                                
+                            <View style={{flex:1, flexDirection:'row'}}>
+                                <TouchableHighlight onPress={() => this.openHexseedModal(rowData.index)  } underlayColor='white' style={{flex:1, justifyContent:'center'}}>
                                     <View style={{flex:1, justifyContent:'center'}}>
                                         <Image source={require('../resources/images/wallet_locked.png')} resizeMode={'contain'} style={styles.icon} />
                                     </View>
-                                    <View style={{flex:5, justifyContent:'center', paddingLeft:5}}>
+                                </TouchableHighlight>
+                                <TouchableHighlight onPress={() => this.openChangeNameModal(rowData.index, rowData.name)  } underlayColor='white' style={{flex:5, justifyContent:'center', paddingLeft:5}}>
+                                    <View>
                                         <Text>{rowData.name}</Text>
                                         <Text>Q{addressBegin}...{addressEnd} </Text>
                                     </View>
-                                </View>
-                            </TouchableHighlight>
+                                </TouchableHighlight>
+                            </View>
                         </View>
                         <View style={{flex:1, justifyContent:'center', alignItems:'flex-end'}}>
                             <TouchableHighlight onPress={()=> this.props.navigation.navigate( "ShowQrCodeModal", {qrcode:rowData.address} )} underlayColor='white'>
@@ -226,15 +266,6 @@ export default class Wallets extends React.Component {
         }
     }
 
-    // refresh wallet index on switch
-    refreshWalletIndex(){
-        // get walletindex (index of the opened wallet)
-        this.setState({isLoading:true});
-        AsyncStorage.getItem("walletindex").then((walletindex) => {
-            this.setState({isLoading:false, walletindex: walletindex})
-        }).catch((error) => {console.log(error)});
-    }
-
   // render view
   render() {
 
@@ -244,6 +275,33 @@ export default class Wallets extends React.Component {
       else {
           return (
               <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>
+
+
+                <Modal onRequestClose={ console.log("") } animationType="fade" visible={this.state.showNameModal} transparent={true}>
+                    <View
+                        style={{
+                        position: 'absolute',
+                        width: '100%',
+                        height: '100%',
+                        justifyContent: 'center',
+                        backgroundColor: 'rgba(100,100,100, 0.5)',
+                        padding: 20,
+                    }}
+                    >
+                        <View style={{borderRadius: 10, width:wp(85), height:hp(30), backgroundColor:'white',alignItems:'center', alignSelf:'center', justifyContent:'center', top:hp(10), position: 'absolute'}}>
+                            <Text style={styles.descriptionTextBlack}>Change wallet name</Text>
+                            <TextInput autoFocus={true} underlineColorAndroid="transparent" onChangeText={ (text) => this._onNameChange(text) } style={{borderRadius: 10, backgroundColor:'#ebe8e8', height:hp(6), width:wp(65), marginBottom: hp(3)}} placeholder={this.state.walletToChangeName} />
+                            <View>
+                                <TouchableOpacity style={styles.SubmitButtonStyleRedSmall} activeOpacity = { .5 } onPress={() => {this.setState({showNameModal:false})}}>
+                                    <Text style={styles.TextStyleWhite}> CANCEL </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.SubmitButtonStyleBlueSmall} activeOpacity = { .5 } onPress={() => { this.updateWalletNameFn(this.state.walletIndexToUpdate, this.state.walletlist )}}>
+                                    <Text style={styles.TextStyleWhite}> CONFIRM </Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
 
                 <View style={{flex:1}}>
                     <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:hp(8), paddingLeft:30}}>
