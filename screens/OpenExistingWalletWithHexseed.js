@@ -231,7 +231,7 @@ export default class OpenExistingWalletWithHexseed extends React.Component {
                                 <Text style={styles.smallTitle}>1. Enter your hexseed below</Text>
 
                                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center',backgroundColor: '#ebe8e8',height: hp(6),borderRadius: 10,width: wp(85), marginTop: 15}}>
-                                    <TextInput underlineColorAndroid="transparent" onChangeText={ (text) => this._onHexSeedChange(text) } value={this.state.hexseed} style={{backgroundColor:'#ebe8e8', height:hp(6),width: wp(85), flex:1, borderRadius: 10}} />
+                                    <TextInput underlineColorAndroid="transparent" onChangeText={ (text) => this._onHexSeedChange(text) } value={this.state.hexseed} style={{backgroundColor:'#ebe8e8', height:hp(6),width: wp(85), flex:1, borderRadius: 10, paddingLeft: 10}} />
                                     <TouchableOpacity style={styles.SubmitButtonStyle3} activeOpacity = { .5 } onPress={() => this.launchHexModal(true)} >
                                         <Image source={require('../resources/images/scanQrCode.png')} style={styles.ImageStyle}/>
                                     </TouchableOpacity>

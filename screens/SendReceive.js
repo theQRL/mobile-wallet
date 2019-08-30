@@ -277,7 +277,7 @@ export default class SendReceive extends React.Component {
                     >
                         <View style={{borderRadius: 10, width:wp(85), height:hp(30), backgroundColor:'white',alignItems:'center', alignSelf:'center', justifyContent:'center', top:hp(10), position: 'absolute'}}>
                             <Text style={styles.descriptionTextBlack}>Change OTS key index</Text>
-                            <TextInput autoFocus={true} underlineColorAndroid="transparent" keyboardType={'numeric'} onChangeText={ (text) => this._onOtsChange(text) } style={{borderRadius: 10, backgroundColor:'#ebe8e8', height:hp(6), width:wp(65), marginBottom: hp(3)}} />
+                            <TextInput autoFocus={true} underlineColorAndroid="transparent" keyboardType={'numeric'} onChangeText={ (text) => this._onOtsChange(text) } style={{borderRadius: 10, backgroundColor:'#ebe8e8', height:hp(6), width:wp(65), marginBottom: hp(3), paddingLeft: 10}} />
                             <View>
                                 <TouchableOpacity style={styles.SubmitButtonStyleRedSmall} activeOpacity = { .5 } onPress={() => {this.setState({showOtsModal:false})}}>
                                     <Text style={styles.TextStyleWhite}> CANCEL </Text>
@@ -393,7 +393,7 @@ export default class SendReceive extends React.Component {
                                     <Text>RECIPIENT</Text>
 
                                     <View style={styles.SectionStyle}>
-                                        <TextInput underlineColorAndroid="transparent" onChangeText={ (text) => this._onRecipientChange(text) } value={this.state.recipient} style={{backgroundColor:'#ebe8e8', height:hp(6), flex:1, borderRadius: 10}} />
+                                        <TextInput underlineColorAndroid="transparent" onChangeText={ (text) => this._onRecipientChange(text) } value={this.state.recipient} style={{backgroundColor:'#ebe8e8', height:hp(6), flex:1, borderRadius: 10, paddingLeft: 10}} />
                                         <TouchableOpacity style={styles.SubmitButtonStyle3} activeOpacity = { .5 } onPress={() => this.showModal(true)} >
                                             <Image source={require('../resources/images/scanQrCode.png')} style={styles.ImageStyle}/>
                                         </TouchableOpacity>
@@ -402,7 +402,7 @@ export default class SendReceive extends React.Component {
 
                                     <Text>{'\n'}AMOUNT</Text>
                                     <View style={styles.SectionStyle}>
-                                        <TextInput underlineColorAndroid="transparent" keyboardType={'numeric'} onChangeText={ (text) => this._onAmountChange(text) } value={this.state.amount} style={{backgroundColor:'#ebe8e8', height:hp(6), flex:1, borderRadius: 10}} />
+                                        <TextInput underlineColorAndroid="transparent" keyboardType={'numeric'} onChangeText={ (text) => this._onAmountChange(text) } value={this.state.amount} style={{backgroundColor:'#ebe8e8', height:hp(6), flex:1, borderRadius: 10, paddingLeft: 10}} />
                                     </View>
                                     <View style={{flexDirection:'row', paddingTop:10}}>
                                         <View style={{flex:1, alignItems:'flex-start'}}><Text>Fee: <Text style={{color:'red'}}>0.01</Text></Text></View>

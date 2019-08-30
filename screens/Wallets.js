@@ -239,7 +239,7 @@ export default class Wallets extends React.Component {
                                 </TouchableHighlight>
                                 <TouchableHighlight onPress={() => this.openChangeNameModal(rowData.index, rowData.name)  } underlayColor='white' style={{flex:5, justifyContent:'center', paddingLeft:5}}>
                                     <View>
-                                        <Text>{rowData.name}</Text>
+                                        <Text style={{fontWeight:'bold'}}>{rowData.name} <Image source={require('../resources/images/pen.png')} resizeMode={'contain'} style={{width:15, height:15}} /> </Text>
                                         <Text>Q{addressBegin}...{addressEnd} </Text>
                                     </View>
                                 </TouchableHighlight>
@@ -290,7 +290,7 @@ export default class Wallets extends React.Component {
                     >
                         <View style={{borderRadius: 10, width:wp(85), height:hp(30), backgroundColor:'white',alignItems:'center', alignSelf:'center', justifyContent:'center', top:hp(10), position: 'absolute'}}>
                             <Text style={styles.descriptionTextBlack}>Change wallet name</Text>
-                            <TextInput autoFocus={true} underlineColorAndroid="transparent" onChangeText={ (text) => this._onNameChange(text) } style={{borderRadius: 10, backgroundColor:'#ebe8e8', height:hp(6), width:wp(65), marginBottom: hp(3)}} placeholder={this.state.walletToChangeName} />
+                            <TextInput autoFocus={true} underlineColorAndroid="transparent" onChangeText={ (text) => this._onNameChange(text) } style={{borderRadius: 10, backgroundColor:'#ebe8e8', height:hp(6), width:wp(65), marginBottom: hp(3), paddingLeft: 10}} placeholder={this.state.walletToChangeName} />
                             <View>
                                 <TouchableOpacity style={styles.SubmitButtonStyleRedSmall} activeOpacity = { .5 } onPress={() => {this.setState({showNameModal:false})}}>
                                     <Text style={styles.TextStyleWhite}> CANCEL </Text>

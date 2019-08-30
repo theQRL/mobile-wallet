@@ -149,7 +149,8 @@ export default StyleSheet.create({
         height:hp(6),
         width: wp(85),
         borderRadius:10,
-        marginTop:15
+        marginTop:15,
+        paddingLeft: 10
     },
     selection: {
         width: wp(85),
