@@ -197,15 +197,20 @@ export default class Settings extends React.Component {
                 <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>                
 
                     <View style={{flex:1}}>
-                        <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:hp(8), paddingLeft:30}}>
+                        <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:hp(4), paddingLeft:30}}>
+                            <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477' style={{paddingBottom:20, paddingRight: 30, paddingTop: 20}}>
+                            <Image source={require('../resources/images/sandwich.png')} resizeMode={'contain'} style={{height:25, width:25}} />
+                            </TouchableHighlight>
+                        </View>
+                        {/* <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:hp(8), paddingLeft:30}}>
                             <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
                                 <Image source={require('../resources/images/sandwich.png')} resizeMode={'contain'} style={{height:25, width:25}} />
                             </TouchableHighlight>
-                        </View>
+                        </View> */}
                         <FlashMessage/> 
 
                     <ScrollView style={{flex:1, marginBottom:30}}>
-                        <View style={{height: hp(20), marginTop: hp(3) , borderRadius:10, alignSelf:'center'}}>
+                        <View style={{height: hp(20), marginTop: hp(1) , borderRadius:10, alignSelf:'center'}}>
                             <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage}>
                                 <View style={{flex:1, alignSelf:'center', width: wp(96), justifyContent:'center', alignItems:'center'}}>
                                     <Text style={styles.sectionTitle}>SETTINGS</Text>
@@ -214,7 +219,7 @@ export default class Settings extends React.Component {
                         </View>
 
                         <View style={{ width:wp(93), height:hp(45), paddingBottom:100, alignSelf:'center',  borderRadius:10, backgroundColor:'white', padding: 30}}>
-                            
+
                             <View style={{height:hp(5)}}>
                                 <Text style={styles.descriptionTextBlack}>Warning: Change the information below at your own risk! </Text>
                             </View>

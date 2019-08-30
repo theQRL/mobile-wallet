@@ -294,7 +294,7 @@ export default class Wallet extends React.Component{
                     <View accessibilityLabel="TransactionsHistory" style={{flex:1}}>
 
                         <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:40, paddingLeft:30}}>
-                            <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
+                            <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477' >
                                 <Image source={require('../resources/images/sandwich.png')} resizeMode={'contain'} style={{height:25, width:25}} />
                             </TouchableHighlight>
                         </View>
