@@ -281,8 +281,10 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
     @ReactMethod
     // Method to update the wallet's balance
     public void refreshWallet(String walletindex, Callback errorCallback, Callback successCallback) {
-        System.out.println( "refresWallet from Android" );
+        System.out.println( "refresWallet from Android for wallet with ID" );
+        System.out.println( walletindex );
         String walletAddress = getEncrypted("address".concat(walletindex));
+        System.out.println( walletAddress );
 
         String server = PreferenceHelper.getString("node");
         int port = PreferenceHelper.getInt("port");
