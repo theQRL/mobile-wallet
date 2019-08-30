@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Platform, StyleSheet, ImageBackground, Text, View, Image, ActionSheetIOS, TextInput, Button, ActivityIndicator, Picker, AsyncStorage, TouchableOpacity, Alert, Modal, TouchableHighlight, KeyboardAvoidingView} from 'react-native';
+import {Platform, StyleSheet, ImageBackground, Text, View, Image, ActionSheetIOS, TextInput, Button, ActivityIndicator, Picker, AsyncStorage, TouchableOpacity, Alert, Modal, TouchableHighlight} from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import styles from './styles.js';
 
@@ -147,7 +147,7 @@ export default class OpenExistingWalletOptions extends React.Component {
 
     render() {
         return (
-            <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
+            <View style={{flex:1}}>
                 <ImageBackground source={require('../resources/images/signin_process_bg.png')} style={styles.backgroundImage}>
                     <View style={{flex:1}}></View>
                     <View style={{flex:1.5, alignItems:'center'}}>
@@ -166,7 +166,7 @@ export default class OpenExistingWalletOptions extends React.Component {
                         </View>
                     </View>
                 </ImageBackground>
-            </KeyboardAvoidingView>
+            </View>
         );
     }
 }

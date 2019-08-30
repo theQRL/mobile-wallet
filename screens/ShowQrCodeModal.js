@@ -32,7 +32,7 @@ export default class ShowQrCodeModal extends React.Component {
                                 <Text style={{textAlign: 'center'}} selectable={true}>{this.props.navigation.state.params.qrcode}</Text>
                             </View>
 
-                            <View style={{ flex: 5, alignItems: 'center', justifyContent: 'center' }}>
+                            <View style={{ flex: 5, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
                                 <QRCode value={this.props.navigation.state.params.qrcode} size={wp(50)} bgColor='black' fgColor='white'/>
                             </View>
 

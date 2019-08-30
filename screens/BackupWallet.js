@@ -17,7 +17,6 @@ export default class BackupWallet extends React.Component {
         ),
     };
 
-
     componentDidMount() {
         AppState.addEventListener('change', this._handleAppStateChange);
     }
@@ -55,6 +54,15 @@ export default class BackupWallet extends React.Component {
         }
         this.setState({appState: nextAppState});
     };
+
+    openHexseedModal = (walletindexToOpen) => {
+        this.setState({showModal: false})
+        // this.setState({modalVisible: true, walletIndexToOpen: walletindexToOpen })
+        AsyncStorage.getItem("walletindex").then((walletindex) => {
+            this.props.navigation.navigate('ValidatePinForBackup', {onGoBack: () => this.getInfo(), walletIndexToOpen: walletindex})
+        }).catch((error) => {console.log(error)});
+        
+    }
 
     state={
         mnemonic: '',
@@ -132,7 +140,7 @@ export default class BackupWallet extends React.Component {
                             <TouchableOpacity style={styles.SubmitButtonStyleRedSmall} activeOpacity = { .5 } onPress={ () => {this.showModal(false)} }>
                                 <Text style={styles.TextStyleWhite}> CANCEL </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.SubmitButtonStyleBlueSmall} activeOpacity = { .5 } onPress={this.getInfo}>
+                            <TouchableOpacity style={styles.SubmitButtonStyleBlueSmall} activeOpacity = { .5 } onPress={this.openHexseedModal}>
                                 <Text style={styles.TextStyleWhite}> SHOW </Text>
                             </TouchableOpacity>
                         </View>
@@ -141,14 +149,19 @@ export default class BackupWallet extends React.Component {
                 </Modal>
                 
             <View style={{flex:1}}>
-
-                <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:hp(8), paddingLeft:30}}>
-                    <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
+                <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:hp(4), paddingLeft:30}}>
+                    <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477' style={{paddingBottom:20, paddingRight: 30, paddingTop: 20}}>
                         <Image source={require('../resources/images/sandwich.png')} resizeMode={'contain'} style={{height:25, width:25}} />
                     </TouchableHighlight>
                 </View>
 
-                <View style={{ height: hp(20), marginTop: hp(3),  borderRadius:10, alignSelf:'center'}}>
+                {/* <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:hp(8), paddingLeft:30}}>
+                    <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
+                        <Image source={require('../resources/images/sandwich.png')} resizeMode={'contain'} style={{height:25, width:25}} />
+                    </TouchableHighlight>
+                </View> */}
+
+                <View style={{ height: hp(20), marginTop: hp(1),  borderRadius:10, alignSelf:'center'}}>
                     <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage}>
                         <View style={{flex:1, alignSelf:'center', width:wp(96), justifyContent:'center', alignItems:'center'}}>
                             <Text style={styles.sectionTitle}>BACK UP YOUR WALLET</Text>
@@ -157,10 +170,8 @@ export default class BackupWallet extends React.Component {
                 </View>
                 
                 <View style={{ width:wp(93), height:hp(70), paddingBottom:100, alignSelf: 'center'}}>
-                    <View style={{height:50, backgroundColor:'white', padding:30, borderTopRightRadius:10, borderTopLeftRadius: 10 }}>
-                        <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fafafa'}}>
-                            <Text style={styles.bigTitleBlack}>View Recovery Seed</Text>
-                        </View>
+                    <View style={{ height: hp(7), backgroundColor:'white',  alignItems:'center', justifyContent: 'center', borderTopRightRadius:10, borderTopLeftRadius: 10 }}>
+                        <Text style={styles.bigTitleBlack}>View Recovery Seed</Text>    
                     </View>
                     <View style={{width:'100%',height:1, backgroundColor:'red', alignSelf:'flex-end'}}></View>
                     <View style={{ backgroundColor:'white', width:wp(93), padding:30, alignItems:'center', borderBottomRightRadius:10, borderBottomLeftRadius: 10}}>

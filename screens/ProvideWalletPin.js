@@ -1,5 +1,5 @@
 import React from 'react';
-import {Picker, Text, View, Button, Image, ScrollView, ImageBackground, StyleSheet,AsyncStorage, TouchableHighlight, TouchableOpacity,ActivityIndicator, TextInput, KeyboardAvoidingView, Platform, Alert} from 'react-native';
+import {Picker, Text, View, Button, Image, ScrollView, ImageBackground, StyleSheet,AsyncStorage, TouchableHighlight, TouchableOpacity,ActivityIndicator, TextInput, Platform, Alert} from 'react-native';
 var validate = require('@theqrl/validate-qrl-address');
 
 import DeviceInfo from 'react-native-device-info';

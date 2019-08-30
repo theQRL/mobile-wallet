@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, TextInput, Image, ImageBackground, AsyncStorage, StyleSheet, TouchableHighlight, TouchableOpacity, Platform, ActivityIndicator, Modal, AppState, Switch} from 'react-native';
+import {Text, View, TextInput, Image, ImageBackground, AsyncStorage, StyleSheet, TouchableHighlight, TouchableOpacity, Platform, ActivityIndicator, Modal, AppState, Switch, ScrollView} from 'react-native';
 
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.refreshWallet;
@@ -8,6 +8,8 @@ import BackgroundTimer from 'react-native-background-timer';
 let isDefaultNode = 'true';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import styles from './styles.js';
+import FlashMessage from "react-native-flash-message";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 export default class Settings extends React.Component {
 
@@ -191,16 +193,24 @@ export default class Settings extends React.Component {
         }
         else {
             return (
+                <View style={{flex:1}}>
                 <ImageBackground source={require('../resources/images/sendreceive_bg_half.png')} style={styles.backgroundImage}>                
 
                     <View style={{flex:1}}>
-                        <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:hp(8), paddingLeft:30}}>
+                        <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:hp(4), paddingLeft:30}}>
+                            <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477' style={{paddingBottom:20, paddingRight: 30, paddingTop: 20}}>
+                            <Image source={require('../resources/images/sandwich.png')} resizeMode={'contain'} style={{height:25, width:25}} />
+                            </TouchableHighlight>
+                        </View>
+                        {/* <View style={{alignItems:'flex-start', justifyContent:'flex-start', paddingTop:hp(8), paddingLeft:30}}>
                             <TouchableHighlight onPress={()=> this.props.navigation.openDrawer()} underlayColor='#184477'>
                                 <Image source={require('../resources/images/sandwich.png')} resizeMode={'contain'} style={{height:25, width:25}} />
                             </TouchableHighlight>
-                        </View>
+                        </View> */}
+                        <FlashMessage/> 
 
-                        <View style={{height: hp(20), marginTop: hp(3) , borderRadius:10, alignSelf:'center'}}>
+                    <ScrollView style={{flex:1, marginBottom:30}}>
+                        <View style={{height: hp(20), marginTop: hp(1) , borderRadius:10, alignSelf:'center'}}>
                             <ImageBackground source={require('../resources/images/backup_bg.png')} imageStyle={{resizeMode: 'contain'}} style={styles.backgroundImage}>
                                 <View style={{flex:1, alignSelf:'center', width: wp(96), justifyContent:'center', alignItems:'center'}}>
                                     <Text style={styles.sectionTitle}>SETTINGS</Text>
@@ -208,20 +218,40 @@ export default class Settings extends React.Component {
                             </ImageBackground>
                         </View>
 
-                        <View style={{ width:wp(93), height:hp(60), paddingBottom:100, alignSelf:'center',  borderRadius:10, backgroundColor:'white', padding: 30}}>
-                            <Text>NODE URL</Text>
-                            <TextInput underlineColorAndroid="transparent" onChangeText={ (text) => this.onUrlChange(text) } value={this.state.nodeUrl} style={{ borderRadius: 10, backgroundColor:'#ebe8e8', height:hp(6)}} />
-                            <Text>{'\n'}PORT</Text>
-                            <TextInput underlineColorAndroid="transparent" keyboardType={'numeric'} onChangeText={ (text) => this.onPortChange(text) } value={this.state.nodePort} style={{borderRadius: 10, backgroundColor:'#ebe8e8', height:hp(6) }} />
+                        <View style={{ width:wp(93), height:hp(45), paddingBottom:100, alignSelf:'center',  borderRadius:10, backgroundColor:'white', padding: 30}}>
 
-                            <View style={{alignItems: 'center', marginTop: hp(4)}}>
-                                <TouchableOpacity style={styles.SubmitButtonStyleRedSmall} activeOpacity = { .5 } onPress={ () => { this.saveSettings() }}>
+                            <View style={{height:hp(5)}}>
+                                <Text style={styles.descriptionTextBlack}>Warning: Change the information below at your own risk! </Text>
+                            </View>
+
+                            <View style={{height: hp(10)}}>
+                                <Text style={{paddingTop: wp(7)}}>NODE URL</Text>
+                                <View style={styles.SectionStyle}>
+                                    <TextInput underlineColorAndroid="transparent" onChangeText={ (text) => this.onUrlChange(text) } value={this.state.nodeUrl} style={{backgroundColor:'#ebe8e8', height:hp(6), flex:1, borderRadius: 10, paddingLeft: 10}} />
+                                </View>
+
+                                <Text>{'\n'}PORT</Text>
+                                <View style={styles.SectionStyle}>
+                                    <TextInput underlineColorAndroid="transparent" onChangeText={ (text) => this.onPortChange(text)  } value={this.state.nodePort} style={{backgroundColor:'#ebe8e8', height:hp(6), flex:1, borderRadius: 10, paddingLeft: 10}} />
+                                </View>
+                            </View>
+
+                            <View style={{alignItems: 'center', marginTop: hp(15), height:hp(24)}}>
+                                <TouchableOpacity style={styles.SubmitButtonStyleRedSmall} activeOpacity = { .5 }  onPress={ () => {  this.saveSettings();
+                                    showMessage({
+                                        message: "Server settings updated",
+                                        type: "info",
+                                        backgroundColor: "#EB2E42"
+                                    });
+                                }}>
                                     <Text style={styles.TextStyleWhite}> SAVE </Text>
                                 </TouchableOpacity>
                             </View>
 
-                            <View style={{width:'100%',height:1, backgroundColor:'lightgray', alignSelf:'flex-end', marginTop: 10}}></View>
-                            <View style={{ flexDirection: 'row', justifyContent:'center', height:70 }}>
+                        </View>
+
+                        <View style={{ width:wp(93), height:60, alignSelf:'center', justifyContent:'center',  borderRadius:10, backgroundColor:'white', paddingLeft: 30, paddingRight: 30, marginTop: 20}}>
+                            <View style={{ flexDirection: 'row', justifyContent:'center', height:50 }}>
                                 <View style={{flex:1, justifyContent:'center'}}>
                                     <Text>Lock app with PIN</Text>
                                 </View>
@@ -232,9 +262,11 @@ export default class Settings extends React.Component {
                                 </View>
                             </View>
                         </View>
+                    </ScrollView>
                     </View>
-
+                    
                 </ImageBackground>
+                </View>
             );
         }
     }

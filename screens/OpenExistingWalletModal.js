@@ -39,6 +39,7 @@ export default class OpenExistingWalletModal extends React.Component {
         AsyncStorage.setItem("walletindex", this.props.navigation.state.params.walletIndexToOpen );
         this.props.navigation.state.params.onGoBack();
         this.props.navigation.goBack();
+        this.props.navigation.navigate("TransactionsHistory");
     }
 
     render() {

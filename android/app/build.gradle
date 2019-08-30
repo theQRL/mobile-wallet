@@ -130,8 +130,8 @@ android {
         applicationId "com.theqrl"
         minSdkVersion 23
         targetSdkVersion 27
-        versionCode 3
-        versionName "1.0.83"
+        versionCode 6
+        versionName "2.0"
 
         testBuildType System.getProperty('testBuildType', 'debug')  //this will later be used to control the test apk build type
         missingDimensionStrategy "minReactNative", "minReactNative46" //read note
@@ -149,18 +149,18 @@ android {
         }
     }
 
-    signingConfigs {
-        release {
-            if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
-                storeFile file(MYAPP_RELEASE_STORE_FILE)
-//                storePassword MYAPP_RELEASE_STORE_PASSWORD
-                storePassword pass
-                keyAlias MYAPP_RELEASE_KEY_ALIAS
-//                keyPassword MYAPP_RELEASE_KEY_PASSWORD
-                keyPassword pass
-            }
-        }
-    }
+//    signingConfigs {
+//        release {
+//            if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
+//                storeFile file(MYAPP_RELEASE_STORE_FILE)
+////                storePassword MYAPP_RELEASE_STORE_PASSWORD
+//                storePassword pass
+//                keyAlias MYAPP_RELEASE_KEY_ALIAS
+////                keyPassword MYAPP_RELEASE_KEY_PASSWORD
+//                keyPassword pass
+//            }
+//        }
+//    }
 
 
     splits {
@@ -185,7 +185,7 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.release
             // change the default name of the generated apk
             applicationVariants.all { variant ->
                 variant.outputs.all {
@@ -296,6 +296,8 @@ protobuf {
 
 
 dependencies {
+    implementation project(':react-native-linear-gradient')
+    implementation project(':react-native-shimmer')
     compile project(':react-native-background-task')
     compile project(':react-native-background-timer')
     compile project(':react-native-vector-icons')

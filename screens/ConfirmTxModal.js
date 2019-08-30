@@ -1,6 +1,8 @@
 import React from 'react';
-import {Picker, Text, View, Button, Image, ScrollView, ImageBackground, StyleSheet,AsyncStorage, TouchableHighlight, TouchableOpacity,ActivityIndicator, TextInput, KeyboardAvoidingView, Platform, Alert, Dimensions} from 'react-native';
+import {Picker, Text, View, Button, Image, ScrollView, ImageBackground, StyleSheet,AsyncStorage, TouchableHighlight, TouchableOpacity,ActivityIndicator, TextInput, Platform, Alert, Dimensions} from 'react-native';
 var validate = require('@theqrl/validate-qrl-address');
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import styles from './styles.js';
 
 // Android and Ios native modules
 import DeviceInfo from 'react-native-device-info';
@@ -104,13 +106,48 @@ export default class ConfirmTxModal extends React.Component {
     render() {
         return(
             <ImageBackground source={require('../resources/images/confirmTxModal_bg.png')} style={styles.backgroundImage}>
-                <View style={{height:130, width:330, flex: 1, alignSelf: 'center', justifyContent:'center', paddingTop:this.state.paddingTop}}>
-                    <ImageBackground source={require('../resources/images/confirmTxModal_window.png')} style={{width:null, height:"85%", flex:1}} >
+                {/* <View style={{height:hp(100), width:wp(100), flex: 1, alignSelf: 'center', justifyContent:'center', paddingTop:hp(10)}}> */}
+                    <View style={{height:hp(70), width: wp(93), marginTop: hp(15), alignSelf:'center'}}>
+                        
+                        <View style={{height:hp(20), width: wp(93), backgroundColor: '#1A396A', alignSelf:'center', alignItems: 'center', borderTopLeftRadius:10, borderTopRightRadius:10, paddingTop: hp(3)}}>
+                            <Image source={require('../resources/images/confirmTxModal_check.png')} resizeMode={'contain'} style={{height:hp(10), width:hp(10), marginBottom:10}} />
+                            <Text style={{color:'white', fontSize: wp(4)}}>CONFIRM YOUR TRANSACTION</Text>
+                        </View>
+                        
+                        <View style={{height:hp(50), width: wp(93), backgroundColor: 'white', alignSelf:'center', justifyContent:'center', alignItems: 'center', borderBottomLeftRadius:10, borderBottomRightRadius:10, padding: 10}}>
+                            <Text style={{color:'gray', fontSize: wp(4.5)}}>YOU ARE SENDING</Text>
+                            <Text style={{color:'black', fontSize:wp(10)}}>{this.props.navigation.state.params.amount}<Text style={{color:'gray', fontSize: wp(4.5)}}> QRL</Text></Text>
+                            <Text style={{color:'gray', fontSize: wp(4.5), paddingTop: 10}}>TO</Text>
+                            <Text style={{color:'black', fontSize:wp(5), paddingBottom: 20, textAlign: 'center'}}>{this.props.navigation.state.params.recipient} </Text>
+
+                            {this.state.isLoading ?
+                                <View>
+                                    <ActivityIndicator size={'large'}></ActivityIndicator>
+                                </View>
+                                :
+                                <View>
+                                    <TouchableOpacity style={styles.SubmitButtonStyleBlueSmall} activeOpacity = { .5 } onPress={this.transferCoins}>
+                                        <Text style={styles.TextStyleWhite}> SEND </Text>
+                                    </TouchableOpacity>     
+                                    <TouchableOpacity style={styles.SubmitButtonStyleRedSmall} activeOpacity = { .5 } onPress={ () => this.props.navigation.navigate("SendReceive") }>
+                                        <Text style={styles.TextStyleWhite}> CANCEL </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            }
+                        </View>
+                    </View>
+
+                    
+
+
+                    {/* <ImageBackground source={require('../resources/images/confirmTxModal_window.png')} style={{width:wp(90), height:hp(65), flex:1}} >
+                        
                         <View style={{ flex:1, alignSelf:'center', paddingTop: this.state.paddingTopBelow, alignItems:'center'}}>
                             <Image source={require('../resources/images/confirmTxModal_check.png')} resizeMode={'contain'} style={{height:75, width:75, marginBottom:10}} />
                             <Text style={{color:'white'}}>PLEASE CONFIRM</Text>
                             <Text style={{color:'white'}}>YOUR TRANSACTION</Text>
                         </View> 
+                        
                         <View style={{ flex: 2.5, alignSelf:'center', alignItems:'center', margin:30}}>
                             <Text style={{color:'gray'}}>YOU ARE SENDING</Text>
                             <Text style={{color:'black', fontSize:40}}>{this.props.navigation.state.params.amount} <Text style={{color:'gray', fontSize:12}}>QRL </Text></Text>
@@ -134,57 +171,57 @@ export default class ConfirmTxModal extends React.Component {
 
                         </View>
                         
-                    </ImageBackground>
-                </View>
+                    </ImageBackground> */}
+                {/* </View> */}
             </ImageBackground>
         )
     }
 }
 
 // styling
-const styles = StyleSheet.create({
-    centerText: {
-        flex: 1,
-        fontSize: 18,
-        padding: 32,
-        paddingTop: 100,
-        color: '#777',
-    },
-    textBold: {
-        fontWeight: '500',
-        color: '#000',
-    },
-    buttonText: {
-        fontSize: 21,
-        color: 'rgb(0,122,255)',
-    },
-    buttonTouchable: {
-        padding: 16,
-    },
-    backgroundImage: {
-        flex: 1,
-        width: null,
-        height: null,
-    },
-    SubmitButtonStyle: {
-        alignSelf:'center',
-        width: 180,
-        marginTop:10,
-        paddingTop:15,
-        paddingBottom:15,
-        backgroundColor:'#f33160',
-        borderWidth: 1,
-        borderColor: '#fff'
-    },
-    CancelTextStyle:{
-        alignSelf:'center',
-        color: 'red',
-        textAlign:'center',
-        fontSize:18,
-        paddingTop:5
-    },
-    TextStyle:{
-        color:'#fff',
-        textAlign:'center',
-    },
-});
+// const styles = StyleSheet.create({
+//     centerText: {
+//         flex: 1,
+//         fontSize: 18,
+//         padding: 32,
+//         paddingTop: 100,
+//         color: '#777',
+//     },
+//     textBold: {
+//         fontWeight: '500',
+//         color: '#000',
+//     },
+//     buttonText: {
+//         fontSize: 21,
+//         color: 'rgb(0,122,255)',
+//     },
+//     buttonTouchable: {
+//         padding: 16,
+//     },
+//     backgroundImage: {
+//         flex: 1,
+//         width: null,
+//         height: null,
+//     },
+//     SubmitButtonStyle: {
+//         alignSelf:'center',
+//         width: 180,
+//         marginTop:10,
+//         paddingTop:15,
+//         paddingBottom:15,
+//         backgroundColor:'#f33160',
+//         borderWidth: 1,
+//         borderColor: '#fff'
+//     },
+//     CancelTextStyle:{
+//         alignSelf:'center',
+//         color: 'red',
+//         textAlign:'center',
+//         fontSize:18,
+//         paddingTop:5
+//     },
+//     TextStyle:{
+//         color:'#fff',
+//         textAlign:'center',
+//     },
+// });

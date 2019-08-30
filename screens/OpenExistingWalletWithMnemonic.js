@@ -10,21 +10,24 @@ var AndroidWallet = NativeModules.AndroidWallet;
 var GLOBALS = require('./globals');
 import PINCode from '@haskkor/react-native-pincode'
 import QRCodeScanner from 'react-native-qrcode-scanner';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
 
 export default class OpenExistingWalletWithMnemonic extends React.Component {
 
-    componentDidMount(){
-        const mnemonic = this.props.navigation.getParam('mnemonic', 'nomnemonic');
-        if (mnemonic == "nomnemonic"){
-            // this.setState({hexseed: "" })
-            this.setState({ mnemonic: GLOBALS.mnemonic })
-        }
-        else {
-            this.setState({mnemonic: mnemonic})
-        }
-    }
+    // componentDidMount(){
+    //     const mnemonic = this.props.navigation.getParam('mnemonic', 'nomnemonic');
+    //     if (mnemonic == "nomnemonic"){
+    //         // this.setState({hexseed: "" })
+    //         this.setState({ mnemonic: GLOBALS.mnemonic })
+    //     }
+    //     else {
+    //         this.setState({mnemonic: mnemonic})
+    //     }
+    // }
 
     state={
+        mnemonic: '',
         isLoading: false,
         pin: null,
         modalVisible:false,
@@ -146,7 +149,7 @@ export default class OpenExistingWalletWithMnemonic extends React.Component {
 
     render() {
         return (
-            <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
+            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : null} style={{flex:1}} enabled>
 
                 <Modal onRequestClose={ console.log("") } animationType="slide" visible={this.state.modalVisible}>
                     <ImageBackground source={require('../resources/images/complete_setup_bg.png')} style={styles.backgroundImage}>
@@ -173,8 +176,8 @@ export default class OpenExistingWalletWithMnemonic extends React.Component {
                 </Modal>
 
                 <ImageBackground source={require('../resources/images/signin_process_bg.png')} style={styles.backgroundImage}>
-                    <View style={{flex:1}}></View>
-                    <View style={{flex:3, alignItems:'center'}}>
+                    <View style={{flex: 1 }}></View>
+                    <View style={{flex: 4, alignItems:'center'}}>
                         <Text style={styles.bigTitle}>OPEN EXISTING WALLET</Text>
                         <Text style={styles.bigTitle}>WITH MNEMONIC</Text>
                         <View style={{width:100, height:1, backgroundColor:'white', marginTop:30,marginBottom:20}}></View>

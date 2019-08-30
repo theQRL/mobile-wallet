@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Platform, StyleSheet, ImageBackground, Text, View, Image, ActionSheetIOS, TextInput, Modal, Button, ActivityIndicator, Picker, AsyncStorage, TouchableOpacity, TouchableHighlight } from 'react-native';
+import {Platform, StyleSheet,KeyboardAvoidingView, ImageBackground, Text, View, Image, ActionSheetIOS, TextInput, Modal, Button, ActivityIndicator, Picker, AsyncStorage, TouchableOpacity, TouchableHighlight } from 'react-native';
 import styles from './styles.js';
 
 // Android and Ios native modules
@@ -138,6 +138,7 @@ export default class CompleteSetup extends React.Component {
 
     render() {
         return (
+            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : null} style={{flex:1}} enabled>
             <ImageBackground accessibilityLabel="CompleteSetup" source={require('../resources/images/complete_setup_bg.png')} style={styles.backgroundImage}>
                 <Modal animationType="slide" visible={this.state.modalVisible}>
                     <ImageBackground source={require('../resources/images/complete_setup_bg.png')} style={styles.backgroundImage}>
@@ -183,6 +184,7 @@ export default class CompleteSetup extends React.Component {
                     }
                 </View>
             </ImageBackground>
+            </KeyboardAvoidingView>
         );
     }
 }

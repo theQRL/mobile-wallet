@@ -26,10 +26,20 @@ export default StyleSheet.create({
         textAlign: 'center',
         fontSize: wp(4)
     },
+    descriptionTextBlackBig: {
+        color: 'black',
+        textAlign: 'center',
+        fontSize: wp(5)
+    },
     smallTextBlack: {
         color: 'black',
         textAlign: 'center',
         fontSize: wp(3)
+    },
+    mediumTextBlack: {
+        color: 'black',
+        textAlign: 'center',
+        fontSize: wp(3.5)
     },
     bigTitle:{
         color:'white',
@@ -139,7 +149,8 @@ export default StyleSheet.create({
         height:hp(6),
         width: wp(85),
         borderRadius:10,
-        marginTop:15
+        marginTop:15,
+        paddingLeft: 10
     },
     selection: {
         width: wp(85),
@@ -188,4 +199,10 @@ export default StyleSheet.create({
         resizeMode: 'stretch',
         alignItems: 'center',
     },
+    txDetailsBlock: {
+        flex:1,
+        paddingTop: wp(5),
+        textAlign: 'center',
+        alignItems: 'center'
+    }
 });
