@@ -205,6 +205,9 @@ const TxStack = StackNavigator(
       path: '/',
       screen: TxDetailsView
     },
+    UnlockAppModal: {
+      screen: UnlockAppModal
+    },
   },
   {
     headerMode: 'none',

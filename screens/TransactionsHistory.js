@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, ImageBackground, Text, View, Image, ActionSheetIOS, TextInput, Button, ActivityIndicator, Picker, TouchableOpacity, ScrollView, TouchableHighlight, ListView, AsyncStorage, AppState, Animated, Easing} from 'react-native';
+import { Platform, StyleSheet, ImageBackground, Text, View, Image, BackHandler, ActionSheetIOS, TextInput, Button, ActivityIndicator, Picker, TouchableOpacity, ScrollView, TouchableHighlight, ListView, AsyncStorage, AppState, Animated, Easing} from 'react-native';
 // import Reactotron from 'reactotron-react-native'
 // Android and Ios native modules
 import {NativeModules} from 'react-native';
@@ -28,8 +28,18 @@ export default class Wallet extends React.Component{
 //     componentDidMount() {
 // AppState.addEventListener('change', this._handleAppStateChange);
 //   }
+
+
+    
+
     componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
         AppState.removeEventListener('change', this._handleAppStateChange);
+    }
+
+    handleBackButton() {
+        console.log("BACK PRESSED...")
+        return true;
     }
 
     _handleAppStateChange = (nextAppState) => {
@@ -50,8 +60,8 @@ export default class Wallet extends React.Component{
                 }
             }).catch((error) => {console.log(error)});
         }
-        // if ( nextAppState.match(/inactive|background/) ){
-        if ( nextAppState === 'background' ){
+        if ( nextAppState.match(/inactive|background/) ){
+        // if ( nextAppState === 'background' ){
             // start timer to check if user left the app for more than 15 seconds
             const timeoutId = BackgroundTimer.setTimeout(() => {
                 AsyncStorage.setItem('needPinTimeout', 'true')
@@ -67,6 +77,7 @@ export default class Wallet extends React.Component{
     // 1. update cmc related info
     // 2. update list of 10 latest tx
     componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
         // Animated.loop(Animated.timing(
         //     this.state.spinAnim,
         //   {
@@ -93,6 +104,21 @@ export default class Wallet extends React.Component{
         }, 5000);
 
         AppState.addEventListener('change', this._handleAppStateChange);
+
+
+        // Ask for PIN 
+        AsyncStorage.multiGet(["unlockWithPin", "needPinTimeout"]).then(storageResponse => {
+            unlockWithPin = storageResponse[0][1];
+            needPinTimeout = storageResponse[1][1];
+            if (unlockWithPin === 'true' || needPinTimeout === 'true'){
+                // reset needPinTimeout to false
+                AsyncStorage.setItem('needPinTimeout', 'false');
+                // show PIN view
+                this.props.navigation.navigate('UnlockAppModal');
+            }
+        }).catch((error) => {console.log(error)});
+
+
 
         console.log(DeviceInfo.getDeviceLocale())
         if (DeviceInfo.getDeviceLocale().includes('locale')){
@@ -338,7 +364,9 @@ export default class Wallet extends React.Component{
                                         </View>
                                     }
                                     
-                                    <Text style={{color:'white',fontSize:13}}>USD ${ ((this.state.balance / 1000000000 ) * this.state.price).toFixed(2) }</Text>
+                                    <View style={{paddingTop:5}}>
+                                        <Text style={{color:'white',fontSize:13}}>USD ${ ((this.state.balance / 1000000000 ) * this.state.price).toFixed(2) }</Text>
+                                    </View>
 
                                     <View style={{width:"80%", height:40, borderRadius:10, flexDirection:'row', paddingTop:15,paddingBottom:5}}>
                                         <View style={{flex:1}}><Text style={{fontSize:12, color:"white"}}>MARKET CAP</Text></View>

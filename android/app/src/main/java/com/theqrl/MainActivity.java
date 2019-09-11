@@ -1,16 +1,16 @@
 package com.theqrl;
 
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.view.WindowManager;
-import android.webkit.WebView;
+        import android.content.SharedPreferences;
+        import android.os.Bundle;
+        import android.view.WindowManager;
+        import android.webkit.WebView;
 
-import com.facebook.react.ReactActivity;
+        import com.facebook.react.ReactActivity;
 
-import java.io.IOException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
+        import java.io.IOException;
+        import java.security.KeyStoreException;
+        import java.security.NoSuchAlgorithmException;
+        import java.security.cert.CertificateException;
 
 public class MainActivity extends ReactActivity {
 

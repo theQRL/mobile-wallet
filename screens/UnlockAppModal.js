@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, ImageBackground, Text, View, AsyncStorage, TouchableHighlight} from 'react-native';
+import { Platform, StyleSheet, TouchableOpacity, ImageBackground, BackHandler, Text, View, Button, AsyncStorage, TouchableHighlight} from 'react-native';
 
 // Android and Ios native modules
 import {NativeModules} from 'react-native';
@@ -42,6 +42,12 @@ export default class UnlockAppModal extends React.Component {
         this.props.navigation.goBack();
     }
 
+    exitButton() {
+        return(
+            <TouchableOpacity><Text></Text></TouchableOpacity>
+        )
+    }
+
     render() {
         if (this.state.isLoading){
             return(<View></View>)
@@ -66,6 +72,7 @@ export default class UnlockAppModal extends React.Component {
                     colorPassword="white"
                     numbersButtonOverlayColor="white"
                     finishProcess = { this.unlockApp }
+                    buttonComponentLockedPage = {this.exitButton}
                     />
                 </ImageBackground>
             );

@@ -42,6 +42,10 @@ class Decryptor {
             throws UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException,
             NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, IOException,
             BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
+        System.out.println( "DATA SENT TO DECRYPTOR" );
+        System.out.println( alias );
+        System.out.println( encryptedData );
+        System.out.println( encryptionIv );
         final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         final GCMParameterSpec spec = new GCMParameterSpec(128, encryptionIv);
         cipher.init(Cipher.DECRYPT_MODE, getSecretKey(alias), spec);
