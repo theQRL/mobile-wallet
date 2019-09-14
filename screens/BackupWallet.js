@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, Image, ImageBackground, AsyncStorage, StyleSheet, TouchableHighlight, TouchableOpacity, Platform, ActivityIndicator, ScrollView, Modal, AppState} from 'react-native';
+import {Text, View, Image, ImageBackground, BackHandler, AsyncStorage, StyleSheet, TouchableHighlight, TouchableOpacity, Platform, ActivityIndicator, ScrollView, Modal, AppState} from 'react-native';
 
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.refreshWallet;
@@ -19,11 +19,16 @@ export default class BackupWallet extends React.Component {
 
     componentDidMount() {
         AppState.addEventListener('change', this._handleAppStateChange);
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
     }
     componentWillUnmount() {
         AppState.removeEventListener('change', this._handleAppStateChange);
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
     }
 
+    handleBackButton() {
+        return true;
+    }
 
     _handleAppStateChange = (nextAppState) => {
 
@@ -60,8 +65,7 @@ export default class BackupWallet extends React.Component {
         // this.setState({modalVisible: true, walletIndexToOpen: walletindexToOpen })
         AsyncStorage.getItem("walletindex").then((walletindex) => {
             this.props.navigation.navigate('ValidatePinForBackup', {onGoBack: () => this.getInfo(), walletIndexToOpen: walletindex})
-        }).catch((error) => {console.log(error)});
-        
+        }).catch((error) => {console.log(error)});        
     }
 
     state={

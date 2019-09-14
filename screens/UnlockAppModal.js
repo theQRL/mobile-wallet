@@ -39,6 +39,7 @@ export default class UnlockAppModal extends React.Component {
     unlockApp = () => {
         this.setState({isLoading: true})
         // this.props.navigation.state.params.onGoBack();
+        // this.props.navigation.navigate("TransactionsHistory");
         this.props.navigation.goBack();
     }
 

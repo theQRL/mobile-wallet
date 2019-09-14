@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, ImageBackground, Text, View, AsyncStorage, TouchableHighlight} from 'react-native';
+import { Platform, StyleSheet, ImageBackground, Text, View, AsyncStorage, BackHandler, TouchableHighlight} from 'react-native';
 
 // Android and Ios native modules
 import {NativeModules} from 'react-native';
@@ -27,6 +27,18 @@ export default class ValidatePinForBackup extends React.Component {
                 this.setState({isLoading:false, walletpin: walletpin })
             })
         }
+    }
+
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+    }
+
+    handleBackButton() {
+        return true;
     }
 
     state={

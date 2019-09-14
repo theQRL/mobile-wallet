@@ -64,6 +64,7 @@
 		69641C4E230EFEF300DC1525 /* libRNShimmer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69641C4D230EFEE700DC1525 /* libRNShimmer.a */; };
 		69641C58230F150000DC1525 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69641C55230F14F400DC1525 /* libBVLinearGradient.a */; };
 		69871E27202C7E170097260E /* DilithiumIos.mm in Sources */ = {isa = PBXBuildFile; fileRef = 69871E26202C7E170097260E /* DilithiumIos.mm */; };
+		6989784F23290792006A4E19 /* libRNKeychain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6989784523290693006A4E19 /* libRNKeychain.a */; };
 		69B8522022D766CC0006BC64 /* libRNBackgroundFetch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69B8521F22D766BC0006BC64 /* libRNBackgroundFetch.a */; };
 		69B8522222D766EF0006BC64 /* TSBackgroundFetch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69B8522122D766EE0006BC64 /* TSBackgroundFetch.framework */; };
 		69B8522422D7673A0006BC64 /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 69B8522322D7673A0006BC64 /* RNBackgroundFetch+AppDelegate.m */; };
@@ -366,6 +367,20 @@
 			remoteGlobalIDString = 64AA15081EF7F30100718508;
 			remoteInfo = "BVLinearGradient-tvOS";
 		};
+		6989784423290693006A4E19 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6989781023290693006A4E19 /* RNKeychain.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5D82366F1B0CE05B005A9EF3;
+			remoteInfo = RNKeychain;
+		};
+		6989784623290693006A4E19 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6989781023290693006A4E19 /* RNKeychain.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6478985F1F38BF9100DA1C12;
+			remoteInfo = "RNKeychain-tvOS";
+		};
 		699420F0230E652F008A71EE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
@@ -562,6 +577,7 @@
 		69871DFF202C78EA0097260E /* libdilithium.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libdilithium.a; path = "../../../qrllib/build/Debug-iphonesimulator/libdilithium.a"; sourceTree = "<group>"; };
 		69871E26202C7E170097260E /* DilithiumIos.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DilithiumIos.mm; sourceTree = "<group>"; };
 		69871E28202C7E4D0097260E /* DilithiumIos.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DilithiumIos.h; sourceTree = "<group>"; };
+		6989781023290693006A4E19 /* RNKeychain.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNKeychain.xcodeproj; path = "../node_modules/react-native-keychain/RNKeychain.xcodeproj"; sourceTree = "<group>"; };
 		69AE7629204745FA003EF6FF /* libqrllib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libqrllib.a; path = "../../../qrllib/build/Debug-iphonesimulator/libqrllib.a"; sourceTree = "<group>"; };
 		69AE762B20474886003EF6FF /* libshasha.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libshasha.a; path = "../../../qrllib/build/Debug-iphonesimulator/libshasha.a"; sourceTree = "<group>"; };
 		69B8521922D766BC0006BC64 /* RNBackgroundFetch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNBackgroundFetch.xcodeproj; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch.xcodeproj"; sourceTree = "<group>"; };
@@ -653,6 +669,7 @@
 				69B8522E22D768B60006BC64 /* libRNBackgroundTimer.a in Frameworks */,
 				69641C4E230EFEF300DC1525 /* libRNShimmer.a in Frameworks */,
 				69641C58230F150000DC1525 /* libBVLinearGradient.a in Frameworks */,
+				6989784F23290792006A4E19 /* libRNKeychain.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -933,6 +950,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		6989781123290693006A4E19 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6989784523290693006A4E19 /* libRNKeychain.a */,
+				6989784723290693006A4E19 /* libRNKeychain.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		69B8521A22D766BC0006BC64 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1009,6 +1035,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				6989781023290693006A4E19 /* RNKeychain.xcodeproj */,
 				69641C4F230F14F400DC1525 /* BVLinearGradient.xcodeproj */,
 				69641C48230EFEE700DC1525 /* RNShimmer.xcodeproj */,
 				69B8522522D768AA0006BC64 /* RNBackgroundTimer.xcodeproj */,
@@ -1302,6 +1329,10 @@
 					ProjectRef = 69E3BC97214B89D70056F1D5 /* RNDeviceInfo.xcodeproj */;
 				},
 				{
+					ProductGroup = 6989781123290693006A4E19 /* Products */;
+					ProjectRef = 6989781023290693006A4E19 /* RNKeychain.xcodeproj */;
+				},
+				{
 					ProductGroup = 69343040212EDA1000085300 /* Products */;
 					ProjectRef = 2DBB450257C04C76A81BF8BE /* RNOS.xcodeproj */;
 				},
@@ -1590,6 +1621,20 @@
 			fileType = archive.ar;
 			path = libBVLinearGradient.a;
 			remoteRef = 69641C56230F14F400DC1525 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6989784523290693006A4E19 /* libRNKeychain.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNKeychain.a;
+			remoteRef = 6989784423290693006A4E19 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6989784723290693006A4E19 /* libRNKeychain.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNKeychain.a;
+			remoteRef = 6989784623290693006A4E19 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		699420F1230E652F008A71EE /* libjsi.a */ = {
