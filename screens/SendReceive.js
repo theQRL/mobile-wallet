@@ -1,5 +1,5 @@
 import React from 'react';
-import {Picker, Text, View, Button, Image, ScrollView, ImageBackground, ActivityIndicator, AsyncStorage, Clipboard, StyleSheet, TouchableHighlight, Modal, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Alert, AppState} from 'react-native';
+import {Picker, Text, View, Button, Image, ScrollView, BackHandler, ImageBackground, ActivityIndicator, AsyncStorage, Clipboard, StyleSheet, TouchableHighlight, Modal, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Alert, AppState} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import { Header } from 'react-navigation';
 import FlashMessage from "react-native-flash-message";
@@ -31,6 +31,7 @@ export default class SendReceive extends React.Component {
 
     componentWillUnmount() {
         AppState.removeEventListener('change', this._handleAppStateChange);
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
     }
 
     _handleAppStateChange = (nextAppState) => {
@@ -64,6 +65,7 @@ export default class SendReceive extends React.Component {
     };
 
     componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
         AppState.addEventListener('change', this._handleAppStateChange);
         // Update the wallet each time the user switch to this view
         this.setState({isLoading:true})
@@ -79,7 +81,7 @@ export default class SendReceive extends React.Component {
                 // // iPhoneX
                 // else {
                 //     if (DeviceInfo.getModel().includes("X")){
-                //         this.setState({paddingTopMain:70, paddingTopCentral: 10, menuHeight:80})
+                //         this.setState({paddingTopMain:70, paddingTopCentral: 10, menuHeight:80})$
                 //     }
                 //     // other iPhones
                 //     else {
@@ -97,6 +99,10 @@ export default class SendReceive extends React.Component {
                 });
             }
         }).catch((error) => {console.log(error)});
+    }
+
+    handleBackButton() {
+        return true;
     }
 
     state={
@@ -154,8 +160,10 @@ export default class SendReceive extends React.Component {
                     // iOS
                     if (Platform.OS === 'ios'){
                         // check that there are no pending tx
+
                         IosWallet.checkPendingTx(walletindex, (error, status)=> {
                             if (status =="success"){
+
                                 // check that amount is a Number
                                 var isAmountNumber = /^\d*\.?\d+$/.test(this.state.amount)
                                 if (isAmountNumber){

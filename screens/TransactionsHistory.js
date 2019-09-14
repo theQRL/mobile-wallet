@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, ImageBackground, Text, View, Image, ActionSheetIOS, TextInput, Button, ActivityIndicator, Picker, TouchableOpacity, ScrollView, TouchableHighlight, ListView, AsyncStorage, AppState, Animated, Easing} from 'react-native';
+import { Platform, StyleSheet, ImageBackground, Text, View, Image, BackHandler, ActionSheetIOS, TextInput, Button, ActivityIndicator, Picker, TouchableOpacity, ScrollView, TouchableHighlight, ListView, AsyncStorage, AppState, Animated, Easing} from 'react-native';
 // import Reactotron from 'reactotron-react-native'
 // Android and Ios native modules
 import {NativeModules} from 'react-native';
@@ -25,15 +25,16 @@ export default class Wallet extends React.Component{
     //     ),
     // };
 
-//     componentDidMount() {
-// AppState.addEventListener('change', this._handleAppStateChange);
-//   }
     componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
         AppState.removeEventListener('change', this._handleAppStateChange);
     }
 
-    _handleAppStateChange = (nextAppState) => {
+    handleBackButton() {
+        return true;
+    }
 
+    _handleAppStateChange = (nextAppState) => {
         if ( this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
             // stop the timeout
             const timeoutId = this.state.backgroundTimer;
@@ -42,6 +43,8 @@ export default class Wallet extends React.Component{
             AsyncStorage.multiGet(["unlockWithPin", "needPinTimeout"]).then(storageResponse => {
                 unlockWithPin = storageResponse[0][1];
                 needPinTimeout = storageResponse[1][1];
+                console.log(unlockWithPin)
+                console.log(needPinTimeout)
                 if (unlockWithPin === 'true' || needPinTimeout === 'true'){
                     // reset needPinTimeout to false
                     AsyncStorage.setItem('needPinTimeout', 'false');
@@ -67,16 +70,8 @@ export default class Wallet extends React.Component{
     // 1. update cmc related info
     // 2. update list of 10 latest tx
     componentDidMount() {
-        // Animated.loop(Animated.timing(
-        //     this.state.spinAnim,
-        //   {
-        //     toValue: 1,
-        //     duration: 3000,
-        //     easing: Easing.linear,
-        //     useNativeDriver: true
-        //   }
-        // )).start();
-
+        // disable back button on Android
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
         // Show error Flash message if loading is taking too long
         setTimeout(() => {
             if (this.state.isLoading){
@@ -94,7 +89,7 @@ export default class Wallet extends React.Component{
 
         AppState.addEventListener('change', this._handleAppStateChange);
 
-        console.log(DeviceInfo.getDeviceLocale())
+        // console.log(DeviceInfo.getDeviceLocale())
         if (DeviceInfo.getDeviceLocale().includes('locale')){
             this.setState({is24h: DeviceInfo.is24Hour(), deviceLocale: DeviceInfo.getDeviceLocale().split('/')[2] })
         }
@@ -103,48 +98,36 @@ export default class Wallet extends React.Component{
         }
         
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        // update QRL market data
+        fetch('http://market-data.automated.theqrl.org/', {
+            method: 'GET',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            },
+        }).then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({marketcap: Number((parseFloat(responseJson.market_cap)).toFixed()), price: Number((parseFloat(responseJson.price)).toFixed(2)) , change24: Number((parseFloat(responseJson.change_24hr)).toFixed(2)) })
+            
+            if (responseJson.change_24hr.includes("-")){this.setState({changeup: false})}
+            else {this.setState({changeup: true})}
 
-        // AsyncStorage.multiGet(["node","port"]).then((connectionDetails) => {
-        //     node = connectionDetails[0][1]
-        //     port = connectionDetails[1][1]
-            // update QRL market data
-            console.log("STARTING FETCH")
-            fetch('http://market-data.automated.theqrl.org/', {
-                method: 'GET',
-                headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                },
-            }).then((response) => response.json())
-            .then((responseJson) => {
-                console.log("FETCHED DATA...")
-                this.setState({marketcap: Number((parseFloat(responseJson.market_cap)).toFixed()), price: Number((parseFloat(responseJson.price)).toFixed(2)) , change24: Number((parseFloat(responseJson.change_24hr)).toFixed(2)) })
-                
-                if (responseJson.change_24hr.includes("-")){this.setState({changeup: false})}
-                else {this.setState({changeup: true})}
-
-                // Update the wallet each time the user switch to this view
-                // Ios
-                // this.setState({isLoading:true})
-
-                // get the currect walletindex
-                AsyncStorage.getItem("walletindex").then((walletindex) => {
-                    if (Platform.OS === 'ios'){
-                        IosWallet.refreshWallet(walletindex, (error, walletAddress, otsIndex, balance, keys)=> {
-                            this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys)), tx_count: JSON.parse(keys).length})
-                        });
-                    }
-                    // Android
-                    else {
-                        console.log("LOADING ANDROID .....")
-                        AndroidWallet.refreshWallet(walletindex,  (err) => { console.log("WEEOEEEEE....."); }, (walletAddress, otsIndex, balance, keys)=> {
-                            console.log("GOT DATA....")
-                            this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys)), tx_count: JSON.parse(keys).length })
-                        });
-                    }
-                }).catch((error) => {console.log(error)});
-            })
-        // });        
+            // Update the wallet each time the user switch to this view
+            // get the currect walletindex
+            AsyncStorage.getItem("walletindex").then((walletindex) => {
+                if (Platform.OS === 'ios'){
+                    IosWallet.refreshWallet(walletindex, (error, walletAddress, otsIndex, balance, keys)=> {
+                        this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys)), tx_count: JSON.parse(keys).length})
+                    });
+                }
+                // Android
+                else {
+                    AndroidWallet.refreshWallet(walletindex,  (err) => { console.log("WEEOEEEEE....."); }, (walletAddress, otsIndex, balance, keys)=> {
+                        this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys)), tx_count: JSON.parse(keys).length })
+                    });
+                }
+            }).catch((error) => {console.log(error)});
+        })
     }
 
     constructor(props) {
@@ -181,7 +164,6 @@ export default class Wallet extends React.Component{
             this.setState({isLoading:true})
             // get the currect walletindex
             AsyncStorage.getItem("walletindex").then((walletindex) => {
-                console.log("REFRESHING WALLET....")
                 if (Platform.OS === 'ios'){
                     IosWallet.refreshWallet(walletindex, (error, walletAddress, otsIndex, balance, keys)=> {
                         this.setState({walletAddress: walletAddress, isLoading:false, updatedDate: new Date(), balance: balance, otsIndex: otsIndex, dataSource: ds.cloneWithRows(JSON.parse(keys)), tx_count: JSON.parse(keys).length})
@@ -208,14 +190,12 @@ export default class Wallet extends React.Component{
         }
         var txhash = rowData.txhash;
 
-        console.log(rowID)
-
         return (
             <TouchableHighlight onPress={()=> this.props.navigation.navigate('TxDetailsView', {txhash: txhash})} underlayColor='white'>
             <View>
                 <View style={{flex: 1, flexDirection:'row',  height:80, paddingTop:20}}>
 
-                    {rowData.title == "RECEIVED"?
+                    {rowData.title == "RECEIVED" ?
                         <View>
                             <Image source={require('../resources/images/received.png')} resizeMode={'contain'} style={{height:40, width:40,marginLeft:20, marginRight:10}} />
                         </View>
@@ -253,8 +233,8 @@ export default class Wallet extends React.Component{
     }
 
     render() {
+        
         // Reactotron.log('Reactotron connected')
-        console.log("DIDMOUNTTTTT")
         const spin = this.state.spinAnim.interpolate({
             inputRange: [0, 1],
             outputRange: ['0deg', '360deg']
@@ -338,7 +318,9 @@ export default class Wallet extends React.Component{
                                         </View>
                                     }
                                     
-                                    <Text style={{color:'white',fontSize:13}}>USD ${ ((this.state.balance / 1000000000 ) * this.state.price).toFixed(2) }</Text>
+                                    <View style={{paddingTop:5}}>
+                                        <Text style={{color:'white',fontSize:13}}>USD ${ ((this.state.balance / 1000000000 ) * this.state.price).toFixed(2) }</Text>
+                                    </View>
 
                                     <View style={{width:"80%", height:40, borderRadius:10, flexDirection:'row', paddingTop:15,paddingBottom:5}}>
                                         <View style={{flex:1}}><Text style={{fontSize:12, color:"white"}}>MARKET CAP</Text></View>

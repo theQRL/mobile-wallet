@@ -199,9 +199,13 @@ export default StyleSheet.create({
         resizeMode: 'stretch',
         alignItems: 'center',
     },
+    txDetailsBlockMain: {
+        height: hp(15),
+        textAlign: 'center',
+        alignItems: 'center'
+    },
     txDetailsBlock: {
-        flex:1,
-        paddingTop: wp(5),
+        height: hp(10),
         textAlign: 'center',
         alignItems: 'center'
     }

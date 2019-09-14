@@ -36,7 +36,7 @@ RCT_EXPORT_METHOD(saveNodeInformation:(NSString*)node withPort:(NSString*) port 
 // Refresh the wallet balance and last transactions list
 RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSenderBlock)callback)
 {
-  NSLog(@"REFRESHING WALLET XCODE..." );
+//  NSLog(@"REFRESHING WALLET XCODE..." );
   // get the node url to connect to
   NSString* kHostAddress = [WalletHelperFunctions getNodeUrl];
   
@@ -79,12 +79,12 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
     
 //    NSLog(@"GetAddressState:\n%@", response2);
 //    NSLog(@"GetAddressState.STATE:\n%@", response2.state);
-    NSLog(@"GetAddressState.STATE.TRANSACTIONHASHESARRAY:\n%@", response2.state.transactionHashesArray);
+    // NSLog(@"GetAddressState.STATE.TRANSACTIONHASHESARRAY:\n%@", response2.state.transactionHashesArray);
     
     
-    NSLog(@"ENTERED REFRESHWALLET" );
-    NSLog(@"TX_COUNT %d", tx_count );
-    NSLog(@"TX_END %d", tx_end );
+//    NSLog(@"ENTERED REFRESHWALLET" );
+//    NSLog(@"TX_COUNT %d", tx_count );
+//    NSLog(@"TX_END %d", tx_end );
     
     
     if (tx_count == 0){
@@ -109,9 +109,9 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
             // check if walletaddress in recipient list
             bool inRecipient = false;
             for (int r = 0; r < response.transaction.tx.transfer.addrsToArray_Count; r++ ){
-              NSLog(@"-___ R ___- %d ", r);
+//              NSLog(@"-___ R ___- %d ", r);
               NSString * toAddr = [WalletHelperFunctions nsDataHex2string:response.transaction.tx.transfer.addrsToArray[r]];
-              NSLog(@"_____________________TOADDR %@ ", toAddr);
+//              NSLog(@"_____________________TOADDR %@ ", toAddr);
               if ([toAddr isEqual:walletAddress]){
                 inRecipient = true;
               }
@@ -220,7 +220,7 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
 
             [client getLatestDataWithRequest:getLatestDataReq handler:^(GetLatestDataResp *response, NSError *error) {
               if ( (unsigned long)response.transactionsUnconfirmedArray_Count == 0 ){
-                NSLog(@"NO UNCONFIRMED TX");
+//                NSLog(@"NO UNCONFIRMED TX");
                 
                 NSData *txJsonData = [NSJSONSerialization dataWithJSONObject:txResponseArray options:NSJSONWritingPrettyPrinted error:&error];
                 NSString *txJsonString = [[NSString alloc] initWithData:txJsonData encoding:NSUTF8StringEncoding];
@@ -322,7 +322,7 @@ RCT_EXPORT_METHOD(sendWalletPrivateInfo:(NSString*)walletindex callback:(RCTResp
 RCT_EXPORT_METHOD(checkPendingTx:(NSString*)walletindex callback:(RCTResponseSenderBlock)callback)
 {
   NSString* kHostAddress = [WalletHelperFunctions getNodeUrl];
-  NSLog(@"CHECKING IF UNCONFIRMED TX OBJC");
+//  NSLog(@"CHECKING IF UNCONFIRMED TX OBJC");
   NSString* wallet_address = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@%@", @"address", walletindex]];
   [GRPCCall useInsecureConnectionsForHost:kHostAddress];
   PublicAPI *client = [[PublicAPI alloc] initWithHost:kHostAddress];
@@ -332,12 +332,12 @@ RCT_EXPORT_METHOD(checkPendingTx:(NSString*)walletindex callback:(RCTResponseSen
   
   [client getLatestDataWithRequest:getLatestDataReq handler:^(GetLatestDataResp *response, NSError *error) {
     if ( (unsigned long)response.transactionsUnconfirmedArray_Count == 0 ){
-      NSLog(@"NO UNCONFIRMED TX");
+//      NSLog(@"NO UNCONFIRMED TX");
       callback(@[[NSNull null], @"success" ]);
     }
     else {
-      NSLog(@"UNCONFIRMED TX FOUND");
-      NSLog(@"ADDRESS %@", response.transactionsUnconfirmedArray[0].addrFrom);
+//      NSLog(@"UNCONFIRMED TX FOUND");
+//      NSLog(@"ADDRESS %@", response.transactionsUnconfirmedArray[0].addrFrom);
     
       // loop thrgough unconfirmed tx
       int found = 0;

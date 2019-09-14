@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, Text, View, Alert, Button, Image, TextInput, StyleSheet, Modal, ImageBackground, TouchableOpacity, TouchableHighlight, AsyncStorage, ListView, ScrollView, AppState} from 'react-native';
+import {Platform, Text, View, Alert, Button, Image, BackHandler, TextInput, StyleSheet, Modal, ImageBackground, TouchableOpacity, TouchableHighlight, AsyncStorage, ListView, ScrollView, AppState} from 'react-native';
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.CreateWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
@@ -21,6 +21,10 @@ export default class Wallets extends React.Component {
         ),
     };
 
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+    }
+
     // get the required information from asyncStorage
     componentWillMount(){
         AppState.addEventListener('change', this._handleAppStateChange);
@@ -37,6 +41,11 @@ export default class Wallets extends React.Component {
 
     componentWillUnmount() {
         AppState.removeEventListener('change', this._handleAppStateChange);
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+    }
+
+    handleBackButton() {
+        return true;
     }
 
     _handleAppStateChange = (nextAppState) => {

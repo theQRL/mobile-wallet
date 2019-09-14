@@ -456,7 +456,7 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
                                                         txJsonUnconfirmed.put("title", "SENT");
                                                     }
                                                     else {
-                                                        txJsonUnconfirmed.put("title", "RECEIVE");
+                                                        txJsonUnconfirmed.put("title", "RECEIVED");
                                                     }
 
                                                     txJsonUnconfirmed.put("desc", getLatestDataResp.getTransactionsUnconfirmed(u).getTx().getTransfer().getAmounts(0));

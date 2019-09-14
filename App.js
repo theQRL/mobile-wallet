@@ -43,7 +43,21 @@ class AuthLoadingScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this._bootstrapAsync();
+
+    AsyncStorage.multiGet(["unlockWithPin", "needPinTimeout"]).then(storageResponse => {
+      unlockWithPin = storageResponse[0][1];
+      needPinTimeout = storageResponse[1][1];
+      if (unlockWithPin === 'true' || needPinTimeout === 'true'){
+        // reset needPinTimeout to false
+        AsyncStorage.setItem('needPinTimeout', 'false');
+        // show PIN view
+        this.props.navigation.navigate('UnlockAppModal');
+      }
+      else {
+        this._bootstrapAsync();
+      }
+    }).catch((error) => {console.log(error)});
+
   }
 
 
@@ -52,9 +66,10 @@ class AuthLoadingScreen extends React.Component {
     spinAnim: new Animated.Value(0)
   };
 
-  // componentDidMount() {
-  //   AppState.addEventListener('change', this._handleAppStateChange);
-  // }
+  componentWilldMount() {
+    this.props.navigation.navigate('UnlockAppModal');
+  }
+
   // componentWillUnmount() {
   //   AppState.removeEventListener('change', this._handleAppStateChange);
   // }
@@ -80,8 +95,6 @@ class AuthLoadingScreen extends React.Component {
 		// check if a wallet was already created
     const walletCreated = await AsyncStorage.getItem('walletcreated');
     const unlockWithPin = await AsyncStorage.getItem('unlockWithPin');
-    console.log("UNLOCK WITH PIN IS...")
-    console.log(unlockWithPin)
     if (unlockWithPin === null){
       AsyncStorage.setItem('unlockWithPin', 'false');
     }
@@ -95,19 +108,20 @@ class AuthLoadingScreen extends React.Component {
       let nodeUrl = storageResponse[0][1];
       let nodePort = storageResponse[1][1]; 
       // save defaultNode global value
-      if (nodeUrl != 'testnet-4.automated.theqrl.org'){
-        global.isDefaultNode = false;
-      }
-      else {
-        global.isDefaultNode = true;
-      }
+      // if (nodeUrl != 'mainnet-3.automated.theqrl.org'){
+      //   global.isDefaultNode = false;
+      // }
+      // else {
+      //   global.isDefaultNode = true;
+      // }
       
       // Reactotron.log(nodeUrl)
       // if not yet defined
       if (nodeUrl === '' | nodeUrl === null){
+        global.isDefaultNode = true;
         // Reactotron.log("SAVING NODE INFO")
-        fetch('https://ademcan.net/qrlnetwork.html', {
-        // fetch('https://qrl.foundation/qrlnetwork.html', {
+        // fetch('https://ademcan.net/qrlnetwork.html', {
+        fetch('https://qrl.foundation/qrlnetwork.html', {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -119,7 +133,6 @@ class AuthLoadingScreen extends React.Component {
         
         if (Platform.OS === 'ios'){
             IosWallet.saveNodeInformation( responseJson.node, responseJson.port, (error, status)=> {
-              
               if (status == "saved"){
                 this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
                 AsyncStorage.setItem("nodeUrl", responseJson.node);
@@ -130,9 +143,10 @@ class AuthLoadingScreen extends React.Component {
         else {
             AndroidWallet.saveNodeInformation(responseJson.node, responseJson.port,  (err) => {console.log(err);}, (status)=> {
                 if (status == "saved"){
-                  this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
+                  
                   AsyncStorage.setItem("nodeUrl", responseJson.node);
                   AsyncStorage.setItem("nodePort", responseJson.port);
+                  this.props.navigation.navigate(walletCreated ? 'App' : 'Auth');
                 }
             });
         }
@@ -148,27 +162,10 @@ class AuthLoadingScreen extends React.Component {
 
 	// Render any loading content that you like here
 	render() {
-
-    // const spin = this.state.spinAnim.interpolate({
-    //   inputRange: [0, 1],
-    //   outputRange: ['0deg', '360deg']
-    // });
-
-    // Animated.loop(Animated.timing(
-    //   this.state.spinAnim,
-    //   {
-    //     toValue: 1,
-    //     duration: 4000,
-    //     easing: Easing.linear
-    //   }
-    // )).start();
-
 		return (
-      <ImageBackground source={require('./resources/images/signin_process_hashfunction_bg.png')} style={ [styles.backgroundImage, {justifyContent: 'center'}] }>
-        
+      <ImageBackground source={require('./resources/images/signin_process_hashfunction_bg.png')} style={ [styles.backgroundImage, {justifyContent: 'center'}] }>        
         {/* <Animated.Image style={{height:wp(50), width: wp(50), alignSelf:'center', transform: [{rotate: spin}]}} resizeMode={'contain'}  source={require('./resources/images/QRL_logo_qrlblue.png')} /> */}
         <Image style={{height:wp(50), width: wp(50), alignSelf:'center'}} resizeMode={'contain'}  source={require('./resources/images/QRL_logo_qrlblue.png')} />
-
       </ImageBackground>
 		);
 	}
@@ -205,6 +202,9 @@ const TxStack = StackNavigator(
       path: '/',
       screen: TxDetailsView
     },
+    // UnlockAppModal: {
+    //   screen: UnlockAppModal
+    // },
   },
   {
     headerMode: 'none',
@@ -223,9 +223,7 @@ const MainDrawerMenu = DrawerNavigator(
           drawerIcon: ({ tintColor }) => (
             <Image source={require('./resources/images/transaction_history_drawer_icon_light.png')} resizeMode={'contain'}  style={styles.icon}/>
           ),
-          // drawerLabel: 'Settings',
-          // drawerIcon: ({ tintColor }) => <Icon name="cog" size={17} />,
-        }
+        },
       },
         // TransactionsHistory : TxStack,
         SendReceive : {

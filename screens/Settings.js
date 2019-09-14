@@ -1,11 +1,11 @@
 import React from 'react';
-import {Text, View, TextInput, Image, ImageBackground, AsyncStorage, StyleSheet, TouchableHighlight, TouchableOpacity, Platform, ActivityIndicator, Modal, AppState, Switch, ScrollView} from 'react-native';
+import {Text, View, TextInput, Image, ImageBackground, AsyncStorage, StyleSheet, TouchableHighlight, TouchableOpacity, Platform, ActivityIndicator, Modal, BackHandler, AppState, Switch, ScrollView} from 'react-native';
 
 import {NativeModules} from 'react-native';
 var IosWallet = NativeModules.refreshWallet;
 var AndroidWallet = NativeModules.AndroidWallet;
 import BackgroundTimer from 'react-native-background-timer';
-let isDefaultNode = 'true';
+// let isDefaultNode = 'true';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import styles from './styles.js';
 import FlashMessage from "react-native-flash-message";
@@ -26,20 +26,23 @@ export default class Settings extends React.Component {
                 this.setState({switchValue: true})
             }
         }).catch((error) => {console.log(error)});
-        // AsyncStorage.multiGet(["nodeUrl", "nodePort"]).then(storageResponse => {
-        //     console.log("............................. SETTINGS *******************************")
-        //     // get at each store's key/value so you can work with it
-        //     let nodeUrl = storageResponse[0][1];
-        //     let nodePort = storageResponse[1][1]; 
-        //     if (nodeUrl != 'testnet-4.automated.theqrl.org'){
-                
-        //         isDefaultNode = 'false';
-        //     }
-        // });
+    }
+
+    componentDidMount(){
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+        AsyncStorage.multiGet(["nodeUrl", "nodePort"]).then(storageResponse => {
+            this.setState({nodeUrl: storageResponse[0][1], nodePort: storageResponse[1][1], loading: false});    
+        });
+
     }
 
     componentWillUnmount() {
         AppState.removeEventListener('change', this._handleAppStateChange);
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+    }
+
+    handleBackButton() {
+        return true;
     }
 
     _handleAppStateChange = (nextAppState) => {
@@ -81,7 +84,8 @@ export default class Settings extends React.Component {
                 <View style={{flex:1, alignItems:'flex-end', justifyContent:'center', paddingRight:10}}>
                     { global.isDefaultNode ? 
                     null
-                    : 
+                    :
+                    // <Text>{global.isDefaultNode}</Text>
                     <Image source={require('../resources/images/warning_icon.png')} resizeMode={'contain'} style={{width:20, height:20}}/>
                     }
                 </View>
@@ -93,37 +97,6 @@ export default class Settings extends React.Component {
         // })
     })
 
-
-    // static navigationOptions = ({ navigation }) => {
-    //     const { state } = navigation;
-    //     console.log("............................................................")
-    //     console.log(navigation)
-    //     return {
-    //         drawerLabel: (
-    //             <View style={{flex:1, height:50, flexDirection: 'row', justifyContent:'center', paddingLeft: 15 }}>
-    //                 <View style={{flex:1, justifyContent:'center'}}><Text style={{color:'white', fontSize:14, fontWeight:'bold'}}>SETTINGS</Text></View>
-    //                 <View style={{flex:1, alignItems:'flex-end', justifyContent:'center', paddingRight:10}}>
-    //                     {state.params.defaultNode ? 
-    //                         null
-    //                     : 
-    //                         <Image source={require('../resources/images/warning_icon.png')} resizeMode={Image.resizeMode.contain} style={{width:20, height:20}}/>
-    //                     }
-                        
-    //                 </View>
-    //             </View>
-    //         ),
-    //         drawerIcon: ({ tintColor }) => (
-    //             <Image source={require('../resources/images/icon_settings.png')} resizeMode={Image.resizeMode.contain} style={{width:25, height:25}}/>
-    //         ),
-    //     }
-    // };
-
-    componentDidMount(){
-        AsyncStorage.multiGet(["nodeUrl", "nodePort"]).then(storageResponse => {
-            this.setState({nodeUrl: storageResponse[0][1], nodePort: storageResponse[1][1], loading: false});    
-        });
-
-    }
 
     state={
         loading: true,
@@ -149,15 +122,13 @@ export default class Settings extends React.Component {
                   AsyncStorage.setItem("nodeUrl", this.state.nodeUrl);
                   AsyncStorage.setItem("nodePort", this.state.nodePort);
 
-                if (this.state.nodeUrl != 'testnet-4.automated.theqrl.org'){
+                if (this.state.nodeUrl != 'mainnet-3.automated.theqrl.org'){
                     global.isDefaultNode = false;
                 }
                 else {
                     global.isDefaultNode = true;
                 }
                 this.props.navigation.setParams({otherParam: 'Updated!'})
-                console.log("SETTINGSJS2_ GLOBALS.ISDEFAULTNODE: ", global.isDefaultNode)
-
                 }
             });    
         }
@@ -168,6 +139,13 @@ export default class Settings extends React.Component {
                   AsyncStorage.setItem("nodeUrl", this.state.nodeUrl);
                   AsyncStorage.setItem("nodePort", this.state.nodePort);
                 }
+                if (this.state.nodeUrl != 'mainnet-3.automated.theqrl.org'){
+                    global.isDefaultNode = false;
+                }
+                else {
+                    global.isDefaultNode = true;
+                }
+                this.props.navigation.setParams({otherParam: 'Updated!'})
             });
         }
     }

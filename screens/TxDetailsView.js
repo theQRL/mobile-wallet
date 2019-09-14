@@ -96,16 +96,16 @@ export default class txDetailsView extends React.Component {
                             </ImageBackground>
                         </View>
                         
-                        <View style={{ width:wp(93), height:hp(60), paddingBottom:100, alignSelf:'center',  borderRadius:10, backgroundColor:'white', padding: 20}}>
+                        <View style={{ width:wp(93), height:hp(60), backgroundColor:'white', paddingBottom:100, alignSelf:'center',  borderRadius:10, padding: 20}}>
                             <View style={{flex:1, alignItems:'center'}}>
                                 
-                                <View style={styles.txDetailsBlock}>
+                                <View style={[ styles.txDetailsBlockMain, {width:wp(93)} ] }>
                                     <Text style={styles.descriptionTextBlackBig}>Transfer</Text>
                                     <Text style={{color: '#184477',textAlign: 'center',fontSize: wp(5.5), fontWeight: 'bold'}}>{amount.toString()}</Text>
                                     <Text style={styles.descriptionTextBlack}>QUANTA</Text>
                                 </View>
 
-                                <View style={[styles.txDetailsBlock ,{paddingTop: wp(10)}] }>
+                                <View style={styles.txDetailsBlock }>
                                     <Text style={styles.descriptionTextBlackBig}>From</Text>
                                     <Text selectable={true} style={styles.mediumTextBlack}>Q{this.state.fromAddr}</Text>
                                 </View>
@@ -118,11 +118,19 @@ export default class txDetailsView extends React.Component {
                                 <View style={styles.txDetailsBlock}>
                                     <Text style={styles.descriptionTextBlackBig}>Transaction</Text>
                                     <Text style={styles.mediumTextBlack} selectable={true}>{this.props.navigation.state.params.txhash}</Text>
-                                    <TouchableHighlight style={{padding: wp(3)}} onPress={ ()=> Linking.openURL('https://testnet-explorer.theqrl.org/tx/'+this.props.navigation.state.params.txhash) } underlayColor={'white'} >
+                                </View>
+
+                                <View style={ [styles.txDetailsBlock , {width:wp(93)} ]}>
+                                    <Text></Text>
+                                    <TouchableOpacity style={{flex:1}} onPress={()=> Linking.openURL('https://explorer.theqrl.org/tx/'+this.props.navigation.state.params.txhash)}>
                                         <Text style={{color: '#184477',textAlign: 'center',fontSize: wp(4), fontWeight: 'bold'}}>See on explorer</Text>
-                                    </TouchableHighlight>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
+
+                            {/* <View style={{flex:1, backgroundColor: 'red', marginTop: wp(30)}}>
+                                
+                                </View> */}
 
                         </View>
                     </View>

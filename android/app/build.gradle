@@ -130,7 +130,7 @@ android {
         applicationId "com.theqrl"
         minSdkVersion 23
         targetSdkVersion 27
-        versionCode 6
+        versionCode 7
         versionName "2.0"
 
         testBuildType System.getProperty('testBuildType', 'debug')  //this will later be used to control the test apk build type
@@ -189,7 +189,7 @@ android {
             // change the default name of the generated apk
             applicationVariants.all { variant ->
                 variant.outputs.all {
-                    outputFileName = "qrlwallet-${defaultConfig.versionName}.apk"
+                    outputFileName = "qrlwallet-${defaultConfig.versionName}.${defaultConfig.versionCode}.apk"
                 }
             }
 
@@ -337,10 +337,6 @@ dependencies {
 //    compile "com.android.support:appcompat-v7:27.1.1"
     implementation "com.facebook.react:react-native:+"  // From node_modules    classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.3'
     implementation 'com.google.protobuf:protobuf-lite:3.0.0'
-
-
-
-
 
     compile 'io.grpc:grpc-okhttp:1.13.1' // CURRENT_GRPC_VERSION
     compile 'io.grpc:grpc-protobuf-lite:1.13.1' // CURRENT_GRPC_VERSION
