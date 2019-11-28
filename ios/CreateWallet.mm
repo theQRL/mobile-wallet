@@ -49,6 +49,8 @@ RCT_EXPORT_METHOD(createWallet:(NSNumber* _Nonnull)treeHeight withIndex:(NSStrin
   
   eHashFunction walletHashFunction;
   
+  NSLog(@"ERROR saving pin to keychain: %d", hashFunctionIndex );
+  
   switch(hashFunctionIndex) {
     case 1: {
       walletHashFunction = eHashFunction::SHAKE_128;
@@ -71,14 +73,14 @@ RCT_EXPORT_METHOD(createWallet:(NSNumber* _Nonnull)treeHeight withIndex:(NSStrin
   // creating new wallet
   XmssFast xmss = XmssFast(seed, treeHeightInt, walletHashFunction, eAddrFormatType::SHA256_2X);
   std::string hexSeed = bin2hstr(xmss.getExtendedSeed());
-  
+
   // saving the hexSeed to the keychain
   NSString *hexSeedNSString = [NSString stringWithCString:hexSeed.c_str() encoding:[NSString defaultCStringEncoding]];
   OSStatus sts = [WalletHelperFunctions saveToKeychain:[NSString stringWithFormat:@"%@%@", @"hexseed", walletindex] withValue:hexSeedNSString];
-  
+
   // remove hexseed from keychain (for debugging only)
 //  OSStatus sts = SecItemDelete((__bridge CFDictionaryRef)keychainItem);
-  
+
   // send callback to RN
   if( (int)sts == 0 ){
     // saving wallet address to the keychain
@@ -98,7 +100,7 @@ RCT_EXPORT_METHOD(createWallet:(NSNumber* _Nonnull)treeHeight withIndex:(NSStrin
 //          callback(@[[NSNull null], @"success",  wallet_address ]);
           OSStatus sts5 = [WalletHelperFunctions saveToKeychain:[NSString stringWithFormat:@"%@%@", @"pin", walletindex] withValue:walletpin];
           if( (int)sts5 == 0 ){
-            
+
             callback(@[[NSNull null], @"success",  wallet_address ]);
 //            OSStatus sts6 = [WalletHelperFunctions saveToKeychain:[NSString stringWithFormat:@"%@%@", @"name", walletindex] withValue:walletname];
 //            if( (int)sts6 == 0 ){
@@ -134,6 +136,9 @@ RCT_EXPORT_METHOD(createWallet:(NSNumber* _Nonnull)treeHeight withIndex:(NSStrin
     NSLog(@"ERROR saving hexseed to keychain: %d",(int)sts);
     callback(@[[NSNull null], @"error" ]);
   }
+
+  
+  
 }
 
 
@@ -233,7 +238,6 @@ RCT_EXPORT_METHOD(openWalletWithMnemonic:(NSString* )mnemonicNSString withIndex:
   catch (...){
     callback(@[[NSNull null], @"error" ]);
   }
-  
 }
 
 

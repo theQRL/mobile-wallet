@@ -203,7 +203,8 @@ public class AndroidWalletModule extends ReactContextBaseJavaModule {
     public void sendWalletPrivateInfo(String walletindex, Callback errorCallback, Callback successCallback) {
         String hexseed = getEncrypted("hexseed".concat(walletindex));
         try {
-            String mnemonic = getMnemonic(hexseed);
+            String mnemonic = getMnemonic
+                    (hexseed);
             successCallback.invoke( mnemonic, hexseed);
         } catch (IllegalViewOperationException e) {
             errorCallback.invoke(e.getMessage());

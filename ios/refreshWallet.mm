@@ -297,6 +297,7 @@ RCT_EXPORT_METHOD(refreshWallet:(NSString*)walletindex callback:(RCTResponseSend
 RCT_EXPORT_METHOD(sendWalletPrivateInfo:(NSString*)walletindex callback:(RCTResponseSenderBlock)callback)
 {
   std::vector<uint8_t> hexSeed= {};
+  std::vector<uint8_t> extendedHexSeed= {};
   NSString* hexseed = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@%@", @"hexseed", walletindex]];
   
   int i;
@@ -309,8 +310,23 @@ RCT_EXPORT_METHOD(sendWalletPrivateInfo:(NSString*)walletindex callback:(RCTResp
     // adding to hex
     hexSeed.push_back(result);
   }
+  
+  int j;
+  for (j=0; j < [hexseed length]; j+=2) {
+    NSString* subs = [hexseed substringWithRange:NSMakeRange(j, 2)];
+    // converting hex to corresponding decimal
+    unsigned result = 0;
+    NSScanner* scanner = [NSScanner scannerWithString:subs];
+    [scanner scanHexInt:&result];
+    // adding to hex
+    extendedHexSeed.push_back(result);
+  }
+  
   // opening wallet and sending mnemonic and hexSeed to user
-  XmssFast xmss_obj(hexSeed, 10);
+  QRLDescriptor desc = QRLDescriptor::fromExtendedSeed( extendedHexSeed );
+  XmssFast xmss_obj( hexSeed, desc.getHeight(), desc.getHashFunction());
+
+//  XmssFast xmss_obj(hexSeed, 10);
   NSString* mnemonic = [NSString stringWithUTF8String:bin2mnemonic(xmss_obj.getExtendedSeed()).c_str()];
   NSString* hexSeedStr = [NSString stringWithUTF8String:bin2hstr(xmss_obj.getExtendedSeed() ).c_str()];
   callback(@[[NSNull null], mnemonic, hexSeedStr ]);

@@ -49,6 +49,7 @@ RCT_EXPORT_METHOD(sendCoins:(NSString* )recipient withAmount:(NSNumber* _Nonnull
 //  int feeInt = [fee_nb intValue];
   
   std::vector<uint8_t> hexSeed= {};
+  std::vector<uint8_t> extendedHexSeed= {};
   // Opening XMSS object with hexseed
   NSString* hexseed = [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@%@", @"hexseed", walletindex]];
 //  NSString* walletAddress = [WalletHelperFunctions getFromKeychain:@"address"];
@@ -63,6 +64,16 @@ RCT_EXPORT_METHOD(sendCoins:(NSString* )recipient withAmount:(NSNumber* _Nonnull
     [scanner scanHexInt:&result];
     // adding to hex
     hexSeed.push_back(result);
+  }
+  
+  for (int j=0; j < [hexseed length]; j+=2) {
+    NSString* subs = [hexseed substringWithRange:NSMakeRange(j, 2)];
+    // converting hex to corresponding decimal
+    unsigned result = 0;
+    NSScanner* scanner = [NSScanner scannerWithString:subs];
+    [scanner scanHexInt:&result];
+    // adding to hex
+    extendedHexSeed.push_back(result);
   }
   
   
@@ -189,7 +200,8 @@ RCT_EXPORT_METHOD(sendCoins:(NSString* )recipient withAmount:(NSNumber* _Nonnull
     NSNumber *myNumber = [f numberFromString: [WalletHelperFunctions getFromKeychain:[NSString stringWithFormat:@"%@%@", @"treeheight", walletindex]]];
     int tree_height = [myNumber intValue];
     
-    XmssFast xmss_obj(hexSeed, tree_height);
+    QRLDescriptor desc = QRLDescriptor::fromExtendedSeed(extendedHexSeed);
+    XmssFast xmss_obj(hexSeed, tree_height, desc.getHashFunction());
     NSLog(@"%@", @"Wallet succesfully opened!");
     xmss_obj.setIndex(otsIndexInt);
     auto signature = xmss_obj.sign(shaSum);
@@ -242,6 +254,5 @@ RCT_EXPORT_METHOD(sendCoins:(NSString* )recipient withAmount:(NSNumber* _Nonnull
       }
     }];
   }];
-
 }
 @end
